@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Obsidian Scribe Configuration",
+  "description": "Configuration for obsidian-scribe Claude Code plugin",
+  "type": "object",
+  "properties": {
+    "paths": {
+      "type": "object",
+      "description": "Folder and file paths relative to vault root",
+      "properties": {
+        "daily_notes": {
+          "type": "string",
+          "default": "daily-notes",
+          "description": "Folder for daily notes (format: YYYY-MM-DD.md)"
+        },
+        "weekly_notes": {
+          "type": "string",
+          "default": "weekly-notes",
+          "description": "Folder for weekly notes (format: YYYY-WXX.md)"
+        },
+        "monthly_notes": {
+          "type": "string",
+          "default": "monthly-notes",
+          "description": "Folder for monthly notes (format: YYYY-MM.md)"
+        },
+        "quarterly_notes": {
+          "type": "string",
+          "default": "quarterly-notes",
+          "description": "Folder for quarterly notes (format: YYYY-QX.md)"
+        },
+        "yearly_notes": {
+          "type": "string",
+          "default": "yearly-notes",
+          "description": "Folder for yearly notes (format: YYYY.md)"
+        },
+        "achievements": {
+          "type": "string",
+          "default": "Achievements.md",
+          "description": "Path to achievements file"
+        },
+        "templates": {
+          "type": "string",
+          "default": "templates",
+          "description": "Folder for note templates"
+        }
+      }
+    },
+    "sections": {
+      "type": "object",
+      "description": "Section headers in daily notes",
+      "properties": {
+        "log": {
+          "type": "string",
+          "default": "## Log",
+          "description": "Header for log section"
+        },
+        "food": {
+          "type": "string",
+          "default": "# Food",
+          "description": "Header for food section"
+        },
+        "tasks": {
+          "type": "string",
+          "default": "## Tasks",
+          "description": "Header for tasks section"
+        },
+        "habits": {
+          "type": "string",
+          "default": "# Habits",
+          "description": "Header for habits section"
+        }
+      }
+    },
+    "folders": {
+      "type": "object",
+      "description": "Folder organization rules",
+      "properties": {
+        "protected": {
+          "type": "array",
+          "items": {"type": "string"},
+          "default": [".obsidian", ".git", ".claude"],
+          "description": "Folders that should never be modified"
+        },
+        "require_subfolders": {
+          "type": "array",
+          "items": {"type": "string"},
+          "default": [],
+          "description": "Top-level folders that must contain subfolders, not direct files"
+        },
+        "allow_direct_files": {
+          "type": "array",
+          "items": {"type": "string"},
+          "default": ["templates"],
+          "description": "Additional folders that can contain files directly"
+        }
+      }
+    },
+    "habits": {
+      "type": "array",
+      "items": {"type": "string"},
+      "default": ["Walk", "Stretch", "Vitamins"],
+      "description": "Habit names to track in daily notes"
+    }
+  }
+}

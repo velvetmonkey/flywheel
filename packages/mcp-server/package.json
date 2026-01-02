@@ -1,0 +1,62 @@
+{
+  "name": "smoking-mirror",
+  "version": "1.2.2",
+  "description": "Obsidian vault intelligence MCP server - graph queries, wikilink suggestions, vault health",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "smoking-mirror": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "npx esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.js --packages=external",
+    "postbuild": "node -e \"require('fs').chmodSync('dist/index.js', 0o755)\"",
+    "dev": "npx tsx src/index.ts",
+    "test": "bun test",
+    "inspect": "npx @modelcontextprotocol/inspector npx tsx src/index.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.1",
+    "gray-matter": "^4.0.3",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^20.0.0",
+    "esbuild": "^0.24.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "obsidian",
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "claude-code",
+    "knowledge-graph",
+    "wikilinks",
+    "backlinks",
+    "vault-health",
+    "markdown",
+    "pkm",
+    "zettelkasten"
+  ],
+  "author": "Ben Cassie",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bencassie/smoking-mirror.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bencassie/smoking-mirror/issues"
+  },
+  "homepage": "https://github.com/bencassie/smoking-mirror#readme",
+  "engines": {
+    "node": ">=18"
+  }
+}

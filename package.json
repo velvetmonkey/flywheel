@@ -1,0 +1,41 @@
+{
+  "name": "@flywheel-ai/flywheel",
+  "version": "0.1.0",
+  "description": "The Agentic Markdown Operating System - AI-powered business infrastructure built on plain markdown",
+  "keywords": [
+    "markdown",
+    "knowledge-management",
+    "ai",
+    "claude",
+    "mcp",
+    "obsidian",
+    "pkm",
+    "graph",
+    "frontmatter",
+    "automation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bencassie/flywheel.git"
+  },
+  "license": "MIT",
+  "author": "Ben Cassie",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "dev:mcp": "npm run dev -w @flywheel-ai/mcp-server",
+    "dev:plugin": "npm run dev -w @flywheel-ai/claude-plugin",
+    "lint": "npm run lint --workspaces",
+    "clean": "npm run clean --workspaces && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

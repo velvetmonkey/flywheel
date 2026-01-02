@@ -1,0 +1,23 @@
+{
+  "paths": {
+    "daily_notes": "daily-notes",
+    "weekly_notes": "weekly-notes",
+    "monthly_notes": "monthly-notes",
+    "quarterly_notes": "quarterly-notes",
+    "yearly_notes": "yearly-notes",
+    "achievements": "Achievements.md",
+    "templates": "templates"
+  },
+  "sections": {
+    "log": "## Log",
+    "food": "# Food",
+    "tasks": "## Tasks",
+    "habits": "# Habits"
+  },
+  "folders": {
+    "protected": [".obsidian", ".git", ".claude"],
+    "require_subfolders": [],
+    "allow_direct_files": ["templates"]
+  },
+  "habits": ["Walk", "Stretch", "Vitamins"]
+}
