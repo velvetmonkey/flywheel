@@ -1,6 +1,6 @@
 {
   "name": "@bencassie/flywheel-mcp",
-  "version": "1.7.0",
+  "version": "1.9.0",
   "description": "Flywheel MCP server - graph intelligence for markdown vaults",
   "type": "module",
   "main": "dist/index.js",

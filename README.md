@@ -10,6 +10,37 @@
 
 ---
 
+## See It In Action: The Rollup Workflow
+
+Your AI writes your weekly summary automatically:
+
+```
+You: "do a rollup of my notes"
+
+Daily Notes                Weekly              Monthly            Yearly
+───────────────────────────────────────────────────────────────────────────
+Jan 1  ─┐
+Jan 2  ─┼─► Week 1 ─┐
+Jan 3  ─┤          │
+...    ─┘          │
+Jan 8  ─┐          ├─► January ─┐
+Jan 9  ─┼─► Week 2 ─┤           │
+...    ─┘          │           ├─► 2026 ─► Achievements.md
+                   ...         │
+                              ...
+
+Claude: Processing rollup chain...
+✓ Daily notes (Jan 1-7) → Weekly Summary
+✓ Weekly notes (Dec) → Monthly Summary
+✓ Achievements extracted → Achievements.md
+
+[Shows generated summary preview]
+```
+
+**From scattered daily notes to structured insights—automatically.**
+
+---
+
 ## What is Flywheel?
 
 Flywheel is an AI-native business operating system built on plain markdown files. It combines:
@@ -37,30 +68,46 @@ Flywheel supports BOTH knowledge management philosophies:
 
 ---
 
-## Quick Start (30 Seconds)
+## Quick Start
+
+### 1. Install Plugin
 
 ```bash
-# Step 1: Add to .mcp.json (in your vault root)
-{
-  "mcpServers": {
-    "flywheel": {
-      "command": "npx",
-      "args": ["-y", "@bencassie/flywheel-mcp"],
-      "env": { "PROJECT_PATH": "." }
-    }
-  }
-}
+claude plugin install flywheel@flywheel
+```
 
-# Step 2: Install plugin (in Claude Code)
-/plugin marketplace add bencassie/flywheel
-/plugin install flywheel@flywheel
+### 2. Setup & Onboard
 
-# Step 3: Try it
-/vault-health    # → Comprehensive vault analysis
-/auto-log "Finished project proposal"
+Just say: **"setup flywheel"**
+
+Claude will:
+- Detect your platform (Linux/WSL/Windows/macOS)
+- Configure `.mcp.json` correctly
+- Validate the MCP connection
+- Show your vault stats and next steps
+
+### 3. Explore
+
+Skills are triggered by natural language - just describe what you want:
+
+```
+"check vault health"     → Deep analysis with recommendations
+"find orphan notes"      → Disconnected notes needing links
+"do a rollup"            → Aggregate your notes automatically
+"add log entry: fixed bug" → Append timestamped entry to daily note
+```
+
+### Try with a Demo Vault
+
+```bash
+cd demos/carter-strategy
+# Then say: "setup flywheel"
 ```
 
 **[Full Installation Guide →](docs/GETTING_STARTED.md)**
+
+> **Note**: Skills are triggered by natural language, not slash commands.
+> Just describe what you want - Claude matches your intent to the right skill.
 
 ---
 
@@ -244,36 +291,35 @@ Try Flywheel with 4 real-world scenarios:
 
 ## Development Status
 
-**Current**: v1.6.2 - Six Gates REAL enforcement
-**Next**: v1.7.0 - Advanced Schema Intelligence
+**Current**: v1.9.0 - Documentation & Onboarding
+**Next**: v2.0 - Enterprise Features
 
 ### Recent Updates
+
+**v1.9.0** (2026-01-03)
+- New `setup-flywheel` skill with 4-phase onboarding flow
+- TUTORIAL.md and ARCHITECTURE.md documentation
+- Multi-word trigger keywords (prevents false positives)
+- "Where Does Output Go?" sections for mutation skills
+- Section matching now case-insensitive and level-agnostic
+- Slash commands for mutations (`/rollup`, `/fix-links`, `/normalize`)
+
+**v1.8.0** (2026-01-03)
+- 6 new skills: `/extract-actions`, `/weekly-review`, `/standup-rollup`, `/okr-review`, `/onboard-customer`, `/workflow-define`
+- 5 new Gate 3 compliant agents for workflow automation
+- 4 new templates: meeting, standup, OKR, customer onboarding
+
+**v1.7.4** (2026-01-03)
+- Fixed read-cache locking bug for parallel Reads
+- Added Six Gates test suite
 
 **v1.6.2** (2026-01-03)
 - Gates 1, 2, 4 now BLOCK unsafe operations
 - Gate 3 enforced at project level for agent compliance
-- All 8 agents Gate 3 compliant
-
-**v1.6.1** (2026-01-02)
-- Six Gates safety framework introduced
-- Session and post-write verification hooks
-
-**v1.6.0** (2026-01-01)
-- Bidirectional Bridge (prose ↔ frontmatter)
-- `/normalize-note`, `/wikilinkify-frontmatter` skills
 
 **[Full Version History →](docs/ROADMAP.md)**
 
 ### Roadmap
-
-**v1.7.0** - Advanced Schema Intelligence
-- Frontmatter validation against JSON schemas
-- Auto-compute derived fields
-- Bulk field rename operations
-
-**v1.8.0** - Workflow Templates
-- Pre-built automation for business processes
-- Trigger-based workflows
 
 **v2.0** - Enterprise Features
 - Multi-vault support

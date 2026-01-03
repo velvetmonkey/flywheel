@@ -27,10 +27,13 @@ DEFAULTS = {
         "templates": "templates"
     },
     "sections": {
-        "log": "## Log",
-        "food": "# Food",
-        "tasks": "## Tasks",
-        "habits": "# Habits"
+        # Section headers use TEXT ONLY (no # prefix)
+        # MCP section matching is case-insensitive and level-agnostic
+        # "Log" matches # Log, ## Log, ### Log, ## LOG, etc.
+        "log": "Log",
+        "food": "Food",
+        "tasks": "Tasks",
+        "habits": "Habits"
     },
     "folders": {
         "protected": [".obsidian", ".git", ".claude"],

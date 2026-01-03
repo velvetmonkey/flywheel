@@ -3,14 +3,14 @@ name: onboard-customer
 description: Create customer onboarding checklist from template with customer details
 auto_trigger: true
 trigger_keywords:
-  - onboard customer
-  - new customer
-  - customer onboarding
-  - onboarding checklist
-  - new client setup
-  - client onboarding
-  - start onboarding
-  - create onboarding
+  - "onboard customer"
+  - "onboard new customer"
+  - "create customer onboarding"
+  - "customer onboarding checklist"
+  - "new customer setup"
+  - "new client setup"
+  - "client onboarding checklist"
+  - "start customer onboarding"
 allowed-tools: Task, Read, Write, mcp__flywheel__get_note_metadata, mcp__flywheel__search_notes, mcp__flywheel__get_folder_structure
 ---
 

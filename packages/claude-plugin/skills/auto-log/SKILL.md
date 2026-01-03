@@ -1,29 +1,42 @@
 ---
 name: add-log
-description: Auto-log entries to daily note. Triggers when user wants to log, record, or document their work. Detects "log", "captains log", "dictate", "record", "note this", "write this down", "document", "track this", "remember", "add to log", or similar logging intent.
+description: Add timestamped log entry to daily note when user wants to log their work
 auto_trigger: true
 trigger_keywords:
-  - "log"
-  - "captains log"
-  - "dictate"
-  - "record"
-  - "note this"
-  - "write this down"
-  - "document this"
-  - "track this"
-  - "remember this"
+  - "add log entry"
+  - "log entry"
+  - "log to daily"
   - "add to log"
   - "add to my log"
-  - "log this"
-  - "record this"
-  - "make a note"
-  - "take note"
+  - "captains log"
+  - "log this to daily"
+  - "record to daily"
+  - "write this down"
+  - "document this"
 allowed-tools: Read, Edit
 ---
 
 # Auto Log Entry
 
 Automatically add a timestamped log entry to today's daily note when user wants to log their work.
+
+## Where Does Output Go?
+
+```
+┌─────────────────────────────────────────────────────┐
+│ INPUT:  "add log entry: Fixed the bug"              │
+│                                                     │
+│ OUTPUT: daily-notes/2026-01-03.md                   │
+│         └─► ## Log section (appended)               │
+│             └─► - 14:32 Fixed the bug               │
+└─────────────────────────────────────────────────────┘
+
+How location is determined:
+1. MCP detect_periodic_notes("daily") → finds daily notes folder
+2. Today's date → 2026-01-03.md
+3. sections.log (default: "Log") → finds ## Log heading
+4. Appends after last log entry
+```
 
 ## Trigger Detection
 
@@ -114,4 +127,6 @@ User prompts that trigger this skill:
 
 This skill uses these config values:
 - `paths.daily_notes`: Folder containing daily notes (default: "daily-notes")
-- `sections.log`: Log section header (default: "## Log")
+- `sections.log`: Log section header text (default: "Log")
+
+**Note**: Section matching is case-insensitive and level-agnostic. "Log" matches `# Log`, `## Log`, `### LOG`, etc.

@@ -4,24 +4,33 @@ Welcome to the Flywheel documentation. Flywheel is the **Agentic Markdown Operat
 
 ---
 
-## Quick Links
+## Getting Started
 
 | Doc | Description |
 |-----|-------------|
-| [QUICKSTART](QUICKSTART.md) | Get running in 5 minutes |
-| [GETTING_STARTED](GETTING_STARTED.md) | Installation and first steps |
-| [AGENTIC_PATTERNS](AGENTIC_PATTERNS.md) | Core patterns (graph-first, agent chains, Six Gates) |
+| [TUTORIAL](TUTORIAL.md) | 10-minute guided walkthrough |
+| [GETTING_STARTED](GETTING_STARTED.md) | Installation and setup |
+| [QUICKSTART](QUICKSTART.md) | 5-minute quick start |
 
 ---
 
-## Reference Docs
+## Understanding Flywheel
 
 | Doc | Description |
 |-----|-------------|
-| [MCP_REFERENCE](MCP_REFERENCE.md) | 44 MCP tools with examples |
-| [SKILLS_REFERENCE](SKILLS_REFERENCE.md) | 37 skills with triggers |
-| [AGENTS_REFERENCE](AGENTS_REFERENCE.md) | 8 multi-step agents |
+| [ARCHITECTURE](ARCHITECTURE.md) | System design deep dive |
+| [AGENTIC_PATTERNS](AGENTIC_PATTERNS.md) | Core patterns (graph-first, agent chains, Six Gates) |
 | [SIX_GATES](SIX_GATES.md) | Safety framework (mandatory) |
+
+---
+
+## Reference
+
+| Doc | Description |
+|-----|-------------|
+| [MCP_REFERENCE](MCP_REFERENCE.md) | 50+ MCP tools with examples |
+| [SKILLS_REFERENCE](SKILLS_REFERENCE.md) | 49 skills with triggers |
+| [AGENTS_REFERENCE](AGENTS_REFERENCE.md) | 14 multi-step agents |
 
 ---
 
@@ -29,24 +38,25 @@ Welcome to the Flywheel documentation. Flywheel is the **Agentic Markdown Operat
 
 ### New Users
 
-1. [QUICKSTART](QUICKSTART.md) - Get running in 5 minutes
-2. [GETTING_STARTED](GETTING_STARTED.md) - Full setup guide
-3. Say "hello flywheel" to start the onboarding flow
+1. [TUTORIAL](TUTORIAL.md) - 10-minute walkthrough
+2. Say "setup flywheel" to configure and onboard
+3. Say "check vault health" for your first analysis
 
 ### Daily Users
 
-- `/health` - Check vault health
-- `/log [entry]` - Add log entry
-- `/tasks` - View all tasks
-- `/search [query]` - Find notes
-- `/hubs` - See most connected notes
+Skills are triggered by natural language:
+- "check vault health" - Comprehensive diagnostics
+- "add log entry: [text]" - Add to daily note
+- "find orphan notes" - Disconnected content
+- "do a rollup" - Aggregate your notes
+- "show hub notes" - Most connected knowledge
 
 ### Developers
 
-1. [AGENTIC_PATTERNS](AGENTIC_PATTERNS.md) - Understand the patterns
-2. [SIX_GATES](SIX_GATES.md) - Safety framework (required reading)
-3. [AGENTS_REFERENCE](AGENTS_REFERENCE.md) - Creating agents
-4. [MCP_REFERENCE](MCP_REFERENCE.md) - All available tools
+1. [ARCHITECTURE](ARCHITECTURE.md) - System design
+2. [AGENTIC_PATTERNS](AGENTIC_PATTERNS.md) - Design patterns
+3. [SIX_GATES](SIX_GATES.md) - Safety framework (required reading)
+4. [AGENTS_REFERENCE](AGENTS_REFERENCE.md) - Creating agents
 
 ---
 
@@ -80,6 +90,7 @@ Flywheel's unique value: **wikilinks and frontmatter are the SAME information** 
 | Demo | Replaces | Notes |
 |------|----------|-------|
 | [artemis-rocket](../demos/artemis-rocket/) | 200-person aerospace corp | 65 notes, graph-first |
+| [carter-strategy](../demos/carter-strategy/) | Solo consultant | 30 notes, tasks/rollups |
 
 See [demos/README.md](../demos/README.md) for full list.
 
@@ -87,7 +98,7 @@ See [demos/README.md](../demos/README.md) for full list.
 
 ## Version
 
-- **Current**: 1.6.3
+- **Current**: 1.9.0
 - **Roadmap**: [ROADMAP.md](ROADMAP.md)
 - **Changelog**: See git log
 

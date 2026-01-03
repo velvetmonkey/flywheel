@@ -141,13 +141,23 @@ def main():
         achievements = get_recent_achievements(config)
         cache_status = rebuild_wikilink_cache()
 
-        # Build context string
+        # Build context string with available skills for plugin discovery
         context = f"""Flywheel - Session started: {current_time}
 
 {daily_status}
 {cache_status}
 
-{achievements}"""
+{achievements}
+
+Available Flywheel skills (say these naturally):
+- "setup flywheel" - Configure MCP, validate connection, see vault stats
+- "check vault health" - Comprehensive diagnostics and recommendations
+- "find orphan notes" - Disconnected notes needing links
+- "show hub notes" - Your most connected knowledge
+- "do a rollup" - Aggregate daily notes into weekly/monthly summaries
+- "add log entry: [message]" - Append timestamped entry to daily note
+- "find broken links" - Detect and repair dead wikilinks
+- "what links to [note]" - Show backlinks for a note"""
 
         # Output in Claude Code's expected JSON format
         output = {
