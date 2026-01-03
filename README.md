@@ -73,7 +73,8 @@ Flywheel supports BOTH knowledge management philosophies:
 ### 1. Install Plugin
 
 ```bash
-claude plugin install flywheel@flywheel
+/plugin marketplace add bencassie/flywheel
+/plugin install flywheel@bencassie-flywheel
 ```
 
 ### 2. Setup & Onboard

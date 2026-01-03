@@ -18,7 +18,8 @@ Get hands-on with Flywheel's core features in 10 minutes.
 ### Step 1: Install the Plugin
 
 ```bash
-claude plugin install flywheel@flywheel
+/plugin marketplace add bencassie/flywheel
+/plugin install flywheel@bencassie-flywheel
 ```
 
 ### Step 2: Setup Flywheel
