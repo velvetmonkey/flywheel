@@ -18,7 +18,7 @@ trigger_keywords:
   - "untouched notes"
   - "what needs updating"
   - "old important notes"
-allowed-tools: mcp__smoking-mirror__get_recent_notes, mcp__smoking-mirror__get_backlinks, mcp__smoking-mirror__search_notes
+allowed-tools: mcp__flywheel__get_recent_notes, mcp__flywheel__get_backlinks, mcp__flywheel__search_notes
 ---
 
 # Stale Notes

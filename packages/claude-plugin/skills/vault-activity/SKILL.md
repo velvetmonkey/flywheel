@@ -18,7 +18,7 @@ trigger_keywords:
   - "productivity"
   - "how much editing"
   - "vault changes"
-allowed-tools: mcp__smoking-mirror__get_activity_summary
+allowed-tools: mcp__flywheel__get_activity_summary
 ---
 
 # Vault Activity Summary
@@ -52,7 +52,7 @@ Identify the time period:
 ### 2. Call MCP Tool
 
 ```
-mcp__smoking-mirror__get_activity_summary(
+mcp__flywheel__get_activity_summary(
   days: 7
 )
 ```

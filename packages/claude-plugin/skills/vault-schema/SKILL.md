@@ -17,7 +17,7 @@ trigger_keywords:
   - "field list"
   - "what properties"
   - "note attributes"
-allowed-tools: mcp__smoking-mirror__get_frontmatter_schema
+allowed-tools: mcp__flywheel__get_frontmatter_schema
 ---
 
 # Frontmatter Schema Analyzer
@@ -50,7 +50,7 @@ Recognize schema requests:
 ### 2. Call MCP Tool
 
 ```
-mcp__smoking-mirror__get_frontmatter_schema()
+mcp__flywheel__get_frontmatter_schema()
 ```
 
 ### 3. Format Results

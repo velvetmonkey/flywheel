@@ -19,7 +19,7 @@ trigger_keywords:
   - "upcoming"
   - "deadline calendar"
   - "when due"
-allowed-tools: mcp__smoking-mirror__get_tasks_with_due_dates
+allowed-tools: mcp__flywheel__get_tasks_with_due_dates
 ---
 
 # Due Date Task View
@@ -54,7 +54,7 @@ Identify deadline focus:
 ### 2. Call MCP Tool
 
 ```
-mcp__smoking-mirror__get_tasks_with_due_dates(
+mcp__flywheel__get_tasks_with_due_dates(
   status: "open",
   folder: null
 )

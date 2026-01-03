@@ -20,7 +20,7 @@ trigger_keywords:
   - "what's between"
   - "trace link"
   - "show connection between"
-allowed-tools: mcp__smoking-mirror__get_link_path
+allowed-tools: mcp__flywheel__get_link_path
 ---
 
 # Link Path Finder
@@ -55,7 +55,7 @@ Identify the two notes from user request:
 ### 2. Call MCP Tool
 
 ```
-mcp__smoking-mirror__get_link_path(
+mcp__flywheel__get_link_path(
   from: "path/to/first/note.md",
   to: "path/to/second/note.md",
   max_depth: 10

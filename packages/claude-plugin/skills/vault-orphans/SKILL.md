@@ -19,7 +19,7 @@ trigger_keywords:
   - "no links to"
   - "stranded notes"
   - "unloved notes"
-allowed-tools: mcp__smoking-mirror__find_orphan_notes, AskUserQuestion
+allowed-tools: mcp__flywheel__find_orphan_notes, AskUserQuestion
 ---
 
 # Orphans Skill
@@ -47,7 +47,7 @@ Invoke when you want to:
 ### 1. Call MCP Tool
 
 ```
-Call: mcp__smoking-mirror__find_orphan_notes
+Call: mcp__flywheel__find_orphan_notes
 Parameters: { folder: optional }
 ```
 

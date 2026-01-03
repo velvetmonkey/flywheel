@@ -18,7 +18,7 @@ trigger_keywords:
   - "check vault"
   - "diagnose vault"
   - "vault summary"
-allowed-tools: mcp__smoking-mirror__get_vault_stats, mcp__smoking-mirror__find_broken_links
+allowed-tools: mcp__flywheel__get_vault_stats, mcp__flywheel__find_broken_links
 ---
 
 # Vault Health
@@ -36,7 +36,7 @@ Invoke when you want to:
 ## Process
 
 ### 1. Get Vault Statistics
-Call `mcp__smoking-mirror__get_vault_stats` to retrieve:
+Call `mcp__flywheel__get_vault_stats` to retrieve:
 - Total notes
 - Total links
 - Average links per note
@@ -125,5 +125,5 @@ Vault Health Report
 ## Performance
 
 - **Speed**: 2-3 seconds (single MCP call)
-- **Accuracy**: 100% (direct from smoking-mirror)
+- **Accuracy**: 100% (direct from Flywheel MCP)
 - **Caching**: None needed (live data)

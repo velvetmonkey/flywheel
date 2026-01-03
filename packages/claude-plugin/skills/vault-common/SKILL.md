@@ -19,7 +19,7 @@ trigger_keywords:
   - "both reference"
   - "intersection"
   - "common ground"
-allowed-tools: mcp__smoking-mirror__get_common_neighbors
+allowed-tools: mcp__flywheel__get_common_neighbors
 ---
 
 # Common Neighbors Finder
@@ -53,7 +53,7 @@ Identify the two notes:
 ### 2. Call MCP Tool
 
 ```
-mcp__smoking-mirror__get_common_neighbors(
+mcp__flywheel__get_common_neighbors(
   note_a: "path/to/first/note.md",
   note_b: "path/to/second/note.md"
 )

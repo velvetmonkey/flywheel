@@ -19,12 +19,12 @@ trigger_keywords:
   - "note distribution"
   - "folder hierarchy"
   - "vault layout"
-allowed-tools: mcp__smoking-mirror__get_folder_structure
+allowed-tools: mcp__flywheel__get_folder_structure
 ---
 
 # Folder Health Skill
 
-Analyze vault organization by folder structure using smoking-mirror MCP.
+Analyze vault organization by folder structure using Flywheel MCP.
 
 ## Purpose
 
@@ -48,7 +48,7 @@ Invoke when you want to:
 ### 1. Call MCP Tool
 
 ```
-Call: mcp__smoking-mirror__get_folder_structure
+Call: mcp__flywheel__get_folder_structure
 Parameters: {}
 ```
 

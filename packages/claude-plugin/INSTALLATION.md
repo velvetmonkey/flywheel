@@ -59,7 +59,7 @@ Edit `~/.claude.json` or your project's `.claude/settings.local.json`:
     "flywheel": {
       "source": {
         "source": "directory",
-        "path": "/mnt/c/Users/YOUR_USER/src/flywheel/plugins/flywheel"
+        "path": "/mnt/c/Users/YOUR_USER/src/flywheel/packages/claude-plugin"
       }
     }
   },
@@ -79,7 +79,7 @@ Edit `C:\Users\YOUR_USER\.claude.json` or your project's `.claude\settings.json`
     "flywheel": {
       "source": {
         "source": "directory",
-        "path": "C:/Users/YOUR_USER/src/flywheel/plugins/flywheel"
+        "path": "C:/Users/YOUR_USER/src/flywheel/packages/claude-plugin"
       }
     }
   },
@@ -99,7 +99,7 @@ Edit `~/.claude.json` or your project's `.claude/settings.json`:
     "flywheel": {
       "source": {
         "source": "directory",
-        "path": "/Users/YOUR_USER/src/flywheel/plugins/flywheel"
+        "path": "/Users/YOUR_USER/src/flywheel/packages/claude-plugin"
       }
     }
   },
@@ -170,7 +170,7 @@ Close and reopen Claude Code (or start a new session) to load the plugin.
 - On session start, you should see the Flywheel briefing
 - Skills like `food`, `rebuild-wikilink-cache` should be available
 
-Continue to Step 6 to install the required smoking-mirror MCP server.
+Continue to Step 6 to install the required Flywheel MCP server.
 
 ---
 
@@ -246,7 +246,7 @@ The correct multi-platform architecture:
     "flywheel": {
       "source": {
         "source": "directory",
-        "path": "/mnt/c/Users/YOUR_USER/src/flywheel"
+        "path": "/mnt/c/Users/YOUR_USER/src/flywheel/packages/claude-plugin"
       }
     }
   },
@@ -266,15 +266,15 @@ The correct multi-platform architecture:
         "flywheel": {
           "source": {
             "source": "directory",
-            "path": "C:/Users/YOUR_USER/src/flywheel/plugins/flywheel/plugins/flywheel"
+            "path": "C:/Users/YOUR_USER/src/flywheel/packages/claude-plugin"
           }
         }
       },
       "mcpServers": {
-        "smoking-mirror": {
+        "flywheel": {
           "command": "cmd",
-          "args": ["/c", "npx", "-y", "smoking-mirror@latest"],
-          "env": { "OBSIDIAN_VAULT_PATH": "C:/Users/YOUR_USER/obsidian/YOUR_VAULT" }
+          "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
+          "env": { "PROJECT_PATH": "C:/Users/YOUR_USER/obsidian/YOUR_VAULT" }
         }
       }
     }

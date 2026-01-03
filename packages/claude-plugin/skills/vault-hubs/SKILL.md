@@ -17,7 +17,7 @@ trigger_keywords:
   - "well-linked"
   - "core ideas"
   - "knowledge hubs"
-allowed-tools: mcp__smoking-mirror__find_hub_notes
+allowed-tools: mcp__flywheel__find_hub_notes
 ---
 
 # Hubs Skill
@@ -51,7 +51,7 @@ Invoke when you want to:
 ### 1. Call MCP Tool
 
 ```
-Call: mcp__smoking-mirror__find_hub_notes
+Call: mcp__flywheel__find_hub_notes
 Parameters: { min_links: 5 }  # Default threshold
 ```
 

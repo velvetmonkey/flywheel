@@ -19,7 +19,7 @@ trigger_keywords:
   - "linkable text"
   - "should have links"
   - "potential links"
-allowed-tools: mcp__smoking-mirror__get_unlinked_mentions, Read, Edit, AskUserQuestion
+allowed-tools: mcp__flywheel__get_unlinked_mentions, Read, Edit, AskUserQuestion
 ---
 
 # Unlinked Mentions Skill
@@ -55,7 +55,7 @@ If entity is ambiguous, use AskUserQuestion to clarify.
 ### 2. Call MCP Tool
 
 ```
-Call: mcp__smoking-mirror__get_unlinked_mentions
+Call: mcp__flywheel__get_unlinked_mentions
 Parameters: { entity: "Databricks" }
 ```
 

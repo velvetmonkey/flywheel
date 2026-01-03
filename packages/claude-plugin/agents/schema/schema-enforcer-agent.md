@@ -1,7 +1,7 @@
 ---
 name: enforce-schema-agent
 description: Detect and report frontmatter inconsistencies across the vault, with optional fixes
-allowed-tools: mcp__smoking-mirror__get_frontmatter_schema, mcp__smoking-mirror__find_frontmatter_inconsistencies, mcp__smoking-mirror__get_field_values, Read, Edit
+allowed-tools: mcp__flywheel__get_frontmatter_schema, mcp__flywheel__find_frontmatter_inconsistencies, mcp__flywheel__get_field_values, Read, Edit
 model: sonnet
 ---
 
@@ -55,7 +55,7 @@ Report findings
 Call the MCP tool to understand the vault's frontmatter landscape:
 
 ```
-mcp__smoking-mirror__get_frontmatter_schema()
+mcp__flywheel__get_frontmatter_schema()
 ```
 
 This returns:
@@ -70,7 +70,7 @@ Document findings for context.
 Call the MCP tool to find schema violations:
 
 ```
-mcp__smoking-mirror__find_frontmatter_inconsistencies()
+mcp__flywheel__find_frontmatter_inconsistencies()
 ```
 
 This returns fields where:
@@ -83,7 +83,7 @@ This returns fields where:
 For each inconsistent field, get detailed value distribution:
 
 ```
-mcp__smoking-mirror__get_field_values(field: "problematic_field")
+mcp__flywheel__get_field_values(field: "problematic_field")
 ```
 
 This helps understand:

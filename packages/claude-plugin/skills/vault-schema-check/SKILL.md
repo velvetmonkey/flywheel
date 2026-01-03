@@ -19,7 +19,7 @@ trigger_keywords:
   - "property mismatches"
   - "schema problems"
   - "fix metadata"
-allowed-tools: mcp__smoking-mirror__find_frontmatter_inconsistencies
+allowed-tools: mcp__flywheel__find_frontmatter_inconsistencies
 ---
 
 # Frontmatter Schema Checker
@@ -53,7 +53,7 @@ Recognize schema check requests:
 ### 2. Call MCP Tool
 
 ```
-mcp__smoking-mirror__find_frontmatter_inconsistencies()
+mcp__flywheel__find_frontmatter_inconsistencies()
 ```
 
 ### 3. Format Results

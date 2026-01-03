@@ -1,7 +1,7 @@
 ---
 name: explore-relationships-agent
 description: Deep-dive into note relationships, generating comprehensive relationship reports
-allowed-tools: mcp__smoking-mirror__get_link_path, mcp__smoking-mirror__get_common_neighbors, mcp__smoking-mirror__get_connection_strength, mcp__smoking-mirror__get_backlinks, mcp__smoking-mirror__get_forward_links, mcp__smoking-mirror__find_bidirectional_links, Read
+allowed-tools: mcp__flywheel__get_link_path, mcp__flywheel__get_common_neighbors, mcp__flywheel__get_connection_strength, mcp__flywheel__get_backlinks, mcp__flywheel__get_forward_links, mcp__flywheel__find_bidirectional_links, Read
 model: sonnet
 ---
 
@@ -73,7 +73,7 @@ If notes aren't specific, ask for clarification or sample representative notes.
 Call to get the overall relationship score:
 
 ```
-mcp__smoking-mirror__get_connection_strength(
+mcp__flywheel__get_connection_strength(
     note_a: "projects/Project Alpha.md",
     note_b: "tech/frameworks/React.md"
 )
@@ -90,7 +90,7 @@ Document the score for the report.
 Trace the connection chain:
 
 ```
-mcp__smoking-mirror__get_link_path(
+mcp__flywheel__get_link_path(
     from: "projects/Project Alpha.md",
     to: "tech/frameworks/React.md",
     max_depth: 10
@@ -108,7 +108,7 @@ The path tells the story of HOW they connect.
 Find shared references:
 
 ```
-mcp__smoking-mirror__get_common_neighbors(
+mcp__flywheel__get_common_neighbors(
     note_a: "projects/Project Alpha.md",
     note_b: "tech/frameworks/React.md"
 )
@@ -125,8 +125,8 @@ High overlap = conceptually related.
 Understand what references each note:
 
 ```
-mcp__smoking-mirror__get_backlinks(path: "projects/Project Alpha.md")
-mcp__smoking-mirror__get_backlinks(path: "tech/frameworks/React.md")
+mcp__flywheel__get_backlinks(path: "projects/Project Alpha.md")
+mcp__flywheel__get_backlinks(path: "tech/frameworks/React.md")
 ```
 
 Compare:
@@ -138,8 +138,8 @@ Compare:
 Understand what each note references:
 
 ```
-mcp__smoking-mirror__get_forward_links(path: "projects/Project Alpha.md")
-mcp__smoking-mirror__get_forward_links(path: "tech/frameworks/React.md")
+mcp__flywheel__get_forward_links(path: "projects/Project Alpha.md")
+mcp__flywheel__get_forward_links(path: "tech/frameworks/React.md")
 ```
 
 Compare:
@@ -151,7 +151,7 @@ Compare:
 Check for mutual links:
 
 ```
-mcp__smoking-mirror__find_bidirectional_links(path: "projects/Project Alpha.md")
+mcp__flywheel__find_bidirectional_links(path: "projects/Project Alpha.md")
 ```
 
 If the two notes link to each other → Strong explicit relationship.
@@ -338,7 +338,7 @@ Based on this analysis:
 
 This agent NEVER modifies files. All tools used are for navigation and discovery.
 
-- **DO**: Call smoking-mirror MCP tools
+- **DO**: Call Flywheel MCP tools
 - **DO**: Call Read() to understand content
 - **DON'T**: Call Edit() or Write()
 - **DON'T**: Suggest fixes without user action

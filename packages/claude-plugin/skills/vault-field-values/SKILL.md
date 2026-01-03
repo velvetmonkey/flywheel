@@ -19,7 +19,7 @@ trigger_keywords:
   - "field options"
   - "value distribution"
   - "what can X be"
-allowed-tools: mcp__smoking-mirror__get_field_values
+allowed-tools: mcp__flywheel__get_field_values
 ---
 
 # Field Values Enumerator
@@ -53,7 +53,7 @@ Identify the field being queried:
 ### 2. Call MCP Tool
 
 ```
-mcp__smoking-mirror__get_field_values(
+mcp__flywheel__get_field_values(
   field: "type"
 )
 ```

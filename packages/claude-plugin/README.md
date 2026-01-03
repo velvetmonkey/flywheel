@@ -36,7 +36,7 @@ Automated aggregation from daily notes up through yearly summaries:
 |-------------|-------|
 | Python 3.8+ | Required for hooks (`python3` command) |
 | Claude Code | With plugin support enabled |
-| smoking-mirror MCP | Required for vault intelligence |
+| Flywheel MCP | Required for vault intelligence |
 
 ## Installation
 

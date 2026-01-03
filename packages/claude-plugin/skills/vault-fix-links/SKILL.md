@@ -18,7 +18,7 @@ trigger_keywords:
   - "link problems"
   - "fix references"
   - "bad links"
-allowed-tools: mcp__smoking-mirror__find_broken_links, Task, TodoWrite
+allowed-tools: mcp__flywheel__find_broken_links, Task, TodoWrite
 ---
 
 # Fix Broken Links
@@ -36,7 +36,7 @@ Invoke when you want to:
 ## Process
 
 ### 1. Find Broken Links
-Call `mcp__smoking-mirror__find_broken_links` to retrieve all broken wikilinks.
+Call `mcp__flywheel__find_broken_links` to retrieve all broken wikilinks.
 
 ### 2. Analyze Break Patterns
 Categorize broken links by type:

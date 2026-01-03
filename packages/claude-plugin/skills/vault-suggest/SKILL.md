@@ -1,6 +1,6 @@
 ---
 name: suggest-links
-description: Suggest wikilinks for current note using smoking-mirror. Triggers on "suggest links", "link suggestions", "what should I link", "wikilink suggestions".
+description: Suggest wikilinks for current note using Flywheel MCP. Triggers on "suggest links", "link suggestions", "what should I link", "wikilink suggestions".
 auto_trigger: true
 trigger_keywords:
   - "suggest links"
@@ -19,12 +19,12 @@ trigger_keywords:
   - "link opportunities"
   - "where to link"
   - "improve linking"
-allowed-tools: mcp__smoking-mirror__suggest_wikilinks, mcp__smoking-mirror__get_unlinked_mentions, Read, Edit, AskUserQuestion
+allowed-tools: mcp__flywheel__suggest_wikilinks, mcp__flywheel__get_unlinked_mentions, Read, Edit, AskUserQuestion
 ---
 
 # Suggest Wikilinks Skill
 
-Suggest wikilinks for the current note using smoking-mirror's intelligent analysis.
+Suggest wikilinks for the current note using Flywheel MCP's intelligent analysis.
 
 ## Purpose
 
@@ -55,7 +55,7 @@ Extract current note path from context or ask user:
 ### 2. Call MCP Tool
 
 ```
-Call: mcp__smoking-mirror__suggest_wikilinks
+Call: mcp__flywheel__suggest_wikilinks
 Parameters: {
   text: note_content
 }
@@ -65,7 +65,7 @@ Parameters: {
 
 For each high-confidence suggestion:
 ```
-Call: mcp__smoking-mirror__get_unlinked_mentions
+Call: mcp__flywheel__get_unlinked_mentions
 Parameters: {entity: "Databricks"}
 ```
 
@@ -133,7 +133,7 @@ Options:
 
 ### Confidence Scoring
 
-Smoking-mirror provides confidence scores:
+Flywheel MCP provides confidence scores:
 
 ```
 90-100%: Very high confidence

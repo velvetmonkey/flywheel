@@ -17,7 +17,7 @@ trigger_keywords:
   - "cross-linked"
   - "linked together"
   - "both link"
-allowed-tools: mcp__smoking-mirror__get_backlinks, mcp__smoking-mirror__get_forward_links
+allowed-tools: mcp__flywheel__get_backlinks, mcp__flywheel__get_forward_links
 ---
 
 # Bidirectional Links

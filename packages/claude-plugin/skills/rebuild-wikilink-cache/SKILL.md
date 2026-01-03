@@ -1,6 +1,6 @@
 ---
 name: rebuild-cache
-description: Rebuild the wikilink entities cache. Triggers on "rebuild cache", "rebuild wikilink cache", "update cache", "refresh wikilinks". Optionally uses smoking-mirror MCP for enhanced entity detection.
+description: Rebuild the wikilink entities cache. Triggers on "rebuild cache", "rebuild wikilink cache", "update cache", "refresh wikilinks". Optionally uses Flywheel MCP for enhanced entity detection.
 auto_trigger: true
 trigger_keywords:
   - "rebuild cache"
@@ -11,7 +11,7 @@ trigger_keywords:
   - "refresh wikilinks"
   - "update wikilink cache"
   - "rebuild entities"
-allowed-tools: mcp__smoking-mirror__get_all_entities, Write, Glob, Read
+allowed-tools: mcp__flywheel__get_all_entities, Write, Glob, Read
 ---
 
 # Rebuild Wikilink Cache
@@ -29,10 +29,10 @@ Invoke when:
 
 ## Process Overview
 
-### With smoking-mirror MCP (Recommended)
+### With Flywheel MCP (Recommended)
 
 ```
-🪞 smoking-mirror get_all_entities
+🪞 Flywheel MCP get_all_entities
   ↓
 Returns ALL entities + aliases
   ↓
@@ -43,7 +43,7 @@ Write to .claude/wikilink-entities.json
 Report results
 ```
 
-### Without smoking-mirror (Fallback)
+### Without Flywheel MCP (Fallback)
 
 ```
 Glob for all *.md files
@@ -63,8 +63,8 @@ Report results
 
 ### Step 1: Get All Entities
 
-**With smoking-mirror:**
-Call `mcp__smoking-mirror__get_all_entities`:
+**With Flywheel MCP:**
+Call `mcp__flywheel__get_all_entities`:
 
 ```json
 {
@@ -84,7 +84,7 @@ Call `mcp__smoking-mirror__get_all_entities`:
 }
 ```
 
-**Without smoking-mirror:**
+**Without Flywheel MCP:**
 Use Glob to find all .md files, extract page names.
 
 ### Step 2: Categorize Entities
@@ -161,9 +161,9 @@ Write to `.claude/wikilink-entities.json`:
 ## Benefits
 
 1. **Fast Lookup**: Cache enables instant entity matching
-2. **Includes Aliases**: Frontmatter aliases included (with smoking-mirror)
+2. **Includes Aliases**: Frontmatter aliases included (with Flywheel MCP)
 3. **Categorized**: Organized by type for reporting
-4. **Configurable**: Works with or without smoking-mirror
+4. **Configurable**: Works with or without Flywheel MCP
 
 ## When to Rebuild
 

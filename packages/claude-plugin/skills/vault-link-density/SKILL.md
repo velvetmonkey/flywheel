@@ -17,7 +17,7 @@ trigger_keywords:
   - "linking behavior"
   - "connection stats"
   - "vault connectivity"
-allowed-tools: mcp__smoking-mirror__get_vault_stats, mcp__smoking-mirror__get_folder_structure, mcp__smoking-mirror__search_notes
+allowed-tools: mcp__flywheel__get_vault_stats, mcp__flywheel__get_folder_structure, mcp__flywheel__search_notes
 ---
 
 # Link Density Analysis

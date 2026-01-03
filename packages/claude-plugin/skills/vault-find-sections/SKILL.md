@@ -17,7 +17,7 @@ trigger_keywords:
   - "section across vault"
   - "heading in notes"
   - "locate sections"
-allowed-tools: mcp__smoking-mirror__find_sections
+allowed-tools: mcp__flywheel__find_sections
 ---
 
 # Section Finder
@@ -52,7 +52,7 @@ Identify the heading pattern:
 ### 2. Call MCP Tool
 
 ```
-mcp__smoking-mirror__find_sections(
+mcp__flywheel__find_sections(
   pattern: "References",
   folder: null  // or "projects/" to limit scope
 )

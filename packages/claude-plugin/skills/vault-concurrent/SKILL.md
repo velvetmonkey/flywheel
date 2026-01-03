@@ -17,7 +17,7 @@ trigger_keywords:
   - "what else then"
   - "simultaneous"
   - "co-edited"
-allowed-tools: mcp__smoking-mirror__get_contemporaneous_notes
+allowed-tools: mcp__flywheel__get_contemporaneous_notes
 ---
 
 # Concurrent Notes Finder
@@ -51,7 +51,7 @@ Identify the reference note and time window:
 ### 2. Call MCP Tool
 
 ```
-mcp__smoking-mirror__get_contemporaneous_notes(
+mcp__flywheel__get_contemporaneous_notes(
   path: "projects/Project Alpha.md",
   hours: 24
 )

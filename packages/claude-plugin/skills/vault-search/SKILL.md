@@ -21,12 +21,12 @@ trigger_keywords:
   - "query"
   - "lookup"
   - "find by"
-allowed-tools: mcp__smoking-mirror__search_notes
+allowed-tools: mcp__flywheel__search_notes
 ---
 
 # Search Skill
 
-Advanced vault search with powerful filtering using smoking-mirror MCP.
+Advanced vault search with powerful filtering using Flywheel MCP.
 
 ## Purpose
 
@@ -70,7 +70,7 @@ Extract search parameters from natural language:
 ### 2. Call MCP Tool
 
 ```
-Call: mcp__smoking-mirror__search_notes
+Call: mcp__flywheel__search_notes
 Parameters: {
   folder: "work/",
   has_tag: "project",

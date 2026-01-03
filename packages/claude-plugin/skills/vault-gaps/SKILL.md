@@ -18,7 +18,7 @@ trigger_keywords:
   - "should document"
   - "what's missing"
   - "topic holes"
-allowed-tools: mcp__smoking-mirror__find_broken_links, mcp__smoking-mirror__get_unlinked_mentions, mcp__smoking-mirror__search_notes
+allowed-tools: mcp__flywheel__find_broken_links, mcp__flywheel__get_unlinked_mentions, mcp__flywheel__search_notes
 ---
 
 # Knowledge Gaps

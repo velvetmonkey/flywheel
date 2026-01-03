@@ -17,7 +17,7 @@ trigger_keywords:
   - "cul-de-sacs"
   - "no outgoing links"
   - "end points"
-allowed-tools: mcp__smoking-mirror__get_backlinks, mcp__smoking-mirror__get_forward_links
+allowed-tools: mcp__flywheel__get_backlinks, mcp__flywheel__get_forward_links
 ---
 
 # Dead End Notes

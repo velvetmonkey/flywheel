@@ -18,7 +18,7 @@ trigger_keywords:
   - "akin to"
   - "matching notes"
   - "same topic"
-allowed-tools: mcp__smoking-mirror__search_notes, mcp__smoking-mirror__get_note_metadata
+allowed-tools: mcp__flywheel__search_notes, mcp__flywheel__get_note_metadata
 ---
 
 # Related Notes

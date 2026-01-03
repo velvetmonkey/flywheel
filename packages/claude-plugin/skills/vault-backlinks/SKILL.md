@@ -18,7 +18,7 @@ trigger_keywords:
   - "incoming links"
   - "who cites"
   - "referencing"
-allowed-tools: mcp__smoking-mirror__get_backlinks, mcp__smoking-mirror__get_forward_links, Read
+allowed-tools: mcp__flywheel__get_backlinks, mcp__flywheel__get_forward_links, Read
 ---
 
 # Backlinks Navigator
@@ -42,13 +42,13 @@ Options for specifying the note:
 - **File path**: "backlinks for work/projects/MyProject.md"
 
 ### 2. Get Backlinks
-Call `mcp__smoking-mirror__get_backlinks(note_path)` to retrieve:
+Call `mcp__flywheel__get_backlinks(note_path)` to retrieve:
 - All notes that link TO this note
 - Line numbers where links appear
 - Context around each link
 
 ### 3. Get Forward Links
-Call `mcp__smoking-mirror__get_forward_links(note_path)` to retrieve:
+Call `mcp__flywheel__get_forward_links(note_path)` to retrieve:
 - All notes this note links TO
 - Whether targets exist
 - Resolved file paths

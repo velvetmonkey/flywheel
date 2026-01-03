@@ -2,7 +2,7 @@
 
 **Comprehensive Vault Analysis & Maintenance Skills**
 
-These skills require the [smoking-mirror MCP server](https://github.com/coddingtonbear/obsidian-mcp) for Obsidian vault intelligence.
+These skills require the [Flywheel MCP server](https://github.com/coddingtonbear/obsidian-mcp) for Obsidian vault intelligence.
 
 ---
 
@@ -52,14 +52,14 @@ This suite provides:
 
 ## Requirements
 
-These skills require the **smoking-mirror MCP** server to be configured:
+These skills require the **Flywheel MCP** server to be configured:
 
 ```json
 {
   "mcpServers": {
-    "smoking-mirror": {
+    "Flywheel MCP": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@anthropic/smoking-mirror-mcp"],
+      "args": ["/c", "npx", "-y", "@anthropic/Flywheel MCP-mcp"],
       "env": {
         "OBSIDIAN_VAULT_PATH": "C:/path/to/your/vault"
       }

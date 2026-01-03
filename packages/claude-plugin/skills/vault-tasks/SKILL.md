@@ -19,7 +19,7 @@ trigger_keywords:
   - "checklist"
   - "things to do"
   - "work items"
-allowed-tools: mcp__smoking-mirror__get_all_tasks
+allowed-tools: mcp__flywheel__get_all_tasks
 ---
 
 # Vault Task List
@@ -56,7 +56,7 @@ Identify filter criteria:
 ### 2. Call MCP Tool
 
 ```
-mcp__smoking-mirror__get_all_tasks(
+mcp__flywheel__get_all_tasks(
   status: "open",
   folder: "projects/",
   tag: "#task",

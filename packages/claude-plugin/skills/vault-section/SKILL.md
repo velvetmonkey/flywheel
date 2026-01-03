@@ -17,7 +17,7 @@ trigger_keywords:
   - "pull section"
   - "section text"
   - "under the heading"
-allowed-tools: mcp__smoking-mirror__get_section_content
+allowed-tools: mcp__flywheel__get_section_content
 ---
 
 # Section Content Extractor
@@ -52,7 +52,7 @@ Identify the note and heading:
 ### 2. Call MCP Tool
 
 ```
-mcp__smoking-mirror__get_section_content(
+mcp__flywheel__get_section_content(
   path: "projects/Project Alpha.md",
   heading: "References",
   include_subheadings: true

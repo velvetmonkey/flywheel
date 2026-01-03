@@ -18,7 +18,7 @@ trigger_keywords:
   - "related score"
   - "connection quality"
   - "how tight is link"
-allowed-tools: mcp__smoking-mirror__get_connection_strength
+allowed-tools: mcp__flywheel__get_connection_strength
 ---
 
 # Connection Strength Calculator
@@ -52,7 +52,7 @@ Identify the two notes:
 ### 2. Call MCP Tool
 
 ```
-mcp__smoking-mirror__get_connection_strength(
+mcp__flywheel__get_connection_strength(
   note_a: "path/to/first/note.md",
   note_b: "path/to/second/note.md"
 )
