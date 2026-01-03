@@ -141,9 +141,20 @@ npm run test
 - MCP Server docs: `packages/mcp-server/README.md`
 - Plugin docs: `packages/claude-plugin/README.md`
 
-**Skill naming**: Keep Claude Code conventions (kebab-case like `auto-log`, `vault-health`) - NOT PowerShell Verb-Noun.
+**Skill naming**: Use verb-noun format (e.g., `add-log`, `find-stale-notes`, `check-health`).
 
 **Trigger support**: Both slash commands (`/vault-health`) AND keywords ("check vault health") for accessibility.
+
+## Plugin Release Workflow
+
+When updating the Claude plugin:
+1. Make changes to skills, agents, hooks, or docs
+2. **Bump version** in ALL THREE files:
+   - `.claude-plugin/marketplace.json` (repo root)
+   - `packages/claude-plugin/.claude-plugin/marketplace.json`
+   - `packages/claude-plugin/.claude-plugin/plugin.json`
+3. **Only push when user explicitly asks** - don't auto-push
+4. Users run `/plugin update flywheel@flywheel` to get latest version
 
 ## Vision
 
