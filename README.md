@@ -52,11 +52,12 @@ Provides vault navigation and intelligence:
 
 ### Claude Plugin (Workflow Automation)
 
-Provides automated workflows:
-- Core: `auto-log`, `task-add`, `rollup`
-- Vault health: `vault-health`, `vault-orphans`, `vault-hubs`, `vault-fix-links`
-- Graph queries: `vault-backlinks`, `vault-clusters`, `vault-gaps`
-- Schema tools: `frontmatter-validate`, `normalize-note`, `promote-to-frontmatter`
+Provides 30+ automated workflows via slash commands:
+- **Core**: `/auto-log`, `/task-add`, `/rollup`
+- **Health**: `/vault-health`, `/vault-orphans`, `/vault-hubs`, `/vault-dead-ends`
+- **Graph**: `/vault-backlinks`, `/vault-clusters`, `/vault-path`, `/vault-strength`
+- **Schema**: `/vault-schema`, `/vault-schema-check`, `/vault-field-values`
+- **Links**: `/vault-fix-links`, `/vault-suggest`, `/vault-unlinked-mentions`
 
 ## The Bidirectional Bridge
 
@@ -177,18 +178,32 @@ Not tied to any specific UI - works everywhere.
 
 ## Development Status
 
-**v1.0** (In Progress):
-- ✅ MCP server with graph intelligence
-- ✅ Periodic note detection (zero-config)
-- 🔄 Artemis Rocket demo vault
-- ⏳ Bidirectional bridge (frontmatter ↔ wikilinks)
+**Current: v1.5.0**
 
-**v1.1** (Planned):
-- Bidirectional translation tools
-- Rich frontmatter queries
-- Schema validation and suggestions
+### ✅ Complete
+- MCP server with 40+ graph intelligence tools
+- Claude plugin with 30+ vault skills
+- Zero-config periodic note detection
+- Artemis Rocket demo vault (aerospace startup template)
+- Marketplace-based plugin installation
+- Cross-platform support (macOS, Linux, Windows, WSL)
 
-See [Roadmap](./docs/ROADMAP.md) for details.
+### Skills Available
+- **Vault Health**: `/vault-health`, `/vault-orphans`, `/vault-hubs`, `/vault-dead-ends`
+- **Graph Queries**: `/vault-backlinks`, `/vault-clusters`, `/vault-path`, `/vault-strength`
+- **Schema Tools**: `/vault-schema`, `/vault-schema-check`, `/vault-field-values`
+- **Temporal**: `/vault-stale`, `/vault-activity`, `/vault-concurrent`
+- **Wikilinks**: `/vault-fix-links`, `/vault-suggest`, `/vault-unlinked-mentions`
+- **Tasks**: `/vault-tasks`, `/vault-due`, `/task-add`
+- **Automation**: `/auto-log`, `/rollup` (daily/weekly/monthly/quarterly/yearly)
+
+### Agents
+- Rollup agents (daily → weekly → monthly → quarterly → yearly)
+- Achievement extraction agent
+- Schema enforcer agent
+- Relationship explorer agent
+
+See [Roadmap](./docs/ROADMAP.md) for future plans.
 
 ## Contributing
 
