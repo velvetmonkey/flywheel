@@ -199,7 +199,7 @@ Autonomous agents for note aggregation:
 
 This plugin requires the [@bencassie/flywheel-mcp](https://github.com/bencassie/flywheel) MCP server for vault intelligence and wikilink management.
 
-Add to your Claude settings:
+**macOS/Linux/WSL:**
 ```json
 {
   "mcpServers": {
@@ -213,6 +213,23 @@ Add to your Claude settings:
   }
 }
 ```
+
+**Windows (requires `cmd /c` wrapper):**
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
+      "env": {
+        "PROJECT_PATH": "C:/Users/YOUR_USER/path/to/vault"
+      }
+    }
+  }
+}
+```
+
+See [INSTALLATION.md](INSTALLATION.md) for detailed platform-specific instructions.
 
 ## License
 
