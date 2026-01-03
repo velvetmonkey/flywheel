@@ -132,7 +132,11 @@ def main():
             sys.exit(0)
 
     # GATE 1: Read before write (for .md files only)
-    if is_markdown:
+    # For Write: only require read if file ALREADY EXISTS (overwriting)
+    # For Edit: always require read (Gate 2 already ensures file exists)
+    file_exists = Path(file_path).exists()
+
+    if is_markdown and (tool_name == 'Edit' or (tool_name == 'Write' and file_exists)):
         session_id = hook_input.get('session_id', '')
         transcript_path = hook_input.get('transcript_path', '')
 
@@ -145,11 +149,12 @@ def main():
             found_in_transcript = has_prior_read(events, file_path)
 
         if not found_in_transcript and not found_in_cache:
+            action = "overwriting" if tool_name == 'Write' else "editing"
             output = {
                 "hookSpecificOutput": {
                     "hookEventName": "PreToolUse",
                     "permissionDecision": "deny",
-                    "permissionDecisionReason": f"GATE 1 BLOCKED: Must Read '{Path(file_path).name}' before editing. This prevents overwriting content you haven't reviewed."
+                    "permissionDecisionReason": f"GATE 1 BLOCKED: Must Read '{Path(file_path).name}' before {action}. This prevents overwriting content you haven't reviewed."
                 }
             }
             print(json.dumps(output))
