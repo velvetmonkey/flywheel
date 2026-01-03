@@ -195,32 +195,53 @@ Any Editor (Obsidian, VSCode, Cursor, CLI)
 
 Not tied to any specific UI - works everywhere.
 
+## Six Gates Safety Framework
+
+All Flywheel extensions observe the **Six Gates** - mandatory safety checks:
+
+| Gate | Purpose | Enforcement |
+|------|---------|-------------|
+| **1. Read Before Write** | Read state before mutation | BLOCKS via hook |
+| **2. File Exists for Edit** | Validate targets exist | BLOCKS via hook |
+| **3. Agent Chain Validation** | Verify each multi-step step | BLOCKS via hook |
+| **4. Mutation Confirmation** | User confirms writes | BLOCKS via hook |
+| **5. MCP Health Check** | Verify MCP on session start | Warns |
+| **6. Post-Write Validation** | Verify writes succeeded | Warns |
+
+See [SIX_GATES.md](./packages/claude-plugin/skills/_patterns/SIX_GATES.md) for full specification.
+
 ## Development Status
 
-**Current: v1.5.0** | **Next: v1.6.0 Bidirectional Bridge**
+**Current: v1.6.2** | **Next: v1.7.0 Advanced Schema Intelligence**
 
-### ✅ v1.0-1.5 Complete
+### What's New in v1.6.x
+
+**v1.6.2 - Six Gates REAL Enforcement** (Latest)
+- Gates 1, 2, 4 now BLOCK unsafe operations via `pre-mutation-gate.py`
+- Gate 3 (Agent Chain Validation) enforced at project level
+- All 8 agents now Gate 3 compliant
+- Shared hooks architecture for enforcement
+
+**v1.6.1 - Six Gates Safety Framework**
+- Mandatory safety framework for all Flywheel extensions
+- `session-gate.py` - MCP health verification on session start
+- `verify-mutation.py` - Post-write YAML/wikilink validation
+- Two-level hook architecture (plugin + project level)
+
+**v1.6.0 - Bidirectional Bridge**
+- `detect_prose_patterns` - Find "Key: [[Value]]" patterns in prose
+- `suggest_frontmatter_from_prose` - Recommend YAML from detected patterns
+- `suggest_wikilinks_in_frontmatter` - Find strings that could be wikilinks
+- `validate_cross_layer` - Check frontmatter ↔ wikilink consistency
+- `/normalize-note`, `/promote-to-frontmatter`, `/wikilinkify-frontmatter` skills
+
+### ✅ v1.0-1.5 Foundation (Complete)
 - MCP server with 40+ graph intelligence tools
 - Claude plugin with 30+ vault skills
 - Zero-config periodic note detection
 - 4 demo vaults: Artemis Rocket, Carter Strategy, Nexus Lab, Startup Ops
 - Marketplace-based plugin installation
 - Cross-platform support (macOS, Linux, Windows, WSL)
-
-### 🚧 v1.6.0 Bidirectional Bridge (In Progress)
-
-Bridge Graph-Native (wikilinks) and Schema-Native (frontmatter) paradigms:
-
-**New MCP Tools:**
-- `detect_prose_patterns` - Find "Key: [[Value]]" patterns in prose
-- `suggest_frontmatter_from_prose` - Recommend YAML from detected patterns
-- `suggest_wikilinks_in_frontmatter` - Find strings that could be wikilinks
-- `validate_cross_layer` - Check frontmatter ↔ wikilink consistency
-
-**New Skills:**
-- `/normalize-note` - Harmonize frontmatter + wikilinks
-- `/promote-to-frontmatter` - Extract prose patterns to YAML
-- `/wikilinkify-frontmatter` - Convert strings to wikilinks
 
 ### Skills Available
 - **Vault Health**: `/vault-health`, `/vault-orphans`, `/vault-hubs`, `/vault-dead-ends`
@@ -237,17 +258,24 @@ Bridge Graph-Native (wikilinks) and Schema-Native (frontmatter) paradigms:
 - Schema enforcer agent
 - Relationship explorer agent
 
-### Future Roadmap
+### Roadmap
 
-**v1.7 Advanced Schema Intelligence:**
+**v1.7.0 - Advanced Schema Intelligence** (Next)
 - `validate_frontmatter(path, schema)` - Validate against schema
 - `find_incomplete_notes(type, required_fields)` - Find notes missing fields
 - `compute_frontmatter(path, fields)` - Auto-compute derived fields
 - `rename_field(old, new, scope)` - Bulk rename frontmatter fields
+- Schema inheritance and composition
 
-**v2.0 Workflows & Automation:**
-- Workflow templates for common business processes
-- Additional demo vaults (Consulting Firm, Startup Ops, Research Lab)
+**v1.8.0 - Workflow Templates**
+- Pre-built workflow templates for common business processes
+- Workflow editor and customization
+- Trigger-based automation
+
+**v2.0 - Enterprise Features**
+- Multi-vault support
+- Team collaboration primitives
+- Audit logging and compliance
 
 ## Contributing
 
