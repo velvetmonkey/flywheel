@@ -10,6 +10,7 @@ import { registerQueryTools } from './tools/query.js';
 import { registerSystemTools } from './tools/system.js';
 import { registerPrimitiveTools } from './tools/primitives.js';
 import { registerPeriodicTools } from './tools/periodic.js';
+import { registerBidirectionalTools } from './tools/bidirectional.js';
 
 const VAULT_PATH = process.env.PROJECT_PATH;
 
@@ -26,7 +27,7 @@ let vaultIndex: VaultIndex;
 
 const server = new McpServer({
   name: 'flywheel',
-  version: '1.2.0',
+  version: '1.6.0',
 });
 
 // Register all tools
@@ -70,6 +71,12 @@ registerPrimitiveTools(
 registerPeriodicTools(
   server,
   () => vaultIndex
+);
+
+registerBidirectionalTools(
+  server,
+  () => vaultIndex,
+  () => vaultPath
 );
 
 async function main() {

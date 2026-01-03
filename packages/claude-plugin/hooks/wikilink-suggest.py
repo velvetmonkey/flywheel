@@ -351,6 +351,38 @@ def find_linkable_candidates(content: str, existing_wikilinks: set) -> dict:
     return candidates
 
 
+def get_vault_path_from_env() -> Path | None:
+    """Get the vault path from PROJECT_PATH environment variable."""
+    import os
+    project_path = os.environ.get('PROJECT_PATH', '')
+    if project_path:
+        return Path(project_path).resolve()
+    return None
+
+
+def is_within_vault(file_path: Path, vault_path: Path) -> bool:
+    """Check if a file is within the vault directory.
+
+    This prevents the hook from modifying files outside the vault,
+    avoiding pollution of other repositories.
+    """
+    try:
+        file_resolved = file_path.resolve()
+        vault_resolved = vault_path.resolve()
+        # Use is_relative_to for Python 3.9+ or fallback for older versions
+        try:
+            return file_resolved.is_relative_to(vault_resolved)
+        except AttributeError:
+            # Python < 3.9 fallback
+            try:
+                file_resolved.relative_to(vault_resolved)
+                return True
+            except ValueError:
+                return False
+    except Exception:
+        return False
+
+
 def main():
     try:
         # Read hook input from stdin
@@ -364,6 +396,15 @@ def main():
         # Get the file path from tool input
         tool_input = hook_input.get('tool_input', {})
         file_path = tool_input.get('file_path', '')
+
+        # CRITICAL: Check vault boundary - only operate on files within PROJECT_PATH
+        # This prevents pollution of files outside the vault (e.g., other repos)
+        env_vault_path = get_vault_path_from_env()
+        if env_vault_path:
+            file_p = Path(file_path)
+            if not is_within_vault(file_p, env_vault_path):
+                # File is outside vault - skip silently
+                sys.exit(0)
 
         # Only check markdown files
         if not file_path.endswith('.md'):
