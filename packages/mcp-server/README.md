@@ -10,9 +10,12 @@ The intelligence layer of [Flywheel](https://github.com/bencassie/flywheel) — 
 
 ### Via `.mcp.json`
 
-Add to your project's `.mcp.json` (or `~/.claude/.mcp.json` for global):
+Add to your project's `.mcp.json` (or `~/.claude/.mcp.json` for global).
 
-**macOS / Linux / WSL:**
+**Choose config based on where Claude Code runs, NOT where your vault is stored.**
+
+<details>
+<summary><strong>Linux / macOS</strong></summary>
 
 ```json
 {
@@ -21,14 +24,38 @@ Add to your project's `.mcp.json` (or `~/.claude/.mcp.json` for global):
       "command": "npx",
       "args": ["-y", "@bencassie/flywheel-mcp"],
       "env": {
-        "PROJECT_PATH": "/path/to/vault"
+        "PROJECT_PATH": "/path/to/your/vault"
       }
     }
   }
 }
 ```
 
-**Windows:**
+</details>
+
+<details>
+<summary><strong>WSL (Windows Subsystem for Linux)</strong></summary>
+
+> ⚠️ **Common mistake**: Your vault may be on `C:\Users\...` (Windows filesystem), but if Claude Code runs in WSL, this is Linux—use `npx` directly, **not** `cmd /c`.
+
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@bencassie/flywheel-mcp"],
+      "env": {
+        "PROJECT_PATH": "/mnt/c/Users/yourname/path/to/vault"
+      }
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary><strong>Windows (native, not WSL)</strong></summary>
 
 ```json
 {
@@ -37,20 +64,32 @@ Add to your project's `.mcp.json` (or `~/.claude/.mcp.json` for global):
       "command": "cmd",
       "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
       "env": {
-        "PROJECT_PATH": "C:/path/to/vault"
+        "PROJECT_PATH": "C:/Users/yourname/path/to/vault"
       }
     }
   }
 }
 ```
 
+</details>
+
+#### Detecting Your Platform
+
+Check the environment info shown at the start of your Claude Code session:
+
+| `Platform:` value | Use config |
+|-------------------|------------|
+| `linux` | Linux (or WSL if your path starts with `/mnt/`) |
+| `win32` | Windows |
+| `darwin` | macOS |
+
 ### Via CLI
 
 ```bash
-# macOS / Linux
+# macOS / Linux / WSL
 claude mcp add flywheel --env PROJECT_PATH=/path/to/vault -- npx -y @bencassie/flywheel-mcp
 
-# Windows
+# Windows (native)
 claude mcp add flywheel --env PROJECT_PATH=C:/path/to/vault -- cmd /c npx -y @bencassie/flywheel-mcp
 ```
 

@@ -107,6 +107,18 @@ See full specification: `packages/claude-plugin/skills/_patterns/SIX_GATES.md`
 - Tested on both platforms
 - If making changes, test on both
 
+### MCP Configuration Generation
+
+When generating `.mcp.json` for users, **check the `Platform:` field in env info** (AUTHORITATIVE):
+
+| `Platform:` value | Command | Path style | Example |
+|-------------------|---------|------------|---------|
+| `linux` | `npx` | `/mnt/c/...` (WSL) or `/home/...` | WSL accessing Windows files |
+| `win32` | `cmd /c npx` | `C:/...` | Native Windows |
+| `darwin` | `npx` | `/Users/...` | macOS |
+
+**NEVER infer platform from filesystem path.** `/mnt/c/...` means WSL accessing Windows files—the runtime is still Linux, so use `npx` directly (not `cmd /c`).
+
 ## Repository Structure
 
 ```
