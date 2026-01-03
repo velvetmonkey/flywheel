@@ -14,8 +14,9 @@
    - Cursor: Open folder
 
 2. **Install Flywheel** (if you haven't):
-   ```bash
-   npm install -g @flywheel-ai/flywheel
+   ```
+   /plugin marketplace add bencassie/flywheel
+   /plugin install flywheel@flywheel
    ```
 
 3. **Start exploring**:
@@ -139,4 +140,4 @@ This demo showcases **Flywheel** - The Agentic Markdown Operating System.
 
 Starting a new business or project? Install Flywheel - get AI-powered business infrastructure from day one.
 
-Learn more: https://github.com/flywheel-ai/flywheel
+Learn more: https://github.com/bencassie/flywheel

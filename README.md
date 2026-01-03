@@ -97,15 +97,49 @@ attendees:
 
 ## Installation
 
-*Coming soon - currently in development*
+### 1. Configure Flywheel MCP Server
 
-```bash
-# Install Flywheel
-npm install -g @flywheel-ai/flywheel
+Add to your `.mcp.json` (project) or `~/.claude.json` (user):
 
-# Or use with Claude Code
-claude plugin install flywheel-ai/flywheel
+**macOS/Linux/WSL:**
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@bencassie/flywheel-mcp"],
+      "env": { "PROJECT_PATH": "/path/to/your/vault" }
+    }
+  }
+}
 ```
+
+**Windows (requires `cmd /c` wrapper):**
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
+      "env": { "PROJECT_PATH": "C:/path/to/your/vault" }
+    }
+  }
+}
+```
+
+### 2. Install the Claude Code Plugin
+
+In Claude Code, run:
+```
+/plugin marketplace add bencassie/flywheel
+/plugin install flywheel@flywheel
+```
+
+### 3. Restart Claude Code
+
+That's it! Skills like `/vault-health` and `/auto-log` are now available.
+
+See [packages/claude-plugin/INSTALLATION.md](packages/claude-plugin/INSTALLATION.md) for detailed platform-specific instructions.
 
 ## Demo Vaults
 

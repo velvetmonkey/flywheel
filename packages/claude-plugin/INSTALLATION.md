@@ -29,13 +29,88 @@ brew install python
 
 ---
 
-## Step 1: Clone or Download the Plugin
+## Quick Install (Recommended)
+
+### Step 1: Configure Flywheel MCP Server
+
+Add to `.mcp.json` in your vault (or `~/.claude.json` for user-level):
+
+**macOS/Linux/WSL:**
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@bencassie/flywheel-mcp"],
+      "env": {
+        "PROJECT_PATH": "/path/to/your/vault"
+      }
+    }
+  }
+}
+```
+
+**Windows (requires `cmd /c` wrapper):**
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
+      "env": {
+        "PROJECT_PATH": "C:/path/to/your/vault"
+      }
+    }
+  }
+}
+```
+
+### Step 2: Install the Plugin
+
+In Claude Code, run these commands:
+
+```
+/plugin marketplace add bencassie/flywheel
+/plugin install flywheel@flywheel
+```
+
+### Step 3: Create Vault Configuration (Optional)
+
+Create `.flywheel.json` in your vault root for customization:
+
+```json
+{
+  "vault_name": "My Vault",
+  "paths": {
+    "daily_notes": "daily-notes",
+    "weekly_notes": "weekly-notes",
+    "templates": "templates"
+  },
+  "sections": {
+    "log": "## Log",
+    "food": "# Food"
+  }
+}
+```
+
+### Step 4: Restart Claude Code
+
+Close and reopen Claude Code to load the plugin.
+
+**Verify plugin loaded:**
+- On session start, you should see the Flywheel briefing
+- Skills like `/vault-health`, `/auto-log` should be available
+
+---
+
+## Developer Setup (From Source)
+
+For contributors or users who want to run from a local clone.
+
+### Step 1: Clone the Repository
 
 ```bash
-# Clone the repository
 git clone https://github.com/bencassie/flywheel.git
-
-# Or download and extract the ZIP from GitHub
 ```
 
 Note your plugin path:
@@ -43,16 +118,11 @@ Note your plugin path:
 - **Windows**: `C:/Users/YOUR_USER/src/flywheel/packages/claude-plugin`
 - **macOS/Linux**: `~/src/flywheel/packages/claude-plugin`
 
----
-
-## Step 2: Configure Claude Code Settings
+### Step 2: Configure Claude Code Settings
 
 Add the plugin to your Claude Code settings file.
 
-### WSL Configuration
-
-Edit `~/.claude.json` or your project's `.claude/settings.local.json`:
-
+**WSL** - Edit `~/.claude.json`:
 ```json
 {
   "extraKnownMarketplaces": {
@@ -69,10 +139,7 @@ Edit `~/.claude.json` or your project's `.claude/settings.local.json`:
 }
 ```
 
-### Windows Configuration
-
-Edit `C:\Users\YOUR_USER\.claude.json` or your project's `.claude\settings.json`:
-
+**Windows** - Edit `C:\Users\YOUR_USER\.claude.json`:
 ```json
 {
   "extraKnownMarketplaces": {
@@ -89,10 +156,7 @@ Edit `C:\Users\YOUR_USER\.claude.json` or your project's `.claude\settings.json`
 }
 ```
 
-### macOS/Linux Configuration
-
-Edit `~/.claude.json` or your project's `.claude/settings.json`:
-
+**macOS/Linux** - Edit `~/.claude.json`:
 ```json
 {
   "extraKnownMarketplaces": {
@@ -109,116 +173,17 @@ Edit `~/.claude.json` or your project's `.claude/settings.json`:
 }
 ```
 
----
+### Step 3: Configure MCP Server
 
-## Step 3: Create Vault Configuration
+Follow the MCP configuration in Quick Install Step 1 above.
 
-Create `.flywheel.json` in your Obsidian vault root:
-
-```json
-{
-  "$schema": "./plugins/flywheel/config/config-schema.json",
-  "vault_name": "My Vault",
-  "paths": {
-    "daily_notes": "daily-notes",
-    "weekly_notes": "weekly-notes",
-    "monthly_notes": "monthly-notes",
-    "quarterly_notes": "quarterly-notes",
-    "yearly_notes": "yearly-notes",
-    "templates": "templates",
-    "achievements": "personal/goals/Achievements.md"
-  },
-  "sections": {
-    "log": "## Log",
-    "food": "# Food",
-    "habits": "# Habits"
-  }
-}
-```
-
-Adjust paths to match your vault structure.
-
----
-
-## Step 4: Install Rules
-
-Claude Code plugins cannot bundle rules - they must be copied to your vault's `.claude/rules/` directory.
-
-```bash
-# Create rules directory
-mkdir -p /path/to/vault/.claude/rules
-
-# Copy rule documentation (see rules.md for full content)
-```
-
-**Required rules** (see [rules.md](rules.md) for complete files):
-
-| Rule | Purpose |
-|------|---------|
-| `obsidian-syntax.md` | Prevents angle brackets, wrapped wikilinks |
-| `daily-notes.md` | Enforces daily note structure |
-| `folder-organization.md` | Protects folder hierarchy |
-| `platform-requirements.md` | WSL/Windows setup docs |
-
----
-
-## Step 5: Restart Claude Code
-
-Close and reopen Claude Code (or start a new session) to load the plugin.
-
-**Verify plugin loaded:**
-- On session start, you should see the Flywheel briefing
-- Skills like `food`, `rebuild-wikilink-cache` should be available
-
-Continue to Step 6 to install the required Flywheel MCP server.
-
----
-
-## Step 6: Install Flywheel MCP (Required)
-
-The Flywheel MCP server is **required** for vault intelligence, wikilink cache, and entity detection.
-
-### WSL Configuration
-
-Add to `.mcp.json` in your vault:
-
-```json
-{
-  "mcpServers": {
-    "flywheel": {
-      "command": "npx",
-      "args": ["-y", "@bencassie/flywheel-mcp"],
-      "env": {
-        "PROJECT_PATH": "/mnt/c/Users/YOUR_USER/obsidian/YOUR_VAULT"
-      }
-    }
-  }
-}
-```
-
-### Windows Configuration
-
-Add to `.mcp.json` in your vault (note the `cmd /c` wrapper):
-
-```json
-{
-  "mcpServers": {
-    "flywheel": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
-      "env": {
-        "PROJECT_PATH": "C:/Users/YOUR_USER/obsidian/YOUR_VAULT"
-      }
-    }
-  }
-}
-```
+### Step 4: Restart Claude Code
 
 ---
 
 ## Dual WSL/Windows Setup
 
-The correct multi-platform architecture:
+For developers working on both WSL and Windows:
 
 | File | Purpose | Path Format | Committed? |
 |------|---------|-------------|------------|
@@ -230,38 +195,18 @@ The correct multi-platform architecture:
 **On WSL:**
 - Uses `.claude/settings.json` directly with `/mnt/c/...` paths
 - WSL natively resolves these paths
-- No user-level override needed
 
 **On Windows:**
-- Loads `.claude/settings.json` (WSL paths don't work on Windows)
+- Loads `.claude/settings.json` (WSL paths don't work)
 - User-level `~/.claude.json` provides Windows path override via `projects` section
-- Override takes precedence, allowing plugins to load
 
-### Configuration Examples
+### Configuration Example
 
-**`.claude/settings.json` (committed to git):**
+**`C:\Users\YOUR_USER\.claude.json` (Windows user config):**
 ```json
 {
-  "extraKnownMarketplaces": {
-    "flywheel": {
-      "source": {
-        "source": "directory",
-        "path": "/mnt/c/Users/YOUR_USER/src/flywheel/packages/claude-plugin"
-      }
-    }
-  },
-  "enabledPlugins": {
-    "flywheel@flywheel": true
-  }
-}
-```
-
-**`C:\Users\YOUR_USER\.claude.json` (Windows user config - NOT committed):**
-```json
-{
-  "mcpServers": { /* user-level servers */ },
   "projects": {
-    "C:\Users\YOUR_USER\obsidian\YOUR_VAULT": {
+    "C:\\Users\\YOUR_USER\\obsidian\\YOUR_VAULT": {
       "extraKnownMarketplaces": {
         "flywheel": {
           "source": {
@@ -282,7 +227,21 @@ The correct multi-platform architecture:
 }
 ```
 
-**IMPORTANT:** Project keys in Windows user config must use **backslashes** (`C:\Users\...`) for proper matching.
+**IMPORTANT:** Project keys must use **backslashes** (`C:\Users\...`) for matching.
+
+---
+
+## Installing Rules (Optional)
+
+Claude Code plugins cannot bundle rules - copy to your vault's `.claude/rules/` directory.
+
+See [rules.md](rules.md) for available rules:
+
+| Rule | Purpose |
+|------|---------|
+| `obsidian-syntax.md` | Prevents angle brackets, wrapped wikilinks |
+| `daily-notes.md` | Enforces daily note structure |
+| `folder-organization.md` | Protects folder hierarchy |
 
 ---
 
@@ -301,8 +260,8 @@ The correct multi-platform architecture:
 
 ### Skills not available
 
-1. **Check `enabledPlugins`**: Must include `"flywheel@flywheel": true`
-2. **Check plugin structure**: `skills/` directory must exist with skill folders
+1. **Check marketplace**: Run `/plugin` to verify flywheel is installed
+2. **Check `enabledPlugins`**: Must include `"flywheel@flywheel": true`
 
 ### Flywheel MCP not connecting
 
@@ -314,7 +273,13 @@ The correct multi-platform architecture:
 
 ## Uninstallation
 
+**Marketplace install:**
+```
+/plugin uninstall flywheel@flywheel
+/plugin marketplace remove flywheel
+```
+
+**Directory install:**
 1. Remove `extraKnownMarketplaces` and `enabledPlugins` entries from settings
-2. Delete `.flywheel.json` from vault (optional - keeps your config)
-3. Delete the plugin directory (optional)
-4. Restart Claude Code
+2. Delete `.flywheel.json` from vault (optional)
+3. Restart Claude Code
