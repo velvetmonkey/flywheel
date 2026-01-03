@@ -25,7 +25,7 @@ const vaultPath: string = VAULT_PATH;
 let vaultIndex: VaultIndex;
 
 const server = new McpServer({
-  name: 'smoking-mirror',
+  name: 'flywheel',
   version: '1.2.0',
 });
 
@@ -89,7 +89,7 @@ async function main() {
   // Start the MCP server
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error('smoking-mirror MCP server running on stdio');
+  console.error('Flywheel MCP server running on stdio');
 }
 
 main().catch((error) => {

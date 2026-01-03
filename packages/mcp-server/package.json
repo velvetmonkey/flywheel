@@ -1,17 +1,18 @@
 {
-  "name": "smoking-mirror",
-  "version": "1.2.2",
-  "description": "Obsidian vault intelligence MCP server - graph queries, wikilink suggestions, vault health",
+  "name": "@bencassie/flywheel-mcp",
+  "version": "1.0.0",
+  "description": "Flywheel MCP server - graph intelligence for markdown vaults",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "smoking-mirror": "./dist/index.js"
+    "flywheel-mcp": "./dist/index.js"
   },
   "scripts": {
     "build": "npx esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.js --packages=external",
     "postbuild": "node -e \"require('fs').chmodSync('dist/index.js', 0o755)\"",
     "dev": "npx tsx src/index.ts",
-    "test": "bun test",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "inspect": "npx @modelcontextprotocol/inspector npx tsx src/index.ts",
     "prepublishOnly": "npm run build"
   },
@@ -26,11 +27,11 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/bun": "latest",
     "@types/node": "^20.0.0",
     "esbuild": "^0.24.0",
     "tsx": "^4.19.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "vitest": "^2.0.0"
   },
   "keywords": [
     "obsidian",
@@ -50,12 +51,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bencassie/smoking-mirror.git"
+    "url": "git+https://github.com/bencassie/flywheel.git"
   },
   "bugs": {
-    "url": "https://github.com/bencassie/smoking-mirror/issues"
+    "url": "https://github.com/bencassie/flywheel/issues"
   },
-  "homepage": "https://github.com/bencassie/smoking-mirror#readme",
+  "homepage": "https://github.com/bencassie/flywheel#readme",
   "engines": {
     "node": ">=18"
   }

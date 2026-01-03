@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to smoking-mirror will be documented in this file.
+All notable changes to Flywheel MCP server will be documented in this file.
 
 ## [1.2.2] - 2026-01-01
 

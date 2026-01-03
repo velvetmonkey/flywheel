@@ -1,5 +1,5 @@
 /**
- * Core types for smoking-mirror vault indexing
+ * Core types for Flywheel vault indexing
  */
 
 /** A wikilink extracted from a note */

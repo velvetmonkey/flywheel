@@ -4,26 +4,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-smoking-mirror is an MCP (Model Context Protocol) server that exposes Obsidian vault intelligence to Claude Code. It parses markdown files directly to provide graph queries, wikilink suggestions, and vault health checks.
+Flywheel MCP server exposes Obsidian vault intelligence to Claude Code. It parses markdown files directly to provide graph queries, wikilink suggestions, and vault health checks.
 
 **First-to-market** in: graph intelligence, wikilink services, vault health for Obsidian MCP servers.
 
-**47 tools** across 9 categories: Graph, Wikilinks, Health, Search, Deep Graph, Structure, Tasks, Frontmatter, Temporal.
+Tools across 9 categories: Graph, Wikilinks, Health, Search, Deep Graph, Structure, Tasks, Frontmatter, Temporal.
 
 ## Commands
 
 ```bash
-bun install          # Install dependencies
-bun run dev          # Run server in development (requires OBSIDIAN_VAULT_PATH env var)
-bun run build        # Build to dist/ for distribution
-bun run inspect      # Test with MCP inspector
-bun test             # Run tests
+npm install          # Install dependencies
+npm run dev          # Run server in development (requires OBSIDIAN_VAULT_PATH env var)
+npm run build        # Build to dist/ for distribution
+npm run inspect      # Test with MCP inspector
+npm test             # Run tests
 ```
 
 To run with a vault:
 
 ```bash
-OBSIDIAN_VAULT_PATH=/path/to/vault bun run dev
+OBSIDIAN_VAULT_PATH=/path/to/vault npm run dev
 ```
 
 ## Architecture
@@ -96,6 +96,6 @@ interface VaultIndex {
 }
 ```
 
-## Consumer
+## Related
 
-[obsidian-scribe](https://github.com/bencassie/obsidian-scribe) - A Claude Code plugin with 21 skills powered by smoking-mirror's graph intelligence.
+See `packages/claude-plugin/` - Claude Code plugin with skills powered by Flywheel's graph intelligence.

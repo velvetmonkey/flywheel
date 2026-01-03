@@ -1,4 +1,4 @@
-# Contributing to smoking-mirror
+# Contributing to Flywheel
 
 Thanks for your interest in contributing! Here's how to help.
 
@@ -6,23 +6,23 @@ Thanks for your interest in contributing! Here's how to help.
 
 ```bash
 # Clone the repo
-git clone https://github.com/bencassie/smoking-mirror.git
-cd smoking-mirror
+git clone https://github.com/bencassie/flywheel.git
+cd flywheel/packages/mcp-server
 
 # Install dependencies
-bun install
+npm install
 
 # Run in development mode (requires a vault)
-OBSIDIAN_VAULT_PATH=/path/to/your/vault bun run dev
+OBSIDIAN_VAULT_PATH=/path/to/your/vault npm run dev
 
 # Run tests
-bun test
+npm test
 
 # Type check
 npx tsc --noEmit
 
 # Build for distribution
-bun run build
+npm run build
 ```
 
 ## Testing with MCP Inspector
@@ -35,7 +35,7 @@ This opens an interactive UI to test tools against your vault.
 
 ## Pull Request Guidelines
 
-1. **Run tests** before submitting: `bun test`
+1. **Run tests** before submitting: `npm test`
 2. **Type check**: `npx tsc --noEmit`
 3. **Add tests** for new tools
 4. **Update README** tool tables if adding new tools

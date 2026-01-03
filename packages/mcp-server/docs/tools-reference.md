@@ -1,6 +1,8 @@
-# smoking-mirror Tool Reference
+# Flywheel MCP Tool Reference
 
-Complete reference for all 47 tools. For quick start and overview, see the [main README](../README.md).
+Complete reference for MCP tools provided by `@bencassie/flywheel-mcp`.
+
+See the [README](../README.md) for installation and configuration.
 
 ---
 
@@ -107,26 +109,6 @@ Complete reference for all 47 tools. For quick start and overview, see the [main
 |------|--------------|
 | `refresh_index` | Rebuilt after Obsidian changes |
 | `get_all_entities` | Every linkable thing (titles + aliases) |
-
----
-
-## Tool Count by Category
-
-| Category | Count |
-|----------|-------|
-| Graph Intelligence | 4 |
-| Wikilink Services | 4 |
-| Vault Health | 3 |
-| Smart Search | 5 |
-| Deep Graph Analysis | 6 |
-| Structure Analysis | 4 |
-| Task Management | 3 |
-| Frontmatter Intelligence | 3 |
-| Temporal Analysis | 2 |
-| System | 2 |
-| **Total** | **36** |
-
-*Note: The remaining 11 tools are variants and aliases that extend core functionality.*
 
 ---
 

@@ -1,17 +1,20 @@
 /**
- * Tests for smoking-mirror core functionality
+ * Tests for Flywheel MCP server core functionality
  *
- * Run with: bun test
+ * Run with: npm test
  */
 
-import { describe, test, expect, beforeAll } from 'bun:test';
+import { describe, test, expect, beforeAll } from 'vitest';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import { scanVault } from '../src/core/vault.js';
 import { parseNote, parseNoteWithWarnings } from '../src/core/parser.js';
 import { buildVaultIndex } from '../src/core/graph.js';
 import type { VaultIndex } from '../src/core/types.js';
 
-const FIXTURES_PATH = path.join(import.meta.dir, 'fixtures');
+const FIXTURES_PATH = path.join(__dirname, 'fixtures');
 
 describe('Vault Scanner', () => {
   test('finds all markdown files', async () => {
