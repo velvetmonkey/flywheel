@@ -200,6 +200,7 @@ async function buildVaultIndexInternal(
     backlinks,
     entities,
     tags,
+    builtAt: new Date(),
   };
 }
 

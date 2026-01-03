@@ -1,9 +1,13 @@
 {
-  "description": "Flywheel plugin hooks for vault automation - requires Python 3.8+",
+  "description": "Flywheel plugin hooks for vault automation - requires Python 3.8+. Implements Six Gates Safety Framework.",
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/session-gate.py\""
+          },
           {
             "type": "command",
             "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.py\""
@@ -15,6 +19,10 @@
       {
         "matcher": "Edit|Write",
         "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/verify-mutation.py\""
+          },
           {
             "type": "command",
             "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/syntax-validate.py\""

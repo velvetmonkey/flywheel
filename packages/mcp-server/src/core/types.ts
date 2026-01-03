@@ -34,4 +34,5 @@ export interface VaultIndex {
   backlinks: Map<string, Backlink[]>;      // normalized target -> backlinks
   entities: Map<string, string>;           // lowercase title/alias -> path
   tags: Map<string, Set<string>>;          // tag -> note paths
+  builtAt: Date;                           // When the index was built (for staleness detection)
 }

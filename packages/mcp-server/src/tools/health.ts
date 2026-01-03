@@ -2,10 +2,14 @@
  * Vault health tools - diagnostics and statistics
  */
 
+import * as fs from 'fs';
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex } from '../core/types.js';
 import { resolveTarget, getBacklinksForNote } from '../core/graph.js';
+
+/** Staleness threshold in seconds (5 minutes) */
+const STALE_THRESHOLD_SECONDS = 300;
 
 /**
  * Register vault health tools
@@ -15,6 +19,115 @@ export function registerHealthTools(
   getIndex: () => VaultIndex,
   getVaultPath: () => string
 ): void {
+  // health_check - MCP server health status (Gate 5: MCP Connection Verification)
+  const HealthCheckOutputSchema = {
+    status: z.enum(['healthy', 'degraded', 'unhealthy']).describe('Overall health status'),
+    vault_accessible: z.boolean().describe('Whether the vault path is accessible'),
+    vault_path: z.string().describe('The vault path being used'),
+    index_built: z.boolean().describe('Whether the index has been built'),
+    index_age_seconds: z.number().describe('Seconds since the index was built'),
+    index_stale: z.boolean().describe('Whether the index is stale (>5 minutes old)'),
+    note_count: z.number().describe('Number of notes in the index'),
+    entity_count: z.number().describe('Number of linkable entities (titles + aliases)'),
+    tag_count: z.number().describe('Number of unique tags'),
+    recommendations: z.array(z.string()).describe('Suggested actions if any issues detected'),
+  };
+
+  type HealthCheckOutput = {
+    status: 'healthy' | 'degraded' | 'unhealthy';
+    vault_accessible: boolean;
+    vault_path: string;
+    index_built: boolean;
+    index_age_seconds: number;
+    index_stale: boolean;
+    note_count: number;
+    entity_count: number;
+    tag_count: number;
+    recommendations: string[];
+  };
+
+  server.registerTool(
+    'health_check',
+    {
+      title: 'Health Check',
+      description:
+        'Check MCP server health status. Returns vault accessibility, index freshness, and recommendations. Use at session start to verify MCP is working correctly.',
+      inputSchema: {},
+      outputSchema: HealthCheckOutputSchema,
+    },
+    async (): Promise<{
+      content: Array<{ type: 'text'; text: string }>;
+      structuredContent: HealthCheckOutput;
+    }> => {
+      const index = getIndex();
+      const vaultPath = getVaultPath();
+      const recommendations: string[] = [];
+
+      // Check vault accessibility
+      let vaultAccessible = false;
+      try {
+        fs.accessSync(vaultPath, fs.constants.R_OK);
+        vaultAccessible = true;
+      } catch {
+        vaultAccessible = false;
+        recommendations.push('Vault path is not accessible. Check PROJECT_PATH environment variable.');
+      }
+
+      // Check index status
+      const indexBuilt = index !== undefined && index.notes !== undefined;
+      const indexAge = indexBuilt && index.builtAt
+        ? Math.floor((Date.now() - index.builtAt.getTime()) / 1000)
+        : -1;
+      const indexStale = indexAge > STALE_THRESHOLD_SECONDS;
+
+      if (indexStale) {
+        recommendations.push(`Index is ${Math.floor(indexAge / 60)} minutes old. Consider running refresh_index.`);
+      }
+
+      // Count metrics
+      const noteCount = indexBuilt ? index.notes.size : 0;
+      const entityCount = indexBuilt ? index.entities.size : 0;
+      const tagCount = indexBuilt ? index.tags.size : 0;
+
+      if (noteCount === 0 && vaultAccessible) {
+        recommendations.push('No notes found in vault. Is PROJECT_PATH pointing to a markdown vault?');
+      }
+
+      // Determine overall status
+      let status: 'healthy' | 'degraded' | 'unhealthy';
+      if (!vaultAccessible || !indexBuilt) {
+        status = 'unhealthy';
+      } else if (indexStale || recommendations.length > 0) {
+        status = 'degraded';
+      } else {
+        status = 'healthy';
+      }
+
+      const output: HealthCheckOutput = {
+        status,
+        vault_accessible: vaultAccessible,
+        vault_path: vaultPath,
+        index_built: indexBuilt,
+        index_age_seconds: indexAge,
+        index_stale: indexStale,
+        note_count: noteCount,
+        entity_count: entityCount,
+        tag_count: tagCount,
+        recommendations,
+      };
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(output, null, 2),
+          },
+        ],
+        structuredContent: output,
+      };
+    }
+  );
+
   // find_broken_links - Find all broken links in the vault
   const BrokenLinkSchema = z.object({
     source: z.string().describe('Path to the note containing the broken link'),
@@ -124,11 +237,17 @@ export function registerHealthTools(
     note_count: z.number().describe('Number of notes in this folder'),
   });
 
+  const OrphanStatsSchema = z.object({
+    total: z.number().describe('Total orphan notes (no backlinks)'),
+    periodic: z.number().describe('Orphan periodic notes (daily/weekly/monthly - expected)'),
+    content: z.number().describe('Orphan content notes (non-periodic - may need linking)'),
+  });
+
   const GetVaultStatsOutputSchema = {
     total_notes: z.number().describe('Total number of notes in the vault'),
     total_links: z.number().describe('Total number of wikilinks'),
     total_tags: z.number().describe('Total number of unique tags'),
-    orphan_notes: z.number().describe('Notes with no backlinks'),
+    orphan_notes: OrphanStatsSchema.describe('Orphan notes breakdown'),
     broken_links: z.number().describe('Links pointing to non-existent notes'),
     average_links_per_note: z.number().describe('Average outgoing links per note'),
     most_linked_notes: z
@@ -147,13 +266,41 @@ export function registerHealthTools(
     total_notes: number;
     total_links: number;
     total_tags: number;
-    orphan_notes: number;
+    orphan_notes: {
+      total: number;
+      periodic: number;
+      content: number;
+    };
     broken_links: number;
     average_links_per_note: number;
     most_linked_notes: Array<{ path: string; backlinks: number }>;
     top_tags: Array<{ tag: string; count: number }>;
     folders: Array<{ folder: string; note_count: number }>;
   };
+
+  /**
+   * Check if a note is a periodic note (daily, weekly, monthly, quarterly, yearly).
+   * Periodic notes naturally have fewer backlinks - they're time-based, not topic-based.
+   */
+  function isPeriodicNote(path: string): boolean {
+    const filename = path.split('/').pop() || '';
+    const nameWithoutExt = filename.replace(/\.md$/, '');
+
+    // Date patterns for periodic notes
+    const patterns = [
+      /^\d{4}-\d{2}-\d{2}$/,           // YYYY-MM-DD (daily)
+      /^\d{4}-W\d{2}$/,                // YYYY-Wnn (weekly)
+      /^\d{4}-\d{2}$/,                 // YYYY-MM (monthly)
+      /^\d{4}-Q[1-4]$/,                // YYYY-Qn (quarterly)
+      /^\d{4}$/,                       // YYYY (yearly)
+    ];
+
+    // Also check common folder names
+    const periodicFolders = ['daily', 'weekly', 'monthly', 'quarterly', 'yearly', 'journal', 'journals'];
+    const folder = path.split('/')[0]?.toLowerCase() || '';
+
+    return patterns.some(p => p.test(nameWithoutExt)) || periodicFolders.includes(folder);
+  }
 
   server.registerTool(
     'get_vault_stats',
@@ -174,7 +321,9 @@ export function registerHealthTools(
       const totalNotes = index.notes.size;
       let totalLinks = 0;
       let brokenLinks = 0;
-      let orphanNotes = 0;
+      let orphanTotal = 0;
+      let orphanPeriodic = 0;
+      let orphanContent = 0;
 
       // Count links and broken links
       for (const note of index.notes.values()) {
@@ -187,11 +336,16 @@ export function registerHealthTools(
         }
       }
 
-      // Count orphans
+      // Count orphans, separating periodic notes from content notes
       for (const note of index.notes.values()) {
         const backlinks = getBacklinksForNote(index, note.path);
         if (backlinks.length === 0) {
-          orphanNotes++;
+          orphanTotal++;
+          if (isPeriodicNote(note.path)) {
+            orphanPeriodic++;
+          } else {
+            orphanContent++;
+          }
         }
       }
 
@@ -231,7 +385,11 @@ export function registerHealthTools(
         total_notes: totalNotes,
         total_links: totalLinks,
         total_tags: index.tags.size,
-        orphan_notes: orphanNotes,
+        orphan_notes: {
+          total: orphanTotal,
+          periodic: orphanPeriodic,
+          content: orphanContent,
+        },
         broken_links: brokenLinks,
         average_links_per_note: totalNotes > 0 ? Math.round((totalLinks / totalNotes) * 100) / 100 : 0,
         most_linked_notes: mostLinkedNotes,

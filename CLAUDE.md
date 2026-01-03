@@ -56,6 +56,26 @@ See full documentation in `packages/mcp-server/docs/BIDIRECTIONAL.md`
 5. **Progressive disclosure**: Simple to start, powerful when needed
 6. **Preserve working tech**: WSL + Windows tested and working
 
+## Six Gates Safety Framework (MANDATORY)
+
+**CRITICAL**: All Flywheel extensions MUST observe the Six Gates. This is not optional.
+
+See full specification: `packages/claude-plugin/skills/_patterns/SIX_GATES.md`
+
+| Gate | Purpose | Enforcement |
+|------|---------|-------------|
+| **1. Tool Selection** | Read before write | Use read-only tools first |
+| **2. Precondition Checks** | Validate targets | Check files exist before mutation |
+| **3. Agent Chain Validation** | Verify each step | Confirm success before proceeding |
+| **4. Destructive Command Guard** | User confirmation | Show preview, ask before writing |
+| **5. MCP Connection Verification** | Health check | `session-gate.py` runs at start |
+| **6. Post-Execution Validation** | Verify writes | `verify-mutation.py` validates syntax |
+
+**When writing new skills/tools:**
+- Include Six Gates compliance checklist in SKILL.md
+- Use the template in `skills/_patterns/SIX_GATES.md`
+- Test all six gates before merging
+
 ## Cross-Platform Support
 
 **CRITICAL**: This codebase works on both WSL and Windows. DO NOT break this.
