@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-suggest
+name: suggest-links
 description: Suggest wikilinks for current note using smoking-mirror. Triggers on "suggest links", "link suggestions", "what should I link", "wikilink suggestions".
 auto_trigger: true
 trigger_keywords:

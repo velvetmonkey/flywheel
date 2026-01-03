@@ -1,6 +1,6 @@
 # Installation Guide
 
-Platform-specific installation instructions for Obsidian Scribe.
+Platform-specific installation instructions for Flywheel Plugin.
 
 ## Prerequisites
 
@@ -33,15 +33,15 @@ brew install python
 
 ```bash
 # Clone the repository
-git clone https://github.com/bencassie/obsidian-scribe.git
+git clone https://github.com/bencassie/flywheel.git
 
 # Or download and extract the ZIP from GitHub
 ```
 
 Note your plugin path:
-- **WSL**: `/mnt/c/Users/YOUR_USER/src/obsidian-scribe/plugins/obsidian-scribe`
-- **Windows**: `C:/Users/YOUR_USER/src/obsidian-scribe/plugins/obsidian-scribe`
-- **macOS/Linux**: `~/src/obsidian-scribe/plugins/obsidian-scribe`
+- **WSL**: `/mnt/c/Users/YOUR_USER/src/flywheel/packages/claude-plugin`
+- **Windows**: `C:/Users/YOUR_USER/src/flywheel/packages/claude-plugin`
+- **macOS/Linux**: `~/src/flywheel/packages/claude-plugin`
 
 ---
 
@@ -56,15 +56,15 @@ Edit `~/.claude.json` or your project's `.claude/settings.local.json`:
 ```json
 {
   "extraKnownMarketplaces": {
-    "obsidian-scribe": {
+    "flywheel": {
       "source": {
         "source": "directory",
-        "path": "/mnt/c/Users/YOUR_USER/src/obsidian-scribe/plugins/obsidian-scribe"
+        "path": "/mnt/c/Users/YOUR_USER/src/flywheel/plugins/flywheel"
       }
     }
   },
   "enabledPlugins": {
-    "obsidian-scribe@obsidian-scribe": true
+    "flywheel@flywheel": true
   }
 }
 ```
@@ -76,15 +76,15 @@ Edit `C:\Users\YOUR_USER\.claude.json` or your project's `.claude\settings.json`
 ```json
 {
   "extraKnownMarketplaces": {
-    "obsidian-scribe": {
+    "flywheel": {
       "source": {
         "source": "directory",
-        "path": "C:/Users/YOUR_USER/src/obsidian-scribe/plugins/obsidian-scribe"
+        "path": "C:/Users/YOUR_USER/src/flywheel/plugins/flywheel"
       }
     }
   },
   "enabledPlugins": {
-    "obsidian-scribe@obsidian-scribe": true
+    "flywheel@flywheel": true
   }
 }
 ```
@@ -96,15 +96,15 @@ Edit `~/.claude.json` or your project's `.claude/settings.json`:
 ```json
 {
   "extraKnownMarketplaces": {
-    "obsidian-scribe": {
+    "flywheel": {
       "source": {
         "source": "directory",
-        "path": "/Users/YOUR_USER/src/obsidian-scribe/plugins/obsidian-scribe"
+        "path": "/Users/YOUR_USER/src/flywheel/plugins/flywheel"
       }
     }
   },
   "enabledPlugins": {
-    "obsidian-scribe@obsidian-scribe": true
+    "flywheel@flywheel": true
   }
 }
 ```
@@ -113,11 +113,11 @@ Edit `~/.claude.json` or your project's `.claude/settings.json`:
 
 ## Step 3: Create Vault Configuration
 
-Create `.obsidian-scribe.json` in your Obsidian vault root:
+Create `.flywheel.json` in your Obsidian vault root:
 
 ```json
 {
-  "$schema": "./plugins/obsidian-scribe/config/config-schema.json",
+  "$schema": "./plugins/flywheel/config/config-schema.json",
   "vault_name": "My Vault",
   "paths": {
     "daily_notes": "daily-notes",
@@ -167,16 +167,16 @@ mkdir -p /path/to/vault/.claude/rules
 Close and reopen Claude Code (or start a new session) to load the plugin.
 
 **Verify plugin loaded:**
-- On session start, you should see the Obsidian Scribe briefing
+- On session start, you should see the Flywheel briefing
 - Skills like `food`, `rebuild-wikilink-cache` should be available
 
 Continue to Step 6 to install the required smoking-mirror MCP server.
 
 ---
 
-## Step 6: Install smoking-mirror MCP (Required)
+## Step 6: Install Flywheel MCP (Required)
 
-The smoking-mirror MCP server is **required** for vault intelligence, wikilink cache, and entity detection.
+The Flywheel MCP server is **required** for vault intelligence, wikilink cache, and entity detection.
 
 ### WSL Configuration
 
@@ -185,11 +185,11 @@ Add to `.mcp.json` in your vault:
 ```json
 {
   "mcpServers": {
-    "smoking-mirror": {
+    "flywheel": {
       "command": "npx",
-      "args": ["-y", "smoking-mirror@latest"],
+      "args": ["-y", "@bencassie/flywheel-mcp"],
       "env": {
-        "VAULT_PATH": "/mnt/c/Users/YOUR_USER/obsidian/YOUR_VAULT"
+        "PROJECT_PATH": "/mnt/c/Users/YOUR_USER/obsidian/YOUR_VAULT"
       }
     }
   }
@@ -203,11 +203,11 @@ Add to `.mcp.json` in your vault (note the `cmd /c` wrapper):
 ```json
 {
   "mcpServers": {
-    "smoking-mirror": {
+    "flywheel": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "smoking-mirror@latest"],
+      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
       "env": {
-        "VAULT_PATH": "C:/Users/YOUR_USER/obsidian/YOUR_VAULT"
+        "PROJECT_PATH": "C:/Users/YOUR_USER/obsidian/YOUR_VAULT"
       }
     }
   }
@@ -243,15 +243,15 @@ The correct multi-platform architecture:
 ```json
 {
   "extraKnownMarketplaces": {
-    "obsidian-scribe": {
+    "flywheel": {
       "source": {
         "source": "directory",
-        "path": "/mnt/c/Users/YOUR_USER/src/obsidian-scribe"
+        "path": "/mnt/c/Users/YOUR_USER/src/flywheel"
       }
     }
   },
   "enabledPlugins": {
-    "obsidian-scribe@obsidian-scribe": true
+    "flywheel@flywheel": true
   }
 }
 ```
@@ -263,10 +263,10 @@ The correct multi-platform architecture:
   "projects": {
     "C:\Users\YOUR_USER\obsidian\YOUR_VAULT": {
       "extraKnownMarketplaces": {
-        "obsidian-scribe": {
+        "flywheel": {
           "source": {
             "source": "directory",
-            "path": "C:/Users/YOUR_USER/src/obsidian-scribe/plugins/obsidian-scribe/plugins/obsidian-scribe"
+            "path": "C:/Users/YOUR_USER/src/flywheel/plugins/flywheel/plugins/flywheel"
           }
         }
       },
@@ -301,12 +301,12 @@ The correct multi-platform architecture:
 
 ### Skills not available
 
-1. **Check `enabledPlugins`**: Must include `"obsidian-scribe@obsidian-scribe": true`
+1. **Check `enabledPlugins`**: Must include `"flywheel@flywheel": true`
 2. **Check plugin structure**: `skills/` directory must exist with skill folders
 
-### smoking-mirror not connecting
+### Flywheel MCP not connecting
 
-1. **Check VAULT_PATH**: Must point to your Obsidian vault root
+1. **Check PROJECT_PATH**: Must point to your vault root
 2. **Windows users**: Use `cmd /c npx` wrapper, not direct `npx`
 3. **Run `claude mcp list`**: Verify server shows as connected
 
@@ -315,6 +315,6 @@ The correct multi-platform architecture:
 ## Uninstallation
 
 1. Remove `extraKnownMarketplaces` and `enabledPlugins` entries from settings
-2. Delete `.obsidian-scribe.json` from vault (optional - keeps your config)
+2. Delete `.flywheel.json` from vault (optional - keeps your config)
 3. Delete the plugin directory (optional)
 4. Restart Claude Code

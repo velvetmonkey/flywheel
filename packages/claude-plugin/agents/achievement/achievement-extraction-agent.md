@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-achievement-agent
+name: extract-achievements-agent
 description: Extract achievements from daily/weekly notes and update Achievements.md
 allowed-tools: Read, Bash(python:*), Edit
 model: sonnet
@@ -18,7 +18,7 @@ Extract achievement-worthy accomplishments from specified notes and add them to 
 The rollup-agent calls you after completing daily→weekly or weekly→monthly processing:
 ```python
 Task(
-    subagent_type="obsidian-scribe-achievement-agent",
+    subagent_type="extract-achievements-agent",
     description="Extract achievements from December daily notes",
     prompt="Extract achievements from daily notes in December 2025"
 )
@@ -27,7 +27,7 @@ Task(
 Or users can call you directly for manual extraction:
 ```python
 Task(
-    subagent_type="obsidian-scribe-achievement-agent",
+    subagent_type="extract-achievements-agent",
     description="Extract achievements from specific note",
     prompt="Extract achievements from daily-notes/2026-01-01.md"
 )
@@ -243,7 +243,7 @@ File Updated: personal/goals/Achievements.md
 ### Achievement Detection
 - **Use shared library** (`hooks/lib/achievement_detector.py`) for all detection
 - **Never reimplement** detection logic - always import from shared module
-- **Respect configuration** loaded from `.obsidian-scribe.json`
+- **Respect configuration** loaded from `.flywheel.json`
 
 ### Deduplication
 - **Rely on shared library** for deduplication (normalized comparison)
@@ -271,7 +271,7 @@ File Updated: personal/goals/Achievements.md
 ### From Rollup Agent (after weekly rollup)
 ```python
 Task(
-    subagent_type="obsidian-scribe-achievement-agent",
+    subagent_type="extract-achievements-agent",
     description="Extract December 2025 achievements",
     prompt="Extract achievements from all daily notes in December 2025"
 )
@@ -280,7 +280,7 @@ Task(
 ### From User (manual extraction)
 ```python
 Task(
-    subagent_type="obsidian-scribe-achievement-agent",
+    subagent_type="extract-achievements-agent",
     description="Extract achievements from today",
     prompt="Extract achievements from daily-notes/2026-01-01.md"
 )
@@ -289,7 +289,7 @@ Task(
 ### From User (specific week)
 ```python
 Task(
-    subagent_type="obsidian-scribe-achievement-agent",
+    subagent_type="extract-achievements-agent",
     description="Extract week 52 achievements",
     prompt="Extract achievements from week 2025-W52"
 )

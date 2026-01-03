@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-unlinked-mentions
+name: find-unlinked
 description: Find places where an entity is mentioned but not wikilinked. Triggers on "unlinked mentions", "where is X mentioned", "link X everywhere", "mentions of X".
 auto_trigger: true
 trigger_keywords:

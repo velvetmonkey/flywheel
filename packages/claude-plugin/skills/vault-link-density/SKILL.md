@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-link-density
+name: check-link-density
 description: Analyze link density patterns across vault. Triggers on "link density", "link analysis", "linking patterns", "link stats".
 auto_trigger: true
 trigger_keywords:

@@ -38,7 +38,7 @@ All notable changes to Flywheel MCP server will be documented in this file.
 ### Improved
 
 - Enhanced documentation with comparison tables and security section
-- Added obsidian-scribe showcase in README
+- Added Flywheel plugin showcase in README
 
 ## [1.1.0] - 2024-XX-XX
 

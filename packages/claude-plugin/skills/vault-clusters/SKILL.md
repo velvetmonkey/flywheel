@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-clusters
+name: find-clusters
 description: Find knowledge clusters (groups of highly connected notes). Triggers on "clusters", "knowledge clusters", "note clusters", "find clusters".
 auto_trigger: true
 trigger_keywords:

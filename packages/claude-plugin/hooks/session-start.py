@@ -142,7 +142,7 @@ def main():
         cache_status = rebuild_wikilink_cache()
 
         # Build context string
-        context = f"""Obsidian Scribe - Session started: {current_time}
+        context = f"""Flywheel - Session started: {current_time}
 
 {daily_status}
 {cache_status}
@@ -161,19 +161,19 @@ def main():
         sys.exit(0)
 
     except FileNotFoundError as e:
-        print(f"[obsidian-scribe] Session start: Config file not found. Create .obsidian-scribe.json in vault root.", file=sys.stderr)
+        print(f"[flywheel] Session start: Config file not found. Create .flywheel.json in vault root.", file=sys.stderr)
         sys.exit(0)
     except PermissionError as e:
-        print(f"[obsidian-scribe] Session start: Permission denied - {e.filename}", file=sys.stderr)
+        print(f"[flywheel] Session start: Permission denied - {e.filename}", file=sys.stderr)
         sys.exit(0)
     except ModuleNotFoundError as e:
-        print(f"[obsidian-scribe] Session start: Missing module - {e.name}. Check plugin installation.", file=sys.stderr)
+        print(f"[flywheel] Session start: Missing module - {e.name}. Check plugin installation.", file=sys.stderr)
         sys.exit(0)
     except json.JSONDecodeError as e:
-        print(f"[obsidian-scribe] Session start: Invalid JSON in config - {e.msg} at line {e.lineno}", file=sys.stderr)
+        print(f"[flywheel] Session start: Invalid JSON in config - {e.msg} at line {e.lineno}", file=sys.stderr)
         sys.exit(0)
     except Exception as e:
-        print(f"[obsidian-scribe] Session start error: {type(e).__name__}: {e}", file=sys.stderr)
+        print(f"[flywheel] Session start error: {type(e).__name__}: {e}", file=sys.stderr)
         sys.exit(0)
 
 

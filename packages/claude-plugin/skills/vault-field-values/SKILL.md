@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-field-values
+name: show-field-values
 description: Get all unique values for a specific frontmatter field. Triggers on "field values", "unique values for", "what X values exist", "list all X".
 auto_trigger: true
 trigger_keywords:

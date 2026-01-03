@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-fix-links
+name: fix-links
 description: Find and repair broken wikilinks in vault. Triggers when user mentions "fix links", "broken links", "repair vault", "fix broken links".
 auto_trigger: true
 trigger_keywords:

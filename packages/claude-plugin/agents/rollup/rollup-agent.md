@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-rollup-agent
+name: rollup-agent
 description: Complete rollup chain for last 2 months (daily→weekly→monthly→quarterly→yearly)
 allowed-tools: Task, Bash(python -c:*)
 model: sonnet
@@ -83,7 +83,7 @@ For each ISO week in chronological order, invoke the weekly-agent:
 
 ```python
 Task(
-    subagent_type="obsidian-scribe-weekly-agent",
+    subagent_type="rollup-weekly-agent",
     description="Process week YYYY-WXX",
     prompt=f"Process week {week_id}"
 )
@@ -91,10 +91,10 @@ Task(
 
 **Example sequence:**
 ```
-Task(subagent_type="obsidian-scribe-weekly-agent", description="Process week 2025-W45", prompt="Process week 2025-W45")
-Task(subagent_type="obsidian-scribe-weekly-agent", description="Process week 2025-W46", prompt="Process week 2025-W46")
+Task(subagent_type="rollup-weekly-agent", description="Process week 2025-W45", prompt="Process week 2025-W45")
+Task(subagent_type="rollup-weekly-agent", description="Process week 2025-W46", prompt="Process week 2025-W46")
 ...
-Task(subagent_type="obsidian-scribe-weekly-agent", description="Process week 2025-W52", prompt="Process week 2025-W52")
+Task(subagent_type="rollup-weekly-agent", description="Process week 2025-W52", prompt="Process week 2025-W52")
 ```
 
 **Important**: Call each weekly-agent SEQUENTIALLY (wait for completion before calling next).
@@ -110,7 +110,7 @@ For each month in the 2-month range, invoke the monthly-agent:
 
 ```python
 Task(
-    subagent_type="obsidian-scribe-monthly-agent",
+    subagent_type="rollup-monthly-agent",
     description="Process month YYYY-MM",
     prompt=f"Process month {year}-{month:02d}"
 )
@@ -118,8 +118,8 @@ Task(
 
 **Example sequence:**
 ```
-Task(subagent_type="obsidian-scribe-monthly-agent", description="Process month 2025-11", prompt="Process month 2025-11")
-Task(subagent_type="obsidian-scribe-monthly-agent", description="Process month 2025-12", prompt="Process month 2025-12")
+Task(subagent_type="rollup-monthly-agent", description="Process month 2025-11", prompt="Process month 2025-11")
+Task(subagent_type="rollup-monthly-agent", description="Process month 2025-12", prompt="Process month 2025-12")
 ```
 
 **Important**: Call SEQUENTIALLY (November before December).
@@ -142,7 +142,7 @@ Determine if either of the 2 months is the end of a quarter:
 ```python
 # Example: If December 2025 is in range
 Task(
-    subagent_type="obsidian-scribe-quarterly-agent",
+    subagent_type="rollup-quarterly-agent",
     description="Process quarter 2025-Q4",
     prompt="Process quarter 2025-Q4"
 )
@@ -162,7 +162,7 @@ Determine if either of the 2 months is December (end of year).
 ```python
 # Example: If December 2025 is in range
 Task(
-    subagent_type="obsidian-scribe-yearly-agent",
+    subagent_type="rollup-yearly-agent",
     description="Process year 2025",
     prompt="Process year 2025"
 )
@@ -253,7 +253,7 @@ No manual achievement processing needed.
 This agent is invoked by the `/rollup` command:
 ```
 Task(
-    subagent_type="obsidian-scribe-rollup-agent",
+    subagent_type="rollup-agent",
     description="Process last 2 months rollup",
     prompt="Execute the complete rollup chain for the last 2 months"
 )

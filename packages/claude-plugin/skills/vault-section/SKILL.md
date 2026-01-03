@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-section
+name: show-section
 description: Get the content under a specific heading in a note without reading the entire file. Triggers on "extract section", "get section", "content under heading", "section content".
 auto_trigger: true
 trigger_keywords:

@@ -4,8 +4,8 @@
 
 Flywheel is the **Agentic Markdown Operating System** - a unified system combining:
 
-1. **MCP Server** (`packages/mcp-server/`) - Graph + schema intelligence from smoking-mirror
-2. **Claude Plugin** (`packages/claude-plugin/`) - Workflows and automation from obsidian-scribe
+1. **MCP Server** (`packages/mcp-server/`) - Graph + schema intelligence
+2. **Claude Plugin** (`packages/claude-plugin/`) - Workflows and automation
 3. **Demo Vaults** (`demos/`) - Ready-to-use templates for common workflows
 
 ## Core Concept
@@ -138,16 +138,8 @@ npm run test
 - Agentic Markdown OS concept: `docs/CONCEPT.md`
 - Bidirectional bridge design: `docs/BIDIRECTIONAL.md`
 - Roadmap: `docs/ROADMAP.md`
-- Original smoking-mirror docs: `packages/mcp-server/README.md`
-- Original obsidian-scribe docs: `packages/claude-plugin/README.md`
-
-## Migration Notes
-
-This is a **greenfield consolidation** of two existing projects:
-- `smoking-mirror` → `packages/mcp-server/` (copied verbatim)
-- `obsidian-scribe` → `packages/claude-plugin/` (copied verbatim)
-
-Both original repos will be archived once Flywheel is stable.
+- MCP Server docs: `packages/mcp-server/README.md`
+- Plugin docs: `packages/claude-plugin/README.md`
 
 **Skill naming**: Keep Claude Code conventions (kebab-case like `auto-log`, `vault-health`) - NOT PowerShell Verb-Noun.
 

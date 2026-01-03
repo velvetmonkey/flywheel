@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-auto-log
+name: auto-log
 description: Auto-log entries to daily note. Triggers when user wants to log, record, or document their work. Detects "log", "captains log", "dictate", "record", "note this", "write this down", "document", "track this", "remember", "add to log", or similar logging intent.
 auto_trigger: true
 trigger_keywords:

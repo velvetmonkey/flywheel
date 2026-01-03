@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-bidirectional
+name: check-bidirectional
 description: Find bidirectional links (notes that link to each other). Triggers on "bidirectional", "bidirectional links", "mutual links", "two-way links".
 auto_trigger: true
 trigger_keywords:

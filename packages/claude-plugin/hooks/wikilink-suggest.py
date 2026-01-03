@@ -478,13 +478,13 @@ def main():
     except json.JSONDecodeError:
         sys.exit(0)
     except FileNotFoundError as e:
-        print(f"[obsidian-scribe] Wikilink suggest: File not found - {e.filename}", file=sys.stderr)
+        print(f"[flywheel] Wikilink suggest: File not found - {e.filename}", file=sys.stderr)
         sys.exit(0)
     except PermissionError as e:
-        print(f"[obsidian-scribe] Wikilink suggest: Permission denied - {e.filename}", file=sys.stderr)
+        print(f"[flywheel] Wikilink suggest: Permission denied - {e.filename}", file=sys.stderr)
         sys.exit(0)
     except Exception as e:
-        print(f"[obsidian-scribe] Wikilink suggest error: {type(e).__name__}: {e}", file=sys.stderr)
+        print(f"[flywheel] Wikilink suggest error: {type(e).__name__}: {e}", file=sys.stderr)
         sys.exit(0)
 
 

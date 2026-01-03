@@ -182,13 +182,13 @@ def main():
         # No input or invalid JSON - skip silently
         sys.exit(0)
     except FileNotFoundError as e:
-        print(f"[obsidian-scribe] Syntax validator: File not found - {e.filename}", file=sys.stderr)
+        print(f"[flywheel] Syntax validator: File not found - {e.filename}", file=sys.stderr)
         sys.exit(0)
     except PermissionError as e:
-        print(f"[obsidian-scribe] Syntax validator: Permission denied - {e.filename}", file=sys.stderr)
+        print(f"[flywheel] Syntax validator: Permission denied - {e.filename}", file=sys.stderr)
         sys.exit(0)
     except Exception as e:
-        print(f"[obsidian-scribe] Syntax validator error: {type(e).__name__}: {e}", file=sys.stderr)
+        print(f"[flywheel] Syntax validator error: {type(e).__name__}: {e}", file=sys.stderr)
         sys.exit(0)
 
 

@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-monthly-agent
+name: rollup-monthly-agent
 description: Summarize weekly notes into monthly summary. Args YYYY-MM (optional)
 allowed-tools: Read, Edit, Bash(python -c:*), Glob, Grep
 model: sonnet
@@ -229,7 +229,7 @@ Include only SIGNIFICANT events, not every daily item.
 
 This agent is invoked by rollup-agent:
 ```
-Task(subagent_type="obsidian-scribe-monthly-agent", prompt="Process month 2025-12")
+Task(subagent_type="rollup-monthly-agent", prompt="Process month 2025-12")
 ```
 
 ## Expected Output

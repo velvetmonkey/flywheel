@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-dead-ends
+name: find-dead-ends
 description: Find dead-end notes (have backlinks but no outgoing links). Triggers on "dead ends", "dead end notes", "endpoint notes".
 auto_trigger: true
 trigger_keywords:

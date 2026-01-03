@@ -61,7 +61,7 @@ alwaysApply: false
 Enforces folder hierarchy:
 - Protected folders (`personal/`, `work/`, `tech/`) require subfolders
 - Periodic notes folders can contain files directly
-- Configurable via `.obsidian-scribe.json`
+- Configurable via `.flywheel.json`
 
 ```markdown
 ---

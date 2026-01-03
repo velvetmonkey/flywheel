@@ -1,13 +1,13 @@
 {
-  "name": "obsidian-scribe",
+  "name": "flywheel",
   "version": "1.4.0",
-  "description": "Wikilink automation, periodic note rollups, vault health, and privacy protection for Obsidian vaults",
+  "description": "Wikilink automation, periodic note rollups, vault health, and privacy protection for markdown vaults",
   "author": {
     "name": "Ben Cassie",
     "github": "bencassie"
   },
-  "homepage": "https://github.com/bencassie/obsidian-scribe",
-  "repository": "https://github.com/bencassie/obsidian-scribe",
+  "homepage": "https://github.com/bencassie/flywheel",
+  "repository": "https://github.com/bencassie/flywheel",
   "license": "MIT",
   "keywords": [
     "obsidian",

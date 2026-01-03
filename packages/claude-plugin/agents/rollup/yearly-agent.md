@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-yearly-agent
+name: rollup-yearly-agent
 description: Summarize quarterly notes into yearly summary - Args: [YYYY] (optional)
 allowed-tools: Read, Edit, Bash(python -c:*), Glob, Grep
 model: sonnet
@@ -258,7 +258,7 @@ Organize by domain/category or chronologically.
 
 This agent is invoked by rollup-agent:
 ```
-Task(subagent_type="obsidian-scribe-yearly-agent", prompt="Process year 2025")
+Task(subagent_type="rollup-yearly-agent", prompt="Process year 2025")
 ```
 
 ## Expected Output

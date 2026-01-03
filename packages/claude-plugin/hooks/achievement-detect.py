@@ -107,16 +107,16 @@ def main():
     except json.JSONDecodeError:
         sys.exit(0)
     except FileNotFoundError as e:
-        print(f"[obsidian-scribe] Achievement detector: File not found - {e.filename}", file=sys.stderr)
+        print(f"[flywheel] Achievement detector: File not found - {e.filename}", file=sys.stderr)
         sys.exit(0)
     except PermissionError as e:
-        print(f"[obsidian-scribe] Achievement detector: Permission denied - {e.filename}", file=sys.stderr)
+        print(f"[flywheel] Achievement detector: Permission denied - {e.filename}", file=sys.stderr)
         sys.exit(0)
     except ModuleNotFoundError as e:
-        print(f"[obsidian-scribe] Achievement detector: Missing module - {e.name}. Check plugin installation.", file=sys.stderr)
+        print(f"[flywheel] Achievement detector: Missing module - {e.name}. Check plugin installation.", file=sys.stderr)
         sys.exit(0)
     except Exception as e:
-        print(f"[obsidian-scribe] Achievement detector error: {type(e).__name__}: {e}", file=sys.stderr)
+        print(f"[flywheel] Achievement detector error: {type(e).__name__}: {e}", file=sys.stderr)
         sys.exit(0)
 
 

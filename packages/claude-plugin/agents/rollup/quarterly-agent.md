@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-quarterly-agent
+name: rollup-quarterly-agent
 description: Summarize monthly notes into quarterly summary. Args YYYY-QX (optional)
 allowed-tools: Read, Edit, Bash(python -c:*), Glob, Grep
 model: sonnet
@@ -235,7 +235,7 @@ Brief summary of each month:
 
 This agent is invoked by rollup-agent:
 ```
-Task(subagent_type="obsidian-scribe-quarterly-agent", prompt="Process quarter 2025-Q4")
+Task(subagent_type="rollup-quarterly-agent", prompt="Process quarter 2025-Q4")
 ```
 
 ## Expected Output

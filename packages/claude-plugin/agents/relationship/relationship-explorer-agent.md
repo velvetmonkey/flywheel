@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-relationship-explorer-agent
+name: explore-relationships-agent
 description: Deep-dive into note relationships, generating comprehensive relationship reports
 allowed-tools: mcp__smoking-mirror__get_link_path, mcp__smoking-mirror__get_common_neighbors, mcp__smoking-mirror__get_connection_strength, mcp__smoking-mirror__get_backlinks, mcp__smoking-mirror__get_forward_links, mcp__smoking-mirror__find_bidirectional_links, Read
 model: sonnet
@@ -18,7 +18,7 @@ Given two notes, analyze their relationship using multiple graph metrics and gen
 Users invoke you for relationship analysis:
 ```python
 Task(
-    subagent_type="obsidian-scribe-relationship-explorer-agent",
+    subagent_type="explore-relationships-agent",
     description="Explore relationship between notes",
     prompt="Analyze the relationship between [[Project Alpha]] and [[React]]"
 )
@@ -27,7 +27,7 @@ Task(
 Or for multi-note analysis:
 ```python
 Task(
-    subagent_type="obsidian-scribe-relationship-explorer-agent",
+    subagent_type="explore-relationships-agent",
     description="Explore note cluster relationships",
     prompt="How do my project notes relate to technology notes?"
 )
@@ -369,7 +369,7 @@ Follow the vault's navigation philosophy:
 ### Basic Relationship
 ```python
 Task(
-    subagent_type="obsidian-scribe-relationship-explorer-agent",
+    subagent_type="explore-relationships-agent",
     description="Explore Project/React relationship",
     prompt="Analyze relationship between [[Project Alpha]] and [[React]]"
 )
@@ -378,7 +378,7 @@ Task(
 ### Path-Focused
 ```python
 Task(
-    subagent_type="obsidian-scribe-relationship-explorer-agent",
+    subagent_type="explore-relationships-agent",
     description="Find connection path",
     prompt="How does my daily note connect to [[MCP]]? Trace the path."
 )
@@ -387,7 +387,7 @@ Task(
 ### Cluster Analysis
 ```python
 Task(
-    subagent_type="obsidian-scribe-relationship-explorer-agent",
+    subagent_type="explore-relationships-agent",
     description="Analyze knowledge cluster",
     prompt="How do [[Claude Code]], [[MCP]], and [[Obsidian]] relate to each other?"
 )

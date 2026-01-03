@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-backlinks
+name: show-backlinks
 description: Show all backlinks and forward links for a note. Triggers when user mentions "backlinks", "who links here", "links to", "connections".
 auto_trigger: true
 trigger_keywords:

@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-rollup
+name: run-rollup
 description: Execute the complete rollup chain processing daily notes into weekly, monthly, quarterly, and yearly summaries, then updating achievements. Triggers when user mentions "rollup", "summarize notes", "weekly summary", "monthly summary", "process my notes", "update achievements", or wants to aggregate their work logs.
 auto_trigger: true
 trigger_keywords:
@@ -51,7 +51,7 @@ Launch the appropriate rollup agent to process the chain:
 
 ```javascript
 Task({
-  subagent_type: "obsidian-scribe-rollup-agent",
+  subagent_type: "rollup-agent",
   description: "Process rollup chain",
   prompt: "Execute the complete rollup chain for the last 2 months"
 })

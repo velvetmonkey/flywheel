@@ -1,16 +1,16 @@
 {
-  "name": "obsidian-scribe",
+  "name": "flywheel",
   "version": "1.4.0",
-  "description": "Wikilink automation, periodic note rollups, vault health, and privacy protection for Obsidian vaults",
+  "description": "Wikilink automation, periodic note rollups, vault health, and privacy protection for markdown vaults",
   "owner": {
     "name": "Ben Cassie",
     "email": "bencassie@github"
   },
   "plugins": [
     {
-      "name": "obsidian-scribe",
+      "name": "flywheel",
       "description": "Wikilink automation, periodic note rollups, vault health, and privacy protection",
-      "source": "./plugins/obsidian-scribe"
+      "source": "./packages/claude-plugin"
     }
   ]
 }

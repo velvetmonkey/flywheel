@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-rebuild-cache
+name: rebuild-cache
 description: Rebuild the wikilink entities cache. Triggers on "rebuild cache", "rebuild wikilink cache", "update cache", "refresh wikilinks". Optionally uses smoking-mirror MCP for enhanced entity detection.
 auto_trigger: true
 trigger_keywords:
@@ -132,8 +132,8 @@ Write to `.claude/wikilink-entities.json`:
   "_metadata": {
     "total_entities": 2388,
     "generated_at": "2025-12-31T04:38:00Z",
-    "source": "obsidian-scribe",
-    "generator": "obsidian-scribe v1.0.0"
+    "source": "flywheel",
+    "generator": "flywheel v1.0.0"
   }
 }
 ```
@@ -141,7 +141,7 @@ Write to `.claude/wikilink-entities.json`:
 ### Step 4: Report Results
 
 ```
-🖋️ Obsidian Scribe - Cache Rebuilt
+🖋️ Flywheel - Cache Rebuilt
 ═══════════════════════════════════════════════
 ✅ Retrieved N entities
 
@@ -175,4 +175,4 @@ Write to `.claude/wikilink-entities.json`:
 
 ---
 
-**Version:** 1.0.0 (Obsidian Scribe)
+**Version:** 1.0.0 (Flywheel)

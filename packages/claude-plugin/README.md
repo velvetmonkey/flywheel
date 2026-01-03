@@ -1,6 +1,6 @@
-# Obsidian Scribe
+# Flywheel Plugin
 
-A comprehensive Claude Code plugin for Obsidian vault automation, note rollups, and knowledge graph management.
+A comprehensive Claude Code plugin for markdown vault automation, note rollups, and knowledge graph management.
 
 ## Features
 
@@ -20,8 +20,8 @@ Automated aggregation from daily notes up through yearly summaries:
 - **Food Logging**: Log meals with timestamps to daily notes
 - **Macro Calculation**: Calculate daily nutrition totals from food entries
 
-### Vault Intelligence (requires smoking-mirror MCP)
-16 vault analysis skills powered by the smoking-mirror MCP server:
+### Vault Intelligence (requires Flywheel MCP)
+16 vault analysis skills powered by the Flywheel MCP server:
 - **Health Diagnostics**: Overall vault health score
 - **Orphan Detection**: Find isolated notes
 - **Link Analysis**: Backlinks, forward links, bidirectional connections
@@ -44,7 +44,7 @@ See **[INSTALLATION.md](INSTALLATION.md)** for detailed platform-specific setup 
 
 **Quick Start:**
 1. Add plugin to Claude Code settings (see INSTALLATION.md)
-2. Create `.obsidian-scribe.json` in your vault root (see Configuration)
+2. Create `.flywheel.json` in your vault root (see Configuration)
 3. Copy rules to your vault (see [rules.md](rules.md))
 4. Restart Claude Code
 
@@ -59,11 +59,11 @@ Claude Code plugins cannot bundle rules - they must be installed to your project
 
 ## Configuration
 
-Create `.obsidian-scribe.json` in your Obsidian vault root:
+Create `.flywheel.json` in your markdown vault root:
 
 ```json
 {
-  "$schema": "./plugins/obsidian-scribe/config/config-schema.json",
+  "$schema": "./plugins/flywheel/config/config-schema.json",
   "vault_name": "My Vault",
   "paths": {
     "daily_notes": "daily-notes",
@@ -111,7 +111,7 @@ Create `.obsidian-scribe.json` in your Obsidian vault root:
 ## Directory Structure
 
 ```
-plugins/obsidian-scribe/
+packages/claude-plugin/
 ├── plugin.json           # Plugin manifest
 ├── config/
 │   └── config-schema.json
@@ -170,7 +170,7 @@ plugins/obsidian-scribe/
 | `food` | "I ate", "breakfast", "lunch" | Log food to daily note |
 | `food-macros` | "macros", "calories" | Calculate daily macros |
 
-### Vault Skills (requires smoking-mirror MCP)
+### Vault Skills (requires Flywheel MCP)
 | Skill | Description |
 |-------|-------------|
 | `health` | Overall vault health diagnostics |
@@ -189,25 +189,25 @@ Autonomous agents for note aggregation:
 
 | Agent | Invocation | Description |
 |-------|------------|-------------|
-| `obsidian-scribe-rollup-agent` | Automatic | Orchestrates complete rollup chain |
-| `obsidian-scribe-weekly-agent` | `2025-W52` | Daily → Weekly aggregation |
-| `obsidian-scribe-monthly-agent` | `2025-12` | Weekly → Monthly aggregation |
-| `obsidian-scribe-quarterly-agent` | `2025-Q4` | Monthly → Quarterly aggregation |
-| `obsidian-scribe-yearly-agent` | `2025` | Quarterly → Yearly aggregation |
+| `rollup-agent` | Automatic | Orchestrates complete rollup chain |
+| `rollup-weekly-agent` | `2025-W52` | Daily → Weekly aggregation |
+| `rollup-monthly-agent` | `2025-12` | Weekly → Monthly aggregation |
+| `rollup-quarterly-agent` | `2025-Q4` | Monthly → Quarterly aggregation |
+| `rollup-yearly-agent` | `2025` | Quarterly → Yearly aggregation |
 
-## Required: smoking-mirror MCP
+## Required: Flywheel MCP Server
 
-This plugin requires the [smoking-mirror](https://github.com/bencassie/smoking-mirror) MCP server for vault intelligence and wikilink management.
+This plugin requires the [@bencassie/flywheel-mcp](https://github.com/bencassie/flywheel) MCP server for vault intelligence and wikilink management.
 
 Add to your Claude settings:
 ```json
 {
   "mcpServers": {
-    "smoking-mirror": {
+    "flywheel": {
       "command": "npx",
-      "args": ["-y", "@bencassie/smoking-mirror"],
+      "args": ["-y", "@bencassie/flywheel-mcp"],
       "env": {
-        "VAULT_PATH": "/path/to/your/vault"
+        "PROJECT_PATH": "/path/to/your/vault"
       }
     }
   }

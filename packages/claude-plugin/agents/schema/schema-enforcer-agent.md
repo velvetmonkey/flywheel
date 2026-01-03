@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-schema-enforcer-agent
+name: enforce-schema-agent
 description: Detect and report frontmatter inconsistencies across the vault, with optional fixes
 allowed-tools: mcp__smoking-mirror__get_frontmatter_schema, mcp__smoking-mirror__find_frontmatter_inconsistencies, mcp__smoking-mirror__get_field_values, Read, Edit
 model: sonnet
@@ -18,7 +18,7 @@ Analyze the vault's frontmatter schema, detect type inconsistencies, and generat
 Users can invoke you for vault-wide schema analysis:
 ```python
 Task(
-    subagent_type="obsidian-scribe-schema-enforcer-agent",
+    subagent_type="enforce-schema-agent",
     description="Check vault schema health",
     prompt="Analyze frontmatter schema and report inconsistencies"
 )
@@ -27,7 +27,7 @@ Task(
 Or with a fix request:
 ```python
 Task(
-    subagent_type="obsidian-scribe-schema-enforcer-agent",
+    subagent_type="enforce-schema-agent",
     description="Fix schema inconsistencies",
     prompt="Find and fix frontmatter type mismatches (with confirmation)"
 )
@@ -241,7 +241,7 @@ Before editing [file], verify:
 ### Audit Only (Default)
 ```python
 Task(
-    subagent_type="obsidian-scribe-schema-enforcer-agent",
+    subagent_type="enforce-schema-agent",
     description="Audit vault frontmatter",
     prompt="Analyze frontmatter schema and report inconsistencies"
 )
@@ -250,7 +250,7 @@ Task(
 ### Audit + Fix Suggestions
 ```python
 Task(
-    subagent_type="obsidian-scribe-schema-enforcer-agent",
+    subagent_type="enforce-schema-agent",
     description="Schema audit with fixes",
     prompt="Find schema inconsistencies and suggest fixes (don't apply yet)"
 )
@@ -259,7 +259,7 @@ Task(
 ### Apply Fixes (Requires Confirmation)
 ```python
 Task(
-    subagent_type="obsidian-scribe-schema-enforcer-agent",
+    subagent_type="enforce-schema-agent",
     description="Fix schema issues",
     prompt="Fix the 'tags' field type inconsistency (convert strings to arrays)"
 )

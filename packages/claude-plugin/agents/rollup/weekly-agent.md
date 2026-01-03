@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-weekly-agent
+name: rollup-weekly-agent
 description: Extract achievements and data from daily notes into weekly summary. Args YYYY-WXX (optional)
 allowed-tools: Read, Edit, Bash(python -c:*), Glob, Grep
 model: sonnet
@@ -202,7 +202,7 @@ NO CODE BLOCKS for log entries
 
 This agent is invoked by rollup-agent:
 ```
-Task(subagent_type="obsidian-scribe-weekly-agent", prompt="Process week 2025-W52")
+Task(subagent_type="rollup-weekly-agent", prompt="Process week 2025-W52")
 ```
 
 ## Expected Output

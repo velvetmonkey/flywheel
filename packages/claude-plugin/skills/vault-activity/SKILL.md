@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-activity
+name: show-activity
 description: Get a summary of vault activity over a period. Triggers on "activity summary", "vault activity", "what happened this week", "editing patterns".
 auto_trigger: true
 trigger_keywords:

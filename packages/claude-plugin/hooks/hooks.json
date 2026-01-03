@@ -1,5 +1,5 @@
 {
-  "description": "Obsidian Scribe plugin hooks for vault automation - requires Python 3.8+",
+  "description": "Flywheel plugin hooks for vault automation - requires Python 3.8+",
   "hooks": {
     "SessionStart": [
       {

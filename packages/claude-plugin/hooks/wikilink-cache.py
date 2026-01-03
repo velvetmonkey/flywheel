@@ -126,8 +126,8 @@ def rebuild_wikilink_cache():
         'total_entities': sum(len(v) for v in categorized.values()),
         'generated_at': datetime.now().isoformat(),
         'vault_path': str(vault_path),
-        'source': 'obsidian-scribe wikilink-cache hook',
-        'generator': 'obsidian-scribe v1.0.0'
+        'source': 'flywheel wikilink-cache hook',
+        'generator': 'flywheel v1.0.0'
     }
 
     # Save cache

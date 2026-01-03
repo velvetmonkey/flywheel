@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-health
+name: check-health
 description: Comprehensive vault diagnostics and health report. Triggers when user mentions "vault health", "health report", "vault diagnostics".
 auto_trigger: true
 trigger_keywords:

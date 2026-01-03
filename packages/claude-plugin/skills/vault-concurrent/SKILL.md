@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-concurrent
+name: show-concurrent
 description: Find notes edited around the same time as a given note. Triggers on "concurrent notes", "edited around same time", "what else was I working on", "contemporaneous".
 auto_trigger: true
 trigger_keywords:

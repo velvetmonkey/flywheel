@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-find-sections
+name: find-sections
 description: Find all sections across vault matching a heading pattern. Triggers on "find sections", "notes with heading", "all X sections", "which notes have".
 auto_trigger: true
 trigger_keywords:

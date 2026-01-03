@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-path
+name: show-path
 description: Find the shortest path of links between two notes. Triggers on "path between", "how do X and Y connect", "connection chain", "link path".
 auto_trigger: true
 trigger_keywords:

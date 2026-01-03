@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-due
+name: show-due
 description: Get tasks sorted by due date, focusing on upcoming deadlines. Triggers on "due tasks", "upcoming deadlines", "what's due", "deadlines".
 auto_trigger: true
 trigger_keywords:

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Obsidian Scribe Configuration Loader
+Flywheel Configuration Loader
 
-Loads configuration from .obsidian-scribe.json in vault root.
+Loads configuration from .flywheel.json in vault root.
 Falls back to defaults if no config file exists.
 
 Usage:
@@ -69,7 +69,7 @@ def find_vault_root(start_path: Path = None) -> Path:
 
 def load_config(vault_path: Path = None) -> dict:
     """
-    Load configuration from .obsidian-scribe.json.
+    Load configuration from .flywheel.json.
 
     Args:
         vault_path: Path to vault root. If None, auto-detects.
@@ -80,7 +80,7 @@ def load_config(vault_path: Path = None) -> dict:
     if vault_path is None:
         vault_path = find_vault_root()
 
-    config_file = vault_path / '.obsidian-scribe.json'
+    config_file = vault_path / '.flywheel.json'
 
     if config_file.exists():
         try:

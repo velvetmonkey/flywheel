@@ -1,1 +1,1 @@
-"""Shared library modules for obsidian-scribe hooks and agents."""
+"""Shared library modules for flywheel hooks and agents."""

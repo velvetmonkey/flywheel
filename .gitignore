@@ -24,7 +24,7 @@ nul
 .mcp.json
 api-keys.json
 credentials.json
-.obsidian-scribe.local.json
+.flywheel.local.json
 
 # Claude Code
 .claude/

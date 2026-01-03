@@ -1,5 +1,5 @@
 ---
-name: obsidian-scribe-common
+name: find-common
 description: Find notes that two specified notes both link to (common neighbors). Triggers on "common references", "shared links", "what do X and Y both link to", "common neighbors".
 auto_trigger: true
 trigger_keywords:
