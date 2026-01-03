@@ -1,5 +1,5 @@
 ---
-name: check-strength
+name: check-link-strength
 description: Calculate connection strength between two notes based on multiple factors. Triggers on "connection strength", "how related", "relationship score", "strength between".
 auto_trigger: true
 trigger_keywords:

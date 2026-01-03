@@ -1,5 +1,5 @@
 ---
-name: show-due
+name: show-due-tasks
 description: Get tasks sorted by due date, focusing on upcoming deadlines. Triggers on "due tasks", "upcoming deadlines", "what's due", "deadlines".
 auto_trigger: true
 trigger_keywords:
