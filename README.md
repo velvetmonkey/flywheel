@@ -77,6 +77,14 @@ Flywheel supports BOTH knowledge management philosophies:
 /plugin install flywheel@bencassie-flywheel
 ```
 
+### Updating
+
+Plugins don't auto-update. To get the latest version:
+
+```bash
+/plugin update flywheel@bencassie-flywheel
+```
+
 ### 2. Setup & Onboard
 
 Just say: **"setup flywheel"**
