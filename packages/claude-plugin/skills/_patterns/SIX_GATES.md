@@ -1,3 +1,23 @@
+---
+name: six-gates
+description: Mandatory safety framework for all Flywheel extensions. Explains the six gates pattern and provides compliance templates.
+auto_trigger: true
+trigger_keywords:
+  - "six gates"
+  - "safety framework"
+  - "gate pattern"
+  - "mutation safety"
+  - "flywheel safety"
+  - "skill template"
+  - "compliance checklist"
+  - "how to write a skill"
+  - "skill guidelines"
+  - "extension guidelines"
+  - "hook requirements"
+  - "mcp tool requirements"
+allowed-tools: Read
+---
+
 # Six Gates Safety Framework
 
 **STATUS: MANDATORY**

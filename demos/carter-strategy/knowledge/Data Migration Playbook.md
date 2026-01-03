@@ -14,13 +14,13 @@ tags:
 ---
 # [[Data Migration Playbook]]
 
-## Overview
+## [[Overview
 
-Standard methodology for enterprise data migration projects. This playbook has been refined through 8+ client engagements and covers the full lifecycle from discovery to post-migration support.
+Standard]] methodology for enterprise data migration projects. This playbook has been refined through 8+ client engagements and covers the full lifecycle from discovery to post-migration support.
 
-**[[Last Reviewed]]**: [[June 2024]] (needs update)
+[[Last Reviewed]]: [[June 2024]] (needs update)
 **Version**: 2.1
-**[[Used In]]**: [[Acme Data Migration]], [[GlobalBank API Audit]]
+[[Used In]]: [[Acme Data Migration]], [[GlobalBank API Audit]]
 
 ## When to Use
 
@@ -33,7 +33,7 @@ This playbook applies when:
 ## [[Phase 1]]: Discovery ([[Week 1]]-2)
 
 ### Objectives
-- Understand current state data landscape
+- Understand [[Current State]] data landscape
 - Identify data owners and stakeholders
 - Document data quality issues
 - Establish success criteria
@@ -45,7 +45,7 @@ This playbook applies when:
 - [ ] Risk register
 
 ### [[Workshop Agenda
-Use [[Discovery Workshop Template]] for structured sessions:
+Use]] [[Discovery Workshop Template]] for structured sessions:
 1. Current state walkthrough (2 hours)
 2. Pain points and goals (1 hour)
 3. Data flow mapping (2 hours)
@@ -82,10 +82,10 @@ Use [[Discovery Workshop Template]] for structured sessions:
 - Prepare rollback procedures
 
 ### [[Sprint Structure]]
-- **[[Sprint 1]]**: Core tables, happy path
-- **[[Sprint 2]]**: Edge cases, error handling
-- **[[Sprint 3]]**: Performance optimization
-- **[[Sprint 4]]**: Integration, documentation
+- [[Sprint 1]]: Core tables, happy path
+- [[Sprint 2]]: Edge cases, [[Error Handling]]
+- [[Sprint 3]]: Performance optimization
+- [[Sprint 4]]: Integration, documentation
 
 ### [[Code Standards]]
 - Version control all scripts (Git)
@@ -135,7 +135,7 @@ Use [[Discovery Workshop Template]] for structured sessions:
 ## [[Phase 6]]: Support ([[Week 13]]-16)
 
 ### Post-[[Migration Activities]]
-- Daily validation reports (Week 1)
+- Daily validation reports ([[Week 1]])
 - Issue triage and resolution
 - Knowledge transfer to client team
 - Documentation handover
@@ -182,10 +182,10 @@ Use [[Discovery Workshop Template]] for structured sessions:
 
 ## Tasks
 
-- [ ] Update with Acme lessons learned 📅 2026-01-10
+- [ ] Update with Acme [[Lessons Learned]] 📅 2026-01-10
 - [ ] Add section on cloud-native patterns 📅 2026-01-31
 - [ ] Review with peer consultant 📅 2026-02-15
 
 ---
 
-*This playbook needs review - last updated June 2024*
+*This playbook needs review - last updated [[June 2024]]*
