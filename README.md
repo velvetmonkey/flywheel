@@ -36,7 +36,10 @@ flywheel/
 │   ├── mcp-server/          # Graph + schema intelligence
 │   └── claude-plugin/       # Workflows and automation
 ├── demos/
-│   └── artemis-rocket/      # First demo: aerospace startup
+│   ├── artemis-rocket/      # Demo 1: Aerospace startup
+│   ├── carter-strategy/     # Demo 2: Management consulting
+│   ├── nexus-lab/           # Demo 3: Research lab
+│   └── startup-ops/         # Demo 4: B2B SaaS startup (NEW)
 └── docs/                    # Self-documenting vault
 ```
 
@@ -146,12 +149,28 @@ See [packages/claude-plugin/INSTALLATION.md](packages/claude-plugin/INSTALLATION
 
 Each demo shows how AI + markdown replace traditional business software:
 
-| Demo | Replaces | Key Insight |
-|------|----------|-------------|
-| **Artemis Rocket** | 200-person aerospace corp | Engineering at 10x efficiency |
-| **Consulting Firm** | Partner-heavy firm | One person = 5-person team |
-| **Startup Ops** | Founders doing everything | AI handles ops, humans do strategy |
-| **Research Lab** | Manual literature review | 100 papers/week processed |
+| Demo | Replaces | Key Insight | Status |
+|------|----------|-------------|--------|
+| **[Artemis Rocket](./demos/artemis-rocket)** | 200-person aerospace corp | Engineering at 10x efficiency | ✅ Complete |
+| **[Carter Strategy](./demos/carter-strategy)** | Partner-heavy consultancy | One person = 5-person team | ✅ Complete |
+| **[Nexus Lab](./demos/nexus-lab)** | Research lab | 100 papers/week processed | ✅ Complete |
+| **[Startup Ops](./demos/startup-ops)** | B2B SaaS founders | AI handles ops, humans do strategy | ✅ Complete |
+
+### Startup Ops Demo (New!)
+
+**Scenario**: Two co-founders (Alex & Jamie) building "MetricFlow" - a B2B SaaS analytics platform. 30 notes showing operational automation with zone separation:
+
+- **Ops Zone** (`ops/`) - AI-managed playbooks, customer records, recurring tasks
+- **Product Zone** (`product/`) - Human-reviewed roadmap and strategic decisions
+- **Finance Zone** (`finance/`) - Mixed automation for MRR tracking and fundraising
+
+**Features Showcased**:
+1. **Bidirectional Bridge** - Prose patterns ↔ Frontmatter (8 instances)
+2. **Knowledge Handoff** - Zone-based automation (`ai-managed` vs `human-review`)
+3. **Schema Validation** - Intentional type inconsistencies for demonstration
+4. **Workflow Automation** - Playbook execution and recurring task templates
+
+**Try it**: `cd demos/startup-ops && cat README.md`
 
 ## Why Flywheel?
 
@@ -184,7 +203,7 @@ Not tied to any specific UI - works everywhere.
 - MCP server with 40+ graph intelligence tools
 - Claude plugin with 30+ vault skills
 - Zero-config periodic note detection
-- Artemis Rocket demo vault (aerospace startup template)
+- 4 demo vaults: Artemis Rocket, Carter Strategy, Nexus Lab, Startup Ops
 - Marketplace-based plugin installation
 - Cross-platform support (macOS, Linux, Windows, WSL)
 

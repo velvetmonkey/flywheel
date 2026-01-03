@@ -29,7 +29,8 @@
     "dev:mcp": "npm run dev -w @flywheel-ai/mcp-server",
     "dev:plugin": "npm run dev -w @flywheel-ai/claude-plugin",
     "lint": "npm run lint --workspaces",
-    "clean": "npm run clean --workspaces && rm -rf node_modules"
+    "clean": "npm run clean --workspaces && rm -rf node_modules",
+    "validate:agents": "python packages/claude-plugin/scripts/validate-agents.py"
   },
   "devDependencies": {
     "typescript": "^5.3.3"

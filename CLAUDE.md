@@ -56,25 +56,47 @@ See full documentation in `packages/mcp-server/docs/BIDIRECTIONAL.md`
 5. **Progressive disclosure**: Simple to start, powerful when needed
 6. **Preserve working tech**: WSL + Windows tested and working
 
-## Six Gates Safety Framework (MANDATORY)
+## Six Gates Safety Framework (MANDATORY - ENFORCED)
 
 **CRITICAL**: All Flywheel extensions MUST observe the Six Gates. This is not optional.
 
 See full specification: `packages/claude-plugin/skills/_patterns/SIX_GATES.md`
 
-| Gate | Purpose | Enforcement |
-|------|---------|-------------|
-| **1. Tool Selection** | Read before write | Use read-only tools first |
-| **2. Precondition Checks** | Validate targets | Check files exist before mutation |
-| **3. Agent Chain Validation** | Verify each step | Confirm success before proceeding |
-| **4. Destructive Command Guard** | User confirmation | Show preview, ask before writing |
-| **5. MCP Connection Verification** | Health check | `session-gate.py` runs at start |
-| **6. Post-Execution Validation** | Verify writes | `verify-mutation.py` validates syntax |
+| Gate | Purpose | Enforcement | Blocks? |
+|------|---------|-------------|---------|
+| **1. Read Before Write** | Read before write | `pre-mutation-gate.py` | YES |
+| **2. File Exists for Edit** | Validate targets | `pre-mutation-gate.py` | YES |
+| **3. Agent Chain Validation** | Verify each step | `.claude/hooks/` | YES |
+| **4. Mutation Confirmation** | User confirmation | `pre-mutation-gate.py` | YES |
+| **5. MCP Health Check** | Health check | `session-gate.py` | WARN |
+| **6. Post-Execution Validation** | Verify writes | `verify-mutation.py` | WARN |
 
 **When writing new skills/tools:**
 - Include Six Gates compliance checklist in SKILL.md
 - Use the template in `skills/_patterns/SIX_GATES.md`
 - Test all six gates before merging
+
+## Agent Development Rules (GATE 3 ENFORCED)
+
+**CRITICAL**: Gate 3 is enforced by project-level hooks. Non-compliant agents will be BLOCKED.
+
+**Before creating any new agent:**
+
+1. Check if it's multi-step (calls `Task()`)
+2. If multi-step, MUST include:
+   - `## Critical Rules` section with sequential execution
+   - Error handling strategy
+   - Verification checkpoints between phases
+   - Expected output showing ✓/✗ for each step
+3. Use template: `packages/claude-plugin/agents/_templates/MULTI_STEP_AGENT.md`
+4. Run `npm run validate:agents` before committing
+
+**Hooks that enforce Gate 3:**
+- `.claude/hooks/validate-agent-gate3.py` - BLOCKS Write of non-compliant agents
+- `.claude/hooks/validate-agent-gate3-post.py` - WARNS after Edit operations
+- `packages/claude-plugin/scripts/validate-agents.py` - CI/build validation
+
+**Agents that fail validation will be REJECTED.**
 
 ## Cross-Platform Support
 

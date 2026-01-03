@@ -4,15 +4,38 @@ name: six-gates
 description: |
   REFERENCE DOCUMENT - Not a skill.
   Mandatory safety framework for all Flywheel extensions.
-  Gates are enforced by hooks (session-gate.py, verify-mutation.py), not by this file.
+  Gates are enforced by hooks (pre-mutation-gate.py, session-gate.py, verify-mutation.py), not by this file.
   Read this when writing new skills, agents, hooks, or MCP tools.
 ---
 
 # Six Gates Safety Framework
 
-**STATUS: MANDATORY**
+**STATUS: MANDATORY - ENFORCED BY HOOKS**
 
 This document defines the Six Gates safety pattern. **All Flywheel skills, agents, hooks, and MCP tools MUST observe these gates.** This is not optional.
+
+---
+
+## Enforcement Status (v1.6.2)
+
+| Gate | Enforcement | Hook | Can Block? |
+|------|-------------|------|------------|
+| **1. Read Before Write** | ENFORCED | pre-mutation-gate.py (PreToolUse) | YES |
+| **2. File Exists for Edit** | ENFORCED | pre-mutation-gate.py (PreToolUse) | YES |
+| **3. Agent Chain Validation** | ENFORCED | .claude/hooks/ (PreToolUse) | YES |
+| **4. Mutation Confirmation** | ENFORCED | pre-mutation-gate.py (PreToolUse) | YES |
+| **5. MCP Health Check** | WARN ONLY | session-gate.py (SessionStart) | NO |
+| **6. Post-Write Validation** | WARN ONLY | verify-mutation.py (PostToolUse) | NO |
+
+### Two-Level Hook Architecture
+
+```
+Plugin Level (for ALL users)          Project Level (for developers)
+packages/claude-plugin/hooks/         .claude/hooks/
+├── pre-mutation-gate.py (1,2,4)      ├── validate-agent-gate3.py (3)
+├── session-gate.py (5)               └── validate-agent-gate3-post.py (3)
+└── verify-mutation.py (6)
+```
 
 ---
 
@@ -309,13 +332,25 @@ When reviewing Flywheel code, verify:
 ### Automated Verification
 
 The following hooks enforce gates automatically:
-- `session-gate.py` → Gate 5
-- `verify-mutation.py` → Gate 6
+
+**Plugin Level (PreToolUse - CAN BLOCK):**
+- `pre-mutation-gate.py` → Gates 1, 2, 4 (blocks unsafe mutations)
+
+**Plugin Level (SessionStart/PostToolUse - WARN ONLY):**
+- `session-gate.py` → Gate 5 (warns if MCP may not work)
+- `verify-mutation.py` → Gate 6 (validates syntax after write)
 - `syntax-validate.py` → Gate 6 (syntax fixes)
 - `wikilink-suggest.py` → Gate 2 (vault boundary check)
+
+**Project Level (for Flywheel development):**
+- `.claude/hooks/validate-agent-gate3.py` → Gate 3 (blocks non-compliant agents)
+- `.claude/hooks/validate-agent-gate3-post.py` → Gate 3 (warns after edit)
+- `packages/claude-plugin/scripts/validate-agents.py` → Gate 3 (CI validation)
 
 ---
 
 ## Version History
 
+- **1.6.2** (2025-01-03): REAL enforcement via PreToolUse hooks (Gates 1,2,4 block, Gate 3 at project level)
+- **1.6.1** (2025-01-02): Added session-gate.py and verify-mutation.py (warn only)
 - **1.0.0** (2024-01-15): Initial Six Gates framework
