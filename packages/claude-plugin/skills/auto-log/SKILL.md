@@ -99,6 +99,17 @@ User prompts that trigger this skill:
 - If daily note doesn't exist, create it using the template
 - Preserve existing log formatting and order
 
+## Six Gates Compliance
+
+| Gate | Implementation |
+|------|----------------|
+| 1. Read Before Write | Reads daily note before adding entry (step 4) |
+| 2. File Exists | Validates daily note exists; creates if missing |
+| 3. Chain Validation | N/A (single operation) |
+| 4. Mutation Confirmation | Entry shown to user before write |
+| 5. Health Check | Uses vault config infrastructure |
+| 6. Post Validation | Confirms entry added with timestamp display |
+
 ## Configuration
 
 This skill uses these config values:

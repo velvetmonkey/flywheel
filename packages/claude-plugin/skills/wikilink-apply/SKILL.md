@@ -153,3 +153,14 @@ Works seamlessly with `wikilink-suggest.py` hook:
 **Partial matches**: "APIs" won't match [[API]] (word boundary protection)
 **Already linked aliases**: Don't re-link `[[Entity|Alias]]` usage
 **Case variations**: "databricks", "Databricks", "DATABRICKS" all link to [[Databricks]]
+
+## Six Gates Compliance
+
+| Gate | Implementation |
+|------|----------------|
+| 1. Read Before Write | Reads file before applying wikilinks (step 3) |
+| 2. File Exists | Validates target file exists before processing |
+| 3. Chain Validation | N/A (single operation) |
+| 4. Mutation Confirmation | Shows preview of entities to be linked (step 5) |
+| 5. Health Check | Uses cache or MCP for entity resolution |
+| 6. Post Validation | Reports count of wikilinks applied (step 7) |

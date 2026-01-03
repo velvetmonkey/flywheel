@@ -134,6 +134,17 @@ User prompts that DO NOT trigger this skill:
 - **Task format**: Use `- [ ] #task HH:MM description 📅 YYYY-MM-DD`
 - **Wikilinks**: Preserve any [[wikilinks]] in the user's description
 
+## Six Gates Compliance
+
+| Gate | Implementation |
+|------|----------------|
+| 1. Read Before Write | Reads daily note before adding task (step 6) |
+| 2. File Exists | Validates daily note exists; creates if missing |
+| 3. Chain Validation | N/A (single operation) |
+| 4. Mutation Confirmation | Task shown to user before write |
+| 5. Health Check | Uses vault config infrastructure |
+| 6. Post Validation | Confirms task added with timestamp and due date |
+
 ## Configuration
 
 This skill uses these config values:

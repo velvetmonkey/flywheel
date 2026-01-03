@@ -9,9 +9,15 @@ Gate 4: Mutation Confirmation - Ask user to confirm
 
 Exit codes:
 - 0: Always (decision communicated via JSON output)
+
+Session Read Cache:
+Gate 1 uses transcript to find prior Read events, but transcript is lost
+when context is summarized. To fix this, we also maintain a session-scoped
+cache file that persists reads across summarization.
 """
 
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -20,6 +26,40 @@ try:
     sys.stdout.reconfigure(encoding='utf-8')
 except AttributeError:
     pass
+
+# Session read cache - persists across context summarization
+# Uses session_id from hook input to scope the cache
+CACHE_DIR = Path(os.environ.get('CLAUDE_LOCAL_STATE_DIR', Path.home() / '.claude'))
+
+
+def get_session_cache_path(session_id: str) -> Path:
+    """Get the cache file path for this session."""
+    cache_dir = CACHE_DIR / 'gate1-reads'
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    return cache_dir / f'{session_id}.json'
+
+
+def load_session_reads(session_id: str) -> set:
+    """Load the set of read file paths for this session."""
+    if not session_id:
+        return set()
+    cache_path = get_session_cache_path(session_id)
+    try:
+        if cache_path.exists():
+            with open(cache_path, 'r', encoding='utf-8') as f:
+                return set(json.load(f))
+    except (json.JSONDecodeError, PermissionError, OSError):
+        pass
+    return set()
+
+
+def has_session_read(session_id: str, file_path: str) -> bool:
+    """Check if file was read in this session (from cache)."""
+    if not session_id:
+        return False
+    reads = load_session_reads(session_id)
+    normalized = str(Path(file_path).resolve())
+    return normalized in reads
 
 
 def load_transcript(transcript_path):
@@ -93,19 +133,27 @@ def main():
 
     # GATE 1: Read before write (for .md files only)
     if is_markdown:
+        session_id = hook_input.get('session_id', '')
         transcript_path = hook_input.get('transcript_path', '')
+
+        # Check BOTH transcript AND session cache (cache survives context summarization)
+        found_in_transcript = False
+        found_in_cache = has_session_read(session_id, file_path)
+
         if transcript_path:
             events = load_transcript(transcript_path)
-            if not has_prior_read(events, file_path):
-                output = {
-                    "hookSpecificOutput": {
-                        "hookEventName": "PreToolUse",
-                        "permissionDecision": "deny",
-                        "permissionDecisionReason": f"GATE 1 BLOCKED: Must Read '{Path(file_path).name}' before editing. This prevents overwriting content you haven't reviewed."
-                    }
+            found_in_transcript = has_prior_read(events, file_path)
+
+        if not found_in_transcript and not found_in_cache:
+            output = {
+                "hookSpecificOutput": {
+                    "hookEventName": "PreToolUse",
+                    "permissionDecision": "deny",
+                    "permissionDecisionReason": f"GATE 1 BLOCKED: Must Read '{Path(file_path).name}' before editing. This prevents overwriting content you haven't reviewed."
                 }
-                print(json.dumps(output))
-                sys.exit(0)
+            }
+            print(json.dumps(output))
+            sys.exit(0)
 
     # GATE 4: Confirmation for mutations
     # Use "ask" to prompt user (respects permissions.allow if configured)

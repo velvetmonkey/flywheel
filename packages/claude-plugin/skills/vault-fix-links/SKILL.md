@@ -148,6 +148,17 @@ Broken Links Analysis
 ═══════════════════════════════════════════════
 ```
 
+## Six Gates Compliance
+
+| Gate | Implementation |
+|------|----------------|
+| 1. Read Before Write | Finds all broken links via MCP before any fixes |
+| 2. File Exists | Validates target notes exist for link suggestions |
+| 3. Chain Validation | Agent verifies each fix before proceeding |
+| 4. Mutation Confirmation | Shows preview, requires explicit "yes" to proceed |
+| 5. Health Check | Uses MCP find_broken_links for vault access |
+| 6. Post Validation | Agent reports what was fixed after completion |
+
 ## Safety
 
 - **Non-destructive**: Only suggests, doesn't auto-apply

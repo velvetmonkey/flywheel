@@ -29,6 +29,15 @@
     ],
     "PostToolUse": [
       {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/read-cache.py\""
+          }
+        ]
+      },
+      {
         "matcher": "Edit|Write",
         "hooks": [
           {

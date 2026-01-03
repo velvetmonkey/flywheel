@@ -186,6 +186,17 @@ When applying links automatically:
   - Hook uses cache, this skill uses MCP (more accurate)
   - Hook is automatic, this skill requires invocation
 
+## Six Gates Compliance
+
+| Gate | Implementation |
+|------|----------------|
+| 1. Read Before Write | Reads note content before suggesting links |
+| 2. File Exists | Validates note and link targets exist |
+| 3. Chain Validation | N/A (single operation) |
+| 4. Mutation Confirmation | Shows suggestions with confidence scores, user selects |
+| 5. Health Check | Uses MCP suggest_wikilinks for vault access |
+| 6. Post Validation | Reports count of wikilinks applied |
+
 ## Performance
 
 - **MCP call (suggest)**: ~500ms-1s depending on note length

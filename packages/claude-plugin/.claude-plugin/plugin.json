@@ -1,6 +1,6 @@
 {
   "name": "flywheel",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Wikilink automation, periodic note rollups, vault health, and privacy protection for markdown vaults",
   "author": {
     "name": "Ben Cassie",

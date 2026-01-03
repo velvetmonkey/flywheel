@@ -150,6 +150,17 @@ User can request:
 
 Always clarify scope if ambiguous.
 
+## Six Gates Compliance
+
+| Gate | Implementation |
+|------|----------------|
+| 1. Read Before Write | Reads existing summaries before aggregating |
+| 2. File Exists | Validates note folders exist via config |
+| 3. Chain Validation | Agent verifies each step (daily→weekly→monthly→etc.) |
+| 4. Mutation Confirmation | Confirms scope with user before processing (step 1) |
+| 5. Health Check | Uses vault config infrastructure |
+| 6. Post Validation | Reports what was processed and updated (step 4) |
+
 ## Configuration
 
 This skill uses these config values:

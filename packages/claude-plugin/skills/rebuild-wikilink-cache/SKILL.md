@@ -167,11 +167,22 @@ Write to `.claude/wikilink-entities.json`:
 
 ## When to Rebuild
 
-- ✅ After adding many new notes
-- ✅ Weekly/monthly maintenance
-- ✅ After major vault reorganization
-- ✅ After adding aliases to frontmatter
-- ✅ When wikilink suggestions seem outdated
+- After adding many new notes
+- Weekly/monthly maintenance
+- After major vault reorganization
+- After adding aliases to frontmatter
+- When wikilink suggestions seem outdated
+
+## Six Gates Compliance
+
+| Gate | Implementation |
+|------|----------------|
+| 1. Read Before Write | Reads vault entities via MCP before writing cache |
+| 2. File Exists | N/A (creates cache file if missing) |
+| 3. Chain Validation | N/A (single operation) |
+| 4. Mutation Confirmation | Reports entity count before saving |
+| 5. Health Check | Uses MCP get_all_entities for vault access |
+| 6. Post Validation | Reports cache file location and stats |
 
 ---
 

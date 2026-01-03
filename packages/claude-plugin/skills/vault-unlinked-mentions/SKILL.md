@@ -170,6 +170,17 @@ Note: Only first occurrence linked (convention to avoid cluttering text).
 - **fix-links**: Fixes broken links (this skill creates NEW links)
 - **rebuild-wikilink-cache**: Updates entity cache (run before this if cache is stale)
 
+## Six Gates Compliance
+
+| Gate | Implementation |
+|------|----------------|
+| 1. Read Before Write | Reads each file before applying wikilinks |
+| 2. File Exists | Validates entity note exists before linking |
+| 3. Chain Validation | N/A (single operation) |
+| 4. Mutation Confirmation | Shows mentions found, user chooses auto or review |
+| 5. Health Check | Uses MCP get_unlinked_mentions for vault access |
+| 6. Post Validation | Reports count of wikilinks applied per file |
+
 ## Performance
 
 - **MCP call**: ~200-500ms for typical entity
