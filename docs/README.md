@@ -98,7 +98,7 @@ See [demos/README.md](../demos/README.md) for full list.
 
 ## Version
 
-- **Current**: 1.9.0
+- **Current**: 1.10.0
 - **Roadmap**: [ROADMAP.md](ROADMAP.md)
 - **Changelog**: See git log
 

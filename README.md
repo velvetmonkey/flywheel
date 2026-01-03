@@ -300,10 +300,15 @@ Try Flywheel with 4 real-world scenarios:
 
 ## Development Status
 
-**Current**: v1.9.0 - Documentation & Onboarding
+**Current**: v1.10.0 - Update Notifications
 **Next**: v2.0 - Enterprise Features
 
 ### Recent Updates
+
+**v1.10.0** (2026-01-03)
+- Update notifications on session start when new version available
+- Copy-paste ready update command in notification box
+- Daily check with local caching (no spam)
 
 **v1.9.0** (2026-01-03)
 - New `setup-flywheel` skill with 4-phase onboarding flow

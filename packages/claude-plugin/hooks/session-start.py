@@ -8,6 +8,7 @@ Delegates wikilink cache rebuild to wikilink-cache.py (SRP).
 import json
 import sys
 import subprocess
+import urllib.request
 from datetime import datetime
 from pathlib import Path
 
@@ -20,6 +21,75 @@ except AttributeError:
 # Add parent directory to path for config import
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config.loader import load_config, get_path
+
+
+def get_current_version():
+    """Read current version from plugin.json."""
+    try:
+        plugin_json = Path(__file__).parent.parent / '.claude-plugin' / 'plugin.json'
+        if plugin_json.exists():
+            data = json.loads(plugin_json.read_text(encoding='utf-8'))
+            return data.get('version', '0.0.0')
+    except Exception:
+        pass
+    return '0.0.0'
+
+
+def check_for_updates():
+    """Check GitHub for newer version. Returns update message or empty string."""
+    current_version = get_current_version()
+
+    # Cache file to avoid checking every session (check once per day)
+    cache_file = Path.home() / '.flywheel-update-check'
+
+    try:
+        # Check cache first
+        if cache_file.exists():
+            mtime = datetime.fromtimestamp(cache_file.stat().st_mtime)
+            if (datetime.now() - mtime).total_seconds() < 86400:  # 24 hours
+                cached = cache_file.read_text(encoding='utf-8').strip()
+                if cached and cached != current_version:
+                    return format_update_message(current_version, cached)
+                return ""
+
+        # Fetch latest release from GitHub
+        url = "https://api.github.com/repos/bencassie/flywheel/releases/latest"
+        req = urllib.request.Request(url, headers={'User-Agent': 'flywheel-plugin'})
+        with urllib.request.urlopen(req, timeout=3) as response:
+            data = json.loads(response.read().decode('utf-8'))
+            latest = data.get('tag_name', '').lstrip('v')
+
+        # Cache the result
+        try:
+            cache_file.write_text(latest, encoding='utf-8')
+        except Exception:
+            pass  # Cache write failed, continue anyway
+
+        # Compare versions
+        if latest and latest != current_version:
+            return format_update_message(current_version, latest)
+        return ""
+
+    except Exception:
+        # Network error, rate limit, timeout - silently fail
+        return ""
+
+
+def format_update_message(current_version, latest_version):
+    """Format the update notification box."""
+    cmd = "/plugin update flywheel@bencassie-flywheel"
+    url = "https://github.com/bencassie/flywheel/releases"
+
+    return f"""
+╔════════════════════════════════════════════════════════════════╗
+║  Flywheel v{latest_version} available (you have v{current_version})
+║
+║  To update, copy and paste this command:
+║  {cmd}
+║
+║  What's new: {url}
+╚════════════════════════════════════════════════════════════════╝
+"""
 
 
 def get_vault_path():
@@ -141,8 +211,11 @@ def main():
         achievements = get_recent_achievements(config)
         cache_status = rebuild_wikilink_cache()
 
+        # Check for updates (silent fail if network issues)
+        update_notice = check_for_updates()
+
         # Build context string with available skills for plugin discovery
-        context = f"""Flywheel - Session started: {current_time}
+        context = f"""{update_notice}Flywheel - Session started: {current_time}
 
 {daily_status}
 {cache_status}
