@@ -187,16 +187,46 @@ npm run test
 
 **Trigger support**: Both slash commands (`/vault-health`) AND keywords ("check vault health") for accessibility.
 
-## Plugin Release Workflow
+## Release Workflow (MANDATORY)
 
-When updating the Claude plugin:
-1. Make changes to skills, agents, hooks, or docs
-2. **Bump version** in ALL THREE files:
-   - `.claude-plugin/marketplace.json` (repo root)
-   - `packages/claude-plugin/.claude-plugin/marketplace.json`
-   - `packages/claude-plugin/.claude-plugin/plugin.json`
-3. **Only push when user explicitly asks** - don't auto-push
-4. Users run `/plugin update flywheel@flywheel` to get latest version
+**CRITICAL**: When bumping version numbers, you MUST create a GitHub release.
+
+### Version Files (keep in sync)
+
+ALL version bumps require updating THREE files:
+- `.claude-plugin/marketplace.json` (repo root)
+- `packages/claude-plugin/.claude-plugin/marketplace.json`
+- `packages/claude-plugin/.claude-plugin/plugin.json`
+
+### GitHub Release Process
+
+When version changes:
+1. **Commit** version bump with message: `chore: Bump version to vX.Y.Z`
+2. **Push** to main
+3. **Create GitHub Release**:
+   ```bash
+   gh release create vX.Y.Z --title "vX.Y.Z" --notes "## Changes\n\n- [list changes]"
+   ```
+4. Tag should match version (e.g., `v1.6.3`)
+
+### Release Notes Format
+
+```markdown
+## Changes
+
+- Feature: [description]
+- Fix: [description]
+- Docs: [description]
+
+## Migration Notes
+
+[Any breaking changes or migration steps]
+```
+
+### Don't Auto-Push
+
+- Only push when user explicitly asks
+- Users run `/plugin update flywheel@flywheel` to get latest version
 
 ## Vision
 
