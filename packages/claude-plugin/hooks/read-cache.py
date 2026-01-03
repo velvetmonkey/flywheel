@@ -87,9 +87,9 @@ def record_read(session_id: str, file_path: str) -> None:
     for attempt in range(max_retries):
         try:
             # Use a lock file to ensure atomic read-modify-write
-            with open(lock_path, 'w') as lock_file:
+            with open(lock_path, 'w') as lf:
                 try:
-                    lock_file(lock_file)
+                    lock_file(lf)
 
                     # Load existing reads while holding lock
                     reads = set()
@@ -111,7 +111,7 @@ def record_read(session_id: str, file_path: str) -> None:
 
                 finally:
                     try:
-                        unlock_file(lock_file)
+                        unlock_file(lf)
                     except (OSError, IOError):
                         pass
 
