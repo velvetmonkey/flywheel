@@ -11,10 +11,10 @@ import { registerSystemTools } from './tools/system.js';
 import { registerPrimitiveTools } from './tools/primitives.js';
 import { registerPeriodicTools } from './tools/periodic.js';
 
-const VAULT_PATH = process.env.OBSIDIAN_VAULT_PATH;
+const VAULT_PATH = process.env.PROJECT_PATH;
 
 if (!VAULT_PATH) {
-  console.error('Error: OBSIDIAN_VAULT_PATH environment variable is required');
+  console.error('Error: PROJECT_PATH environment variable is required');
   process.exit(1);
 }
 

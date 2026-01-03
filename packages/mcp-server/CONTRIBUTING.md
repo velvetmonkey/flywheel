@@ -13,7 +13,7 @@ cd flywheel/packages/mcp-server
 npm install
 
 # Run in development mode (requires a vault)
-OBSIDIAN_VAULT_PATH=/path/to/your/vault npm run dev
+PROJECT_PATH=/path/to/your/vault npm run dev
 
 # Run tests
 npm test

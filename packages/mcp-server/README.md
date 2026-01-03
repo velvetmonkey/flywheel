@@ -21,7 +21,7 @@ Add to your project's `.mcp.json` (or `~/.claude/.mcp.json` for global):
       "command": "npx",
       "args": ["-y", "@bencassie/flywheel-mcp"],
       "env": {
-        "OBSIDIAN_VAULT_PATH": "/path/to/vault"
+        "PROJECT_PATH": "/path/to/vault"
       }
     }
   }
@@ -37,7 +37,7 @@ Add to your project's `.mcp.json` (or `~/.claude/.mcp.json` for global):
       "command": "cmd",
       "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
       "env": {
-        "OBSIDIAN_VAULT_PATH": "C:/path/to/vault"
+        "PROJECT_PATH": "C:/path/to/vault"
       }
     }
   }
@@ -48,10 +48,10 @@ Add to your project's `.mcp.json` (or `~/.claude/.mcp.json` for global):
 
 ```bash
 # macOS / Linux
-claude mcp add flywheel --env OBSIDIAN_VAULT_PATH=/path/to/vault -- npx -y @bencassie/flywheel-mcp
+claude mcp add flywheel --env PROJECT_PATH=/path/to/vault -- npx -y @bencassie/flywheel-mcp
 
 # Windows
-claude mcp add flywheel --env OBSIDIAN_VAULT_PATH=C:/path/to/vault -- cmd /c npx -y @bencassie/flywheel-mcp
+claude mcp add flywheel --env PROJECT_PATH=C:/path/to/vault -- cmd /c npx -y @bencassie/flywheel-mcp
 ```
 
 ### Verify
@@ -78,7 +78,7 @@ claude mcp list  # Should show: flywheel ✓
 
 | Environment Variable | Required | Description |
 |---------------------|:--------:|-------------|
-| `OBSIDIAN_VAULT_PATH` | Yes | Path to markdown vault directory |
+| `PROJECT_PATH` | Yes | Path to markdown vault directory |
 
 The server scans the vault on startup and builds an in-memory index. No database required.
 
@@ -136,7 +136,7 @@ The server scans the vault on startup and builds an in-memory index. No database
 npm install
 
 # Run with vault
-OBSIDIAN_VAULT_PATH=/path/to/vault npm run dev
+PROJECT_PATH=/path/to/vault npm run dev
 
 # Build
 npm run build

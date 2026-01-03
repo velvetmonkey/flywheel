@@ -2,6 +2,12 @@
 
 All notable changes to Flywheel MCP server will be documented in this file.
 
+## [1.0.1] - 2026-01-03
+
+### Changed
+
+- **Renamed environment variable** - `OBSIDIAN_VAULT_PATH` → `PROJECT_PATH` for broader applicability
+
 ## [1.2.2] - 2026-01-01
 
 ### Fixed

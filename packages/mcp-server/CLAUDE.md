@@ -14,7 +14,7 @@ Tools across 9 categories: Graph, Wikilinks, Health, Search, Deep Graph, Structu
 
 ```bash
 npm install          # Install dependencies
-npm run dev          # Run server in development (requires OBSIDIAN_VAULT_PATH env var)
+npm run dev          # Run server in development (requires PROJECT_PATH env var)
 npm run build        # Build to dist/ for distribution
 npm run inspect      # Test with MCP inspector
 npm test             # Run tests
@@ -23,7 +23,7 @@ npm test             # Run tests
 To run with a vault:
 
 ```bash
-OBSIDIAN_VAULT_PATH=/path/to/vault npm run dev
+PROJECT_PATH=/path/to/vault npm run dev
 ```
 
 ## Architecture
@@ -62,7 +62,7 @@ src/
 - `gray-matter` - YAML frontmatter parsing
 - `zod` - schema validation
 
-**Environment**: Requires `OBSIDIAN_VAULT_PATH` environment variable pointing to the Obsidian vault directory.
+**Environment**: Requires `PROJECT_PATH` environment variable pointing to the Obsidian vault directory.
 
 ## Development
 
