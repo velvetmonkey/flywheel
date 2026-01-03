@@ -224,6 +224,18 @@ Brief summary of each month:
 - **91 days**: Quarter is approximately 91 days for habit calculations
 - **In-place update**: Modify existing sections, don't append duplicates
 
+### Error Handling
+- If monthly note doesn't exist, skip it and continue with others
+- If quarterly note doesn't exist, report error and exit
+- If aggregation fails, log error and continue with partial data
+- Report all errors in final summary
+
+### Sequential Execution (Gate 3)
+- Complete each phase before proceeding to the next
+- Wait for all monthly notes to be read before aggregating
+- Verify data aggregation before writing to quarterly note
+- Report status with ✓ for completed steps, ✗ for failed steps
+
 ### Tool Usage
 1. **Bash(python -c:*)**: For quarter-to-month mapping
 2. **Read**: To read monthly notes and quarterly note before editing

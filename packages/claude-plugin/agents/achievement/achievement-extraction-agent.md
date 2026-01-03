@@ -261,6 +261,12 @@ File Updated: personal/goals/Achievements.md
 - If Achievements.md doesn't exist, report error and exit
 - If month section can't be created, report error
 
+### Sequential Execution (Gate 3)
+- Complete each phase before proceeding to the next
+- Wait for file reads to complete before processing
+- Verify achievements are written before generating report
+- Report status with ✓ for completed steps, ✗ for failed steps
+
 ### Tool Usage
 - **Read**: To read note files and Achievements.md
 - **Bash(python:*)**: To run achievement detection via shared library

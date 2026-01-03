@@ -191,6 +191,18 @@ NO CODE BLOCKS for log entries
 - **In-place update**: Replace template placeholders, don't append
 - **Handle missing data**: If a daily note doesn't exist, note it and continue
 
+### Error Handling
+- If daily note doesn't exist, skip it and continue with others
+- If weekly note doesn't exist, report error and exit
+- If data extraction fails, log error and continue with partial data
+- Report all errors in final summary
+
+### Sequential Execution (Gate 3)
+- Complete each phase before proceeding to the next
+- Wait for all daily notes to be read before aggregating
+- Verify data extraction before writing to weekly note
+- Report status with ✓ for completed steps, ✗ for failed steps
+
 ### Tool Usage
 1. **Bash(python -c:*)**: For date calculations and week range determination
 2. **Read**: To read daily notes and weekly note before editing

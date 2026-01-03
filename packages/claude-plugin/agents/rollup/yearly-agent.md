@@ -1,6 +1,6 @@
 ---
 name: rollup-yearly-agent
-description: Summarize quarterly notes into yearly summary - Args: [YYYY] (optional)
+description: "Summarize quarterly notes into yearly summary - Args: [YYYY] (optional)"
 allowed-tools: Read, Edit, Bash(python -c:*), Glob, Grep
 model: sonnet
 ---
@@ -246,6 +246,18 @@ Organize by domain/category or chronologically.
 - **365/366 days**: Use correct number of days for the year (check for leap year)
 - **Streak calculation**: Requires reading daily notes to find longest consecutive completions
 - **In-place update**: Modify existing sections, don't append duplicates
+
+### Error Handling
+- If quarterly note doesn't exist, skip it and continue with others
+- If yearly note doesn't exist, report error and exit
+- If streak calculation fails, log error and continue with partial data
+- Report all errors in final summary
+
+### Sequential Execution (Gate 3)
+- Complete each phase before proceeding to the next
+- Wait for all quarterly notes to be read before aggregating
+- Verify data aggregation before writing to yearly note
+- Report status with ✓ for completed steps, ✗ for failed steps
 
 ### Tool Usage
 1. **Bash(python -c:*)**: For leap year check, date calculations, streak analysis

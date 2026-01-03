@@ -364,6 +364,13 @@ Follow the vault's navigation philosophy:
 - If MCP tool fails → Gracefully report limitation
 - If notes are identical → Report "Same note - specify two different notes"
 
+## Sequential Execution (Gate 3)
+
+- Complete each phase before proceeding to the next
+- Wait for each MCP tool call to return before calling the next
+- Verify all data is collected before generating the report
+- Report status with ✓ for completed steps, ✗ for failed steps
+
 ## Example Invocations
 
 ### Basic Relationship

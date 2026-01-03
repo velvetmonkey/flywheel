@@ -236,6 +236,13 @@ Before editing [file], verify:
 - If fix would create invalid YAML → Report, suggest manual fix
 - If MCP tool fails → Gracefully report limitation
 
+## Sequential Execution (Gate 3)
+
+- Complete each phase before proceeding to the next
+- Wait for schema discovery before detecting inconsistencies
+- Verify all data collected before generating report
+- Report status with ✓ for completed steps, ✗ for failed steps
+
 ## Example Invocations
 
 ### Audit Only (Default)

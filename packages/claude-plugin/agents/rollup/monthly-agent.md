@@ -218,6 +218,18 @@ Include only SIGNIFICANT events, not every daily item.
 - **In-place update**: Modify existing sections, don't append duplicates
 - **Week boundaries**: A week may span two months - include if majority falls in target month
 
+### Error Handling
+- If weekly note doesn't exist, skip it and continue with others
+- If monthly note doesn't exist, report error and exit
+- If aggregation fails, log error and continue with partial data
+- Report all errors in final summary
+
+### Sequential Execution (Gate 3)
+- Complete each phase before proceeding to the next
+- Wait for all weekly notes to be read before aggregating
+- Verify data aggregation before writing to monthly note
+- Report status with ✓ for completed steps, ✗ for failed steps
+
 ### Tool Usage
 1. **Bash(python -c:*)**: For date calculations and week determination
 2. **Read**: To read weekly notes and monthly note before editing
