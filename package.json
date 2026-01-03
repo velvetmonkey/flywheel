@@ -19,7 +19,7 @@
     "type": "git",
     "url": "https://github.com/bencassie/flywheel.git"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "Ben Cassie",
   "workspaces": [
     "packages/*"
