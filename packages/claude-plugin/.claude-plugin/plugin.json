@@ -1,6 +1,6 @@
 {
   "name": "flywheel",
-  "version": "1.6.3",
+  "version": "1.7.0",
   "description": "Wikilink automation, periodic note rollups, vault health, and privacy protection for markdown vaults",
   "author": {
     "name": "Ben Cassie",
@@ -26,6 +26,7 @@
     "./agents/rollup/yearly-agent.md",
     "./agents/achievement/achievement-extraction-agent.md",
     "./agents/schema/schema-enforcer-agent.md",
+    "./agents/schema/schema-intelligence-agent.md",
     "./agents/relationship/relationship-explorer-agent.md"
   ]
 }

@@ -410,8 +410,10 @@ def main():
         if not file_path.endswith('.md'):
             sys.exit(0)
 
-        # Skip .claude directory
-        if '.claude' in file_path:
+        # Skip any dot-folder (.claude, .git, .obsidian, etc.)
+        # Check if any path component starts with a dot
+        path_parts = Path(file_path).parts
+        if any(part.startswith('.') and len(part) > 1 for part in path_parts):
             sys.exit(0)
 
         # Skip CLAUDE.md files (case-insensitive)
