@@ -1,8 +1,14 @@
 # Flywheel Roadmap
 
-## Current: v1.6.2 (January 2025)
+## Current: v1.6.3 (January 2025)
 
-### Six Gates REAL Enforcement
+### Foundation Fix Release
+- Registered missing frontmatter MCP tools (`validate_frontmatter`, `find_missing_frontmatter`)
+- Added `/onboard` skill for first-run experience
+- Added `docs/QUICKSTART.md` getting started guide
+- All 5 frontmatter tools now available
+
+### v1.6.2 - Six Gates REAL Enforcement
 - Gates 1, 2, 4 enforced via PreToolUse hooks (can block)
 - Gate 3 enforced via project-level agent validation
 - Gates 5, 6 enforced via session/post hooks (warn only)
@@ -17,8 +23,6 @@ See [SIX_GATES.md](../packages/claude-plugin/skills/_patterns/SIX_GATES.md) for 
 **Goal**: Make frontmatter as powerful as a database.
 
 ### New MCP Tools
-- `validate_frontmatter(path, schema)` - Validate note against JSON schema
-- `find_incomplete_notes(type, required_fields)` - Find notes missing required fields
 - `compute_frontmatter(path, fields)` - Auto-compute derived fields from content
 - `rename_field(old, new, scope)` - Bulk rename frontmatter fields across vault
 
@@ -78,6 +82,7 @@ See [SIX_GATES.md](../packages/claude-plugin/skills/_patterns/SIX_GATES.md) for 
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| 1.6.3 | 2025-01 | Register missing frontmatter tools, /onboard skill, QUICKSTART.md |
 | 1.6.2 | 2025-01 | Six Gates REAL enforcement, Gate 3 hooks |
 | 1.6.1 | 2025-01 | Six Gates framework, session/verify hooks |
 | 1.6.0 | 2025-01 | Bidirectional Bridge |

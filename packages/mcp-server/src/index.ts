@@ -27,7 +27,7 @@ let vaultIndex: VaultIndex;
 
 const server = new McpServer({
   name: 'flywheel',
-  version: '1.6.1',
+  version: '1.6.3',
 });
 
 // Register all tools

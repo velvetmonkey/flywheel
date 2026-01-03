@@ -43,6 +43,8 @@ import {
   getFrontmatterSchema,
   getFieldValues,
   findFrontmatterInconsistencies,
+  validateFrontmatter,
+  findMissingFrontmatter,
 } from './frontmatter.js';
 
 /**
@@ -646,6 +648,64 @@ export function registerPrimitiveTools(
         content: [{ type: 'text' as const, text: JSON.stringify({
           inconsistency_count: result.length,
           inconsistencies: result,
+        }, null, 2) }],
+      };
+    }
+  );
+
+  // validate_frontmatter
+  server.registerTool(
+    'validate_frontmatter',
+    {
+      title: 'Validate Frontmatter',
+      description: 'Validate notes against a schema. Returns notes with issues (missing fields, wrong types, invalid values).',
+      inputSchema: {
+        schema: z.record(z.object({
+          required: z.boolean().optional().describe('Whether field is required'),
+          type: z.union([z.string(), z.array(z.string())]).optional().describe('Expected type(s)'),
+          values: z.array(z.unknown()).optional().describe('Allowed values'),
+        })).describe('Schema defining expected frontmatter fields'),
+        folder: z.string().optional().describe('Limit to notes in this folder'),
+      },
+    },
+    async (params) => {
+      const index = getIndex();
+      const result = validateFrontmatter(
+        index,
+        params.schema as Record<string, { required?: boolean; type?: string | string[]; values?: unknown[] }>,
+        params.folder
+      );
+
+      return {
+        content: [{ type: 'text' as const, text: JSON.stringify({
+          notes_with_issues: result.length,
+          results: result,
+        }, null, 2) }],
+      };
+    }
+  );
+
+  // find_missing_frontmatter
+  server.registerTool(
+    'find_missing_frontmatter',
+    {
+      title: 'Find Missing Frontmatter',
+      description: 'Find notes missing expected frontmatter fields based on their folder.',
+      inputSchema: {
+        folder_schemas: z.record(z.array(z.string())).describe('Map of folder paths to required field names'),
+      },
+    },
+    async (params) => {
+      const index = getIndex();
+      const result = findMissingFrontmatter(
+        index,
+        params.folder_schemas as Record<string, string[]>
+      );
+
+      return {
+        content: [{ type: 'text' as const, text: JSON.stringify({
+          notes_with_missing_fields: result.length,
+          results: result,
         }, null, 2) }],
       };
     }
