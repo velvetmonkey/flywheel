@@ -1,21 +1,11 @@
 ---
+type: pattern
 name: six-gates
-description: Mandatory safety framework for all Flywheel extensions. Explains the six gates pattern and provides compliance templates.
-auto_trigger: true
-trigger_keywords:
-  - "six gates"
-  - "safety framework"
-  - "gate pattern"
-  - "mutation safety"
-  - "flywheel safety"
-  - "skill template"
-  - "compliance checklist"
-  - "how to write a skill"
-  - "skill guidelines"
-  - "extension guidelines"
-  - "hook requirements"
-  - "mcp tool requirements"
-allowed-tools: Read
+description: |
+  REFERENCE DOCUMENT - Not a skill.
+  Mandatory safety framework for all Flywheel extensions.
+  Gates are enforced by hooks (session-gate.py, verify-mutation.py), not by this file.
+  Read this when writing new skills, agents, hooks, or MCP tools.
 ---
 
 # Six Gates Safety Framework
