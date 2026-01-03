@@ -1,0 +1,16 @@
+{
+  "name": "flywheel",
+  "version": "1.4.0",
+  "description": "Wikilink automation, periodic note rollups, vault health, and privacy protection for markdown vaults",
+  "owner": {
+    "name": "Ben Cassie",
+    "email": "bencassie@github"
+  },
+  "plugins": [
+    {
+      "name": "flywheel",
+      "description": "Wikilink automation, periodic note rollups, vault health, and privacy protection",
+      "source": "./packages/claude-plugin"
+    }
+  ]
+}
