@@ -1,7 +1,7 @@
 {
   "name": "flywheel",
-  "version": "1.7.4",
-  "description": "Wikilink automation, periodic note rollups, vault health, and privacy protection for markdown vaults",
+  "version": "1.8.0",
+  "description": "Workflow templates, wikilink automation, periodic note rollups, vault health, and privacy protection for markdown vaults",
   "owner": {
     "name": "Ben Cassie",
     "email": "bencassie@github"

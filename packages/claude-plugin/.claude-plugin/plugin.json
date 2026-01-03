@@ -1,7 +1,7 @@
 {
   "name": "flywheel",
-  "version": "1.7.4",
-  "description": "Wikilink automation, periodic note rollups, vault health, and privacy protection for markdown vaults",
+  "version": "1.8.0",
+  "description": "Workflow templates, wikilink automation, periodic note rollups, vault health, and privacy protection for markdown vaults",
   "author": {
     "name": "Ben Cassie",
     "github": "bencassie"
@@ -27,6 +27,11 @@
     "./agents/achievement/achievement-extraction-agent.md",
     "./agents/schema/schema-enforcer-agent.md",
     "./agents/schema/schema-intelligence-agent.md",
-    "./agents/relationship/relationship-explorer-agent.md"
+    "./agents/relationship/relationship-explorer-agent.md",
+    "./agents/workflow/action-extraction-agent.md",
+    "./agents/workflow/standup-agent.md",
+    "./agents/workflow/customer-onboarding-agent.md",
+    "./agents/review/weekly-review-agent.md",
+    "./agents/review/okr-review-agent.md"
   ]
 }
