@@ -178,15 +178,30 @@ Not tied to any specific UI - works everywhere.
 
 ## Development Status
 
-**Current: v1.5.0**
+**Current: v1.5.0** | **Next: v1.6.0 Bidirectional Bridge**
 
-### ✅ Complete
+### ✅ v1.0-1.5 Complete
 - MCP server with 40+ graph intelligence tools
 - Claude plugin with 30+ vault skills
 - Zero-config periodic note detection
 - Artemis Rocket demo vault (aerospace startup template)
 - Marketplace-based plugin installation
 - Cross-platform support (macOS, Linux, Windows, WSL)
+
+### 🚧 v1.6.0 Bidirectional Bridge (In Progress)
+
+Bridge Graph-Native (wikilinks) and Schema-Native (frontmatter) paradigms:
+
+**New MCP Tools:**
+- `detect_prose_patterns` - Find "Key: [[Value]]" patterns in prose
+- `suggest_frontmatter_from_prose` - Recommend YAML from detected patterns
+- `suggest_wikilinks_in_frontmatter` - Find strings that could be wikilinks
+- `validate_cross_layer` - Check frontmatter ↔ wikilink consistency
+
+**New Skills:**
+- `/normalize-note` - Harmonize frontmatter + wikilinks
+- `/promote-to-frontmatter` - Extract prose patterns to YAML
+- `/wikilinkify-frontmatter` - Convert strings to wikilinks
 
 ### Skills Available
 - **Vault Health**: `/vault-health`, `/vault-orphans`, `/vault-hubs`, `/vault-dead-ends`
@@ -203,7 +218,17 @@ Not tied to any specific UI - works everywhere.
 - Schema enforcer agent
 - Relationship explorer agent
 
-See [Roadmap](./docs/ROADMAP.md) for future plans.
+### Future Roadmap
+
+**v1.7 Advanced Schema Intelligence:**
+- `validate_frontmatter(path, schema)` - Validate against schema
+- `find_incomplete_notes(type, required_fields)` - Find notes missing fields
+- `compute_frontmatter(path, fields)` - Auto-compute derived fields
+- `rename_field(old, new, scope)` - Bulk rename frontmatter fields
+
+**v2.0 Workflows & Automation:**
+- Workflow templates for common business processes
+- Additional demo vaults (Consulting Firm, Startup Ops, Research Lab)
 
 ## Contributing
 
