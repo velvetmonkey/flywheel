@@ -1,4 +1,4 @@
-# Flywheel — Claude Code for Your Vault
+# Flywheel - What if your notes could run your business?
 
 [![npm version](https://img.shields.io/npm/v/@bencassie/flywheel-mcp.svg)](https://www.npmjs.com/package/@bencassie/flywheel-mcp)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
