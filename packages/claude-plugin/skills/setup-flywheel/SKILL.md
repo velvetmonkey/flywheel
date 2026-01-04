@@ -74,6 +74,49 @@ User: "setup flywheel"
 | 5. MCP Health | ✅ | Validates MCP after setup |
 | 6. Post Validation | ✅ | Shows vault stats to confirm working |
 
+## Configuration Layers (IMPORTANT)
+
+Claude Code uses **layered configuration** with precedence:
+
+| Layer | File | Scope | Precedence |
+|-------|------|-------|------------|
+| **User** | `~/.claude/settings.json` | All projects globally | **Highest** |
+| **Project** | `.mcp.json` | This project only | Lowest |
+
+**Key insight**: User settings OVERRIDE project settings.
+
+### Before Generating Config
+
+**Check if user already has Flywheel in `~/.claude/settings.json`:**
+
+1. Read `~/.claude/settings.json` (if exists)
+2. Check for `mcpServers.flywheel`
+3. If found → **Report existing config and skip Phase 2**
+
+```
+## Flywheel Already Configured (User Level)
+
+Found existing Flywheel config in ~/.claude/settings.json
+
+This config applies to ALL your projects automatically.
+No action needed - proceeding to validation...
+```
+
+### Windows Users
+
+For Windows (`Platform: win32`), **user-level config is recommended** because:
+- The `cmd /c npx` wrapper applies to all Flywheel projects
+- No need to add Windows wrapper to every project's `.mcp.json`
+- Projects can stay platform-agnostic (committed to git)
+
+**If suggesting user-level changes, ALWAYS warn about global scope:**
+
+```
+⚠️  This will modify ~/.claude/settings.json
+    Changes apply to ALL projects, not just this one.
+    Confirm? (y/n)
+```
+
 ## Phase 1: Platform Detection (CRITICAL)
 
 **Check the `Platform:` field in the environment info at the start of the session.**

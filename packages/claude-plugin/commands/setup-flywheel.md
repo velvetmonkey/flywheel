@@ -52,6 +52,19 @@ Complete Flywheel setup in one command: configure MCP, validate connection, and 
 | Validation | Console output | Health check results |
 | Stats | Console output | Vault statistics |
 
+## Configuration Layers
+
+Claude Code uses **layered configuration** with precedence:
+
+| Layer | File | Scope | Precedence |
+|-------|------|-------|------------|
+| **User** | `~/.claude/settings.json` | All projects globally | **Highest** |
+| **Project** | `.mcp.json` | This project only | Lowest |
+
+**Windows users**: User-level config is recommended for the `cmd /c npx` wrapper since it applies to all Flywheel projects automatically. This keeps your project `.mcp.json` platform-agnostic (safe to commit to git).
+
+If you already have Flywheel configured in `~/.claude/settings.json`, setup will detect this and skip to validation.
+
 ## Platform Detection (CRITICAL)
 
 The `Platform:` field in environment info is **authoritative**:
