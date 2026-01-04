@@ -94,6 +94,8 @@ npm link
 
 ## Platform-Specific Notes
 
+Create `.mcp.json` in your vault root. This file is typically gitignored since paths are machine-specific.
+
 ### Windows
 
 **Requirement**: Wrap `npx` with `cmd /c` to avoid "Connection closed" errors.
@@ -127,8 +129,14 @@ python --version  # Should show Python 3.x.x
 
 ```json
 {
-  "env": {
-    "PROJECT_PATH": "/mnt/c/Users/YourName/Documents/ObsidianVault"
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@bencassie/flywheel-mcp"],
+      "env": {
+        "PROJECT_PATH": "/mnt/c/Users/YourName/Documents/ObsidianVault"
+      }
+    }
   }
 }
 ```

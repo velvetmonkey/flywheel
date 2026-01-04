@@ -107,18 +107,17 @@ See full specification: `packages/claude-plugin/skills/_patterns/SIX_GATES.md`
 - Tested on both platforms
 - If making changes, test on both
 
-### MCP Configuration Layers
+### MCP Configuration
 
-Claude Code uses **layered configuration** with precedence:
+Create `.mcp.json` in your project/vault root with the appropriate platform config:
 
-| Layer | File | Scope | Precedence |
-|-------|------|-------|------------|
-| **User** | `~/.claude/settings.json` | All projects globally | **Highest** |
-| **Project** | `.mcp.json` | This project only | Lowest |
+| Platform | Command | Path style |
+|----------|---------|------------|
+| Windows (`win32`) | `cmd /c npx` | `C:/...` |
+| WSL (`linux`) | `npx` | `/mnt/c/...` |
+| macOS (`darwin`) | `npx` | `/Users/...` |
 
-**Key insight**: User settings OVERRIDE project settings.
-
-**Windows users**: User-level config is recommended for the `cmd /c npx` wrapper since it applies to all Flywheel projects automatically. This keeps project `.mcp.json` platform-agnostic.
+Since `.mcp.json` is gitignored, each environment gets its own config without conflicts.
 
 ### MCP Configuration Generation
 

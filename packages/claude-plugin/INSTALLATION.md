@@ -181,53 +181,37 @@ Follow the MCP configuration in Quick Install Step 1 above.
 
 ---
 
-## Dual WSL/Windows Setup
+## Working Across Environments
 
-For developers working on both WSL and Windows:
+If you use both Windows and WSL, create the appropriate `.mcp.json` for each environment:
 
-| File | Purpose | Path Format | Committed? |
-|------|---------|-------------|------------|
-| `.claude/settings.json` | Universal baseline | WSL (`/mnt/c/...`) | Yes (git) |
-| `~/.claude.json` projects override | Windows-specific | Windows (`C:\...`) | No (local) |
-
-### How It Works
-
-**On WSL:**
-- Uses `.claude/settings.json` directly with `/mnt/c/...` paths
-- WSL natively resolves these paths
-
-**On Windows:**
-- Loads `.claude/settings.json` (WSL paths don't work)
-- User-level `~/.claude.json` provides Windows path override via `projects` section
-
-### Configuration Example
-
-**`C:\Users\YOUR_USER\.claude.json` (Windows user config):**
+**Windows session** - use `cmd /c npx` wrapper:
 ```json
 {
-  "projects": {
-    "C:\\Users\\YOUR_USER\\obsidian\\YOUR_VAULT": {
-      "extraKnownMarketplaces": {
-        "flywheel": {
-          "source": {
-            "source": "directory",
-            "path": "C:/Users/YOUR_USER/src/flywheel/packages/claude-plugin"
-          }
-        }
-      },
-      "mcpServers": {
-        "flywheel": {
-          "command": "cmd",
-          "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
-          "env": { "PROJECT_PATH": "C:/Users/YOUR_USER/obsidian/YOUR_VAULT" }
-        }
-      }
+  "mcpServers": {
+    "flywheel": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
+      "env": { "PROJECT_PATH": "C:/Users/YOUR_USER/obsidian/YOUR_VAULT" }
     }
   }
 }
 ```
 
-**IMPORTANT:** Project keys must use **backslashes** (`C:\Users\...`) for matching.
+**WSL session** - use `npx` directly:
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@bencassie/flywheel-mcp"],
+      "env": { "PROJECT_PATH": "/mnt/c/Users/YOUR_USER/obsidian/YOUR_VAULT" }
+    }
+  }
+}
+```
+
+Since `.mcp.json` is gitignored, each environment can have its own config without conflicts
 
 ---
 
