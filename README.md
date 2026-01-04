@@ -129,11 +129,13 @@ claude
 
 ## Documentation
 
-| Getting Started | Reference | Patterns |
-|-----------------|-----------|----------|
-| [Installation](docs/GETTING_STARTED.md) | [MCP Tools](docs/MCP_REFERENCE.md) | [Agentic Patterns](docs/AGENTIC_PATTERNS.md) |
-| [Tutorial](docs/TUTORIAL.md) | [Skills](docs/SKILLS_REFERENCE.md) | [Six Gates Safety](docs/SIX_GATES.md) |
-| [Quickstart](docs/QUICKSTART.md) | [Agents](docs/AGENTS_REFERENCE.md) | [Architecture](docs/ARCHITECTURE.md) |
+| Doc | What It Covers |
+|-----|----------------|
+| **[Getting Started](docs/GETTING_STARTED.md)** | Installation, platform setup, first commands |
+| **[MCP Tools](docs/MCP_REFERENCE.md)** | All 40+ graph query tools |
+| **[Skills](docs/SKILLS_REFERENCE.md)** | Slash commands like `/log`, `/rollup`, `/vault-health` |
+| **[Agentic Patterns](docs/AGENTIC_PATTERNS.md)** | How Flywheel makes AI workflows reliable |
+| **[Six Gates](docs/SIX_GATES.md)** | Safety framework for mutations |
 
 ---
 
