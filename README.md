@@ -38,18 +38,22 @@ tracking - last update was Jan 2."
 
 ---
 
-## Instant Logging: Capture Without Context Switching
+## Instant Logging: Capture With Auto-Linking
 
 ```
-You: "/log completed turbopump hot fire - nominal"
+You: "/log talked to Marcus about seal delays"
 
 daily/2026-01-04.md
 ─────────────────────
 ## Log
-- 14:32 completed turbopump hot fire - nominal   ← added
+- 14:32 talked to [[Marcus Chen]] about [[Seal Supplier Delay]]   ← added
+
+Flywheel recognized:
+  "Marcus" → [[Marcus Chen]] (people/marcus-chen.md)
+  "seal delays" → [[Seal Supplier Delay]] (issues/seal-delay.md)
 ```
 
-**One sentence → timestamped entry → today's daily note.**
+**One sentence → auto-linked → connected to your graph.**
 
 ---
 
