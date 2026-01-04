@@ -23,6 +23,63 @@ Flywheel turns markdown files into queryable infrastructure:
 
 No SaaS lock-in. No code. Just markdown + AI.
 
+---
+
+## The Flywheel Loop: Your Notes Get Smarter
+
+Most note-taking: you write, you organize, you forget.
+
+With Flywheel, your knowledge base **improves itself**:
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│                     THE FLYWHEEL LOOP                          │
+├────────────────────────────────────────────────────────────────┤
+│                                                                │
+│  WIKILINKS ←──────────────────────────────→ FRONTMATTER        │
+│  [[Acme Corp]]                              status: active     │
+│  [[Sarah Chen]]                             contact: Sarah     │
+│                                             rate: $250/hr      │
+│         ↑                                          ↑           │
+│         │          AI CURATION LAYER               │           │
+│         │    ┌──────────────────────────┐          │           │
+│         └────│ suggest_wikilinks()      │──────────┘           │
+│              │ infer_folder_conventions()│                     │
+│              │ validate_cross_layer()    │                     │
+│              └──────────────────────────┘                      │
+│                         ↓                                      │
+│              "Acme Corp note is missing 'rate'.                │
+│               Based on clients/ patterns: $250/hr?"            │
+│                                                                │
+└────────────────────────────────────────────────────────────────┘
+```
+
+**How it works:**
+
+1. **You write naturally**
+   - Mention "Acme Corp" in your daily note
+   - Flywheel notices it matches an existing note
+   - Claude: "Found 3 unlinked mentions. Add [[Acme Corp]] links?"
+
+2. **AI learns your patterns**
+   - Scans clients/ folder: 90% have `status`, `contact`, `rate`
+   - New client note missing fields
+   - Claude: "Based on your patterns, add these fields?"
+
+3. **Consistency validated**
+   - Frontmatter says `status: active`
+   - Prose says "project wrapped up last month"
+   - Claude: "Mismatch detected. Which is correct?"
+
+4. **Each interaction improves the next**
+   - More links → better graph queries
+   - Consistent frontmatter → better pattern detection
+   - Clean data → smarter AI suggestions
+
+**This is the flywheel effect.** Not just storage — a self-curating system.
+
+---
+
 **The Graph Index**
 
 At startup, Flywheel builds an in-memory graph of your notes.
@@ -40,6 +97,92 @@ For mutations (logging, rollups), Flywheel reads only the **sections** it needs:
 - Full file stays on disk (privacy preserved)
 - Only relevant content goes to AI (tokens saved)
 - You get both: local data + smart AI
+
+---
+
+## Graph Queries: How Claude Knows What's Blocking You
+
+**This works because your notes have structured frontmatter:**
+```yaml
+# Course Launch Plan.md
+---
+status: blocked
+blocked_by: "[[Payment Setup]]"
+---
+```
+
+```
+You: "What's blocking the course launch?"
+
+┌─ QUERY ──────────────────────────────────────────┐
+│ Source:  Graph index (no file reads)             │
+│ Tokens:  ~50 vs ~3,000                           │
+└──────────────────────────────────────────────────┘
+
+Claude traces the graph (not files):
+  1. [[Course Launch Plan]] → frontmatter: status: blocked
+  2. [[Course Launch Plan]] → frontmatter: blocked_by: [[Payment Setup]]
+  3. [[Payment Setup]] → frontmatter: status: waiting
+  4. [[Payment Setup]] → frontmatter: waiting_on: [[Bank Verification]]
+  5. [[Bank Verification]] → frontmatter: submitted: 2026-01-03
+
+No files read. Just index lookups on:
+- 3 note titles (from index)
+- 5 frontmatter fields (from index)
+- 2 wikilink relationships (from index)
+
+Claude: "The course launch is blocked by bank verification
+for Stripe. You submitted Jan 3 — should clear in 2-3 days.
+Once verified, payment setup takes ~1 hour, then you're live."
+```
+
+**With Flywheel: 50 tokens, instant. Without: 1,500+ tokens, 30+ seconds.**
+
+**Note:** Frontmatter is optional but powerful. Even without it, wikilinks create a graph that Claude can traverse.
+
+---
+
+## The Rollup Workflow: Daily → Weekly → Monthly
+
+**What are periodic notes?**
+In personal knowledge management, people keep daily/weekly/monthly notes.
+But this is also **how businesses should track progress**:
+
+- **Daily**: What happened today? Decisions, calls, wins, blockers
+- **Weekly**: What did we accomplish? What's carrying over?
+- **Monthly**: Are we on track? What patterns emerge?
+- **Quarterly**: Strategic review. Goals vs reality.
+
+Most businesses track this in scattered tools (Slack, email, spreadsheets).
+With Flywheel, it's **one folder of markdown** — and AI aggregates it automatically.
+
+```
+You: "do a rollup"
+
+┌─ CHAIN ──────────────────────────────────────────┐
+│ Reads:   7 daily notes, ## Log sections          │
+│          (~700 tokens vs ~7,000 full files)      │
+│ Creates: weekly/2026-W01.md                      │
+│ Appends: monthly/2026-01.md                      │
+│ Appends: quarterly/2026-Q1.md                    │
+│ Appends: Achievements.md                         │
+└──────────────────────────────────────────────────┘
+
+### weekly/2026-W01.md (created)
+## Week 1 Summary
+- Finalized Stripe integration for course payments
+- Newsletter hit 3,000 subscribers (up 200)
+- Consulting: closed $2,400 in new work
+
+## Achievements
+- First week with $1K+ passive revenue
+
+### monthly/2026-01.md (appended)
+## Week 1
+[Summary linked here]
+```
+
+**You can still edit these files.** Rollup aggregates — it doesn't lock you out.
 
 ---
 
@@ -170,92 +313,6 @@ Recommendation: ConvertKit for course creators.
 
 ---
 
-## Graph Queries: How Claude Knows What's Blocking You
-
-**This works because your notes have structured frontmatter:**
-```yaml
-# Course Launch Plan.md
----
-status: blocked
-blocked_by: "[[Payment Setup]]"
----
-```
-
-```
-You: "What's blocking the course launch?"
-
-┌─ QUERY ──────────────────────────────────────────┐
-│ Source:  Graph index (no file reads)             │
-│ Tokens:  ~50 vs ~3,000                           │
-└──────────────────────────────────────────────────┘
-
-Claude traces the graph (not files):
-  1. [[Course Launch Plan]] → frontmatter: status: blocked
-  2. [[Course Launch Plan]] → frontmatter: blocked_by: [[Payment Setup]]
-  3. [[Payment Setup]] → frontmatter: status: waiting
-  4. [[Payment Setup]] → frontmatter: waiting_on: [[Bank Verification]]
-  5. [[Bank Verification]] → frontmatter: submitted: 2026-01-03
-
-No files read. Just index lookups on:
-- 3 note titles (from index)
-- 5 frontmatter fields (from index)
-- 2 wikilink relationships (from index)
-
-Claude: "The course launch is blocked by bank verification
-for Stripe. You submitted Jan 3 — should clear in 2-3 days.
-Once verified, payment setup takes ~1 hour, then you're live."
-```
-
-**With Flywheel: 50 tokens, instant. Without: 1,500+ tokens, 30+ seconds.**
-
-**Note:** Frontmatter is optional but powerful. Even without it, wikilinks create a graph that Claude can traverse.
-
----
-
-## The Rollup Workflow: Daily → Weekly → Monthly
-
-**What are periodic notes?**
-In personal knowledge management, people keep daily/weekly/monthly notes.
-But this is also **how businesses should track progress**:
-
-- **Daily**: What happened today? Decisions, calls, wins, blockers
-- **Weekly**: What did we accomplish? What's carrying over?
-- **Monthly**: Are we on track? What patterns emerge?
-- **Quarterly**: Strategic review. Goals vs reality.
-
-Most businesses track this in scattered tools (Slack, email, spreadsheets).
-With Flywheel, it's **one folder of markdown** — and AI aggregates it automatically.
-
-```
-You: "do a rollup"
-
-┌─ CHAIN ──────────────────────────────────────────┐
-│ Reads:   7 daily notes, ## Log sections          │
-│          (~700 tokens vs ~7,000 full files)      │
-│ Creates: weekly/2026-W01.md                      │
-│ Appends: monthly/2026-01.md                      │
-│ Appends: quarterly/2026-Q1.md                    │
-│ Appends: Achievements.md                         │
-└──────────────────────────────────────────────────┘
-
-### weekly/2026-W01.md (created)
-## Week 1 Summary
-- Finalized Stripe integration for course payments
-- Newsletter hit 3,000 subscribers (up 200)
-- Consulting: closed $2,400 in new work
-
-## Achievements
-- First week with $1K+ passive revenue
-
-### monthly/2026-01.md (appended)
-## Week 1
-[Summary linked here]
-```
-
-**You can still edit these files.** Rollup aggregates — it doesn't lock you out.
-
----
-
 ## Quick Start
 
 ### 1. Install
@@ -356,24 +413,7 @@ Notion can change their API. Salesforce can sunset features. Your markdown?
 
 **No lock-in. No migration. Just files.**
 
-### 7. Inferred Schema: AI Learns Your Patterns
-Flywheel detects conventions per folder automatically:
-- Scans existing notes to infer expected fields
-- Suggests frontmatter based on folder patterns (e.g., `clients/` → `status`, `contact`, `rate`)
-- Confidence scores show which patterns are strong vs emerging
-- No manual schema definition required
-
-**Your conventions become queryable. AI figures out the structure.**
-
-### 8. Auto-Wikilinks: Connect Without Thinking
-When you write prose, Flywheel suggests links to existing notes:
-- Matches mentions of note titles and aliases
-- Works in both directions: prose → frontmatter, frontmatter → wikilinks
-- Validates consistency between layers
-
-**You write naturally. AI adds the connections.**
-
-### 9. Extensible: Make It Yours
+### 7. Extensible: Make It Yours
 Flywheel is a framework, not a finished product:
 - **Skills**: Add `/invoice` or `/standup` commands for your workflow
 - **Agents**: Multi-step automations that chain operations
@@ -381,37 +421,6 @@ Flywheel is a framework, not a finished product:
 - **MCP Tools**: Extend the graph intelligence
 
 **Start simple. Grow into automation.**
-
----
-
-## The Business Loop: AI Improves Your Notes
-
-Claude Code doesn't just read your notes — it can iteratively improve them.
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    THE BUSINESS LOOP                        │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│   1. CAPTURE: "log the client call"                         │
-│      → Claude writes to daily note                          │
-│                                                             │
-│   2. DETECT: "Acme Corp" mentioned but not linked           │
-│      → suggest_wikilinks() finds unlinked mentions          │
-│                                                             │
-│   3. ENHANCE: clients/ folder has patterns                  │
-│      → infer_folder_conventions() detects expected fields   │
-│                                                             │
-│   4. COMPLETE: Note missing 'rate' field                    │
-│      → suggest_field_values() recommends based on context   │
-│                                                             │
-│   5. VALIDATE: Frontmatter vs prose inconsistency           │
-│      → validate_cross_layer() flags mismatches              │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
-**Your notes get smarter over time. Not because you're more diligent — because AI is always watching.**
 
 ---
 
