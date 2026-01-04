@@ -26,4 +26,33 @@ Ask Claude:
 
 ---
 
+## Mutations
+
+When you ask Claude to make changes, here's what happens:
+
+### Log experiment results
+
+```
+You: "/log docking run 7 complete - 0.3Å RMSD"
+
+→ Modifies: daily-notes/2026-01-04.md
+
+## Log
+- 09:00 Literature review
+- 15:22 docking run 7 complete - 0.3Å RMSD   ← ADDED
+```
+
+### Link a paper to your method
+
+```
+You: "connect AlphaFold paper to my folding method"
+
+→ Modifies: methods/protein-folding.md
+
+## References
+- [[AlphaFold 2]]   ← ADDED
+```
+
+---
+
 *30 notes. Just start asking questions.*

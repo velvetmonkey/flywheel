@@ -4,40 +4,18 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/bencassie/flywheel)
 
-**Vision**: Enable non-technical knowledge workers to build automated workflows using markdown files and agentic systems - the 2026 business automation stack.
+**A Claude Code + MCP plugin that gives AI deep knowledge of your vault using 200x fewer tokens.**
 
-**The pitch**: *"Starting a new business or project? Install Flywheel in Claude Code - it gives you the intelligence and workflows to run your business from day one."*
+How it works:
+- Builds a **header/note graph** from your markdown files
+- AI queries the graph instead of reading every file
+- Your knowledge stays local, private, and fast
 
----
-
-## See It In Action: The Rollup Workflow
-
-Your AI writes your weekly summary automatically:
-
-```
-You: "do a rollup of my notes"
-
-Daily Notes                Weekly              Monthly            Yearly
-───────────────────────────────────────────────────────────────────────────
-Jan 1  ─┐
-Jan 2  ─┼─► Week 1 ─┐
-Jan 3  ─┤          │
-...    ─┘          │
-Jan 8  ─┐          ├─► January ─┐
-Jan 9  ─┼─► Week 2 ─┤           │
-...    ─┘          │           ├─► 2026 ─► Achievements.md
-                   ...         │
-                              ...
-
-Claude: Processing rollup chain...
-✓ Daily notes (Jan 1-7) → Weekly Summary
-✓ Weekly notes (Dec) → Monthly Summary
-✓ Achievements extracted → Achievements.md
-
-[Shows generated summary preview]
-```
-
-**From scattered daily notes to structured insights—automatically.**
+Why this matters:
+- **Cost**: 200x token reduction = 200x cheaper
+- **Privacy**: Intelligence derived locally, not sent to cloud
+- **Security**: No file contents in prompts unless needed
+- **Speed**: Graph queries vs full-text search
 
 ---
 
@@ -75,6 +53,35 @@ daily/2026-01-04.md
 
 ---
 
+## The Rollup Workflow: Daily → Weekly → Monthly
+
+Your AI writes your weekly summary automatically:
+
+```
+You: "do a rollup of my notes"
+
+Daily Notes                Weekly              Monthly            Yearly
+───────────────────────────────────────────────────────────────────────────
+Jan 1  ─┐
+Jan 2  ─┼─► Week 1 ─┐
+Jan 3  ─┤          │
+...    ─┘          │
+Jan 8  ─┐          ├─► January ─┐
+Jan 9  ─┼─► Week 2 ─┤           │
+...    ─┘          │           ├─► 2026 ─► Achievements.md
+                   ...         │
+                              ...
+
+Claude: Processing rollup chain...
+✓ Daily notes (Jan 1-7) → Weekly Summary
+✓ Weekly notes (Dec) → Monthly Summary
+✓ Achievements extracted → Achievements.md
+```
+
+**From scattered daily notes to structured insights—automatically.**
+
+---
+
 ## Quick Start
 
 ### 1. Install
@@ -103,17 +110,19 @@ Say: **"setup flywheel"** - Claude configures everything for your platform.
 
 ## Demo Vaults
 
-Try Flywheel with real-world scenarios:
+Try Flywheel with real-world scenarios (ordered by complexity):
 
 | Demo | You Are | Try Asking |
 |------|---------|-----------|
-| [Artemis Rocket](./demos/artemis-rocket/) | Chief Engineer, aerospace startup | "What's blocking propulsion?" |
 | [Carter Strategy](./demos/carter-strategy/) | Solo consultant, 3 clients | "What's overdue this week?" |
-| [Nexus Lab](./demos/nexus-lab/) | PhD researcher, protein folding | "How does AlphaFold connect to my experiment?" |
+| [Artemis Rocket](./demos/artemis-rocket/) | Chief Engineer, aerospace startup | "What's blocking propulsion?" |
 | [Startup Ops](./demos/startup-ops/) | Co-founder, pre-Series A SaaS | "Walk me through customer onboarding" |
+| [Nexus Lab](./demos/nexus-lab/) | PhD researcher, protein folding | "How does AlphaFold connect to my experiment?" |
 
 ```bash
-cd demos/carter-strategy && say "setup flywheel"
+cd demos/carter-strategy
+claude
+/setup-flywheel
 ```
 
 ---

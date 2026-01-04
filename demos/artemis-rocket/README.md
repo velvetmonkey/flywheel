@@ -26,4 +26,35 @@ Ask Claude:
 
 ---
 
+## Mutations
+
+When you ask Claude to make changes, here's what happens:
+
+### Add a standup note
+
+```
+You: "/log turbopump test successful - 98% efficiency"
+
+→ Modifies: daily-notes/2026-01-04.md
+
+## Log
+- 09:15 Team sync
+- 14:47 turbopump test successful - 98% efficiency   ← ADDED
+```
+
+### Create a decision record
+
+```
+You: "record decision: switching to titanium valves"
+
+→ Creates: decisions/DR-015-titanium-valves.md
+
+# DR-015: Titanium Valves
+Date: 2026-01-04
+Status: Approved
+Context: [[Turbopump Test Results]]
+```
+
+---
+
 *65 notes. Just start asking questions.*
