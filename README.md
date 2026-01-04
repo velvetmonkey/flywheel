@@ -38,23 +38,70 @@ tracking - last update was Jan 2."
 
 ---
 
-## Instant Logging: Capture With Auto-Linking
+## Action Logging: Decisions Become Searchable
 
 ```
-You: [after 20 minutes researching seal suppliers with Claude]
-You: "/log found Keystone Seals - same specs, 5-day lead time. Talk to Marcus."
+You: "/log approved dual-sourcing with Precision Components"
 
 daily/2026-01-04.md
 ─────────────────────
 ## Log
-- 14:32 found [[Keystone Seals]] - same specs, 5-day lead time. Talk to [[Marcus Johnson]].
-
-Claude auto-linked entities from your vault:
-  "Marcus" → [[Marcus Johnson]] (Propulsion Lead)
-  New entity created: [[Keystone Seals]] → suppliers/keystone-seals.md
+- 14:32 approved dual-sourcing with [[Precision Components]]
 ```
 
-**Research captured. Backlinked. Ready for your next conversation.**
+**Decision captured. Auto-linked. Searchable forever.**
+
+---
+
+## Path Finding: See How Concepts Connect
+
+```
+You: "how does the seal delay connect to our launch date?"
+
+Flywheel traces the path:
+  [[Seal Supplier Delay]]
+    → blocks → [[Turbopump]]
+    → required for → [[Engine Hot Fire Test 4]]
+    → gates → [[Flight Readiness Review]]
+    → determines → [[Launch Date]]
+```
+
+**5 hops. Critical path revealed.**
+
+---
+
+## Task Tracking: Find Overdue Across Linked Notes
+
+```
+You: "what's overdue for propulsion?"
+
+Flywheel searches linked notes:
+  ⚠️ Overdue (3):
+    Turbopump.md:     - [ ] Review seal specs 📅 2026-01-02
+    Risk-Register.md: - [ ] Update risk scores 📅 2026-01-03
+    Test-Plan.md:     - [ ] Finalize Test 4 checklist 📅 2026-01-03
+
+  All linked to [[Propulsion Milestone]].
+```
+
+**Not just "all overdue" — overdue for THIS project.**
+
+---
+
+## Schema Enforcement: Find Incomplete Notes
+
+```
+You: "check schema in systems/"
+
+Flywheel infers conventions from 12 notes:
+  Expected fields: type, status, owner (>90% have these)
+
+  ⚠️ 2 notes incomplete:
+    systems/avionics.md: missing 'owner'
+    systems/thermal.md: missing 'status', 'owner'
+```
+
+**No config needed. Patterns detected automatically.**
 
 ---
 
