@@ -4,7 +4,7 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/bencassie/flywheel)
 
-**You + Claude Code + your markdown vault. Claude handles the operations.**
+**Flywheel + Claude Code. Your business, now intelligent.**
 
 ---
 
