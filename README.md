@@ -24,7 +24,10 @@ Why this matters:
 ```
 You: "What's blocking the propulsion milestone?"
 
-Flywheel traverses your graph:
+→ Via graph index (no files read)
+→ ~50 tokens vs ~5,000 without Flywheel
+
+Flywheel traverses:
   Propulsion Milestone → depends on → Turbopump Test
   Turbopump Test → blocked by → Seal Supplier Delay
   Seal Supplier → contact → Marcus Chen
@@ -34,22 +37,29 @@ which is waiting on seals from Apex Materials. Marcus Chen is
 tracking - last update was Jan 2."
 ```
 
-**Your AI found the blocker in 3 hops. No manual search.**
+**3 hops through the graph. Zero file reads.**
 
 ---
 
-## Action Logging: Decisions Become Searchable
+## Research Logging: Capture What You Learned
 
 ```
-You: "/log approved dual-sourcing with Precision Components"
+You: [after 20 min researching seal suppliers with Claude]
+You: "/log our findings on seal supplier options"
 
-daily/2026-01-04.md
-─────────────────────
+→ Reads: ## Log section only (42 tokens vs 800 for whole file)
+→ Appends to: daily/2026-01-04.md
+
 ## Log
-- 14:32 approved dual-sourcing with [[Precision Components]]
+- 14:32 **Seal supplier research** - Found [[Keystone Seals]] as alternative
+  to [[Apex Materials]]. Same LOX-compatible specs (dual-barrier mechanical
+  face seal), but 5-day lead time vs 16 weeks. Quote pending.
+  Could cut [[Turbopump]] delay by 11 days. Validate with [[Marcus Johnson]].
+
+Entities linked: [[Keystone Seals]] (new), [[Apex Materials]], [[Turbopump]]
 ```
 
-**Decision captured. Auto-linked. Searchable forever.**
+**Your research summarized, linked, and ready for follow-up.**
 
 ---
 
@@ -58,7 +68,10 @@ daily/2026-01-04.md
 ```
 You: "how does the seal delay connect to our launch date?"
 
-Flywheel traces the path:
+→ Via link index (no files read)
+→ ~30 tokens vs ~8,000 without Flywheel
+
+Flywheel traces:
   [[Seal Supplier Delay]]
     → blocks → [[Turbopump]]
     → required for → [[Engine Hot Fire Test 4]]
@@ -66,7 +79,7 @@ Flywheel traces the path:
     → determines → [[Launch Date]]
 ```
 
-**5 hops. Critical path revealed.**
+**5 hops. Critical path revealed. Zero file reads.**
 
 ---
 
@@ -75,13 +88,15 @@ Flywheel traces the path:
 ```
 You: "what's overdue for propulsion?"
 
-Flywheel searches linked notes:
-  ⚠️ Overdue (3):
-    Turbopump.md:     - [ ] Review seal specs 📅 2026-01-02
-    Risk-Register.md: - [ ] Update risk scores 📅 2026-01-03
-    Test-Plan.md:     - [ ] Finalize Test 4 checklist 📅 2026-01-03
+→ Via task index (checkbox lines only)
+→ ~100 tokens vs ~3,000 without Flywheel
 
-  All linked to [[Propulsion Milestone]].
+⚠️ Overdue (3):
+  Turbopump.md:     - [ ] Review seal specs 📅 2026-01-02
+  Risk-Register.md: - [ ] Update risk scores 📅 2026-01-03
+  Test-Plan.md:     - [ ] Finalize Test 4 checklist 📅 2026-01-03
+
+All linked to [[Propulsion Milestone]].
 ```
 
 **Not just "all overdue" — overdue for THIS project.**
@@ -93,44 +108,42 @@ Flywheel searches linked notes:
 ```
 You: "check schema in systems/"
 
-Flywheel infers conventions from 12 notes:
-  Expected fields: type, status, owner (>90% have these)
+→ Via frontmatter index (12 notes, metadata only)
+→ ~80 tokens vs ~2,000 without Flywheel
 
-  ⚠️ 2 notes incomplete:
-    systems/avionics.md: missing 'owner'
-    systems/thermal.md: missing 'status', 'owner'
+Expected fields: type, status, owner (>90% have these)
+
+⚠️ 2 notes incomplete:
+  systems/avionics.md: missing 'owner'
+  systems/thermal.md: missing 'status', 'owner'
 ```
 
-**No config needed. Patterns detected automatically.**
+**No config needed. Patterns inferred automatically.**
 
 ---
 
 ## The Rollup Workflow: Daily → Weekly → Monthly
 
-Your AI writes your weekly summary automatically:
-
 ```
-You: "do a rollup of my notes"
+You: "do a rollup"
 
-Daily Notes                Weekly              Monthly            Yearly
-───────────────────────────────────────────────────────────────────────────
-Jan 1  ─┐
-Jan 2  ─┼─► Week 1 ─┐
-Jan 3  ─┤          │
-...    ─┘          │
-Jan 8  ─┐          ├─► January ─┐
-Jan 9  ─┼─► Week 2 ─┤           │
-...    ─┘          │           ├─► 2026 ─► Achievements.md
-                   ...         │
-                              ...
+→ Reads: ## Log sections from 7 daily notes (~700 tokens vs ~7,000)
+→ Creates: weekly/2026-W01.md
+→ Appends to: monthly/2026-01.md
+→ Appends to: Achievements.md
 
-Claude: Processing rollup chain...
-✓ Daily notes (Jan 1-7) → Weekly Summary
-✓ Weekly notes (Dec) → Monthly Summary
-✓ Achievements extracted → Achievements.md
+weekly/2026-W01.md
+─────────────────────
+## Week 1 Summary
+- Completed turbopump hot fire test (98% efficiency)
+- Approved dual-sourcing with Precision Components
+- Risk: Seal supplier delay may push Test 4 to Jan 22
+
+### Achievements extracted
+- ✓ First successful hot fire test of flight-design turbopump
 ```
 
-**From scattered daily notes to structured insights—automatically.**
+**Scattered daily notes → structured insights. Automatically.**
 
 ---
 
