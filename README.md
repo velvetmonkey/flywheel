@@ -168,7 +168,7 @@ search_notes({ has_tag: "active" })       # Semantic search
 get_link_path({ from: "A.md", to: "B.md" }) # How do they connect?
 ```
 
-**[Full Tool Reference →](docs/MCP_REFERENCE.md)** (coming soon)
+**[Full Tool Reference →](docs/MCP_REFERENCE.md)**
 
 ### 2. Workflow Automation (33 Skills)
 
@@ -181,7 +181,7 @@ Automate repetitive tasks:
 /vault-fix-links     # Fix broken wikilinks
 ```
 
-**[Full Skill Reference →](docs/SKILLS_REFERENCE.md)** (coming soon)
+**[Full Skill Reference →](docs/SKILLS_REFERENCE.md)**
 
 ### 3. Six Gates Safety Framework
 
@@ -258,11 +258,11 @@ Try Flywheel with 4 real-world scenarios:
 |-------|------|
 | **Getting Started** | [30-second installation](docs/GETTING_STARTED.md) |
 | **Agentic Patterns** | [How Flywheel makes AI reliable](docs/AGENTIC_PATTERNS.md) |
-| **MCP Reference** | [All 40+ tools](docs/MCP_REFERENCE.md) (coming soon) |
-| **Skills Reference** | [All 33 skills](docs/SKILLS_REFERENCE.md) (coming soon) |
-| **Six Gates Safety** | [Enforced safety framework](docs/SIX_GATES.md) (coming soon) |
-| **Architecture** | [System design](docs/ARCHITECTURE.md) (coming soon) |
-| **Troubleshooting** | [Common issues](docs/TROUBLESHOOTING.md) (coming soon) |
+| **MCP Reference** | [All 40+ tools](docs/MCP_REFERENCE.md) |
+| **Skills Reference** | [All 33 skills](docs/SKILLS_REFERENCE.md) |
+| **Six Gates Safety** | [Enforced safety framework](docs/SIX_GATES.md) |
+| **Architecture** | [System design](docs/ARCHITECTURE.md) |
+| **Tutorial** | [10-minute walkthrough](docs/TUTORIAL.md) |
 | **Roadmap** | [Version history & future plans](docs/ROADMAP.md) |
 | **Demo Vaults** | [Try it risk-free](demos/README.md) |
 
