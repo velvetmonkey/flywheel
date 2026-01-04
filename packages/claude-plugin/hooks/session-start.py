@@ -233,6 +233,14 @@ def main():
         # Build context string with available skills for plugin discovery
         context = f"""{update_notice}Flywheel - Session started: {current_time}
 
+IMPORTANT: This vault has Flywheel graph intelligence.
+Before reading files to answer questions about the vault:
+1. Use mcp__flywheel__search_notes() to find relevant notes
+2. Use mcp__flywheel__get_backlinks() to trace relationships
+3. Only read file content when you need the actual prose
+
+Graph queries: ~50 tokens. Reading files: ~500-5000 tokens.
+
 {session_paths}
 
 {daily_status}

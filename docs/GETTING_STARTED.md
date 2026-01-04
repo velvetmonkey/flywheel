@@ -215,6 +215,6 @@ If `/setup-flywheel` fails, add to `.mcp.json` manually:
 
 ---
 
-**Version**: 1.11.3
+**Version**: 1.12.1
 **Last Updated**: 2026-01-04
 **License**: Apache 2.0
