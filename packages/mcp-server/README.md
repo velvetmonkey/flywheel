@@ -189,7 +189,7 @@ npm run inspect
 
 ## License
 
-MIT — [Ben Cassie](https://github.com/bencassie)
+Apache 2.0 — [Ben Cassie](https://github.com/bencassie)
 
 ## Links
 

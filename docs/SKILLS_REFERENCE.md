@@ -1,6 +1,6 @@
 # Skills Reference
 
-Flywheel provides 42 skills organized by function. Skills auto-trigger on keywords or can be invoked via `/skill-name`.
+Flywheel provides 49 skills organized by function. Skills auto-trigger on keywords or can be invoked via `/skill-name`.
 
 **Skill Types:**
 - **READ** - Query/analyze only, no file modifications
@@ -12,15 +12,16 @@ Flywheel provides 42 skills organized by function. Skills auto-trigger on keywor
 
 | Category | Skills | Purpose |
 |----------|--------|---------|
-| [Onboarding](#onboarding) | 1 | New user welcome |
+| [Onboarding](#onboarding) | 2 | New user welcome, setup |
 | [Graph Analysis](#graph-analysis) | 10 | Links, hubs, orphans, paths |
 | [Search & Query](#search--query) | 4 | Find notes, sections, content |
 | [Health & Maintenance](#health--maintenance) | 4 | Vault health, broken links |
-| [Tasks & Logging](#tasks--logging) | 4 | Tasks, logging, due dates |
+| [Tasks & Logging](#tasks--logging) | 5 | Tasks, logging, due dates, actions |
 | [Schema & Frontmatter](#schema--frontmatter) | 11 | Schema, validation, inference |
-| [Wikilinks](#wikilinks) | 4 | Suggest, apply, fix links |
-| [Rollup & Summaries](#rollup--summaries) | 1 | Periodic summarization |
-| [Bidirectional Bridge](#bidirectional-bridge) | 3 | Prose ↔ frontmatter |
+| [Wikilinks](#wikilinks) | 5 | Suggest, apply, fix links |
+| [Rollup & Summaries](#rollup--summaries) | 4 | Periodic summarization, reviews |
+| [Bidirectional Bridge](#bidirectional-bridge) | 1 | Bidirectional link analysis |
+| [Workflows](#workflows) | 2 | Custom workflow automation |
 
 ---
 
@@ -28,9 +29,10 @@ Flywheel provides 42 skills organized by function. Skills auto-trigger on keywor
 
 | Skill | Type | Trigger | Purpose |
 |-------|------|---------|---------|
-| `/onboard` | READ | "hello flywheel", "getting started" | Welcome + vault health overview |
+| `/onboard-vault` | READ | "hello flywheel", "getting started" | Welcome + vault health overview |
+| `/setup-flywheel` | MUTATE | "setup flywheel", "configure flywheel" | Install and configure Flywheel |
 
-### /onboard (onboard-vault)
+### /onboard-vault
 
 Welcome new users with vault health check, stats, and suggested next steps.
 
@@ -42,24 +44,36 @@ Welcome new users with vault health check, stats, and suggested next steps.
 - Top hub notes
 - Suggested next actions
 
+### /setup-flywheel
+
+Install and configure Flywheel MCP server for a vault.
+
+**Triggers**: "setup flywheel", "configure flywheel", "install flywheel", "flywheel not working"
+
+**Process**:
+1. Detect vault location
+2. Generate MCP configuration
+3. Create `.flywheel/` config directory
+4. Test MCP connection
+
 ---
 
 ## Graph Analysis
 
 | Skill | Type | Trigger | Purpose |
 |-------|------|---------|---------|
-| `/backlinks` | READ | "backlinks to X" | Show incoming/outgoing links |
-| `/hubs` | READ | "hub notes", "most connected" | Find highly connected notes |
-| `/orphans` | READ | "orphan notes", "disconnected" | Find notes with no backlinks |
-| `/path` | READ | "path from X to Y" | Find shortest link path |
-| `/related` | READ | "related to X" | Find related notes |
-| `/common` | READ | "common between X and Y" | Find shared connections |
-| `/dead-ends` | READ | "dead ends" | Notes with backlinks but no outlinks |
-| `/concurrent` | READ | "edited same time as X" | Contemporaneous notes |
-| `/clusters` | READ | "clusters" | Find note clusters |
-| `/strength` | READ | "connection strength" | Calculate link strength |
+| `/show-backlinks` | READ | "backlinks to X" | Show incoming/outgoing links |
+| `/find-hubs` | READ | "hub notes", "most connected" | Find highly connected notes |
+| `/find-orphans` | READ | "orphan notes", "disconnected" | Find notes with no backlinks |
+| `/show-path` | READ | "path from X to Y" | Find shortest link path |
+| `/find-related-notes` | READ | "related to X" | Find related notes |
+| `/show-common-links` | READ | "common between X and Y" | Find shared connections |
+| `/find-dead-ends` | READ | "dead ends" | Notes with backlinks but no outlinks |
+| `/show-concurrent` | READ | "edited same time as X" | Contemporaneous notes |
+| `/find-clusters` | READ | "clusters" | Find note clusters |
+| `/check-link-strength` | READ | "connection strength" | Calculate link strength |
 
-### /backlinks (show-backlinks)
+### /show-backlinks
 
 Show all backlinks and forward links for a note.
 
@@ -67,7 +81,7 @@ Show all backlinks and forward links for a note.
 
 **Example**: "show backlinks to [[Project Alpha]]"
 
-### /hubs (find-hubs)
+### /find-hubs
 
 Find hub notes (highly connected notes with many links).
 
@@ -75,7 +89,7 @@ Find hub notes (highly connected notes with many links).
 
 **Output**: List of notes sorted by total connections
 
-### /orphans (find-orphans)
+### /find-orphans
 
 Find orphan notes (notes with no backlinks).
 
@@ -83,7 +97,7 @@ Find orphan notes (notes with no backlinks).
 
 **Output**: List of orphan notes with modification dates
 
-### /path (find-path)
+### /show-path
 
 Find the shortest link path between two notes.
 
@@ -97,12 +111,12 @@ Find the shortest link path between two notes.
 
 | Skill | Type | Trigger | Purpose |
 |-------|------|---------|---------|
-| `/search` | READ | "search", "find notes" | Advanced search with filters |
-| `/section` | READ | "show section X" | Get content under heading |
+| `/search-vault` | READ | "search", "find notes" | Advanced search with filters |
+| `/show-section` | READ | "show section X" | Get content under heading |
 | `/find-sections` | READ | "sections matching X" | Find sections across vault |
-| `/activity` | READ | "recent activity" | Vault activity summary |
+| `/show-activity` | READ | "recent activity" | Vault activity summary |
 
-### /search (search-vault)
+### /search-vault
 
 Advanced vault search with filters (folder, tags, frontmatter).
 
@@ -113,7 +127,7 @@ Advanced vault search with filters (folder, tags, frontmatter).
 - "find notes tagged with #active"
 - "show notes where status = active"
 
-### /section (get-section)
+### /show-section
 
 Get the content under a specific heading.
 
@@ -127,12 +141,12 @@ Get the content under a specific heading.
 
 | Skill | Type | Trigger | Purpose |
 |-------|------|---------|---------|
-| `/health` | READ | "vault health", "health report" | Full vault diagnostics |
+| `/check-health` | READ | "vault health", "health report" | Full vault diagnostics |
 | `/fix-links` | MUTATE | "fix links", "broken links" | Find and repair broken links |
-| `/folder-health` | READ | "folder health" | Health by folder |
-| `/link-density` | READ | "link density" | Link density metrics |
+| `/check-folder-health` | READ | "folder health" | Health by folder |
+| `/check-link-density` | READ | "link density" | Link density metrics |
 
-### /health (check-health)
+### /check-health
 
 Comprehensive vault diagnostics and health report.
 
@@ -145,7 +159,7 @@ Comprehensive vault diagnostics and health report.
 - Top hubs
 - Recommendations
 
-### /fix-links (fix-links)
+### /fix-links
 
 Find and repair broken wikilinks in vault.
 
@@ -162,12 +176,13 @@ Find and repair broken wikilinks in vault.
 
 | Skill | Type | Trigger | Purpose |
 |-------|------|---------|---------|
-| `/log` | MUTATE | "log X", "captains log" | Add timestamped log entry |
-| `/tasks` | READ | "all tasks", "show tasks" | List vault tasks |
-| `/due` | READ | "due soon", "upcoming tasks" | Tasks with due dates |
+| `/add-log` | MUTATE | "log X", "captains log" | Add timestamped log entry |
+| `/show-tasks` | READ | "all tasks", "show tasks" | List vault tasks |
+| `/show-due-tasks` | READ | "due soon", "upcoming tasks" | Tasks with due dates |
 | `/add-task` | MUTATE | "add task" | Add task to note |
+| `/extract-actions` | MUTATE | "extract actions", "pull action items" | Extract action items from notes |
 
-### /log (add-log)
+### /add-log
 
 Auto-log entries to today's daily note.
 
@@ -179,7 +194,7 @@ Auto-log entries to today's daily note.
 - "log Fixed authentication bug"
 - "captains log: Meeting with product team"
 
-### /tasks (show-tasks)
+### /show-tasks
 
 Get all tasks from the vault with filtering options.
 
@@ -187,11 +202,19 @@ Get all tasks from the vault with filtering options.
 
 **Filters**: status (open/completed), folder, tag
 
-### /due (tasks-due)
+### /show-due-tasks
 
 Get tasks sorted by due date.
 
 **Triggers**: "due soon", "upcoming tasks", "what's due", "deadlines"
+
+### /extract-actions
+
+Extract action items from notes or conversation context.
+
+**Triggers**: "extract actions", "pull action items", "action items from"
+
+**Output**: List of extracted tasks with source context
 
 ---
 
@@ -199,19 +222,19 @@ Get tasks sorted by due date.
 
 | Skill | Type | Trigger | Purpose |
 |-------|------|---------|---------|
-| `/schema` | READ | "vault schema" | Analyze frontmatter schema |
-| `/schema-check` | READ | "validate schema" | Validate against schema |
-| `/field-values` | READ | "values for X field" | Get unique field values |
-| `/normalize` | READ | "normalize note" | Normalize frontmatter |
-| `/promote-fm` | READ | "promote to frontmatter" | Move prose patterns to YAML |
-| `/gaps` | READ | "missing frontmatter" | Find missing fields |
+| `/show-schema` | READ | "vault schema" | Analyze frontmatter schema |
+| `/check-schema` | READ | "validate schema" | Validate against schema |
+| `/show-field-values` | READ | "values for X field" | Get unique field values |
+| `/normalize-note` | READ | "normalize note" | Normalize frontmatter |
+| `/promote-frontmatter` | READ | "promote to frontmatter" | Move prose patterns to YAML |
+| `/find-gaps` | READ | "missing frontmatter" | Find missing fields |
 | `/schema-infer` | READ | "infer schema" | Auto-detect folder conventions |
 | `/schema-gaps` | READ | "incomplete notes" | Find notes missing fields |
 | `/schema-apply` | MUTATE | "apply schema" | Apply conventions to notes |
 | `/schema-compute` | MUTATE | "compute fields" | Add computed frontmatter |
 | `/schema-migrate` | MUTATE | "rename field" | Rename/transform field values |
 
-### /schema (vault-schema)
+### /show-schema
 
 Analyze all frontmatter fields used across the vault.
 
@@ -219,7 +242,7 @@ Analyze all frontmatter fields used across the vault.
 
 **Output**: Field names, types, usage counts
 
-### /schema-check (validate-schema)
+### /check-schema
 
 Validate notes against expected schema.
 
@@ -227,7 +250,7 @@ Validate notes against expected schema.
 
 **Example**: "validate projects folder has type, status, owner"
 
-### /gaps (find-gaps)
+### /find-gaps
 
 Find notes missing expected frontmatter fields.
 
@@ -239,13 +262,13 @@ Find notes missing expected frontmatter fields.
 
 | Skill | Type | Trigger | Purpose |
 |-------|------|---------|---------|
-| `/suggest` | MUTATE | "suggest links" | Suggest wikilinks for note |
-| `/apply-links` | MUTATE | "apply links" | Add suggested wikilinks |
-| `/unlinked` | MUTATE | "unlinked mentions" | Find text that could be linked |
-| `/wikilinkify-fm` | READ | "wikilinkify frontmatter" | Convert strings to wikilinks |
+| `/suggest-links` | MUTATE | "suggest links" | Suggest wikilinks for note |
+| `/apply-wikilinks` | MUTATE | "apply links" | Add suggested wikilinks |
+| `/find-unlinked-mentions` | MUTATE | "unlinked mentions" | Find text that could be linked |
+| `/wikilinkify-frontmatter` | READ | "wikilinkify frontmatter" | Convert strings to wikilinks |
 | `/rebuild-cache` | MUTATE | "rebuild cache" | Rebuild wikilink entity cache |
 
-### /suggest (suggest-links)
+### /suggest-links
 
 Suggest wikilinks for current note using entity matching.
 
@@ -253,13 +276,13 @@ Suggest wikilinks for current note using entity matching.
 
 **Output**: List of text that matches existing note titles/aliases
 
-### /apply-links (wikilink-apply)
+### /apply-wikilinks
 
 Apply suggested wikilinks to a note.
 
 **Triggers**: "apply links", "add the links", "wikilinkify"
 
-### /unlinked (unlinked-mentions)
+### /find-unlinked-mentions
 
 Find places where an entity is mentioned but not linked.
 
@@ -273,9 +296,12 @@ Find places where an entity is mentioned but not linked.
 
 | Skill | Type | Trigger | Purpose |
 |-------|------|---------|---------|
-| `/rollup` | MUTATE | "rollup", "summarize notes" | Execute rollup chain |
+| `/run-rollup` | MUTATE | "rollup", "summarize notes" | Execute rollup chain |
+| `/weekly-review` | MUTATE | "weekly review", "review my week" | Weekly reflection workflow |
+| `/standup-rollup` | MUTATE | "standup", "team standup" | Team standup summary |
+| `/okr-review` | MUTATE | "okr review", "quarterly objectives" | OKR progress review |
 
-### /rollup (run-rollup)
+### /run-rollup
 
 Execute the complete rollup chain: daily → weekly → monthly → quarterly → yearly → achievements.
 
@@ -288,26 +314,49 @@ Execute the complete rollup chain: daily → weekly → monthly → quarterly �
 4. Process quarterly → yearly
 5. Extract achievements
 
+### /weekly-review
+
+Guided weekly reflection workflow.
+
+**Triggers**: "weekly review", "review my week", "reflect on week"
+
+**Output**: Structured weekly summary with wins, learnings, and next week priorities
+
+### /standup-rollup
+
+Generate team standup summary from daily notes.
+
+**Triggers**: "standup", "team standup", "standup blockers"
+
+**Output**: What was done, what's planned, blockers
+
+### /okr-review
+
+Review OKR progress against quarterly objectives.
+
+**Triggers**: "okr review", "quarterly objectives", "key results"
+
+**Output**: OKR progress metrics and recommendations
+
 ---
 
 ## Bidirectional Bridge
 
 | Skill | Type | Trigger | Purpose |
 |-------|------|---------|---------|
-| `/detect-patterns` | READ | "detect patterns" | Find Key: Value patterns in prose |
-| `/cross-layer` | READ | "validate layers" | Check frontmatter ↔ prose consistency |
-| `/bidirectional` | READ | "bidirectional check" | Full bidirectional analysis |
+| `/check-bidirectional` | READ | "bidirectional check" | Find mutual/reciprocal links |
 
-### /bidirectional (vault-bidirectional)
+### /check-bidirectional
 
-Full bidirectional analysis between frontmatter and prose.
+Find notes that link to each other (bidirectional/mutual links).
 
-**Triggers**: "bidirectional", "check layers", "frontmatter vs prose"
+**Triggers**: "bidirectional", "mutual links", "two-way links", "reciprocal links"
 
 **Output**:
-- Prose patterns detected
-- Frontmatter suggestions
-- Consistency issues
+- Pairs of notes that link to each other
+- Connection strength insights
+
+> **Note**: Pattern detection (`detect_prose_patterns`) and cross-layer validation (`validate_cross_layer`) are available via MCP tools and will be orchestrated by the upcoming `/review` skill.
 
 ---
 
@@ -315,9 +364,9 @@ Full bidirectional analysis between frontmatter and prose.
 
 | Skill | Type | Trigger | Purpose |
 |-------|------|---------|---------|
-| `/stale` | READ | "stale notes", "old notes" | Find important neglected notes |
+| `/find-stale-notes` | READ | "stale notes", "old notes" | Find important neglected notes |
 
-### /stale (find-stale-notes)
+### /find-stale-notes
 
 Find important notes (by backlink count) not modified recently.
 
@@ -327,17 +376,45 @@ Find important notes (by backlink count) not modified recently.
 
 ---
 
+## Workflows
+
+| Skill | Type | Trigger | Purpose |
+|-------|------|---------|---------|
+| `/onboard-customer` | MUTATE | "onboard customer", "new customer" | Customer onboarding workflow |
+| `/workflow-define` | MUTATE | "define workflow", "create workflow" | Create custom workflow definitions |
+
+### /onboard-customer
+
+Guided customer onboarding workflow.
+
+**Triggers**: "onboard customer", "new customer setup", "client onboarding"
+
+**Process**:
+1. Create customer note from template
+2. Set up required frontmatter fields
+3. Link to relevant project notes
+
+### /workflow-define
+
+Define and save custom workflow patterns.
+
+**Triggers**: "define workflow", "create workflow", "new workflow"
+
+**Output**: Workflow definition file with steps and triggers
+
+---
+
 ## Auto-Trigger Behavior
 
 Skills auto-trigger when user input matches trigger keywords. Examples:
 
 | User Input | Triggers |
 |------------|----------|
-| "show me the hub notes" | `/hubs` |
-| "what's the vault health?" | `/health` |
-| "log fixed bug" | `/log` |
-| "find orphan notes" | `/orphans` |
-| "search for notes about AI" | `/search` |
+| "show me the hub notes" | `/find-hubs` |
+| "what's the vault health?" | `/check-health` |
+| "log fixed bug" | `/add-log` |
+| "find orphan notes" | `/find-orphans` |
+| "search for notes about AI" | `/search-vault` |
 
 To disable auto-trigger and invoke manually, use the slash command directly.
 
@@ -360,5 +437,5 @@ sections:
 
 ---
 
-**Version**: 1.7.0
-**Last Updated**: 2026-01-03
+**Version**: 1.8.0
+**Last Updated**: 2026-01-04

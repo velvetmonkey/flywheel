@@ -81,7 +81,7 @@ Based on your vault, try these commands:
 
 ## Learn More
 
-- See `docs/QUICKSTART.md` for a getting started guide
+- See `docs/GETTING_STARTED.md` for the full guide
 - See `docs/ROADMAP.md` for upcoming features
 - Run `/vault-health` for a comprehensive health check
 ```
