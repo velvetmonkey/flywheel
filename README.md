@@ -41,16 +41,16 @@ tracking - last update was Jan 2."
 ## Instant Logging: Capture With Auto-Linking
 
 ```
-You: "/log talked to Marcus about seal delays"
+You: "/log called Marcus - Acme said turbopump delayed to Jan 20"
 
 daily/2026-01-04.md
 ─────────────────────
 ## Log
-- 14:32 talked to [[Marcus Chen]] about [[Seal Supplier Delay]]   ← added
+- 14:32 called [[Marcus Johnson]] - Acme said [[Turbopump]] delayed to Jan 20
 
-Flywheel recognized:
-  "Marcus" → [[Marcus Chen]] (people/marcus-chen.md)
-  "seal delays" → [[Seal Supplier Delay]] (issues/seal-delay.md)
+Claude recognized entities in your vault:
+  "Marcus" → [[Marcus Johnson]] (Propulsion Lead)
+  "turbopump" → [[Turbopump]] (systems/propulsion/Turbopump.md)
 ```
 
 **One sentence → auto-linked → connected to your graph.**
