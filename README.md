@@ -1,149 +1,263 @@
-# Flywheel - The Agentic Markdown Operating System
+# Flywheel — Your AI Back-Office
 
 [![npm version](https://img.shields.io/npm/v/@bencassie/flywheel-mcp.svg)](https://www.npmjs.com/package/@bencassie/flywheel-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/bencassie/flywheel)
 
-**A Claude Code + MCP plugin that gives AI deep knowledge of your vault using 200x fewer tokens.**
-
-How it works:
-- Builds a **header/note graph** from your markdown files
-- AI queries the graph instead of reading every file
-- Your knowledge stays local, private, and fast
-
-Why this matters:
-- **Cost**: 200x token reduction = 200x cheaper
-- **Privacy**: Intelligence derived locally, not sent to cloud
-- **Security**: No file contents in prompts unless needed
-- **Speed**: Graph queries vs full-text search
+**Run your solo business from markdown files. AI handles the operations.**
 
 ---
 
-## Graph Intelligence: Ask Anything About Your Vault
+## Who This Is For
 
-```
-You: "What's blocking the propulsion milestone?"
+You're a **solo operator** — consultant, founder, freelancer, creator.
 
-→ Via graph index (no files read)
-→ ~50 tokens vs ~5,000 without Flywheel
+You run everything yourself: clients, projects, finances, content, decisions.
+You're drowning in tools: Notion for docs, Todoist for tasks, spreadsheets
+for tracking, email for everything else.
 
-Flywheel traverses:
-  Propulsion Milestone → depends on → Turbopump Test
-  Turbopump Test → blocked by → Seal Supplier Delay
-  Seal Supplier → contact → Marcus Chen
+**What if your notes were your operating system?**
 
-Claude: "The propulsion milestone is blocked by turbopump testing,
-which is waiting on seals from Apex Materials. Marcus Chen is
-tracking - last update was Jan 2."
-```
+Flywheel turns markdown files into business infrastructure:
+- AI understands how your notes connect (no manual tagging)
+- Log your work once, AI keeps everything updated
+- Daily notes roll up into weekly → monthly → quarterly summaries
+- Track projects, clients, revenue — all in plain text
 
-**3 hops through the graph. Zero file reads.**
+No SaaS lock-in. No code. Just markdown + AI.
 
 ---
 
-## Research Logging: Capture What You Learned
+## How It Works
+
+Flywheel builds a **graph index** of your markdown files at startup.
+When you ask questions, AI queries the index — not the files.
+
+**Why this matters:**
+
+| Without Flywheel | With Flywheel |
+|------------------|---------------|
+| AI reads 50 files to find 3 relevant ones | AI queries the graph directly |
+| ~50,000 tokens consumed | ~500 tokens consumed |
+| Slow, expensive, context overload | Fast, cheap, precise |
+
+For mutations (logging, rollups), Flywheel reads only the **sections** it needs:
+- Full file stays on disk (privacy preserved)
+- Only relevant content goes to AI (tokens saved)
+- You get both: local data + smart AI
+
+---
+
+## Capture Context: Log What You Learned
+
+You spent 20 minutes researching payment processors with Claude.
+One command captures everything:
 
 ```
-You: [after 20 min researching seal suppliers with Claude]
-You: "/log our findings on seal supplier options"
+You: "log our findings on payment options"
 
-→ Reads: ## Log section only (42 tokens vs 800 for whole file)
-→ Appends to: daily/2026-01-04.md
+┌─ MUTATION ───────────────────────────────────────┐
+│ Context: Prior conversation (summarized by AI)   │
+│ Reads:   ## Log section (42 tokens)              │
+│ Appends: daily/2026-01-07.md                     │
+└──────────────────────────────────────────────────┘
 
 ## Log
-- 14:32 **Seal supplier research** - Found [[Keystone Seals]] as alternative
-  to [[Apex Materials]]. Same LOX-compatible specs (dual-barrier mechanical
-  face seal), but 5-day lead time vs 16 weeks. Quote pending.
-  Could cut [[Turbopump]] delay by 11 days. Validate with [[Marcus Johnson]].
-
-Entities linked: [[Keystone Seals]] (new), [[Apex Materials]], [[Turbopump]]
+- 09:15 Morning review
+- 10:47 **Payment processor research**                    ← NEW
+  Compared Stripe vs Square vs PayPal for course sales.
+  Stripe wins: 2.9% + $0.30, instant payouts, better API.
+  Setting up this week.
+  See also: [[Revenue Tracker]], [[Course Launch Plan]]
 ```
 
-**Your research summarized, linked, and ready for follow-up.**
+**20 minutes of conversation → one structured entry. Claude did the summarizing.**
 
 ---
 
-## Path Finding: See How Concepts Connect
+## Entity Extraction: AI Links For You
+
+Claude identifies entities from context and creates wikilinks automatically:
 
 ```
-You: "how does the seal delay connect to our launch date?"
+You: "log the client call"
 
-→ Via link index (no files read)
-→ ~30 tokens vs ~8,000 without Flywheel
+┌─ MUTATION ───────────────────────────────────────┐
+│ Context: Prior conversation about Acme Corp call │
+│ Reads:   ## Log section (38 tokens)              │
+│ Appends: daily/2026-01-07.md                     │
+│ Entities: [[Acme Corp]], [[Sarah Chen]], [[Q1 Proposal]]
+└──────────────────────────────────────────────────┘
 
-Flywheel traces:
-  [[Seal Supplier Delay]]
-    → blocks → [[Turbopump]]
-    → required for → [[Engine Hot Fire Test 4]]
-    → gates → [[Flight Readiness Review]]
-    → determines → [[Launch Date]]
+## Log
+- 14:22 **Client call: [[Acme Corp]]**                    ← NEW
+  Met with [[Sarah Chen]] (VP Ops). They want to expand
+  the [[Q1 Proposal]] scope to include API integration.
+  Budget approved: $15K additional. Timeline: 3 weeks.
+  Action: Send revised SOW by Friday.
 ```
 
-**5 hops. Critical path revealed. Zero file reads.**
+**Claude extracted 3 entities from the conversation and linked them automatically.**
 
 ---
 
-## Task Tracking: Find Overdue Across Linked Notes
+## MCP Cross-Talk: Log + Calendar in One Command
+
+With Google Calendar MCP connected, Claude can log AND create a reminder:
 
 ```
-You: "what's overdue for propulsion?"
+You: "log this and remind me to follow up Friday"
 
-→ Via task index (checkbox lines only)
-→ ~100 tokens vs ~3,000 without Flywheel
+┌─ CHAIN ──────────────────────────────────────────┐
+│ Context: Prior conversation about proposal       │
+│ Reads:   ## Log section (38 tokens)              │
+│ Appends: daily/2026-01-07.md                     │
+│ Creates: Google Calendar event (via calendar MCP)│
+└──────────────────────────────────────────────────┘
 
-⚠️ Overdue (3):
-  Turbopump.md:     - [ ] Review seal specs 📅 2026-01-02
-  Risk-Register.md: - [ ] Update risk scores 📅 2026-01-03
-  Test-Plan.md:     - [ ] Finalize Test 4 checklist 📅 2026-01-03
+## Log
+- 14:22 **Proposal sent to [[Acme Corp]]**               ← NEW
+  Revised SOW with API scope ($15K). Sarah reviewing.
+  Follow-up: Friday 10am
 
-All linked to [[Propulsion Milestone]].
+Calendar event created:
+   "Follow up: Acme Corp proposal"
+   Friday, Jan 10, 2026 at 10:00 AM
 ```
 
-**Not just "all overdue" — overdue for THIS project.**
+**One command: logged the context, linked entities, AND created a calendar reminder.**
 
 ---
 
-## Schema Enforcement: Find Incomplete Notes
+## Voice → Research → Report → Log
+
+The most powerful pattern: speak a request, get research done, report written, and logged:
 
 ```
-You: "check schema in systems/"
+[You're at your desk with a headset. Hands busy with coffee. Speaking to Claude.]
 
-→ Via frontmatter index (12 notes, metadata only)
-→ ~80 tokens vs ~2,000 without Flywheel
+You: "Research the best email automation tools for course creators,
+     write me a report, and log it in my daily note"
 
-Expected fields: type, status, owner (>90% have these)
+┌─ CHAIN ──────────────────────────────────────────┐
+│ Step 1: Web research (via Claude)                │
+│ Step 2: Creates: reports/email-automation.md     │
+│ Step 3: Reads: ## Log section (38 tokens)        │
+│ Step 4: Appends: daily/2026-01-07.md             │
+│ Writes: 2 files                                  │
+└──────────────────────────────────────────────────┘
 
-⚠️ 2 notes incomplete:
-  systems/avionics.md: missing 'owner'
-  systems/thermal.md: missing 'status', 'owner'
+### reports/email-automation.md (created)
+---
+type: research-report
+topic: email automation for course creators
+date: 2026-01-07
+---
+
+# Email Automation Tools for Course Creators
+
+| Tool | Price | Best For | Course Integration |
+|------|-------|----------|-------------------|
+| ConvertKit | $29/mo | Creators | Native |
+| Mailchimp | Free tier | Starting out | Zapier |
+| ActiveCampaign | $49/mo | Advanced automation | API |
+
+Recommendation: ConvertKit for course creators.
+
+### daily/2026-01-07.md (appended)
+## Log
+- 10:30 **Email automation research** → [[reports/email-automation]]  ← NEW
+  Compared ConvertKit, Mailchimp, ActiveCampaign.
+  ConvertKit recommended. Next: free trial signup.
 ```
 
-**No config needed. Patterns inferred automatically.**
+**One voice command: research done, report created, daily log updated.**
+
+---
+
+## Graph Queries: How Claude Knows What's Blocking You
+
+**This works because your notes have structured frontmatter:**
+```yaml
+# Course Launch Plan.md
+---
+status: blocked
+blocked_by: "[[Payment Setup]]"
+---
+```
+
+```
+You: "What's blocking the course launch?"
+
+┌─ QUERY ──────────────────────────────────────────┐
+│ Source:  Graph index (no file reads)             │
+│ Tokens:  ~50 vs ~3,000                           │
+└──────────────────────────────────────────────────┘
+
+Claude traces the graph (not files):
+  1. [[Course Launch Plan]] → frontmatter: status: blocked
+  2. [[Course Launch Plan]] → frontmatter: blocked_by: [[Payment Setup]]
+  3. [[Payment Setup]] → frontmatter: status: waiting
+  4. [[Payment Setup]] → frontmatter: waiting_on: [[Bank Verification]]
+  5. [[Bank Verification]] → frontmatter: submitted: 2026-01-03
+
+No files read. Just index lookups on:
+- 3 note titles (from index)
+- 5 frontmatter fields (from index)
+- 2 wikilink relationships (from index)
+
+Claude: "The course launch is blocked by bank verification
+for Stripe. You submitted Jan 3 — should clear in 2-3 days.
+Once verified, payment setup takes ~1 hour, then you're live."
+```
+
+**With Flywheel: 50 tokens, instant. Without: 1,500+ tokens, 30+ seconds.**
+
+**Note:** Frontmatter is optional but powerful. Even without it, wikilinks create a graph that Claude can traverse.
 
 ---
 
 ## The Rollup Workflow: Daily → Weekly → Monthly
 
+**What are periodic notes?**
+In personal knowledge management, people keep daily/weekly/monthly notes.
+But this is also **how businesses should track progress**:
+
+- **Daily**: What happened today? Decisions, calls, wins, blockers
+- **Weekly**: What did we accomplish? What's carrying over?
+- **Monthly**: Are we on track? What patterns emerge?
+- **Quarterly**: Strategic review. Goals vs reality.
+
+Most businesses track this in scattered tools (Slack, email, spreadsheets).
+With Flywheel, it's **one folder of markdown** — and AI aggregates it automatically.
+
 ```
 You: "do a rollup"
 
-→ Reads: ## Log sections from 7 daily notes (~700 tokens vs ~7,000)
-→ Creates: weekly/2026-W01.md
-→ Appends to: monthly/2026-01.md
-→ Appends to: Achievements.md
+┌─ CHAIN ──────────────────────────────────────────┐
+│ Reads:   7 daily notes, ## Log sections          │
+│          (~700 tokens vs ~7,000 full files)      │
+│ Creates: weekly/2026-W01.md                      │
+│ Appends: monthly/2026-01.md                      │
+│ Appends: quarterly/2026-Q1.md                    │
+│ Appends: Achievements.md                         │
+└──────────────────────────────────────────────────┘
 
-weekly/2026-W01.md
-─────────────────────
+### weekly/2026-W01.md (created)
 ## Week 1 Summary
-- Completed turbopump hot fire test (98% efficiency)
-- Approved dual-sourcing with Precision Components
-- Risk: Seal supplier delay may push Test 4 to Jan 22
+- Finalized Stripe integration for course payments
+- Newsletter hit 3,000 subscribers (up 200)
+- Consulting: closed $2,400 in new work
 
-### Achievements extracted
-- ✓ First successful hot fire test of flight-design turbopump
+## Achievements
+- First week with $1K+ passive revenue
+
+### monthly/2026-01.md (appended)
+## Week 1
+[Summary linked here]
 ```
 
-**Scattered daily notes → structured insights. Automatically.**
+**You can still edit these files.** Rollup aggregates — it doesn't lock you out.
 
 ---
 
@@ -177,22 +291,132 @@ Claude configures everything for your platform.
 
 ---
 
-## Demo Vaults
+## See It In Action
 
-Try Flywheel with real-world scenarios (ordered by complexity):
+Pick your business. Start asking questions.
 
-| Demo | You Are | Try Asking |
-|------|---------|-----------|
-| [Carter Strategy](./demos/carter-strategy/) | Solo consultant, 3 clients | "What's overdue this week?" |
-| [Artemis Rocket](./demos/artemis-rocket/) | Chief Engineer, aerospace startup | "What's blocking propulsion?" |
-| [Startup Ops](./demos/startup-ops/) | Co-founder, pre-Series A SaaS | "Walk me through customer onboarding" |
-| [Nexus Lab](./demos/nexus-lab/) | PhD researcher, protein folding | "How does AlphaFold connect to my experiment?" |
+| You Are | Demo | AI Handles |
+|---------|------|------------|
+| **Content creator** | [Solo Operator](./demos/solo-operator/) | Newsletter, course sales, consulting |
+| **Consultant** | [Carter Strategy](./demos/carter-strategy/) | Clients, invoices, deliverables |
+| **Startup founder** | [Startup Ops](./demos/startup-ops/) | Onboarding, metrics, playbooks |
+| **Researcher** | [Nexus Lab](./demos/nexus-lab/) | Literature, experiments, citations |
+| **Technical lead** | [Artemis Rocket](./demos/artemis-rocket/) | Systems, decisions, blockers |
 
 ```bash
-cd demos/carter-strategy
+cd demos/solo-operator
 claude
 /setup-flywheel
 ```
+
+---
+
+## Why Flywheel Is Different
+
+Most AI tools read your files, dump them into context, and hope for the best.
+Flywheel is architecturally different:
+
+### 1. Graph-First, Not File-First
+At startup, Flywheel builds an **in-memory graph** of your notes:
+- Titles, links, frontmatter, tags — all indexed
+- AI queries relationships, not raw text
+- Result: 50-200 tokens instead of 5,000-50,000
+
+### 2. Your Files Stay on Your Disk
+For mutations (logging, rollups), Flywheel reads **only the sections it needs**:
+- Full file stays on disk — never sent to AI unless necessary
+- Only `## Log` or `## Tasks` content goes over the wire
+- Privacy by architecture, not by policy
+
+### 3. 10-200x Token Savings (Real Numbers)
+| Operation | Without Flywheel | With Flywheel | Savings |
+|-----------|------------------|---------------|---------|
+| "What's blocking X?" | ~5,000 tokens | ~50 tokens | 100x |
+| "/log research findings" | ~800 tokens | ~42 tokens | 19x |
+| "do a rollup" (7 days) | ~7,000 tokens | ~700 tokens | 10x |
+
+### 4. MCP Protocol = Claude-Native
+Flywheel uses the Model Context Protocol (MCP), so Claude:
+- Sees 40+ specialized tools automatically
+- Chooses the right tool for each query
+- No prompting or configuration needed
+
+**You just ask questions. Claude uses the graph.**
+
+### 5. Git-Native: Your Business History, Versioned
+Every markdown file is just a file. Use Git to:
+- Track every decision, every change, every rollback
+- See what changed last quarter vs this quarter
+- Collaborate with partners via branches and PRs
+- Never lose context — your history is your history
+
+**Your business has version control. Most SaaS tools don't.**
+
+### 6. Plain Text = Future-Proof
+Notion can change their API. Salesforce can sunset features. Your markdown?
+- Works in any editor (Obsidian, VSCode, vim, Notepad)
+- No export needed — it's already in the universal format
+- Migrate to any system, anytime
+- Your grandkids could read these files
+
+**No lock-in. No migration. Just files.**
+
+### 7. Inferred Schema: AI Learns Your Patterns
+Flywheel detects conventions per folder automatically:
+- Scans existing notes to infer expected fields
+- Suggests frontmatter based on folder patterns (e.g., `clients/` → `status`, `contact`, `rate`)
+- Confidence scores show which patterns are strong vs emerging
+- No manual schema definition required
+
+**Your conventions become queryable. AI figures out the structure.**
+
+### 8. Auto-Wikilinks: Connect Without Thinking
+When you write prose, Flywheel suggests links to existing notes:
+- Matches mentions of note titles and aliases
+- Works in both directions: prose → frontmatter, frontmatter → wikilinks
+- Validates consistency between layers
+
+**You write naturally. AI adds the connections.**
+
+### 9. Extensible: Make It Yours
+Flywheel is a framework, not a finished product:
+- **Skills**: Add `/invoice` or `/standup` commands for your workflow
+- **Agents**: Multi-step automations that chain operations
+- **Hooks**: Trigger actions on file changes or commands
+- **MCP Tools**: Extend the graph intelligence
+
+**Start simple. Grow into automation.**
+
+---
+
+## The Business Loop: AI Improves Your Notes
+
+Claude Code doesn't just read your notes — it can iteratively improve them.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    THE BUSINESS LOOP                        │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│   1. CAPTURE: "log the client call"                         │
+│      → Claude writes to daily note                          │
+│                                                             │
+│   2. DETECT: "Acme Corp" mentioned but not linked           │
+│      → suggest_wikilinks() finds unlinked mentions          │
+│                                                             │
+│   3. ENHANCE: clients/ folder has patterns                  │
+│      → infer_folder_conventions() detects expected fields   │
+│                                                             │
+│   4. COMPLETE: Note missing 'rate' field                    │
+│      → suggest_field_values() recommends based on context   │
+│                                                             │
+│   5. VALIDATE: Frontmatter vs prose inconsistency           │
+│      → validate_cross_layer() flags mismatches              │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Your notes get smarter over time. Not because you're more diligent — because AI is always watching.**
 
 ---
 
@@ -210,7 +434,7 @@ claude
 
 ## Platform Support
 
-- ✅ macOS / Linux / WSL / Windows
+- macOS / Linux / WSL / Windows
 
 **[Platform Setup →](docs/GETTING_STARTED.md#platform-specific-notes)**
 

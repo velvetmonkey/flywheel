@@ -26,20 +26,43 @@ Ask Claude:
 
 ---
 
-## Mutations
+## How mutations work
 
-When you ask Claude to make changes, here's what happens:
+When you ask Claude to make changes:
 
 ### Add a standup note
 
 ```
 You: "/log turbopump test successful - 98% efficiency"
 
-→ Modifies: daily-notes/2026-01-04.md
+┌─ MUTATION ───────────────────────────────────────┐
+│ Reads:   ## Log section (42 tokens)              │
+│ Appends: daily-notes/2026-01-04.md               │
+└──────────────────────────────────────────────────┘
 
 ## Log
 - 09:15 Team sync
-- 14:47 turbopump test successful - 98% efficiency   ← ADDED
+- 14:47 turbopump test successful - 98% efficiency ← NEW
+```
+
+### Trace a blocker
+
+```
+You: "What's blocking propulsion?"
+
+┌─ QUERY ──────────────────────────────────────────┐
+│ Source: Graph index (no file reads)              │
+│ Tokens: ~50 vs ~3,000 without Flywheel           │
+└──────────────────────────────────────────────────┘
+
+Claude traces the graph:
+  [[Propulsion Milestone]] → blocked by → [[Turbopump Test]]
+  [[Turbopump Test]] → waiting on → [[Seal Supplier]]
+  [[Seal Supplier]] → status: delayed, ETA: Jan 18
+
+Claude: "Propulsion is blocked by the turbopump test,
+which is waiting on seals from Apex Materials.
+Current ETA is Jan 18 - 14 days out."
 ```
 
 ### Create a decision record
@@ -47,12 +70,42 @@ You: "/log turbopump test successful - 98% efficiency"
 ```
 You: "record decision: switching to titanium valves"
 
-→ Creates: decisions/DR-015-titanium-valves.md
+┌─ MUTATION ───────────────────────────────────────┐
+│ Reads:   decisions/ folder conventions           │
+│ Creates: decisions/DR-015-titanium-valves.md     │
+└──────────────────────────────────────────────────┘
 
 # DR-015: Titanium Valves
-Date: 2026-01-04
-Status: Approved
-Context: [[Turbopump Test Results]]
+---
+date: 2026-01-04
+status: approved
+context: "[[Turbopump Test Results]]"
+---
+
+Decision: Switching to titanium valves for improved
+temperature tolerance based on hot fire results.
+```
+
+### Do a rollup
+
+```
+You: "do a rollup"
+
+┌─ CHAIN ──────────────────────────────────────────┐
+│ Reads:   7 daily notes, ## Log sections          │
+│          (~700 tokens vs ~7,000 full files)      │
+│ Creates: weekly-notes/2026-W01.md                │
+│ Appends: Achievements.md                         │
+└──────────────────────────────────────────────────┘
+
+### weekly-notes/2026-W01.md (created)
+## Week 1 Summary
+- Turbopump hot fire: 98% efficiency achieved
+- Seal supplier delay: pushed to Jan 18
+- Decision: switching to titanium valves (DR-015)
+
+## Achievements
+- First successful turbopump hot fire test         ← NEW
 ```
 
 ---
