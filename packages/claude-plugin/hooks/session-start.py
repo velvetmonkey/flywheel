@@ -35,6 +35,19 @@ def get_current_version():
     return '0.0.0'
 
 
+def version_tuple(v):
+    """Convert version string to comparable tuple."""
+    return tuple(int(x) for x in v.split('.'))
+
+
+def is_newer(remote, local):
+    """Return True if remote version is newer than local."""
+    try:
+        return version_tuple(remote) > version_tuple(local)
+    except (ValueError, AttributeError):
+        return False
+
+
 def check_for_updates():
     """Check GitHub for newer version. Returns update message or empty string."""
     current_version = get_current_version()
@@ -48,7 +61,7 @@ def check_for_updates():
             mtime = datetime.fromtimestamp(cache_file.stat().st_mtime)
             if (datetime.now() - mtime).total_seconds() < 86400:  # 24 hours
                 cached = cache_file.read_text(encoding='utf-8').strip()
-                if cached and cached != current_version:
+                if cached and is_newer(cached, current_version):
                     return format_update_message(current_version, cached)
                 return ""
 
@@ -65,8 +78,8 @@ def check_for_updates():
         except Exception:
             pass  # Cache write failed, continue anyway
 
-        # Compare versions
-        if latest and latest != current_version:
+        # Compare versions - only show update if remote is newer
+        if latest and is_newer(latest, current_version):
             return format_update_message(current_version, latest)
         return ""
 
