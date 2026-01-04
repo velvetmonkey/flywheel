@@ -158,7 +158,11 @@ weekly/2026-W01.md
 
 ### 2. Setup
 
-Say: **"setup flywheel"** - Claude configures everything for your platform.
+```
+/setup-flywheel
+```
+
+Claude configures everything for your platform.
 
 ### 3. Try It
 
