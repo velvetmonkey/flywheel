@@ -41,19 +41,20 @@ tracking - last update was Jan 2."
 ## Instant Logging: Capture With Auto-Linking
 
 ```
-You: "/log called Marcus - Acme said turbopump delayed to Jan 20"
+You: [after 20 minutes researching seal suppliers with Claude]
+You: "/log found Keystone Seals - same specs, 5-day lead time. Talk to Marcus."
 
 daily/2026-01-04.md
 ─────────────────────
 ## Log
-- 14:32 called [[Marcus Johnson]] - Acme said [[Turbopump]] delayed to Jan 20
+- 14:32 found [[Keystone Seals]] - same specs, 5-day lead time. Talk to [[Marcus Johnson]].
 
-Claude recognized entities in your vault:
+Claude auto-linked entities from your vault:
   "Marcus" → [[Marcus Johnson]] (Propulsion Lead)
-  "turbopump" → [[Turbopump]] (systems/propulsion/Turbopump.md)
+  New entity created: [[Keystone Seals]] → suppliers/keystone-seals.md
 ```
 
-**One sentence → auto-linked → connected to your graph.**
+**Research captured. Backlinked. Ready for your next conversation.**
 
 ---
 
