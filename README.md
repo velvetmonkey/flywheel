@@ -8,17 +8,14 @@
 
 ---
 
-## Who This Is For
+## How It Works
 
-You're a **solo operator** — consultant, founder, freelancer, creator.
-
-You run everything yourself: clients, projects, finances, content, decisions.
-You're drowning in tools: Notion for docs, Todoist for tasks, spreadsheets
-for tracking, email for everything else.
+You're a solo operator — consultant, founder, freelancer, creator.
+You run everything yourself. Your notes ARE your business.
 
 **What if your notes were your operating system?**
 
-Flywheel turns markdown files into business infrastructure:
+Flywheel turns markdown files into queryable infrastructure:
 - AI understands how your notes connect (no manual tagging)
 - Log your work once, AI keeps everything updated
 - Daily notes roll up into weekly → monthly → quarterly summaries
@@ -26,11 +23,9 @@ Flywheel turns markdown files into business infrastructure:
 
 No SaaS lock-in. No code. Just markdown + AI.
 
----
+**The Graph Index**
 
-## How It Works
-
-Flywheel builds a **graph index** of your markdown files at startup.
+At startup, Flywheel builds an in-memory graph of your notes.
 When you ask questions, AI queries the index — not the files.
 
 **Why this matters:**

@@ -4,6 +4,15 @@
 
 ---
 
+## Who This Is For
+
+You're a **solo operator** — consultant, founder, freelancer, creator.
+
+You run everything yourself: clients, projects, finances, content, decisions.
+Your notes ARE your business. Flywheel turns them into queryable infrastructure.
+
+---
+
 ## Overview
 
 Flywheel is an MCP (Model Context Protocol) server that provides Claude with intelligent access to your markdown knowledge base. Instead of sending entire files to AI, Flywheel builds an in-memory graph index and exposes 40+ specialized tools for queries and mutations.
