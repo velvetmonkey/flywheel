@@ -81,7 +81,7 @@ File system paths for periodic notes and special files.
 | `quarterly_notes` | string | No | `quarterly-notes` | Folder for quarterly summaries (YYYY-QX.md) |
 | `yearly_notes` | string | No | `yearly-notes` | Folder for yearly summaries (YYYY.md) |
 | `templates` | string | No | `templates` | Folder for note templates |
-| `achievements` | string | No | `personal/goals/Achievements.md` | Path to achievements file |
+| `achievements` | string | No | `Achievements.md` | Path to achievements file (created at vault root if missing) |
 
 **Example:**
 ```json
@@ -105,31 +105,31 @@ File system paths for periodic notes and special files.
 
 ### `sections` (object)
 
-Markdown heading patterns for structured sections in notes.
+Section header TEXT for structured sections in notes. Use text only (no `#` prefix) - matching is case-insensitive and level-agnostic.
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `log` | string | `## Log` | Section for timestamped log entries |
-| `food` | string | `## Food` | Section for food tracking |
-| `tasks` | string | `## Tasks` | Section for checkbox tasks |
-| `habits` | string | `## Habits` | Section for habit tracking |
+| `log` | string | `Log` | Section for timestamped log entries |
+| `food` | string | `Food` | Section for food tracking |
+| `tasks` | string | `Tasks` | Section for checkbox tasks |
+| `habits` | string | `Habits` | Section for habit tracking |
 
 **Example:**
 ```json
 {
   "sections": {
-    "log": "## Daily Log",
-    "food": "# Food Diary",
-    "tasks": "## Action Items",
-    "habits": "# Daily Habits"
+    "log": "Daily Log",
+    "food": "Food Diary",
+    "tasks": "Action Items",
+    "habits": "Daily Habits"
   }
 }
 ```
 
 **Section Format:**
-- Must include Markdown heading marker (`#` or `##`)
-- Heading level matters (exact match)
-- Case-sensitive
+- Use TEXT ONLY (no `#` or `##` prefix)
+- Matching is case-insensitive (`Log` matches `## Log`, `# LOG`, `### log`)
+- Matching is level-agnostic (any heading level works)
 
 ---
 
@@ -194,9 +194,9 @@ Folder organization rules and protections.
     "achievements": "goals/achievements.md"
   },
   "sections": {
-    "log": "## Log",
-    "food": "## Food",
-    "habits": "## Habits"
+    "log": "Log",
+    "food": "Food",
+    "habits": "Habits"
   },
   "habits": ["Walk", "Stretch", "Vitamins"],
   "folders": {
@@ -222,8 +222,8 @@ Folder organization rules and protections.
     "templates": "templates"
   },
   "sections": {
-    "log": "## Updates",
-    "tasks": "## Action Items"
+    "log": "Updates",
+    "tasks": "Action Items"
   },
   "folders": {
     "protected": [".obsidian", ".git", "clients"],
@@ -247,8 +247,8 @@ Folder organization rules and protections.
     "templates": "templates"
   },
   "sections": {
-    "log": "## Research Log",
-    "tasks": "## Experiments"
+    "log": "Research Log",
+    "tasks": "Experiments"
   },
   "folders": {
     "protected": [".obsidian", ".git", "data"],
@@ -270,7 +270,7 @@ Flywheel validates your configuration at runtime. Common errors:
 |-------|-------|-----|
 | `Missing daily_notes path` | No `paths.daily_notes` defined | Add `"daily_notes": "folder-name"` |
 | `Path does not exist: X` | Folder doesn't exist in vault | Create folder or fix path |
-| `Invalid section heading: X` | Missing `#` or `##` | Add heading marker: `## Log` |
+| `Section not found: X` | Section header text not in note | Check spelling matches your notes |
 | `Protected folder: X` | Attempt to write to protected folder | Remove from `protected` list |
 
 ---
@@ -289,13 +289,13 @@ If `.flywheel.json` is missing or incomplete, Flywheel uses these defaults:
     "quarterly_notes": "quarterly-notes",
     "yearly_notes": "yearly-notes",
     "templates": "templates",
-    "achievements": "personal/goals/Achievements.md"
+    "achievements": "Achievements.md"
   },
   "sections": {
-    "log": "## Log",
-    "food": "## Food",
-    "tasks": "## Tasks",
-    "habits": "## Habits"
+    "log": "Log",
+    "food": "Food",
+    "tasks": "Tasks",
+    "habits": "Habits"
   },
   "habits": [],
   "folders": {

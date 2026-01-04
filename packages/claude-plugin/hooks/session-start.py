@@ -97,6 +97,20 @@ def get_vault_path():
     return Path.cwd()
 
 
+def format_session_paths(config: dict, vault_path: Path) -> str:
+    """Format all resolved paths for session output."""
+    config_file = vault_path / '.flywheel.json'
+    source = ".flywheel.json" if config_file.exists() else "defaults"
+
+    paths = config['paths']
+    lines = [f"Session paths (source: {source}):"]
+    for key, value in paths.items():
+        # Add trailing / for directories, not for files
+        suffix = "" if value.endswith(".md") else "/"
+        lines.append(f"  {key}: {value}{suffix}")
+    return "\n".join(lines)
+
+
 def get_daily_note_status(config: dict):
     """Check today's daily note and extract key info."""
     vault_path = get_vault_path()
@@ -205,8 +219,10 @@ def rebuild_wikilink_cache():
 def main():
     try:
         config = load_config()
+        vault_path = get_vault_path()
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
 
+        session_paths = format_session_paths(config, vault_path)
         daily_status = get_daily_note_status(config)
         achievements = get_recent_achievements(config)
         cache_status = rebuild_wikilink_cache()
@@ -216,6 +232,8 @@ def main():
 
         # Build context string with available skills for plugin discovery
         context = f"""{update_notice}Flywheel - Session started: {current_time}
+
+{session_paths}
 
 {daily_status}
 {cache_status}

@@ -36,7 +36,7 @@
         "achievements": {
           "type": "string",
           "default": "Achievements.md",
-          "description": "Path to achievements file"
+          "description": "Path to achievements file. Defaults to vault root; created automatically if missing."
         },
         "templates": {
           "type": "string",
@@ -47,27 +47,27 @@
     },
     "sections": {
       "type": "object",
-      "description": "Section headers in daily notes",
+      "description": "Section headers in daily notes (text only, no # prefix - matching is case-insensitive and level-agnostic)",
       "properties": {
         "log": {
           "type": "string",
-          "default": "## Log",
-          "description": "Header for log section"
+          "default": "Log",
+          "description": "Header text for log section"
         },
         "food": {
           "type": "string",
-          "default": "# Food",
-          "description": "Header for food section"
+          "default": "Food",
+          "description": "Header text for food section"
         },
         "tasks": {
           "type": "string",
-          "default": "## Tasks",
-          "description": "Header for tasks section"
+          "default": "Tasks",
+          "description": "Header text for tasks section"
         },
         "habits": {
           "type": "string",
-          "default": "# Habits",
-          "description": "Header for habits section"
+          "default": "Habits",
+          "description": "Header text for habits section"
         }
       }
     },

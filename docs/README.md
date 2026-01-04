@@ -1,110 +1,213 @@
 # Flywheel Documentation
 
-Welcome to the Flywheel documentation. Flywheel is the **Agentic Markdown Operating System** - AI agents operating on plain-text knowledge bases.
+Your AI understands your knowledge graph. Ask questions. Run workflows.
+
+**Installation**: [GETTING_STARTED](GETTING_STARTED.md) | **Demo Vaults**: [demos/](../demos/)
 
 ---
 
-## Getting Started
+## Graph Intelligence
 
-| Doc | Description |
-|-----|-------------|
-| [TUTORIAL](TUTORIAL.md) | 10-minute guided walkthrough |
-| [GETTING_STARTED](GETTING_STARTED.md) | Installation and setup |
-| [QUICKSTART](QUICKSTART.md) | 5-minute quick start |
+Ask natural language questions—Flywheel navigates your vault's connections to find answers.
 
----
+### Example 1: Finding Blockers (artemis-rocket)
 
-## Understanding Flywheel
+```
+You: "What's blocking the propulsion milestone?"
 
-| Doc | Description |
-|-----|-------------|
-| [ARCHITECTURE](ARCHITECTURE.md) | System design deep dive |
-| [AGENTIC_PATTERNS](AGENTIC_PATTERNS.md) | Core patterns (graph-first, agent chains, Six Gates) |
-| [SIX_GATES](SIX_GATES.md) | Safety framework (mandatory) |
+Flywheel traverses:
+  Propulsion Milestone → depends on → Turbopump Test
+  Turbopump Test → blocked by → Seal Supplier Delay
+  Seal Supplier → contact → Marcus Chen
 
----
+Claude: "The propulsion milestone is blocked by turbopump testing,
+which is waiting on seals from Apex Materials. Marcus Chen is
+tracking - last update was Jan 2."
+```
 
-## Reference
+### Example 2: Aggregating Revenue (carter-strategy)
 
-| Doc | Description |
-|-----|-------------|
-| [MCP_REFERENCE](MCP_REFERENCE.md) | 50+ MCP tools with examples |
-| [SKILLS_REFERENCE](SKILLS_REFERENCE.md) | 49 skills with triggers |
-| [AGENTS_REFERENCE](AGENTS_REFERENCE.md) | 14 multi-step agents |
+```
+You: "How much have I billed Acme Corp?"
 
----
+Flywheel aggregates:
+  Acme Corp → has projects → [API Integration, Data Migration]
+  API Integration → invoices → [$12,000 paid, $8,000 pending]
+  Data Migration → invoices → [$15,000 paid]
 
-## By Role
+Claude: "You've billed Acme Corp $35,000 total. $27,000 paid,
+$8,000 pending from the API Integration project."
+```
 
-### New Users
+### Example 3: Tracing Research Chains (nexus-lab)
 
-1. [TUTORIAL](TUTORIAL.md) - 10-minute walkthrough
-2. Say "setup flywheel" to configure and onboard
-3. Say "check vault health" for your first analysis
+```
+You: "How does AlphaFold connect to my docking experiment?"
 
-### Daily Users
+Flywheel traces:
+  AlphaFold Paper → method → Structure Prediction
+  Structure Prediction → used in → Docking Experiment 3
+  Docking Experiment 3 → builds on → Your Hypothesis
 
-Skills are triggered by natural language:
-- "check vault health" - Comprehensive diagnostics
-- "add log entry: [text]" - Add to daily note
-- "find orphan notes" - Disconnected content
-- "do a rollup" - Aggregate your notes
-- "show hub notes" - Most connected knowledge
+Claude: "AlphaFold's structure prediction method is the basis for
+your Docking Experiment 3, which tests your protein binding hypothesis."
+```
 
-### Developers
+### Example 4: Following Playbooks (startup-ops)
 
-1. [ARCHITECTURE](ARCHITECTURE.md) - System design
-2. [AGENTIC_PATTERNS](AGENTIC_PATTERNS.md) - Design patterns
-3. [SIX_GATES](SIX_GATES.md) - Safety framework (required reading)
-4. [AGENTS_REFERENCE](AGENTS_REFERENCE.md) - Creating agents
+```
+You: "Walk me through onboarding DataDriven Co"
 
----
+Flywheel retrieves:
+  Onboarding Playbook → steps → [Welcome, Access, Training, Handoff]
+  DataDriven Co → current step → Access Setup
+  DataDriven Co → contact → Sarah Chen
 
-## Core Concepts
+Claude: "DataDriven Co is on step 2 (Access Setup). Next: send
+credentials to Sarah Chen, then schedule training call."
+```
 
-### The Dual Paradigm
+### Example 5: Finding Decision Stakeholders (artemis-rocket)
 
-Flywheel supports BOTH philosophies:
+```
+You: "Who should review the avionics decision?"
 
-**Graph-Native** (Wikilink-First)
-- `[[wikilinks]]`, backlinks, graph traversal
-- For: PKM enthusiasts, researchers
+Flywheel finds:
+  Avionics Decision → affects → [Navigation, Comms, Power]
+  Navigation → owner → Alex Kim
+  Comms → owner → Jordan Lee
+  Power → owner → Chris Park
 
-**Schema-Native** (Frontmatter-First)
-- YAML frontmatter, typed fields, queries
-- For: Developers, project managers
-
-### The Bidirectional Bridge
-
-Flywheel's unique value: **wikilinks and frontmatter are the SAME information** in two forms.
-
-| Pattern | Direction | Example |
-|---------|-----------|---------|
-| Prose → Frontmatter | "Author: [[John]]" → `author: "[[John]]"` |
-| Frontmatter → Wikilinks | `author: "John Smith"` → `[[John Smith]]` |
+Claude: "Alex Kim (Navigation), Jordan Lee (Comms), and Chris Park
+(Power) should review—their systems are affected."
+```
 
 ---
 
-## Demo Vaults
+## Workflows & Mutators
 
-| Demo | Replaces | Notes |
-|------|----------|-------|
-| [artemis-rocket](../demos/artemis-rocket/) | 200-person aerospace corp | 65 notes, graph-first |
-| [carter-strategy](../demos/carter-strategy/) | Solo consultant | 30 notes, tasks/rollups |
+Slash commands that modify your vault. Each shows: input → operation → output.
 
-See [demos/README.md](../demos/README.md) for full list.
+### /rollup — Aggregate Daily Notes
+
+```
+┌─ carter-strategy ────────────────────────────────────────────────┐
+│                                                                   │
+│  You: "/rollup"                                                   │
+│                                                                   │
+│  INPUT                     OPERATION                 OUTPUT       │
+│  ──────────────────────────────────────────────────────────────  │
+│  daily/2026-01-01.md  ─┐                                         │
+│  daily/2026-01-02.md  ─┼─► Extract key points  ─► weekly/W01.md  │
+│  daily/2026-01-03.md  ─┤   Preserve decisions                    │
+│  ...                  ─┘   Link achievements                      │
+│                                                                   │
+│  OUTPUT: weekly/W01.md                                           │
+│  WHY: Follows periodic-notes convention. Links back to dailies.  │
+│  UPDATES: Regenerated on each rollup with new content.           │
+│                                                                   │
+└───────────────────────────────────────────────────────────────────┘
+```
+
+### /log — Timestamped Entry
+
+```
+┌─ artemis-rocket ─────────────────────────────────────────────────┐
+│                                                                   │
+│  You: "/log completed turbopump hot fire - nominal"              │
+│                                                                   │
+│  INPUT             OPERATION               OUTPUT                 │
+│  ──────────────────────────────────────────────────────────────  │
+│  Your message ─► Append to ## Log   ─► daily/2026-01-04.md       │
+│                  with timestamp            │                      │
+│                                            ▼                      │
+│                                   ## Log                          │
+│                                   - 14:32 completed turbopump...  │
+│                                                                   │
+│  OUTPUT: Today's daily note under ## Log section                 │
+│  WHY: Follows daily-note convention. Creates note if missing.    │
+│  UPDATES: Appends only—never overwrites existing entries.        │
+│                                                                   │
+└───────────────────────────────────────────────────────────────────┘
+```
+
+### /fix-links — Repair Broken Wikilinks
+
+```
+┌─ nexus-lab ──────────────────────────────────────────────────────┐
+│                                                                   │
+│  You: "/fix-links"                                                │
+│                                                                   │
+│  INPUT              OPERATION                  OUTPUT             │
+│  ──────────────────────────────────────────────────────────────  │
+│  Vault scan ─► Find [[Broken Link]]    ─► experiments/exp-07.md  │
+│                Suggest [[AlphaFold]]        (link corrected)     │
+│                ─────────────────────                              │
+│                User confirms fix                                  │
+│                                                                   │
+│  OUTPUT: In-place edit to source file                            │
+│  WHY: Fixes reference at point of use. Preserves git history.    │
+│  UPDATES: One-time fix. Re-run to catch new broken links.        │
+│                                                                   │
+└───────────────────────────────────────────────────────────────────┘
+```
+
+### /add-task — Task to Note
+
+```
+┌─ startup-ops ────────────────────────────────────────────────────┐
+│                                                                   │
+│  You: "/add-task customers/DataDriven.md Follow up on renewal"   │
+│                                                                   │
+│  INPUT              OPERATION                 OUTPUT              │
+│  ──────────────────────────────────────────────────────────────  │
+│  Note path    ─┐                                                 │
+│  Task text    ─┼─► Append to ## Tasks ─► customers/DataDriven.md │
+│  (due date)   ─┘   with checkbox             │                   │
+│                                              ▼                    │
+│                                     ## Tasks                      │
+│                                     - [ ] Follow up on renewal    │
+│                                                                   │
+│  OUTPUT: Target note under ## Tasks section                      │
+│  WHY: Tasks live with context. Creates section if missing.       │
+│  UPDATES: Appends only—never removes existing tasks.             │
+│                                                                   │
+└───────────────────────────────────────────────────────────────────┘
+```
+
+### /schema-apply — Enforce Folder Conventions
+
+```
+┌─ carter-strategy ────────────────────────────────────────────────┐
+│                                                                   │
+│  You: "/schema-apply projects/"                                   │
+│                                                                   │
+│  INPUT               OPERATION                   OUTPUT           │
+│  ──────────────────────────────────────────────────────────────  │
+│  projects/*.md ─► Infer folder schema       ─► projects/new.md   │
+│                   (status, client, budget)       (frontmatter    │
+│                   ─────────────────────           added)         │
+│                   Add missing fields                              │
+│                                                                   │
+│  OUTPUT: In-place frontmatter addition                           │
+│  WHY: Enforces consistency. Respects existing values.            │
+│  UPDATES: Only adds missing fields. Never overwrites.            │
+│                                                                   │
+└───────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
-## Version
+## For Developers
 
-- **Current**: 1.10.0
-- **Roadmap**: [ROADMAP.md](ROADMAP.md)
-- **Changelog**: See git log
+| Reference | Guide |
+|-----------|-------|
+| [MCP Tools](MCP_REFERENCE.md) | [Architecture](ARCHITECTURE.md) |
+| [Skills](SKILLS_REFERENCE.md) | [Agentic Patterns](AGENTIC_PATTERNS.md) |
+| [Agents](AGENTS_REFERENCE.md) | [Six Gates Safety](SIX_GATES.md) |
+
+**Contributing**: See [CLAUDE.md](../CLAUDE.md) for development instructions.
 
 ---
 
-## Support
-
-- Issues: [github.com/bencassie/flywheel/issues](https://github.com/bencassie/flywheel/issues)
-- CLAUDE.md: Project instructions for AI assistants
+**Version**: 1.10.5 | [Roadmap](ROADMAP.md) | [GitHub](https://github.com/bencassie/flywheel)

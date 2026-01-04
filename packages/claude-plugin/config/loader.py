@@ -55,6 +55,40 @@ def deep_merge(base: dict, override: dict) -> dict:
     return result
 
 
+def resolve_achievements_path(vault_path: Path, config: dict) -> str:
+    """
+    Achievements path resolution:
+    1. If user explicitly configured via .flywheel.json, use that
+    2. Otherwise default to Achievements.md at vault root
+    3. If file doesn't exist, create it for user to customize
+    """
+    root_path = "Achievements.md"
+
+    user_path = config.get('paths', {}).get('achievements')
+
+    # User explicitly configured - use as-is
+    if user_path and user_path != root_path:
+        return user_path
+
+    # Default to root - create if doesn't exist
+    root_file = vault_path / root_path
+    if not root_file.exists():
+        try:
+            root_file.write_text(
+                "# Achievements\n\n"
+                "Track your wins here. Flywheel will detect and display recent achievements.\n\n"
+                "## Format\n\n"
+                "Use date headers and bullet points:\n\n"
+                "## 2026-01-04\n\n"
+                "- First achievement!\n",
+                encoding='utf-8'
+            )
+        except (IOError, PermissionError):
+            pass  # Failed to create, will show "not found"
+
+    return root_path
+
+
 def find_vault_root(start_path: Path = None) -> Path:
     """Find vault root by looking for .obsidian or .claude folder."""
     if start_path is None:
@@ -88,12 +122,17 @@ def load_config(vault_path: Path = None) -> dict:
     if config_file.exists():
         try:
             user_config = json.loads(config_file.read_text(encoding='utf-8'))
-            return deep_merge(DEFAULTS, user_config)
+            config = deep_merge(DEFAULTS, user_config)
         except (json.JSONDecodeError, IOError):
             # Invalid config, use defaults
-            pass
+            config = DEFAULTS.copy()
+    else:
+        config = DEFAULTS.copy()
 
-    return DEFAULTS.copy()
+    # Smart path resolution for achievements
+    config['paths']['achievements'] = resolve_achievements_path(vault_path, config)
+
+    return config
 
 
 def get_path(config: dict, key: str, vault_path: Path = None) -> Path:

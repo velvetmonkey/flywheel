@@ -9,10 +9,10 @@
     "templates": "templates"
   },
   "sections": {
-    "log": "## Log",
-    "food": "# Food",
-    "tasks": "## Tasks",
-    "habits": "# Habits"
+    "log": "Log",
+    "food": "Food",
+    "tasks": "Tasks",
+    "habits": "Habits"
   },
   "folders": {
     "protected": [".obsidian", ".git", ".claude"],
