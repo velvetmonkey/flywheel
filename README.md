@@ -4,7 +4,7 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/bencassie/flywheel)
 
-**Flywheel + Claude Code. Your business, now intelligent.**
+**Claude Code + Flywheel plugin.**
 
 ---
 
@@ -20,7 +20,7 @@
 │  - Handles ops while you create         │
 ├─────────────────────────────────────────┤
 │  FLYWHEEL (graph intelligence)          │  ← Makes Claude smarter
-│  - 40+ vault-aware tools                │
+│  - 40+ management tools                 │
 │  - Auto-curation hooks                  │
 │  - Token-efficient queries              │
 ├─────────────────────────────────────────┤
