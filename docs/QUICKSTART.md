@@ -44,7 +44,7 @@ Add to your `.mcp.json` (project) or `~/.claude.json` (user):
 In Claude Code:
 ```
 /plugin marketplace add bencassie/flywheel
-/plugin install flywheel@flywheel
+/plugin install flywheel@bencassie-flywheel
 ```
 
 ### 3. Restart Claude Code

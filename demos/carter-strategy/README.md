@@ -16,7 +16,7 @@
 2. **Install Flywheel** (if you haven't):
    ```
    /plugin marketplace add bencassie/flywheel
-   /plugin install flywheel@flywheel
+   /plugin install flywheel@bencassie-flywheel
    ```
 
 3. **Start exploring**:

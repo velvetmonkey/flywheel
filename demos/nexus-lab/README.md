@@ -451,7 +451,7 @@ Ensure `.mcp.json` in vault root:
 ### 2. Install Flywheel Plugin
 
 ```bash
-claude plugin install github:bencassie/flywheel@flywheel
+claude plugin install github:bencassie/flywheel@bencassie-flywheel
 ```
 
 ### 3. Test MCP Connection

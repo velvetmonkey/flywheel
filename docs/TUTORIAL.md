@@ -190,7 +190,7 @@ Flywheel auto-detects your daily notes folder. If you use a non-standard structu
 
 In 10 minutes you learned to:
 
-1. **Install** - `claude plugin install flywheel@flywheel`
+1. **Install** - `/plugin install flywheel@bencassie-flywheel`
 2. **Setup** - Say "setup flywheel"
 3. **Explore** - "check vault health", "find orphan notes"
 4. **Rollup** - "do a rollup" to aggregate notes

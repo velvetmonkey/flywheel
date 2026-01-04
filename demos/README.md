@@ -329,7 +329,7 @@ get_stale_notes({ days: 30, min_backlinks: 3 })
 4. **Install Plugin** (optional, for `/skills`):
    ```bash
    /plugin marketplace add bencassie/flywheel
-   /plugin install flywheel@flywheel
+   /plugin install flywheel@bencassie-flywheel
    ```
 
 ---
@@ -352,7 +352,7 @@ MCP server not connected. Check `.mcp.json` configuration and restart Claude Cod
 Ensure `PROJECT_PATH` in `.mcp.json` points to the demo directory.
 
 ### Skills not working
-Install Flywheel plugin: `/plugin install flywheel@flywheel`
+Install Flywheel plugin: `/plugin install flywheel@bencassie-flywheel`
 
 ### Windows: "Connection closed"
 Wrap `npx` with `cmd /c`:

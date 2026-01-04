@@ -71,7 +71,7 @@ In Claude Code, run these commands:
 
 ```
 /plugin marketplace add bencassie/flywheel
-/plugin install flywheel@flywheel
+/plugin install flywheel@bencassie-flywheel
 ```
 
 ### Step 3: Create Vault Configuration (Optional)
@@ -134,7 +134,7 @@ Add the plugin to your Claude Code settings file.
     }
   },
   "enabledPlugins": {
-    "flywheel@flywheel": true
+    "flywheel@bencassie-flywheel": true
   }
 }
 ```
@@ -151,7 +151,7 @@ Add the plugin to your Claude Code settings file.
     }
   },
   "enabledPlugins": {
-    "flywheel@flywheel": true
+    "flywheel@bencassie-flywheel": true
   }
 }
 ```
@@ -168,7 +168,7 @@ Add the plugin to your Claude Code settings file.
     }
   },
   "enabledPlugins": {
-    "flywheel@flywheel": true
+    "flywheel@bencassie-flywheel": true
   }
 }
 ```
@@ -261,7 +261,7 @@ See [rules.md](rules.md) for available rules:
 ### Skills not available
 
 1. **Check marketplace**: Run `/plugin` to verify flywheel is installed
-2. **Check `enabledPlugins`**: Must include `"flywheel@flywheel": true`
+2. **Check `enabledPlugins`**: Must include `"flywheel@bencassie-flywheel": true`
 
 ### Flywheel MCP not connecting
 
@@ -275,7 +275,7 @@ See [rules.md](rules.md) for available rules:
 
 **Marketplace install:**
 ```
-/plugin uninstall flywheel@flywheel
+/plugin uninstall flywheel@bencassie-flywheel
 /plugin marketplace remove flywheel
 ```
 

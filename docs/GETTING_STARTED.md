@@ -46,7 +46,7 @@ get_vault_stats()    # → Vault overview
 ```bash
 # In Claude Code
 /plugin marketplace add bencassie/flywheel
-/plugin install flywheel@flywheel
+/plugin install flywheel@bencassie-flywheel
 ```
 
 **For the MCP server** (tools like `get_backlinks()`, `search_notes()`):
@@ -248,7 +248,7 @@ Broken links: 0
 
 If skill not found:
 ```bash
-/plugin install flywheel@flywheel
+/plugin install flywheel@bencassie-flywheel
 ```
 
 ---
@@ -382,11 +382,11 @@ get_backlinks({ path: "README.md" })
 ```bash
 # Install plugin
 /plugin marketplace add bencassie/flywheel
-/plugin install flywheel@flywheel
+/plugin install flywheel@bencassie-flywheel
 
 # Verify
 /plugin list
-# Should show: flywheel@flywheel (enabled)
+# Should show: flywheel@bencassie-flywheel (enabled)
 ```
 
 ### Windows "Connection Closed" Error
