@@ -300,27 +300,19 @@ Try one of the 4 demo vaults with real-world scenarios:
 ```bash
 # Clone Flywheel repo
 git clone https://github.com/bencassie/flywheel.git
-cd flywheel/demos
 
-# Choose a demo
-cd artemis-rocket     # Aerospace startup (65 notes)
+# Choose a demo (ordered by complexity)
+cd flywheel/demos/carter-strategy    # Solo consultant (30 notes)
 # OR
-cd carter-strategy    # Solo consultant (30 notes)
+cd flywheel/demos/artemis-rocket     # Aerospace startup (65 notes)
 # OR
-cd nexus-lab          # Research lab (30 notes)
+cd flywheel/demos/startup-ops        # B2B SaaS (30 notes)
 # OR
-cd startup-ops        # B2B SaaS (30 notes)
+cd flywheel/demos/nexus-lab          # Research lab (30 notes)
 
-# Configure MCP (add to .mcp.json in demo folder)
-{
-  "mcpServers": {
-    "flywheel": {
-      "command": "npx",
-      "args": ["-y", "@bencassie/flywheel-mcp"],
-      "env": { "PROJECT_PATH": "." }
-    }
-  }
-}
+# Start Claude Code and setup
+claude
+/setup-flywheel
 
 # Try commands
 /vault-health

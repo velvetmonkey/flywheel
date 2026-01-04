@@ -26,4 +26,35 @@ Ask Claude:
 
 ---
 
+## Mutations
+
+When you ask Claude to make changes, here's what happens:
+
+### Add a log entry
+
+```
+You: "/log finished Acme strategy deck"
+
+→ Modifies: daily-notes/2026-01-04.md
+
+## Log
+- 10:15 Morning review
+- 14:32 finished Acme strategy deck   ← ADDED
+```
+
+### Do a rollup
+
+```
+You: "do a rollup"
+
+→ Creates: weekly-notes/2026-W01.md
+
+## Week 1 Summary
+- Completed Acme strategy deck
+- 3 client calls
+- $12K invoiced
+```
+
+---
+
 *30 notes. Just start asking questions.*

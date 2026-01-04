@@ -26,4 +26,33 @@ Ask Claude:
 
 ---
 
+## Mutations
+
+When you ask Claude to make changes, here's what happens:
+
+### Log a customer interaction
+
+```
+You: "/log call with DataDriven - they want API access"
+
+→ Modifies: daily-notes/2026-01-04.md
+
+## Log
+- 10:00 Standup with Sarah
+- 11:30 call with DataDriven - they want API access   ← ADDED
+```
+
+### Update customer record
+
+```
+You: "update DataDriven status to pilot"
+
+→ Modifies: customers/datadriven-co.md
+
+Status: pilot   ← CHANGED from 'lead'
+Last Contact: 2026-01-04
+```
+
+---
+
 *30 notes. Just start asking questions.*
