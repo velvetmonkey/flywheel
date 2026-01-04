@@ -1,6 +1,6 @@
 {
   "name": "flywheel",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "description": "Workflow templates, wikilink automation, periodic note rollups, vault health, and privacy protection for markdown vaults",
   "owner": {
     "name": "Ben Cassie",

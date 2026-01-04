@@ -140,12 +140,11 @@ Categories updated:
 
 ## Integration with Hook
 
-Works seamlessly with `wikilink-suggest.py` hook:
-1. Hook detects and suggests (after Edit)
-2. User reviews suggestions
-3. User runs `/wikilink-apply` to apply
-4. Skill applies detected wikilinks
-5. Hook runs again (but finds no new suggestions since they're now linked)
+Works seamlessly with `wikilink-auto.py` hook:
+1. Hook auto-applies wikilinks (after Edit/Write)
+2. If hook is disabled, user can run this skill manually
+3. Skill applies detected wikilinks
+4. Hook runs again (but finds no new entities since they're now linked)
 
 ## Edge Cases
 

@@ -33,7 +33,8 @@ Flywheel includes 8 hooks:
 | `read-cache.py` | PostToolUse (Read) | Track files read (for Gate 1 cache) | Gate 1 |
 | `verify-mutation.py` | PostToolUse (Edit/Write) | Validate YAML frontmatter and wikilinks | Gate 6 |
 | `syntax-validate.py` | PostToolUse (Edit/Write) | Warn about syntax issues (angle brackets, wrapped wikilinks) | - |
-| `wikilink-suggest.py` | PostToolUse (Edit/Write) | Auto-apply `[[brackets]]` to recognized entities | - |
+| `wikilink-auto.py` | PostToolUse (Edit/Write) | Auto-apply `[[brackets]]` to recognized entities | - |
+| `frontmatter-auto.py` | PostToolUse (Edit/Write) | Auto-add frontmatter from folder patterns | - |
 | `achievement-detect.py` | PostToolUse (Edit/Write) | Detect accomplishments, update Achievements.md | - |
 
 ---
@@ -75,7 +76,7 @@ Flywheel includes 8 hooks:
 │  ↓                              │
 │  syntax-validate.py            │
 │  ↓                              │
-│  wikilink-suggest.py           │
+│  wikilink-auto.py              │
 │  ↓                              │
 │  achievement-detect.py         │
 └────────────────────────────────┘
@@ -295,7 +296,7 @@ Please review and fix.
 
 ---
 
-### `wikilink-suggest.py`
+### `wikilink-auto.py`
 
 **Trigger**: PostToolUse (Edit, Write)
 

@@ -140,7 +140,8 @@ Hooks are event-driven scripts that enforce safety and add automation.
 | `validate-agent-gate3.py` | Before agent Write | Gate 3: agent compliance | Yes |
 | `read-cache.py` | After Read | Record reads for Gate 1 | No |
 | `verify-mutation.py` | After Edit/Write | Gate 6: validate output | Warn |
-| `wikilink-suggest.py` | After Edit/Write | Auto-apply wikilinks | No |
+| `wikilink-auto.py` | After Edit/Write | Auto-apply wikilinks | No |
+| `frontmatter-auto.py` | After Edit/Write | Auto-add frontmatter | No |
 | `achievement-detect.py` | After Edit/Write | Detect achievements | No |
 
 ### 4. MCP Server (50+ tools)

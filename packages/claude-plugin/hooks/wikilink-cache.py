@@ -3,8 +3,8 @@
 Wikilink Cache Hook (wikilink-cache.py)
 
 Part of the wikilink-* hook family:
-- wikilink-cache.py   : SessionStart - Rebuilds entity cache from vault pages
-- wikilink-suggest.py : PostToolUse  - Auto-applies wikilinks after edits
+- wikilink-cache.py : SessionStart - Rebuilds entity cache from vault pages
+- wikilink-auto.py  : PostToolUse  - Auto-applies wikilinks after edits
 
 Scans the vault for actual .md files and builds a cache of valid entities
 that can be wikilinked. Only includes pages that actually exist.

@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-Wikilink Suggest Hook (wikilink-suggest.py)
+Wikilink Auto-Apply Hook (wikilink-auto.py)
 
 Part of the wikilink-* hook family:
-- wikilink-cache.py   : SessionStart - Rebuilds entity cache from vault pages
-- wikilink-suggest.py : PostToolUse  - Auto-applies wikilinks after edits
+- wikilink-cache.py : SessionStart - Rebuilds entity cache from vault pages
+- wikilink-auto.py  : PostToolUse  - Auto-applies wikilinks after edits
 
-Runs after Edit/Write operations to auto-apply wikilinks to known entities.
+Runs after Edit/Write operations to AUTO-APPLY wikilinks to known entities.
+This hook MODIFIES files - it doesn't just suggest, it applies.
 
 Detects:
 - People names (capitalized multi-word)

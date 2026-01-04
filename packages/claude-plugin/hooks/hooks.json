@@ -50,7 +50,11 @@
           },
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/wikilink-suggest.py\""
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/wikilink-auto.py\""
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/frontmatter-auto.py\""
           },
           {
             "type": "command",

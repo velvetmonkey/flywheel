@@ -340,7 +340,7 @@ The following hooks enforce gates automatically:
 - `session-gate.py` → Gate 5 (warns if MCP may not work)
 - `verify-mutation.py` → Gate 6 (validates syntax after write)
 - `syntax-validate.py` → Gate 6 (syntax fixes)
-- `wikilink-suggest.py` → Gate 2 (vault boundary check)
+- `wikilink-auto.py` → Gate 2 (vault boundary check)
 
 **Project Level (for Flywheel development):**
 - `.claude/hooks/validate-agent-gate3.py` → Gate 3 (blocks non-compliant agents)

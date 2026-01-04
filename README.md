@@ -1,27 +1,46 @@
-# Flywheel — Your AI Back-Office
+# Flywheel — Claude Code for Your Vault
 
 [![npm version](https://img.shields.io/npm/v/@bencassie/flywheel-mcp.svg)](https://www.npmjs.com/package/@bencassie/flywheel-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/bencassie/flywheel)
 
-**Run your solo business from markdown files. AI handles the operations.**
+**You + Claude Code + your markdown vault. Claude handles the operations.**
 
 ---
 
 ## How It Works
 
+```
+┌─────────────────────────────────────────┐
+│  YOU (thinking, deciding, creating)     │
+├─────────────────────────────────────────┤
+│  CLAUDE CODE (AI co-processor)          │  ← THE PRODUCT
+│  - Spins off the monotony               │
+│  - Gives you the good stuff             │
+│  - Handles ops while you create         │
+├─────────────────────────────────────────┤
+│  FLYWHEEL (graph intelligence)          │  ← Makes Claude smarter
+│  - 40+ vault-aware tools                │
+│  - Auto-curation hooks                  │
+│  - Token-efficient queries              │
+├─────────────────────────────────────────┤
+│  YOUR VAULT (plain markdown)            │
+│  - Edit with any tool you want          │
+│  - Obsidian, VSCode, vim, whatever      │
+│  - Git-versioned, future-proof          │
+└─────────────────────────────────────────┘
+```
+
 You're a solo operator — consultant, founder, freelancer, creator.
-You run everything yourself. Your notes ARE your business.
+Your notes ARE your business. Claude Code is your AI co-processor.
 
-**What if your notes were your operating system?**
-
-Flywheel turns markdown files into queryable infrastructure:
+Flywheel gives Claude graph intelligence about your vault:
 - AI understands how your notes connect (no manual tagging)
 - Log your work once, AI keeps everything updated
 - Daily notes roll up into weekly → monthly → quarterly summaries
 - Track projects, clients, revenue — all in plain text
 
-No SaaS lock-in. No code. Just markdown + AI.
+No SaaS lock-in. No code. Just you + Claude + markdown.
 
 ---
 
@@ -41,35 +60,35 @@ With Flywheel, your knowledge base **improves itself**:
 │  [[Sarah Chen]]                             contact: Sarah     │
 │                                             rate: $250/hr      │
 │         ↑                                          ↑           │
-│         │          AI CURATION LAYER               │           │
+│         │         AUTO-CURATION HOOKS              │           │
 │         │    ┌──────────────────────────┐          │           │
-│         └────│ suggest_wikilinks()      │──────────┘           │
-│              │ infer_folder_conventions()│                     │
-│              │ validate_cross_layer()    │                     │
+│         └────│ wikilink-auto.py         │──────────┘           │
+│              │ frontmatter-auto.py      │                      │
 │              └──────────────────────────┘                      │
 │                         ↓                                      │
-│              "Acme Corp note is missing 'rate'.                │
-│               Based on clients/ patterns: $250/hr?"            │
+│         After every Edit/Write, hooks auto-apply:              │
+│         ✓ Wikilinks to known entities                          │
+│         ✓ Frontmatter from folder patterns                     │
 │                                                                │
 └────────────────────────────────────────────────────────────────┘
 ```
 
 **How it works:**
 
-1. **You write naturally**
+1. **You write naturally — AI adds links automatically**
    - Mention "Acme Corp" in your daily note
-   - Flywheel notices it matches an existing note
-   - Claude: "Found 3 unlinked mentions. Add [[Acme Corp]] links?"
+   - Flywheel detects it matches an existing note
+   - `✓ Auto-Applied 3 Wikilinks` — done, no prompts needed
 
 2. **AI learns your patterns**
    - Scans clients/ folder: 90% have `status`, `contact`, `rate`
    - New client note missing fields
-   - Claude: "Based on your patterns, add these fields?"
+   - `✓ Auto-Added frontmatter: status: active` — high-confidence fields applied
 
-3. **Consistency validated**
+3. **Inconsistencies caught on `/review`**
    - Frontmatter says `status: active`
    - Prose says "project wrapped up last month"
-   - Claude: "Mismatch detected. Which is correct?"
+   - Run `/review` → Claude finds mismatches, you decide which is correct
 
 4. **Each interaction improves the next**
    - More links → better graph queries
@@ -444,4 +463,4 @@ Flywheel is a framework, not a finished product:
 
 ---
 
-MIT License | [GitHub](https://github.com/bencassie/flywheel) | [Issues](https://github.com/bencassie/flywheel/issues)
+Apache 2.0 License | [GitHub](https://github.com/bencassie/flywheel) | [Issues](https://github.com/bencassie/flywheel/issues)

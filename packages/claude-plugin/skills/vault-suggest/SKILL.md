@@ -181,7 +181,7 @@ When applying links automatically:
 
 ## Related Hooks
 
-- **wikilink-suggest.py** (PostToolUse hook): Auto-applies wikilinks after edits
+- **wikilink-auto.py** (PostToolUse hook): Auto-applies wikilinks after edits
   - This skill is the MANUAL version
   - Hook uses cache, this skill uses MCP (more accurate)
   - Hook is automatic, this skill requires invocation
