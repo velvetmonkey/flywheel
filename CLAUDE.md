@@ -217,10 +217,14 @@ npm run test
 
 ### Version Files (keep in sync)
 
-ALL version bumps require updating THREE files:
+ALL version bumps require updating FIVE files:
 - `.claude-plugin/marketplace.json` (repo root)
 - `packages/claude-plugin/.claude-plugin/marketplace.json`
 - `packages/claude-plugin/.claude-plugin/plugin.json`
+- `packages/mcp-server/package.json`
+- `package.json` (root)
+
+Then run `npm install --package-lock-only` to update `package-lock.json`.
 
 ### GitHub Release Process
 
