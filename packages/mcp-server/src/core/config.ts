@@ -12,11 +12,12 @@ const DEFAULT_CONFIG: FlywheelConfig = {
 };
 
 /**
- * Load .flywheel.json from the vault root.
+ * Load .flywheel.json from the .claude/ folder.
  * Returns defaults if file doesn't exist (no auto-create).
  */
 export function loadConfig(vaultPath: string): FlywheelConfig {
-  const configPath = path.join(vaultPath, '.flywheel.json');
+  const claudeDir = path.join(vaultPath, '.claude');
+  const configPath = path.join(claudeDir, '.flywheel.json');
   try {
     if (fs.existsSync(configPath)) {
       const content = fs.readFileSync(configPath, 'utf-8');
@@ -63,7 +64,7 @@ export function inferConfig(index: VaultIndex): FlywheelConfig {
 }
 
 /**
- * Save config to .flywheel.json in the vault root.
+ * Save config to .claude/.flywheel.json.
  * Merges inferred values with existing config (existing wins).
  */
 export function saveConfig(
@@ -71,8 +72,13 @@ export function saveConfig(
   inferred: FlywheelConfig,
   existing?: FlywheelConfig
 ): void {
-  const configPath = path.join(vaultPath, '.flywheel.json');
+  const claudeDir = path.join(vaultPath, '.claude');
+  const configPath = path.join(claudeDir, '.flywheel.json');
   try {
+    // Ensure .claude directory exists
+    if (!fs.existsSync(claudeDir)) {
+      fs.mkdirSync(claudeDir, { recursive: true });
+    }
     // Existing config values take precedence over inferred
     const merged: FlywheelConfig = {
       ...DEFAULT_CONFIG,
@@ -81,8 +87,8 @@ export function saveConfig(
     };
     const content = JSON.stringify(merged, null, 2);
     fs.writeFileSync(configPath, content, 'utf-8');
-    console.error(`[Flywheel] Saved .flywheel.json`);
+    console.error(`[Flywheel] Saved .claude/.flywheel.json`);
   } catch (err) {
-    console.error('[Flywheel] Failed to save .flywheel.json:', err);
+    console.error('[Flywheel] Failed to save .claude/.flywheel.json:', err);
   }
 }

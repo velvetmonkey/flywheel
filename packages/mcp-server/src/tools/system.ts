@@ -8,7 +8,7 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex } from '../core/types.js';
 import { buildVaultIndex } from '../core/graph.js';
-import { loadConfig, type FlywheelConfig } from '../core/config.js';
+import { loadConfig, inferConfig, saveConfig, type FlywheelConfig } from '../core/config.js';
 
 /**
  * Register system/utility tools with the MCP server
@@ -55,10 +55,12 @@ export function registerSystemTools(
         const newIndex = await buildVaultIndex(vaultPath);
         setIndex(newIndex);
 
-        // Reload config (creates .flywheel.json if missing)
+        // Infer config from vault, merge with existing, save
         if (setConfig) {
-          const config = loadConfig(vaultPath);
-          setConfig(config);
+          const existing = loadConfig(vaultPath);
+          const inferred = inferConfig(newIndex);
+          saveConfig(vaultPath, inferred, existing);
+          setConfig(loadConfig(vaultPath));
         }
 
         const output: RefreshIndexOutput = {

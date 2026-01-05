@@ -15,7 +15,7 @@ import { registerSchemaTools } from './tools/schema.js';
 import { registerComputedTools } from './tools/computed.js';
 import { registerMigrationTools } from './tools/migrations.js';
 import { watchVault } from './core/watcher.js';
-import { loadConfig, type FlywheelConfig } from './core/config.js';
+import { loadConfig, inferConfig, saveConfig, type FlywheelConfig } from './core/config.js';
 
 // Default to current working directory if PROJECT_PATH not specified
 const vaultPath: string = process.env.PROJECT_PATH || process.cwd();
@@ -104,12 +104,6 @@ registerMigrationTools(
 );
 
 async function main() {
-  // Load config from .flywheel.json
-  flywheelConfig = loadConfig(vaultPath);
-  if (flywheelConfig.exclude_task_tags?.length) {
-    console.error(`[Flywheel] Excluding task tags: ${flywheelConfig.exclude_task_tags.join(', ')}`);
-  }
-
   // Build the vault index
   console.error('Building vault index...');
   const startTime = Date.now();
@@ -121,6 +115,16 @@ async function main() {
   } catch (err) {
     console.error('Failed to build vault index:', err);
     process.exit(1);
+  }
+
+  // Load existing config, infer from vault, merge and save
+  const existing = loadConfig(vaultPath);
+  const inferred = inferConfig(vaultIndex);
+  saveConfig(vaultPath, inferred, existing);
+  flywheelConfig = loadConfig(vaultPath); // Reload merged config
+
+  if (flywheelConfig.exclude_task_tags?.length) {
+    console.error(`[Flywheel] Excluding task tags: ${flywheelConfig.exclude_task_tags.join(', ')}`);
   }
 
   // Start the MCP server
