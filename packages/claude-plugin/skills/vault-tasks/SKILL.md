@@ -1,5 +1,5 @@
 ---
-name: show-tasks
+name: vault-tasks
 description: Get all tasks from the vault with filtering options. Triggers on "all tasks", "task list", "show tasks", "find tasks".
 auto_trigger: true
 trigger_keywords:

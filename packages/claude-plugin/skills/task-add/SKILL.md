@@ -1,5 +1,5 @@
 ---
-name: add-task
+name: task-add
 description: Add tasks to daily note log with due dates. Triggers when user mentions creating a task with a deadline like "add a task to do X by Y" where Y is a due date. Only fires when a due date is provided.
 auto_trigger: true
 trigger_keywords:

@@ -1,5 +1,5 @@
 ---
-name: find-related-notes
+name: vault-related
 description: Find notes related to current note (by tags, folder, keywords). Triggers on "related notes", "similar notes", "find related", "what's related".
 auto_trigger: true
 trigger_keywords:

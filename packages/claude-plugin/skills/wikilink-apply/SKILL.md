@@ -1,5 +1,5 @@
 ---
-name: apply-wikilinks
+name: wikilink-apply
 description: Apply wikilink suggestions to current or specified note. Triggers on "apply wikilinks", "add wikilinks", "wikilink this note".
 auto_trigger: true
 trigger_keywords:

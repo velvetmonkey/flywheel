@@ -1,5 +1,5 @@
 ---
-name: find-hubs
+name: vault-hubs
 description: Find hub notes (highly connected notes with many links). Triggers on "hubs", "hub notes", "most connected", "popular notes", "highly connected notes".
 auto_trigger: true
 trigger_keywords:

@@ -132,5 +132,5 @@ Folder structure:
 
 ## Related Commands
 - `/rollup` - Aggregate notes
-- `/fix-links` - Repair broken wikilinks
+- `/vault-fix-links` - Repair broken wikilinks
 - `/normalize` - Harmonize frontmatter and wikilinks

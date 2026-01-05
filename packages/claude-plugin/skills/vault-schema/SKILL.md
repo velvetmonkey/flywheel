@@ -1,5 +1,5 @@
 ---
-name: show-schema
+name: vault-schema
 description: Analyze all frontmatter fields used across the vault. Triggers on "frontmatter schema", "metadata fields", "what fields exist", "vault schema".
 auto_trigger: true
 trigger_keywords:

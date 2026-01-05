@@ -1,5 +1,5 @@
 ---
-name: find-stale-notes
+name: vault-stale
 description: Find stale notes (important notes not modified recently). Triggers on "stale notes", "old notes", "neglected notes", "outdated notes".
 auto_trigger: true
 trigger_keywords:

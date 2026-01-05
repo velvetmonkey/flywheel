@@ -1,5 +1,5 @@
 ---
-name: show-backlinks
+name: vault-backlinks
 description: Show all backlinks and forward links for a note. Triggers when user mentions "backlinks", "who links here", "links to", "connections".
 auto_trigger: true
 trigger_keywords:
@@ -94,7 +94,7 @@ Bidirectional (mutual):
 
 Broken (target doesn't exist):
   3. [[Old Feature]] ❌ broken
-     → Run /fix-links to repair
+     → Run /vault-fix-links to repair
 
 ═══════════════════════════════════════════════
 

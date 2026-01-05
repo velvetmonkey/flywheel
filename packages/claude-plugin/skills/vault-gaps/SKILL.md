@@ -1,5 +1,5 @@
 ---
-name: find-gaps
+name: vault-gaps
 description: Find knowledge gaps (topics mentioned but not documented). Triggers on "knowledge gaps", "content gaps", "missing notes", "gaps".
 auto_trigger: true
 trigger_keywords:

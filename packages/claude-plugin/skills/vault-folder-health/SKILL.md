@@ -1,5 +1,5 @@
 ---
-name: check-folder-health
+name: vault-folder-health
 description: Analyze vault organization by folder structure. Triggers on "folder health", "folder analysis", "vault organization", "folder structure".
 auto_trigger: true
 trigger_keywords:

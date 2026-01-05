@@ -1,5 +1,5 @@
 ---
-name: suggest-links
+name: vault-suggest
 description: Suggest wikilinks for current note using Flywheel MCP. Triggers on "suggest links", "link suggestions", "what should I link", "wikilink suggestions".
 auto_trigger: true
 trigger_keywords:

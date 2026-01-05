@@ -1,5 +1,5 @@
 ---
-name: search-vault
+name: vault-search
 description: Advanced vault search with filters (folder, tags, frontmatter). Triggers on "search vault", "find notes", "query notes", "search for".
 auto_trigger: true
 trigger_keywords:

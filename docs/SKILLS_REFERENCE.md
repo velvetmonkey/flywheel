@@ -142,7 +142,7 @@ Get the content under a specific heading.
 | Skill | Type | Trigger | Purpose |
 |-------|------|---------|---------|
 | `/check-health` | READ | "vault health", "health report" | Full vault diagnostics |
-| `/fix-links` | MUTATE | "fix links", "broken links" | Find and repair broken links |
+| `/vault-fix-links` | MUTATE | "fix links", "broken links" | Find and repair broken links |
 | `/check-folder-health` | READ | "folder health" | Health by folder |
 | `/check-link-density` | READ | "link density" | Link density metrics |
 
@@ -159,7 +159,7 @@ Comprehensive vault diagnostics and health report.
 - Top hubs
 - Recommendations
 
-### /fix-links
+### /vault-fix-links
 
 Find and repair broken wikilinks in vault.
 

@@ -1,5 +1,5 @@
 ---
-skill: apply-wikilinks
+skill: wikilink-apply
 ---
 
 # /wikilink-apply - Apply Wikilink Suggestions

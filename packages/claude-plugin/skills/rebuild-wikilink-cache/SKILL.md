@@ -1,5 +1,5 @@
 ---
-name: rebuild-cache
+name: rebuild-wikilink-cache
 description: Rebuild the wikilink entities cache. Triggers on "rebuild cache", "rebuild wikilink cache", "update cache", "refresh wikilinks". Optionally uses Flywheel MCP for enhanced entity detection.
 auto_trigger: true
 trigger_keywords:

@@ -1,5 +1,5 @@
 ---
-name: find-orphans
+name: vault-orphans
 description: Find orphan notes (notes with no backlinks). Triggers on "orphans", "orphan notes", "disconnected notes", "isolated notes", "notes with no links".
 auto_trigger: true
 trigger_keywords:

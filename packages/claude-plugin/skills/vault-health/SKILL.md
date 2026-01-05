@@ -1,5 +1,5 @@
 ---
-name: check-health
+name: vault-health
 description: Comprehensive vault diagnostics and health report. Triggers when user mentions "vault health", "health report", "vault diagnostics".
 auto_trigger: true
 trigger_keywords:
@@ -76,14 +76,14 @@ Vault Health Report
 📈 Vault Health Score: 85% (Good)
 
 💡 Recommendations:
-  • Run /fix-links to repair broken links
+  • Run /vault-fix-links to repair broken links
   • Review /orphans to connect isolated notes
 ═══════════════════════════════════════════════
 ```
 
 ### 4. Provide Action Items
 Link to relevant skills based on issues found:
-- Many broken links → Suggest `/fix-links`
+- Many broken links → Suggest `/vault-fix-links`
 - Many orphans → Suggest `/orphans`
 - Low connectivity → Suggest `/suggest` for link suggestions
 

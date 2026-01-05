@@ -128,7 +128,7 @@ packages/claude-plugin/
 │   │   ├── rebuild-wikilink-cache/
 │   │   ├── task-add/
 │   │   ├── task-status/
-│   │   └── auto-log/
+│   │   └── add-log/
 │   ├── nutrition/
 │   │   ├── food/
 │   │   └── food-macros/
@@ -162,7 +162,7 @@ packages/claude-plugin/
 | `rebuild-wikilink-cache` | "rebuild cache", "refresh entities" | Rebuild wikilink entity cache |
 | `task-add` | "add task", "new task" | Add tasks to daily notes |
 | `task-status` | "task status", "show tasks" | Show task status |
-| `auto-log` | "log", "add to log" | Add entries to daily log |
+| `add-log` | "log", "add to log" | Add entries to daily log |
 
 ### Nutrition Skills
 | Skill | Trigger | Description |
@@ -173,14 +173,14 @@ packages/claude-plugin/
 ### Vault Skills (requires Flywheel MCP)
 | Skill | Description |
 |-------|-------------|
-| `health` | Overall vault health diagnostics |
-| `orphans` | Find orphan notes |
-| `backlinks` | Show note backlinks |
-| `fix-links` | Repair broken wikilinks |
-| `hubs` | Find hub notes |
-| `clusters` | Find knowledge clusters |
-| `stale` | Find stale notes |
-| `gaps` | Find knowledge gaps |
+| `vault-health` | Overall vault health diagnostics |
+| `vault-orphans` | Find orphan notes |
+| `vault-backlinks` | Show note backlinks |
+| `vault-fix-links` | Repair broken wikilinks |
+| `vault-hubs` | Find hub notes |
+| `vault-clusters` | Find knowledge clusters |
+| `vault-stale` | Find stale notes |
+| `vault-gaps` | Find knowledge gaps |
 
 ## Agents
 

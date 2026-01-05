@@ -1,5 +1,5 @@
 ---
-name: find-dead-ends
+name: vault-dead-ends
 description: Find dead-end notes (have backlinks but no outgoing links). Triggers on "dead ends", "dead end notes", "endpoint notes".
 auto_trigger: true
 trigger_keywords:

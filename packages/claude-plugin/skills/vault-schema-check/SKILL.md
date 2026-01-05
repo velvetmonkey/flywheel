@@ -1,5 +1,5 @@
 ---
-name: check-schema
+name: vault-schema-check
 description: Find fields that have multiple different types across notes (schema violations). Triggers on "schema check", "frontmatter inconsistencies", "metadata violations", "type mismatches".
 auto_trigger: true
 trigger_keywords:

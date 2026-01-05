@@ -1,5 +1,5 @@
 ---
-skill: check-health
+skill: vault-health
 ---
 
 # /vault-health - Vault Diagnostics
@@ -59,7 +59,7 @@ Top Hubs:
 Vault Health Score: 85% (Good)
 
 Recommendations:
-  Run /fix-links to repair broken links
+  Run /vault-fix-links to repair broken links
   Review /orphans to connect isolated notes
 
 ===============================================

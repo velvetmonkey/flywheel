@@ -131,12 +131,12 @@ Slash commands that modify your vault. Each shows: input → operation → outpu
 └───────────────────────────────────────────────────────────────────┘
 ```
 
-### /fix-links — Repair Broken Wikilinks
+### /vault-fix-links — Repair Broken Wikilinks
 
 ```
 ┌─ nexus-lab ──────────────────────────────────────────────────────┐
 │                                                                   │
-│  You: "/fix-links"                                                │
+│  You: "/vault-fix-links"                                                │
 │                                                                   │
 │  INPUT              OPERATION                  OUTPUT             │
 │  ──────────────────────────────────────────────────────────────  │
