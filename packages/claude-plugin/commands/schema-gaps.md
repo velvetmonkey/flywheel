@@ -1,3 +1,7 @@
+---
+skill: schema-gaps
+---
+
 # /schema-gaps - Find Incomplete Notes
 
 Find notes missing expected fields based on folder conventions.

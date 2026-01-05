@@ -1,3 +1,7 @@
+---
+skill: find-unlinked-mentions
+---
+
 # /unlinked-mentions - Find Unlinked Mentions
 
 Find places where a note title is mentioned in text but not linked.

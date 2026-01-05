@@ -1,3 +1,7 @@
+---
+skill: standup-rollup
+---
+
 # /standup-rollup - Aggregate Team Standups
 
 Aggregate team standup notes into a summary.

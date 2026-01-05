@@ -1,3 +1,7 @@
+---
+skill: check-bidirectional
+---
+
 # /bidirectional - Find Mutual Links
 
 Find pairs of notes that link to each other (mutual/bidirectional links).

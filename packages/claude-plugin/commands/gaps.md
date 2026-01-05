@@ -1,3 +1,7 @@
+---
+skill: find-gaps
+---
+
 # /gaps - Find Knowledge Gaps
 
 Find potential knowledge gaps in your vault based on link patterns.

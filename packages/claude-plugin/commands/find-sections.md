@@ -1,3 +1,7 @@
+---
+skill: find-sections
+---
+
 # /find-sections - Find Sections By Pattern
 
 Find all sections across vault matching a heading pattern.

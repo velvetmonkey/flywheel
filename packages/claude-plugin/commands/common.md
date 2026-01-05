@@ -1,3 +1,7 @@
+---
+skill: show-common-links
+---
+
 # /common - Find Common Neighbors
 
 Find notes that both specified notes link to (shared connections).

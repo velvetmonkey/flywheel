@@ -1,3 +1,7 @@
+---
+skill: wikilinkify-frontmatter
+---
+
 # /wikilinkify - Convert Frontmatter to Wikilinks
 
 Find frontmatter string values that match existing notes and suggest converting to wikilinks.

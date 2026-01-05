@@ -1,3 +1,7 @@
+---
+skill: show-backlinks
+---
+
 # /backlinks - Note Connection Navigator
 
 Show all backlinks and forward links for a note.

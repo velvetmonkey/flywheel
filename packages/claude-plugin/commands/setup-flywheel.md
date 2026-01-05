@@ -1,3 +1,7 @@
+---
+skill: setup-flywheel
+---
+
 # /setup-flywheel - Configure and Onboard to Flywheel
 
 Complete Flywheel setup in one command: configure MCP, validate connection, and see your vault stats.

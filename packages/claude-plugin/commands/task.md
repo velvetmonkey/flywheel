@@ -1,3 +1,7 @@
+---
+skill: add-task
+---
+
 # /task - Add Task With Due Date
 
 Add a task with optional due date to a note.

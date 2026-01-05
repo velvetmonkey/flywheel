@@ -1,3 +1,7 @@
+---
+skill: find-clusters
+---
+
 # /clusters - Find Knowledge Clusters
 
 Find groups of notes that are densely connected (knowledge clusters).

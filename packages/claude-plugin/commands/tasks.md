@@ -1,3 +1,7 @@
+---
+skill: show-tasks
+---
+
 # /tasks - Show All Tasks
 
 Get all tasks from the vault with filtering options.

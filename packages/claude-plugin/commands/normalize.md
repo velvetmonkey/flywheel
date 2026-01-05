@@ -1,3 +1,7 @@
+---
+skill: normalize-note
+---
+
 # /normalize - Harmonize Frontmatter and Wikilinks
 
 Synchronize a note's frontmatter and prose wikilinks so they reinforce each other.

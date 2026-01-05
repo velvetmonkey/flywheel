@@ -1,3 +1,7 @@
+---
+skill: find-orphans
+---
+
 # /orphans - Find Disconnected Notes
 
 Find orphan notes that have no backlinks (no other notes link to them).

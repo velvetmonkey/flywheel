@@ -1,3 +1,7 @@
+---
+skill: add-log
+---
+
 # /log - Add Timestamped Log Entry
 
 Add a timestamped log entry to today's daily note.

@@ -1,3 +1,7 @@
+---
+skill: check-link-density
+---
+
 # /link-density - Link Pattern Analysis
 
 Analyze linking patterns and density across your vault.

@@ -1,3 +1,7 @@
+---
+skill: show-section
+---
+
 # /section - Extract Section Content
 
 Get the content under a specific heading in a note.

@@ -1,3 +1,7 @@
+---
+skill: show-path
+---
+
 # /path - Find Link Path Between Notes
 
 Find the shortest connection path between any two notes.

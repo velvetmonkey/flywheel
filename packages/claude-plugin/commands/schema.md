@@ -1,3 +1,7 @@
+---
+skill: show-schema
+---
+
 # /schema - Frontmatter Schema Analysis
 
 Analyze all frontmatter fields used across your vault.

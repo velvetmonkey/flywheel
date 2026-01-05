@@ -1,3 +1,7 @@
+---
+skill: fix-links
+---
+
 # /fix-links - Repair Broken Wikilinks
 
 Find and repair broken wikilinks across your vault.

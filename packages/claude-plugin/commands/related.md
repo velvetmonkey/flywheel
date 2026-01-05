@@ -1,3 +1,7 @@
+---
+skill: find-related-notes
+---
+
 # /related - Find Related Notes
 
 Find notes that are related to a specific note based on shared connections.

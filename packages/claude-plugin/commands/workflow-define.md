@@ -1,3 +1,7 @@
+---
+skill: workflow-define
+---
+
 # /workflow-define - Define Custom Workflows
 
 Create a custom workflow definition for your vault.

@@ -1,3 +1,7 @@
+---
+skill: show-field-values
+---
+
 # /field-values - List Unique Frontmatter Values
 
 Get all unique values for a specific frontmatter field.

@@ -1,3 +1,7 @@
+---
+skill: find-dead-ends
+---
+
 # /dead-ends - Find Notes With No Outgoing Links
 
 Find notes that have backlinks but no outgoing links (consume but don't contribute).

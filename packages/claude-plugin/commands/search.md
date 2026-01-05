@@ -1,3 +1,7 @@
+---
+skill: search-vault
+---
+
 # /search - Advanced Vault Search
 
 Search notes by frontmatter fields, tags, folders, or title.

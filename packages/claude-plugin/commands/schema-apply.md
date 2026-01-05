@@ -1,3 +1,7 @@
+---
+skill: schema-apply
+---
+
 # /schema-apply - Apply Inferred Conventions
 
 Apply inferred schema conventions to notes in a folder.

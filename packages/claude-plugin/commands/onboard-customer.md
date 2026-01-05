@@ -1,3 +1,7 @@
+---
+skill: onboard-customer
+---
+
 # /onboard-customer - Customer Onboarding Checklist
 
 Generate a customer onboarding checklist from template.

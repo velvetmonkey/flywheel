@@ -1,3 +1,7 @@
+---
+skill: schema-compute
+---
+
 # /schema-compute - Auto-Generate Derived Fields
 
 Auto-compute derived frontmatter fields from note content.

@@ -1,3 +1,7 @@
+---
+skill: find-hubs
+---
+
 # /hubs - Find Hub Notes
 
 Find highly connected notes that serve as central points in your knowledge graph.

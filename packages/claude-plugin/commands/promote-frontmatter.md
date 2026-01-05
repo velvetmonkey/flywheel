@@ -1,3 +1,7 @@
+---
+skill: promote-frontmatter
+---
+
 # /promote-frontmatter - Extract Prose Patterns to YAML
 
 Find "Key: Value" patterns in note prose and suggest promoting to frontmatter.

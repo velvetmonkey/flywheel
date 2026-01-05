@@ -1,3 +1,7 @@
+---
+skill: schema-infer
+---
+
 # /schema-infer - Infer Metadata Conventions
 
 Auto-detect metadata conventions for a folder based on existing patterns.

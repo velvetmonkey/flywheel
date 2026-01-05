@@ -1,3 +1,7 @@
+---
+skill: suggest-links
+---
+
 # /suggest - Suggest Wikilinks
 
 Analyze text and suggest where wikilinks could be added.

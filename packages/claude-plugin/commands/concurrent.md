@@ -1,3 +1,7 @@
+---
+skill: show-concurrent
+---
+
 # /concurrent - Find Contemporaneous Notes
 
 Find notes that were edited around the same time as a given note.

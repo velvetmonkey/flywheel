@@ -1,3 +1,7 @@
+---
+skill: check-link-strength
+---
+
 # /strength - Connection Strength Calculator
 
 Calculate the connection strength between two notes.

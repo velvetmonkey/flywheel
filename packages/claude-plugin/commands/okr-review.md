@@ -1,3 +1,7 @@
+---
+skill: okr-review
+---
+
 # /okr-review - Quarterly OKR Review
 
 Generate a quarterly OKR progress review.

@@ -1,3 +1,7 @@
+---
+skill: run-rollup
+---
+
 # /rollup - Execute Note Rollup Chain
 
 Execute the complete rollup chain processing daily notes into weekly, monthly, quarterly, and yearly summaries.

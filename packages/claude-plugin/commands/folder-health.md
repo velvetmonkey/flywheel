@@ -1,3 +1,7 @@
+---
+skill: check-folder-health
+---
+
 # /folder-health - Vault Organization Analysis
 
 Analyze vault folder structure and organization health.

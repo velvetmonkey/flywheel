@@ -1,3 +1,7 @@
+---
+skill: weekly-review
+---
+
 # /weekly-review - Comprehensive Weekly Reflection
 
 Generate a comprehensive weekly reflection from your vault activity.

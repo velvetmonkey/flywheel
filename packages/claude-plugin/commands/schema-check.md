@@ -1,3 +1,7 @@
+---
+skill: check-schema
+---
+
 # /schema-check - Frontmatter Type Consistency
 
 Find frontmatter fields with inconsistent types (schema violations).

@@ -1,3 +1,7 @@
+---
+skill: rebuild-cache
+---
+
 # /rebuild-cache - Rebuild Wikilink Cache
 
 Rebuild the Flywheel entity cache for wikilink resolution.

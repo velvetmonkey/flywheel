@@ -1,3 +1,7 @@
+---
+skill: schema-migrate
+---
+
 # /schema-migrate - Rename Fields in Bulk
 
 Bulk rename a frontmatter field across notes (dry-run by default).

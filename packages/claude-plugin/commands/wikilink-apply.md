@@ -1,3 +1,7 @@
+---
+skill: apply-wikilinks
+---
+
 # /wikilink-apply - Apply Wikilink Suggestions
 
 Apply suggested wikilinks from /suggest to a note.

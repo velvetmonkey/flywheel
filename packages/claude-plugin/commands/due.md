@@ -1,3 +1,7 @@
+---
+skill: show-due-tasks
+---
+
 # /due - Show Tasks With Due Dates
 
 Get tasks sorted by due date.

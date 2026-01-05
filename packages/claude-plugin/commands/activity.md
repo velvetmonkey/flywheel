@@ -1,3 +1,7 @@
+---
+skill: show-activity
+---
+
 # /activity - Vault Activity Summary
 
 Get a summary of vault editing activity over a time period.

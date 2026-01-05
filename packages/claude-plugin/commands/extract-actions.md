@@ -1,3 +1,7 @@
+---
+skill: extract-actions
+---
+
 # /extract-actions - Extract Action Items
 
 Extract action items from meeting notes or documents.

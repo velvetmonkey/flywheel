@@ -1,3 +1,7 @@
+---
+skill: check-health
+---
+
 # /vault-health - Vault Diagnostics
 
 Comprehensive vault health check with diagnostics and recommendations.

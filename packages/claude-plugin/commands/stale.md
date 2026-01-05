@@ -1,3 +1,7 @@
+---
+skill: find-stale-notes
+---
+
 # /stale - Find Neglected Notes
 
 Find important notes (by backlink count) that haven't been modified recently.
