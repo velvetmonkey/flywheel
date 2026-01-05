@@ -14,16 +14,13 @@ import { registerBidirectionalTools } from './tools/bidirectional.js';
 import { registerSchemaTools } from './tools/schema.js';
 import { registerComputedTools } from './tools/computed.js';
 import { registerMigrationTools } from './tools/migrations.js';
+import { watchVault } from './core/watcher.js';
 
-const VAULT_PATH = process.env.PROJECT_PATH;
+// Default to current working directory if PROJECT_PATH not specified
+const vaultPath: string = process.env.PROJECT_PATH || process.cwd();
 
-if (!VAULT_PATH) {
-  console.error('Error: PROJECT_PATH environment variable is required');
-  process.exit(1);
-}
-
-// Type assertion after validation
-const vaultPath: string = VAULT_PATH;
+// File watcher enabled by default, set FLYWHEEL_WATCH=false to disable
+const watchEnabled = process.env.FLYWHEEL_WATCH !== 'false';
 
 // Vault index (built on startup)
 let vaultIndex: VaultIndex;
@@ -118,6 +115,13 @@ async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
   console.error('Flywheel MCP server running on stdio');
+
+  // Start file watcher for automatic index refresh
+  if (watchEnabled) {
+    watchVault(vaultPath, (newIndex) => {
+      vaultIndex = newIndex;
+    });
+  }
 }
 
 main().catch((error) => {

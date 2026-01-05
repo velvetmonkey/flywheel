@@ -62,7 +62,7 @@ src/
 - `gray-matter` - YAML frontmatter parsing
 - `zod` - schema validation
 
-**Environment**: Requires `PROJECT_PATH` environment variable pointing to the Obsidian vault directory.
+**Environment**: `PROJECT_PATH` environment variable points to the vault directory. If not set, defaults to current working directory.
 
 ## Development
 

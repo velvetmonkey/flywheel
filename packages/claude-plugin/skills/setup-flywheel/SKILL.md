@@ -133,17 +133,48 @@ For Windows (`Platform: win32`), **user-level config is recommended** because:
 
 ## Phase 2: Generate .mcp.json
 
-### Get Vault Path
+### Vault Path Detection
 
-Ask the user for their vault path if not obvious from the working directory.
+**Zero-config approach**: If `.mcp.json` is placed in the vault root (the working directory), no `PROJECT_PATH` is needed—the server defaults to `cwd()`.
+
+**Only ask for vault path if**:
+- The working directory is clearly NOT the vault (e.g., a parent folder)
+- User explicitly wants to point to a different location
 
 For WSL users with vaults on Windows filesystem:
 - Convert `C:\Users\name\vault` → `/mnt/c/Users/name/vault`
 
 ### Generate Configuration
 
-**For Linux / macOS / WSL (`Platform: linux` or `Platform: darwin`):**
+**Zero-config (`.mcp.json` in vault root) - PREFERRED:**
 
+For Linux / macOS / WSL (`Platform: linux` or `Platform: darwin`):
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@bencassie/flywheel-mcp"]
+    }
+  }
+}
+```
+
+For Windows (`Platform: win32`):
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"]
+    }
+  }
+}
+```
+
+**With explicit vault path (only if vault ≠ working directory):**
+
+For Linux / macOS / WSL:
 ```json
 {
   "mcpServers": {
@@ -158,8 +189,7 @@ For WSL users with vaults on Windows filesystem:
 }
 ```
 
-**For Windows (`Platform: win32`):**
-
+For Windows:
 ```json
 {
   "mcpServers": {
@@ -274,7 +304,7 @@ Just describe what you want - Flywheel matches your intent:
 - Command: `cmd /c npx`
 
 ## Phase 2: Configuration
-Vault path: C:/Users/benca/obsidian/Ben
+Working directory is your vault - using zero-config!
 
 I'll add this to your `.mcp.json`:
 
@@ -282,10 +312,7 @@ I'll add this to your `.mcp.json`:
   "mcpServers": {
     "flywheel": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
-      "env": {
-        "PROJECT_PATH": "C:/Users/benca/obsidian/Ben"
-      }
+      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"]
     }
   }
 }
@@ -296,7 +323,7 @@ I'll add this to your `.mcp.json`:
 
 ## Phase 3: Validating...
 ✓ MCP server connected
-✓ Vault accessible
+✓ Vault accessible (using working directory)
 
 ## Phase 4: Your Vault
 

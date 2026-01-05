@@ -347,7 +347,7 @@ export function registerPrimitiveTools(
         status: z.enum(['open', 'completed', 'cancelled', 'all']).default('all').describe('Filter by task status'),
         folder: z.string().optional().describe('Limit to notes in this folder'),
         tag: z.string().optional().describe('Filter to tasks with this tag'),
-        limit: z.number().default(100).describe('Maximum tasks to return'),
+        limit: z.number().default(25).describe('Maximum tasks to return'),
       },
     },
     async ({ status, folder, tag, limit }) => {
@@ -403,7 +403,7 @@ export function registerPrimitiveTools(
       inputSchema: {
         status: z.enum(['open', 'completed', 'cancelled', 'all']).default('open').describe('Filter by status'),
         folder: z.string().optional().describe('Limit to notes in this folder'),
-        limit: z.number().default(50).describe('Maximum number of results to return'),
+        limit: z.number().default(25).describe('Maximum number of results to return'),
         offset: z.number().default(0).describe('Number of results to skip (for pagination)'),
       },
     },

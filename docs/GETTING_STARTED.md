@@ -164,13 +164,30 @@ If `get_vault_stats()` returns "Tool not found":
 
 1. Ensure Claude Code was restarted after setup
 2. Check `.mcp.json` exists in your vault root
-3. Verify `PROJECT_PATH` points to correct directory
+3. If using explicit vault path, verify `PROJECT_PATH` in `.mcp.json`
 
 ### Manual Configuration (Fallback)
 
-If `/setup-flywheel` fails, add to `.mcp.json` manually:
+If `/setup-flywheel` fails, add to `.mcp.json` manually.
 
-**macOS / Linux / WSL:**
+**Zero-config (recommended)** — place `.mcp.json` in your vault root:
+
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@bencassie/flywheel-mcp"]
+    }
+  }
+}
+```
+
+> **Windows**: Use `"command": "cmd", "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"]`
+
+**With explicit vault path** (if `.mcp.json` is elsewhere):
+
+macOS / Linux / WSL:
 ```json
 {
   "mcpServers": {
@@ -183,7 +200,7 @@ If `/setup-flywheel` fails, add to `.mcp.json` manually:
 }
 ```
 
-**Windows:**
+Windows:
 ```json
 {
   "mcpServers": {

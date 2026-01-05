@@ -10,7 +10,25 @@ The intelligence layer of [Flywheel](https://github.com/bencassie/flywheel) — 
 
 ### Via `.mcp.json`
 
-Add to your project's `.mcp.json` (or `~/.claude/.mcp.json` for global).
+Add to your project's `.mcp.json` (in your vault root). **Zero-config** if `.mcp.json` is in your vault—no `PROJECT_PATH` needed:
+
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@bencassie/flywheel-mcp"]
+    }
+  }
+}
+```
+
+> **Note**: Windows native requires `"command": "cmd", "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"]`
+
+<details>
+<summary><strong>Advanced: Pointing to a different vault</strong></summary>
+
+If `.mcp.json` is NOT in your vault, or you want to use a different vault, set `PROJECT_PATH`:
 
 **Choose config based on where Claude Code runs, NOT where your vault is stored.**
 
@@ -83,13 +101,18 @@ Check the environment info shown at the start of your Claude Code session:
 | `win32` | Windows |
 | `darwin` | macOS |
 
+</details>
+
 ### Via CLI
 
 ```bash
-# macOS / Linux / WSL
+# Zero-config (run from vault directory)
+claude mcp add flywheel -- npx -y @bencassie/flywheel-mcp
+
+# With explicit vault path
 claude mcp add flywheel --env PROJECT_PATH=/path/to/vault -- npx -y @bencassie/flywheel-mcp
 
-# Windows (native)
+# Windows (native) - with explicit path
 claude mcp add flywheel --env PROJECT_PATH=C:/path/to/vault -- cmd /c npx -y @bencassie/flywheel-mcp
 ```
 
@@ -115,9 +138,11 @@ claude mcp list  # Should show: flywheel ✓
 
 ## Configuration
 
-| Environment Variable | Required | Description |
-|---------------------|:--------:|-------------|
-| `PROJECT_PATH` | Yes | Path to markdown vault directory |
+| Environment Variable | Required | Default | Description |
+|---------------------|:--------:|---------|-------------|
+| `PROJECT_PATH` | No | `cwd()` | Path to markdown vault directory |
+
+**Zero-config**: If `PROJECT_PATH` is not set, the server uses the current working directory. When `.mcp.json` is in your vault root, this means no configuration needed—it just works.
 
 The server scans the vault on startup and builds an in-memory index. No database required.
 
