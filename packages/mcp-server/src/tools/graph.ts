@@ -7,6 +7,7 @@ import * as path from 'path';
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex } from '../core/types.js';
+import { MAX_LIMIT } from '../core/constants.js';
 import {
   getBacklinksForNote,
   getForwardLinksForNote,
@@ -86,10 +87,11 @@ export function registerGraphTools(
       },
       outputSchema: GetBacklinksOutputSchema,
     },
-    async ({ path: notePath, include_context, limit, offset }): Promise<{
+    async ({ path: notePath, include_context, limit: requestedLimit, offset }): Promise<{
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: GetBacklinksOutput;
     }> => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
       const vaultPath = getVaultPath();
 
@@ -266,10 +268,11 @@ export function registerGraphTools(
       },
       outputSchema: FindOrphansOutputSchema,
     },
-    async ({ folder, limit, offset }): Promise<{
+    async ({ folder, limit: requestedLimit, offset }): Promise<{
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: FindOrphansOutput;
     }> => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
 
       const allOrphans = findOrphanNotes(index, folder);
@@ -339,10 +342,11 @@ export function registerGraphTools(
       },
       outputSchema: FindHubsOutputSchema,
     },
-    async ({ min_links, limit, offset }): Promise<{
+    async ({ min_links, limit: requestedLimit, offset }): Promise<{
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: FindHubsOutput;
     }> => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
 
       const allHubs = findHubNotes(index, min_links);

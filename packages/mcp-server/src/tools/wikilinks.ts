@@ -5,6 +5,7 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex } from '../core/types.js';
+import { MAX_LIMIT } from '../core/constants.js';
 import { resolveTarget } from '../core/graph.js';
 
 /**
@@ -167,10 +168,11 @@ export function registerWikilinkTools(
       },
       outputSchema: SuggestWikilinksOutputSchema,
     },
-    async ({ text, limit, offset }): Promise<{
+    async ({ text, limit: requestedLimit, offset }): Promise<{
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: SuggestWikilinksOutput;
     }> => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
       const allMatches = findEntityMatches(text, index.entities);
       const matches = allMatches.slice(offset, offset + limit);
@@ -266,10 +268,11 @@ export function registerWikilinkTools(
       },
       outputSchema: ValidateLinksOutputSchema,
     },
-    async ({ path: notePath, limit, offset }): Promise<{
+    async ({ path: notePath, limit: requestedLimit, offset }): Promise<{
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: ValidateLinksOutput;
     }> => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
       const allBroken: BrokenLink[] = [];
       let totalLinks = 0;

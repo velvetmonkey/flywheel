@@ -56,6 +56,25 @@ src/
 - **Privacy by design**: returns structure/metadata, not content
 - **No Dataview dependency**: Dataview requires Obsidian internals; we use native queries instead
 
+## MCP Tool Development Rules
+
+When creating new MCP tools:
+
+1. **Always use MAX_LIMIT cap** - Import from `core/constants.ts` and cap all limit parameters:
+   ```typescript
+   import { MAX_LIMIT } from '../core/constants.js';
+
+   // In tool handler:
+   async ({ limit: requestedLimit = 50 }) => {
+     const limit = Math.min(requestedLimit, MAX_LIMIT);
+     // ...
+   }
+   ```
+
+2. **Support pagination** - Return `total_count` and `returned_count` so clients know there's more data. Include `offset` parameter for pagination.
+
+3. **Default limits** - Use sensible defaults (typically 50, or 25 for heavier operations like tasks)
+
 **Dependencies**:
 
 - `@modelcontextprotocol/sdk` - MCP protocol handling

@@ -9,6 +9,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex } from '../core/types.js';
 import { buildVaultIndex } from '../core/graph.js';
 import { loadConfig, inferConfig, saveConfig, type FlywheelConfig } from '../core/config.js';
+import { MAX_LIMIT } from '../core/constants.js';
 
 /**
  * Register system/utility tools with the MCP server
@@ -143,12 +144,15 @@ export function registerSystemTools(
     },
     async ({
       include_aliases,
-      limit,
+      limit: requestedLimit,
     }): Promise<{
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: GetAllEntitiesOutput;
     }> => {
       const index = getIndex();
+
+      // Cap limit to prevent massive payloads
+      const limit = requestedLimit ? Math.min(requestedLimit, MAX_LIMIT) : MAX_LIMIT;
 
       const entities: Array<{ name: string; path: string; is_alias: boolean }> =
         [];
@@ -176,8 +180,8 @@ export function registerSystemTools(
       // Sort alphabetically
       entities.sort((a, b) => a.name.localeCompare(b.name));
 
-      // Apply limit if specified
-      const limitedEntities = limit ? entities.slice(0, limit) : entities;
+      // Apply limit
+      const limitedEntities = entities.slice(0, limit);
 
       const output: GetAllEntitiesOutput = {
         entity_count: limitedEntities.length,
@@ -244,13 +248,17 @@ export function registerSystemTools(
     },
     async ({
       days,
-      limit,
+      limit: requestedLimit,
       folder,
     }): Promise<{
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: GetRecentNotesOutput;
     }> => {
       const index = getIndex();
+
+      // Cap limit to prevent massive payloads
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
+
       const cutoffDate = new Date();
       cutoffDate.setDate(cutoffDate.getDate() - days);
 
@@ -360,13 +368,16 @@ export function registerSystemTools(
     },
     async ({
       entity,
-      limit,
+      limit: requestedLimit,
     }): Promise<{
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: GetUnlinkedMentionsOutput;
     }> => {
       const index = getIndex();
       const vaultPath = getVaultPath();
+
+      // Cap limit to prevent massive payloads
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
 
       // Check if entity exists
       const normalizedEntity = entity.toLowerCase();

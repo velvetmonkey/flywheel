@@ -8,6 +8,7 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex, VaultNote } from '../core/types.js';
+import { MAX_LIMIT } from '../core/constants.js';
 
 // =============================================================================
 // TYPES
@@ -572,13 +573,14 @@ export function registerSchemaTools(
         offset: z.number().optional().describe('Number of results to skip for pagination (default 0).'),
       },
     },
-    async ({ folder, min_frequency, limit, offset }) => {
+    async ({ folder, min_frequency, limit: requestedLimit, offset }) => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
       const result = findIncompleteNotes(
         index,
         folder,
         min_frequency ?? 0.7,
-        limit ?? 50,
+        limit,
         offset ?? 0
       );
 

@@ -26,7 +26,7 @@ const PROGRESS_INTERVAL = 100;
  * - Lowercase for case-insensitive matching
  * - Remove .md extension if present
  */
-function normalizeTarget(target: string): string {
+export function normalizeTarget(target: string): string {
   return target.toLowerCase().replace(/\.md$/, '');
 }
 
@@ -312,4 +312,72 @@ export function findHubNotes(
 
   // Sort by total connections (highest first)
   return hubs.sort((a, b) => b.total_connections - a.total_connections);
+}
+
+/**
+ * Calculate Levenshtein distance between two strings
+ * Returns the minimum number of single-character edits needed
+ */
+export function levenshteinDistance(a: string, b: string): number {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+
+  const matrix: number[][] = [];
+
+  // Initialize first column
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+
+  // Initialize first row
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  // Fill in the rest of the matrix
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1, // substitution
+          matrix[i][j - 1] + 1,     // insertion
+          matrix[i - 1][j] + 1      // deletion
+        );
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+}
+
+/**
+ * Find a similar entity in the index (for detecting typos/broken links)
+ * Returns the path of the best matching note, or undefined if no close match
+ *
+ * Threshold based on string length:
+ * - Length ≤ 5: max distance 1
+ * - Length ≤ 10: max distance 2
+ * - Length > 10: max distance 3
+ */
+export function findSimilarEntity(
+  index: VaultIndex,
+  target: string
+): { path: string; entity: string; distance: number } | undefined {
+  const normalized = normalizeTarget(target);
+  const maxDist = normalized.length <= 5 ? 1 : normalized.length <= 10 ? 2 : 3;
+
+  let bestMatch: { path: string; entity: string; distance: number } | undefined;
+
+  for (const [entity, path] of index.entities) {
+    const dist = levenshteinDistance(normalized, entity);
+    if (dist > 0 && dist <= maxDist) {
+      if (!bestMatch || dist < bestMatch.distance) {
+        bestMatch = { path, entity, distance: dist };
+      }
+    }
+  }
+
+  return bestMatch;
 }

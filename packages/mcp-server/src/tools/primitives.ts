@@ -7,6 +7,7 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex } from '../core/types.js';
+import { MAX_LIMIT } from '../core/constants.js';
 
 // Import primitive implementations
 import {
@@ -74,7 +75,8 @@ export function registerPrimitiveTools(
         offset: z.number().default(0).describe('Number of results to skip (for pagination)'),
       },
     },
-    async ({ date, limit, offset }) => {
+    async ({ date, limit: requestedLimit, offset }) => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
       const allResults = getNotesModifiedOn(index, date);
       const result = allResults.slice(offset, offset + limit);
@@ -107,7 +109,8 @@ export function registerPrimitiveTools(
         offset: z.number().default(0).describe('Number of results to skip (for pagination)'),
       },
     },
-    async ({ start_date, end_date, limit, offset }) => {
+    async ({ start_date, end_date, limit: requestedLimit, offset }) => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
       const allResults = getNotesInRange(index, start_date, end_date);
       const result = allResults.slice(offset, offset + limit);
@@ -140,7 +143,8 @@ export function registerPrimitiveTools(
         limit: z.number().default(50).describe('Maximum results to return'),
       },
     },
-    async ({ days, min_backlinks, limit }) => {
+    async ({ days, min_backlinks, limit: requestedLimit }) => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
       const result = getStaleNotes(index, days, min_backlinks).slice(0, limit);
 
@@ -170,7 +174,8 @@ export function registerPrimitiveTools(
         offset: z.number().default(0).describe('Number of results to skip (for pagination)'),
       },
     },
-    async ({ path, hours, limit, offset }) => {
+    async ({ path, hours, limit: requestedLimit, offset }) => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
       const allResults = getContemporaneousNotes(index, path, hours);
       const result = allResults.slice(offset, offset + limit);
@@ -318,7 +323,8 @@ export function registerPrimitiveTools(
         offset: z.number().default(0).describe('Number of results to skip (for pagination)'),
       },
     },
-    async ({ pattern, folder, limit, offset }) => {
+    async ({ pattern, folder, limit: requestedLimit, offset }) => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
       const vaultPath = getVaultPath();
       const allResults = await findSections(index, pattern, vaultPath, folder);
@@ -353,7 +359,8 @@ export function registerPrimitiveTools(
         limit: z.number().default(25).describe('Maximum tasks to return'),
       },
     },
-    async ({ status, folder, tag, limit }) => {
+    async ({ status, folder, tag, limit: requestedLimit }) => {
+      const limit = Math.min(requestedLimit ?? 25, MAX_LIMIT);
       const index = getIndex();
       const vaultPath = getVaultPath();
       const config = getConfig();
@@ -417,7 +424,8 @@ export function registerPrimitiveTools(
         offset: z.number().default(0).describe('Number of results to skip (for pagination)'),
       },
     },
-    async ({ status, folder, limit, offset }) => {
+    async ({ status, folder, limit: requestedLimit, offset }) => {
+      const limit = Math.min(requestedLimit ?? 25, MAX_LIMIT);
       const index = getIndex();
       const vaultPath = getVaultPath();
       const config = getConfig();
@@ -506,7 +514,8 @@ export function registerPrimitiveTools(
         offset: z.number().default(0).describe('Number of results to skip (for pagination)'),
       },
     },
-    async ({ path, limit, offset }) => {
+    async ({ path, limit: requestedLimit, offset }) => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
       const allResults = findBidirectionalLinks(index, path);
       const result = allResults.slice(offset, offset + limit);
@@ -535,7 +544,8 @@ export function registerPrimitiveTools(
         offset: z.number().default(0).describe('Number of results to skip (for pagination)'),
       },
     },
-    async ({ folder, min_backlinks, limit, offset }) => {
+    async ({ folder, min_backlinks, limit: requestedLimit, offset }) => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
       const allResults = findDeadEnds(index, folder, min_backlinks);
       const result = allResults.slice(offset, offset + limit);
@@ -564,7 +574,8 @@ export function registerPrimitiveTools(
         offset: z.number().default(0).describe('Number of results to skip (for pagination)'),
       },
     },
-    async ({ folder, min_outlinks, limit, offset }) => {
+    async ({ folder, min_outlinks, limit: requestedLimit, offset }) => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
       const allResults = findSources(index, folder, min_outlinks);
       const result = allResults.slice(offset, offset + limit);

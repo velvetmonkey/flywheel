@@ -5,6 +5,7 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex, VaultNote } from '../core/types.js';
+import { MAX_LIMIT } from '../core/constants.js';
 
 /**
  * Check if a note matches frontmatter filters
@@ -228,12 +229,15 @@ export function registerQueryTools(
       title_contains,
       sort_by = 'modified',
       order = 'desc',
-      limit = 50,
+      limit: requestedLimit = 50,
     }): Promise<{
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: SearchNotesOutput;
     }> => {
       const index = getIndex();
+
+      // Cap limit to prevent massive payloads
+      const limit = Math.min(requestedLimit, MAX_LIMIT);
 
       // Start with all notes
       let matchingNotes: VaultNote[] = Array.from(index.notes.values());

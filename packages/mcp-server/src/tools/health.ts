@@ -6,7 +6,8 @@ import * as fs from 'fs';
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex } from '../core/types.js';
-import { resolveTarget, getBacklinksForNote } from '../core/graph.js';
+import { resolveTarget, getBacklinksForNote, findSimilarEntity } from '../core/graph.js';
+import { MAX_LIMIT } from '../core/constants.js';
 
 /** Staleness threshold in seconds (5 minutes) */
 const STALE_THRESHOLD_SECONDS = 300;
@@ -128,11 +129,12 @@ export function registerHealthTools(
     }
   );
 
-  // find_broken_links - Find all broken links in the vault
+  // find_broken_links - Find links that appear to be typos/mistakes (have a similar match)
   const BrokenLinkSchema = z.object({
     source: z.string().describe('Path to the note containing the broken link'),
     target: z.string().describe('The broken link target'),
     line: z.number().describe('Line number where the link appears'),
+    suggestion: z.string().describe('Suggested correct target (similar entity found)'),
   });
 
   const FindBrokenLinksOutputSchema = {
@@ -140,13 +142,14 @@ export function registerHealthTools(
     broken_count: z.number().describe('Total number of broken links found'),
     returned_count: z.number().describe('Number of broken links returned (may be limited)'),
     affected_notes: z.number().describe('Number of notes with broken links'),
-    broken_links: z.array(BrokenLinkSchema).describe('List of broken links'),
+    broken_links: z.array(BrokenLinkSchema).describe('List of broken links with suggestions'),
   };
 
   type BrokenLink = {
     source: string;
     target: string;
     line: number;
+    suggestion: string;
   };
 
   type FindBrokenLinksOutput = {
@@ -162,21 +165,24 @@ export function registerHealthTools(
     {
       title: 'Find Broken Links',
       description:
-        'Find all wikilinks that point to non-existent notes. Useful for vault maintenance.',
+        'Find wikilinks that appear to be typos or mistakes (links to non-existent notes that have a similar existing note). Links to notes that simply do not exist yet are not considered broken - only links where a similar note exists (suggesting a typo).',
       inputSchema: {
         folder: z.string().optional().describe('Limit search to a specific folder (e.g., "daily-notes/")'),
-        limit: z.number().default(50).describe('Maximum number of results to return'),
+        limit: z.number().default(50).describe('Maximum number of results to return (capped at 500)'),
         offset: z.number().default(0).describe('Number of results to skip (for pagination)'),
       },
       outputSchema: FindBrokenLinksOutputSchema,
     },
-    async ({ folder, limit, offset }): Promise<{
+    async ({ folder, limit: requestedLimit, offset }): Promise<{
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: FindBrokenLinksOutput;
     }> => {
       const index = getIndex();
       const allBrokenLinks: BrokenLink[] = [];
       const affectedNotes = new Set<string>();
+
+      // Cap limit to prevent massive payloads
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
 
       for (const note of index.notes.values()) {
         // Filter by folder if specified
@@ -187,12 +193,18 @@ export function registerHealthTools(
         for (const link of note.outlinks) {
           const resolved = resolveTarget(index, link.target);
           if (!resolved) {
-            allBrokenLinks.push({
-              source: note.path,
-              target: link.target,
-              line: link.line,
-            });
-            affectedNotes.add(note.path);
+            // Only consider it "broken" if there's a similar entity (likely a typo)
+            const similar = findSimilarEntity(index, link.target);
+            if (similar) {
+              allBrokenLinks.push({
+                source: note.path,
+                target: link.target,
+                line: link.line,
+                suggestion: similar.path,
+              });
+              affectedNotes.add(note.path);
+            }
+            // If no similar entity, it's just a link to a note that doesn't exist yet - not broken
           }
         }
       }
@@ -325,13 +337,17 @@ export function registerHealthTools(
       let orphanPeriodic = 0;
       let orphanContent = 0;
 
-      // Count links and broken links
+      // Count links and broken links (only count as broken if similar entity exists)
       for (const note of index.notes.values()) {
         totalLinks += note.outlinks.length;
 
         for (const link of note.outlinks) {
           if (!resolveTarget(index, link.target)) {
-            brokenLinks++;
+            // Only count as broken if there's a similar entity (typo detection)
+            const similar = findSimilarEntity(index, link.target);
+            if (similar) {
+              brokenLinks++;
+            }
           }
         }
       }
