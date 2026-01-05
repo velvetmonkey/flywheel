@@ -1,6 +1,6 @@
 {
   "name": "@bencassie/flywheel-mcp",
-  "version": "1.10.4",
+  "version": "1.10.5",
   "description": "Flywheel MCP server - graph intelligence for markdown vaults",
   "type": "module",
   "main": "dist/index.js",
@@ -13,6 +13,7 @@
     "dev": "npx tsx src/index.ts",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "inspect": "npx @modelcontextprotocol/inspector npx tsx src/index.ts",
     "prepublishOnly": "npm run build"
   },
@@ -28,7 +29,9 @@
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^2.0.0",
     "esbuild": "^0.24.0",
+    "mcp-testing-kit": "^0.2.0",
     "tsx": "^4.19.0",
     "typescript": "^5.0.0",
     "vitest": "^2.0.0"
