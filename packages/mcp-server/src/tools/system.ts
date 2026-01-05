@@ -58,7 +58,7 @@ export function registerSystemTools(
         // Infer config from vault, merge with existing, save
         if (setConfig) {
           const existing = loadConfig(vaultPath);
-          const inferred = inferConfig(newIndex);
+          const inferred = inferConfig(newIndex, vaultPath);
           saveConfig(vaultPath, inferred, existing);
           setConfig(loadConfig(vaultPath));
         }

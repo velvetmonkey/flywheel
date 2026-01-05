@@ -119,10 +119,21 @@ async function main() {
 
   // Load existing config, infer from vault, merge and save
   const existing = loadConfig(vaultPath);
-  const inferred = inferConfig(vaultIndex);
+  const inferred = inferConfig(vaultIndex, vaultPath);
   saveConfig(vaultPath, inferred, existing);
   flywheelConfig = loadConfig(vaultPath); // Reload merged config
 
+  if (flywheelConfig.vault_name) {
+    console.error(`[Flywheel] Vault: ${flywheelConfig.vault_name}`);
+  }
+  if (flywheelConfig.paths) {
+    const detectedPaths = Object.entries(flywheelConfig.paths)
+      .filter(([, v]) => v)
+      .map(([k, v]) => `${k}: ${v}`);
+    if (detectedPaths.length) {
+      console.error(`[Flywheel] Detected paths: ${detectedPaths.join(', ')}`);
+    }
+  }
   if (flywheelConfig.exclude_task_tags?.length) {
     console.error(`[Flywheel] Excluding task tags: ${flywheelConfig.exclude_task_tags.join(', ')}`);
   }
