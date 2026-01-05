@@ -14,17 +14,14 @@ import { registerBidirectionalTools } from './tools/bidirectional.js';
 import { registerSchemaTools } from './tools/schema.js';
 import { registerComputedTools } from './tools/computed.js';
 import { registerMigrationTools } from './tools/migrations.js';
-import { watchVault } from './core/watcher.js';
 import { loadConfig, inferConfig, saveConfig, type FlywheelConfig } from './core/config.js';
+import { findVaultRoot } from './core/vaultRoot.js';
 
-// Default to current working directory if PROJECT_PATH not specified
-const vaultPath: string = process.env.PROJECT_PATH || process.cwd();
+// Auto-detect vault root, with PROJECT_PATH as override
+const vaultPath: string = process.env.PROJECT_PATH || findVaultRoot();
 
 // Flywheel config (loaded on startup from .flywheel.json)
 let flywheelConfig: FlywheelConfig = {};
-
-// File watcher enabled by default, set FLYWHEEL_WATCH=false to disable
-const watchEnabled = process.env.FLYWHEEL_WATCH !== 'false';
 
 // Vault index (built on startup)
 let vaultIndex: VaultIndex;
@@ -143,11 +140,21 @@ async function main() {
   await server.connect(transport);
   console.error('Flywheel MCP server running on stdio');
 
-  // Start file watcher for automatic index refresh
-  if (watchEnabled) {
-    watchVault(vaultPath, (newIndex) => {
-      vaultIndex = newIndex;
-    });
+  // Periodic refresh for automatic index updates
+  const refreshInterval = parseInt(process.env.FLYWHEEL_REFRESH_INTERVAL || '60000', 10);
+  if (refreshInterval > 0) {
+    setInterval(async () => {
+      try {
+        const newIndex = await buildVaultIndex(vaultPath);
+        if (newIndex.notes.size !== vaultIndex.notes.size) {
+          console.error(`[Flywheel] Periodic refresh: ${vaultIndex.notes.size} → ${newIndex.notes.size} notes`);
+        }
+        vaultIndex = newIndex;
+      } catch (err) {
+        console.error('[Flywheel] Periodic refresh failed:', err);
+      }
+    }, refreshInterval);
+    console.error(`[Flywheel] Periodic refresh enabled (${refreshInterval / 1000}s interval)`);
   }
 }
 

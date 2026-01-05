@@ -40,15 +40,15 @@ Added to: daily-notes/2025-12-31.md
 
 ## Log
 
-- 14:30 - Fixed the authentication bug
+- 14:30 Fixed the authentication bug
 
 -------------------------------------------------
 
 Today's log so far:
-- 09:15 - Started work on [[Project Alpha]]
-- 10:30 - Code review for PR #123
-- 12:00 - Lunch break
-- 14:30 - Fixed the authentication bug  <-- NEW
+- 09:15 Started work on [[Project Alpha]]
+- 10:30 Code review for PR #123
+- 12:00 Lunch break
+- 14:30 Fixed the authentication bug  <-- NEW
 
 ===============================================
 ```

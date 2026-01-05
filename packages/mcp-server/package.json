@@ -1,6 +1,6 @@
 {
   "name": "@bencassie/flywheel-mcp",
-  "version": "1.18.0",
+  "version": "1.19.0",
   "description": "Flywheel MCP server - graph intelligence for markdown vaults",
   "type": "module",
   "main": "dist/index.js",
@@ -24,7 +24,6 @@
   ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.25.1",
-    "chokidar": "^4.0.0",
     "gray-matter": "^4.0.3",
     "zod": "^3.22.4"
   },

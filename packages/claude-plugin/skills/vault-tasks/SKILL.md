@@ -50,7 +50,7 @@ Invoke when you want to:
 Identify filter criteria:
 - "show all open tasks"
 - "tasks in the projects/ folder"
-- "completed tasks with #task tag"
+- "completed tasks with #urgent tag"
 - "list tasks from work notes"
 
 ### 2. Call MCP Tool
@@ -59,7 +59,7 @@ Identify filter criteria:
 mcp__flywheel__get_all_tasks(
   status: "open",
   folder: "projects/",
-  tag: "#task",
+  tag: "#urgent",
   limit: 50
 )
 ```
@@ -81,16 +81,16 @@ High Priority (5):
   ☐ Complete API documentation
     📍 projects/Alpha.md (line 45)
     📅 Due: 2026-01-05
-    🏷️ #task #urgent
+    🏷️ #urgent
 
   ☐ Review pull request #123
     📍 projects/Beta.md (line 23)
     📅 Due: 2026-01-02
-    🏷️ #task #review
+    🏷️ #review
 
   ☐ Fix authentication bug
     📍 projects/Alpha.md (line 67)
-    🏷️ #task #bug
+    🏷️ #bug
 
   ... and 2 more
 
@@ -100,15 +100,14 @@ Normal Priority (18):
 
   ☐ Update README with new features
     📍 projects/Alpha.md (line 89)
-    🏷️ #task #docs
+    🏷️ #docs
 
   ☐ Add unit tests for UserService
     📍 projects/Beta.md (line 56)
-    🏷️ #task #testing
+    🏷️ #testing
 
   ☐ Refactor database queries
     📍 projects/Gamma.md (line 34)
-    🏷️ #task
 
   ... and 15 more
 
@@ -118,7 +117,7 @@ Summary:
   Open: 23 tasks
   With due dates: 8 tasks
   Overdue: 2 tasks
-  Tagged #task: 23 tasks
+  Tagged: 23 tasks
 
 =================================================
 ```

@@ -1,6 +1,6 @@
 ---
 name: task-add
-description: Add tasks to daily note log with due dates. Triggers when user mentions creating a task with a deadline like "add a task to do X by Y" where Y is a due date. Only fires when a due date is provided.
+description: This skill should be used when the user asks to "add a task", "create task", "new task", or "task to do X". Adds timestamped tasks to daily note log with optional due dates.
 auto_trigger: true
 trigger_keywords:
   - "add a task"
@@ -17,37 +17,37 @@ allowed-tools: Read, Edit
 
 # Task Add
 
-Automatically add a timestamped task entry to today's daily note log when user wants to create a task with a due date.
+Automatically add a timestamped task entry to today's daily note log when user wants to create a task. Due date is optional.
 
 ## Trigger Detection
 
-This skill activates when the user's prompt contains task creation intent WITH a due date:
+This skill activates when the user's prompt contains task creation intent:
+- "add a task to review PR"
 - "add a task to do X by DATE"
 - "create task to X due DATE"
-- "new task: X by DATE"
+- "new task: X"
 - "task to do X for DATE"
 
-**CRITICAL**: Only trigger if a due date is mentioned. If no due date, do NOT activate this skill.
+Due date is optional. If no due date is mentioned, omit the 📅 portion from the task.
 
 ## Examples
 
 User prompts that trigger this skill:
-- "add a task to review PR by tomorrow"
+- "add a task to review PR" (no due date - task added without 📅)
+- "add a task to review PR by tomorrow" (with due date)
 - "create a task to call dentist by 2025-12-31"
 - "task to do laundry by Friday"
 - "new task: finish report due Jan 5"
 
 User prompts that DO NOT trigger this skill:
-- "add a task to review PR" (no due date)
-- "create a task" (no description or date)
+- "create a task" (no description)
 - "what tasks do I have" (query, not creation)
 
 ## Process
 
-1. **Validate due date presence**
+1. **Check for due date (optional)**
    - Check if prompt contains date reference (by, due, for + date)
-   - If no date found, do NOT execute this skill
-   - Ask user: "When is this task due?"
+   - If no date found, proceed without due date
 
 2. **Get current time**
    - Parse from injected UserPromptSubmit hook context: "Time: HH:MM"
@@ -74,8 +74,8 @@ User prompts that DO NOT trigger this skill:
    - Find the Log section (from config `sections.log`)
 
 7. **Add the task entry**
-   - Format: `- [ ] #task HH:MM [description] 📅 YYYY-MM-DD`
-   - Use the calendar emoji: 📅 (U+1F4C5)
+   - Format: `- [ ] HH:MM [description] 📅 YYYY-MM-DD` (omit 📅 portion if no due date)
+   - Use the calendar emoji: 📅 (U+1F4C5) when due date is present
    - Add after the last log entry in the section
    - Use Edit tool to insert the new entry
 
@@ -87,19 +87,18 @@ User prompts that DO NOT trigger this skill:
 ```markdown
 ## Log
 
-- [ ] #task 20:50 Review PR #123 📅 2025-12-31
-- [ ] #task 14:22 Call dentist 📅 2026-01-05
-- [ ] #task 09:15 Finish quarterly report 📅 2025-12-31
+- [ ] 20:50 Review PR #123 📅 2025-12-31
+- [ ] 14:22 Call dentist 📅 2026-01-05
+- [ ] 09:15 Finish quarterly report
 ```
 
 ### Format Components
 
 1. **Checkbox**: `- [ ]` (unchecked task)
-2. **Tag**: `#task` (for filtering/searching)
-3. **Timestamp**: `HH:MM` (when task was created)
-4. **Description**: Free text with optional [[wikilinks]]
-5. **Due date emoji**: `📅` (calendar emoji, U+1F4C5)
-6. **Due date**: `YYYY-MM-DD` (ISO 8601 format)
+2. **Timestamp**: `HH:MM` (when task was created)
+3. **Description**: Free text with optional [[wikilinks]]
+4. **Due date emoji**: `📅` (calendar emoji, U+1F4C5) - optional
+5. **Due date**: `YYYY-MM-DD` (ISO 8601 format) - optional
 
 ## Date Parsing Rules
 
@@ -126,12 +125,12 @@ User prompts that DO NOT trigger this skill:
 
 ## Critical Rules
 
-- **Due date required**: Only trigger if due date is mentioned
-- **Calendar emoji**: Always use 📅 (U+1F4C5)
+- **Due date optional**: Include 📅 portion only if due date is mentioned
+- **Calendar emoji**: Use 📅 (U+1F4C5) when due date present
 - **ISO date format**: Always YYYY-MM-DD for due dates
 - **Timestamp required**: Always include HH:MM format for task creation time
 - **Preserve structure**: Don't modify other sections
-- **Task format**: Use `- [ ] #task HH:MM description 📅 YYYY-MM-DD`
+- **Task format**: Use `- [ ] HH:MM description [📅 YYYY-MM-DD]`
 - **Wikilinks**: Preserve any [[wikilinks]] in the user's description
 
 ## Six Gates Compliance

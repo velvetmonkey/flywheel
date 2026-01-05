@@ -75,12 +75,11 @@ Today: 2026-01-01 (Wednesday)
   ☐ Submit quarterly report
     📍 work/reports/Q4.md (line 23)
     📅 Due: 2025-12-31 (1 day overdue)
-    🏷️ #task #report
+    🏷️ #report
 
   ☐ Review contractor invoices
     📍 work/admin/Invoices.md (line 12)
     📅 Due: 2025-12-30 (2 days overdue)
-    🏷️ #task
 
 -------------------------------------------------
 
@@ -89,7 +88,7 @@ Today: 2026-01-01 (Wednesday)
   ☐ New Year planning session
     📍 personal/goals/2026.md (line 8)
     📅 Due: 2026-01-01
-    🏷️ #task #planning
+    🏷️ #planning
 
 -------------------------------------------------
 
@@ -98,12 +97,12 @@ Today: 2026-01-01 (Wednesday)
   Thu 01/02:
     ☐ Review pull request #123
       📍 projects/Beta.md (line 23)
-      🏷️ #task #review
+      🏷️ #review
 
   Fri 01/03:
     ☐ Deploy v2.1 to staging
       📍 projects/Alpha.md (line 45)
-      🏷️ #task #deploy
+      🏷️ #deploy
 
   Sat 01/04:
     (no tasks)
@@ -111,15 +110,13 @@ Today: 2026-01-01 (Wednesday)
   Sun 01/05:
     ☐ Complete API documentation
       📍 projects/Alpha.md (line 67)
-      🏷️ #task #docs
+      🏷️ #docs
 
     ☐ Weekly review
       📍 personal/routines/Weekly.md (line 5)
-      🏷️ #task
 
     ☐ Backup important files
       📍 personal/routines/Weekly.md (line 8)
-      🏷️ #task
 
 -------------------------------------------------
 
@@ -128,17 +125,14 @@ Today: 2026-01-01 (Wednesday)
   Mon 01/06:
     ☐ Team sync meeting prep
       📍 work/meetings/Team-Sync.md (line 12)
-      🏷️ #task
 
   Wed 01/08:
     ☐ Architecture review
       📍 projects/Gamma.md (line 34)
-      🏷️ #task
 
   Fri 01/10:
     ☐ Sprint retrospective
       📍 work/agile/Sprint-23.md (line 56)
-      🏷️ #task
 
 -------------------------------------------------
 
