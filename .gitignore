@@ -39,3 +39,6 @@ npm-debug.log*
 
 # Lock files (use root only)
 packages/*/package-lock.json
+
+# Coverage
+coverage/
