@@ -178,11 +178,19 @@ export function registerHealthTools(
       structuredContent: FindBrokenLinksOutput;
     }> => {
       const index = getIndex();
-      const allBrokenLinks: BrokenLink[] = [];
       const affectedNotes = new Set<string>();
 
       // Cap limit to prevent massive payloads
       const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
+
+      // PHASE 1: Collect all unresolved links (fast - no similarity computation)
+      // Cache similarity results to avoid recomputing for same target
+      const similarityCache = new Map<string, { path: string; entity: string; distance: number } | null>();
+      const unresolvedLinks: Array<{
+        source: string;
+        target: string;
+        line: number;
+      }> = [];
 
       for (const note of index.notes.values()) {
         // Filter by folder if specified
@@ -193,28 +201,47 @@ export function registerHealthTools(
         for (const link of note.outlinks) {
           const resolved = resolveTarget(index, link.target);
           if (!resolved) {
-            // Only consider it "broken" if there's a similar entity (likely a typo)
-            const similar = findSimilarEntity(index, link.target);
-            if (similar) {
-              allBrokenLinks.push({
-                source: note.path,
-                target: link.target,
-                line: link.line,
-                suggestion: similar.path,
-              });
-              affectedNotes.add(note.path);
-            }
-            // If no similar entity, it's just a link to a note that doesn't exist yet - not broken
+            unresolvedLinks.push({
+              source: note.path,
+              target: link.target,
+              line: link.line,
+            });
           }
         }
       }
 
-      // Sort by source path, then line number
-      allBrokenLinks.sort((a, b) => {
+      // Sort by source path, then line number for consistent ordering
+      unresolvedLinks.sort((a, b) => {
         const pathCompare = a.source.localeCompare(b.source);
         if (pathCompare !== 0) return pathCompare;
         return a.line - b.line;
       });
+
+      // PHASE 2: Find broken links (with similarity) using caching
+      // Cache avoids recomputing for same target appearing multiple times
+      const allBrokenLinks: BrokenLink[] = [];
+
+      for (const link of unresolvedLinks) {
+        // Check cache first
+        let similar: { path: string; entity: string; distance: number } | null | undefined;
+        if (similarityCache.has(link.target)) {
+          similar = similarityCache.get(link.target);
+        } else {
+          const result = findSimilarEntity(index, link.target);
+          similar = result ?? null;
+          similarityCache.set(link.target, similar);
+        }
+
+        if (similar) {
+          allBrokenLinks.push({
+            source: link.source,
+            target: link.target,
+            line: link.line,
+            suggestion: similar.path,
+          });
+          affectedNotes.add(link.source);
+        }
+      }
 
       const brokenLinks = allBrokenLinks.slice(offset, offset + limit);
 

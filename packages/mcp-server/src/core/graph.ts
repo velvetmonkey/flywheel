@@ -360,21 +360,39 @@ export function levenshteinDistance(a: string, b: string): number {
  * - Length ≤ 5: max distance 1
  * - Length ≤ 10: max distance 2
  * - Length > 10: max distance 3
+ *
+ * Optimizations:
+ * - Skip entities where length difference > maxDist (impossible to match)
+ * - Early termination on distance=1 match (can't do better for typos)
  */
 export function findSimilarEntity(
   index: VaultIndex,
   target: string
 ): { path: string; entity: string; distance: number } | undefined {
   const normalized = normalizeTarget(target);
-  const maxDist = normalized.length <= 5 ? 1 : normalized.length <= 10 ? 2 : 3;
+  const normalizedLen = normalized.length;
+  const maxDist = normalizedLen <= 5 ? 1 : normalizedLen <= 10 ? 2 : 3;
 
   let bestMatch: { path: string; entity: string; distance: number } | undefined;
 
   for (const [entity, path] of index.entities) {
+    // Optimization 1: Skip if length difference exceeds maxDist
+    // (Levenshtein distance >= |len(a) - len(b)|)
+    const lenDiff = Math.abs(entity.length - normalizedLen);
+    if (lenDiff > maxDist) {
+      continue;
+    }
+
     const dist = levenshteinDistance(normalized, entity);
     if (dist > 0 && dist <= maxDist) {
       if (!bestMatch || dist < bestMatch.distance) {
         bestMatch = { path, entity, distance: dist };
+
+        // Optimization 2: Early termination on distance=1
+        // (distance=0 means exact match, which resolveTarget would have found)
+        if (dist === 1) {
+          return bestMatch;
+        }
       }
     }
   }
