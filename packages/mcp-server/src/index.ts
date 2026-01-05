@@ -20,6 +20,9 @@ import { loadConfig, inferConfig, saveConfig, type FlywheelConfig } from './core
 // Default to current working directory if PROJECT_PATH not specified
 const vaultPath: string = process.env.PROJECT_PATH || process.cwd();
 
+// Config root is always the project root (where Claude Code runs)
+const configRoot: string = process.cwd();
+
 // Flywheel config (loaded on startup from .flywheel.json)
 let flywheelConfig: FlywheelConfig = {};
 
@@ -64,7 +67,8 @@ registerSystemTools(
   () => vaultIndex,
   (newIndex) => { vaultIndex = newIndex; },
   () => vaultPath,
-  (newConfig) => { flywheelConfig = newConfig; }
+  (newConfig) => { flywheelConfig = newConfig; },
+  () => configRoot
 );
 
 registerPrimitiveTools(
@@ -118,10 +122,10 @@ async function main() {
   }
 
   // Load existing config, infer from vault, merge and save
-  const existing = loadConfig(vaultPath);
+  const existing = loadConfig(configRoot);
   const inferred = inferConfig(vaultIndex);
-  saveConfig(vaultPath, inferred, existing);
-  flywheelConfig = loadConfig(vaultPath); // Reload merged config
+  saveConfig(configRoot, inferred, existing);
+  flywheelConfig = loadConfig(configRoot); // Reload merged config
 
   if (flywheelConfig.exclude_task_tags?.length) {
     console.error(`[Flywheel] Excluding task tags: ${flywheelConfig.exclude_task_tags.join(', ')}`);
