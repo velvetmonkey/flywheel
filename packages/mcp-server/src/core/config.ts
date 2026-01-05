@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import type { VaultIndex } from './types.js';
 
 export interface FlywheelConfig {
   exclude_task_tags?: string[];
@@ -12,7 +13,7 @@ const DEFAULT_CONFIG: FlywheelConfig = {
 
 /**
  * Load .flywheel.json from the vault root.
- * Creates the file with defaults if it doesn't exist.
+ * Returns defaults if file doesn't exist (no auto-create).
  */
 export function loadConfig(vaultPath: string): FlywheelConfig {
   const configPath = path.join(vaultPath, '.flywheel.json');
@@ -20,16 +21,68 @@ export function loadConfig(vaultPath: string): FlywheelConfig {
     if (fs.existsSync(configPath)) {
       const content = fs.readFileSync(configPath, 'utf-8');
       const config = JSON.parse(content);
-      return config;
-    } else {
-      // Create default config file so users can discover and edit it
-      const content = JSON.stringify(DEFAULT_CONFIG, null, 2);
-      fs.writeFileSync(configPath, content, 'utf-8');
-      console.error(`[Flywheel] Created .flywheel.json with defaults`);
-      return DEFAULT_CONFIG;
+      // Merge with defaults so new config options get their defaults
+      return { ...DEFAULT_CONFIG, ...config };
     }
   } catch (err) {
-    console.error('[Flywheel] Failed to load/create .flywheel.json:', err);
+    console.error('[Flywheel] Failed to load .flywheel.json:', err);
   }
-  return {};
+  return DEFAULT_CONFIG;
+}
+
+/** Common tags that indicate recurring/habit tasks users may want to exclude */
+const RECURRING_TAG_PATTERNS = [
+  'habit',
+  'habits',
+  'daily',
+  'weekly',
+  'monthly',
+  'recurring',
+  'routine',
+  'template',
+];
+
+/**
+ * Infer config values by analyzing the vault.
+ * Returns smart defaults based on vault contents.
+ */
+export function inferConfig(index: VaultIndex): FlywheelConfig {
+  const inferred: FlywheelConfig = {
+    exclude_task_tags: [],
+  };
+
+  // Find tags that match recurring patterns
+  for (const tag of index.tags.keys()) {
+    const lowerTag = tag.toLowerCase();
+    if (RECURRING_TAG_PATTERNS.some((pattern) => lowerTag.includes(pattern))) {
+      inferred.exclude_task_tags!.push(tag);
+    }
+  }
+
+  return inferred;
+}
+
+/**
+ * Save config to .flywheel.json in the vault root.
+ * Merges inferred values with existing config (existing wins).
+ */
+export function saveConfig(
+  vaultPath: string,
+  inferred: FlywheelConfig,
+  existing?: FlywheelConfig
+): void {
+  const configPath = path.join(vaultPath, '.flywheel.json');
+  try {
+    // Existing config values take precedence over inferred
+    const merged: FlywheelConfig = {
+      ...DEFAULT_CONFIG,
+      ...inferred,
+      ...existing,
+    };
+    const content = JSON.stringify(merged, null, 2);
+    fs.writeFileSync(configPath, content, 'utf-8');
+    console.error(`[Flywheel] Saved .flywheel.json`);
+  } catch (err) {
+    console.error('[Flywheel] Failed to save .flywheel.json:', err);
+  }
 }

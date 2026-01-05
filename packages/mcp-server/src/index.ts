@@ -63,7 +63,8 @@ registerSystemTools(
   server,
   () => vaultIndex,
   (newIndex) => { vaultIndex = newIndex; },
-  () => vaultPath
+  () => vaultPath,
+  (newConfig) => { flywheelConfig = newConfig; }
 );
 
 registerPrimitiveTools(
