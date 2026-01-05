@@ -18,8 +18,7 @@ export function registerSystemTools(
   getIndex: () => VaultIndex,
   setIndex: (index: VaultIndex) => void,
   getVaultPath: () => string,
-  setConfig?: (config: FlywheelConfig) => void,
-  getConfigRoot?: () => string
+  setConfig?: (config: FlywheelConfig) => void
 ) {
   // refresh_index - Rebuild the vault index without server restart
   const RefreshIndexOutputSchema = {
@@ -58,11 +57,10 @@ export function registerSystemTools(
 
         // Infer config from vault, merge with existing, save
         if (setConfig) {
-          const configRoot = getConfigRoot?.() || vaultPath;
-          const existing = loadConfig(configRoot);
+          const existing = loadConfig(vaultPath);
           const inferred = inferConfig(newIndex);
-          saveConfig(configRoot, inferred, existing);
-          setConfig(loadConfig(configRoot));
+          saveConfig(vaultPath, inferred, existing);
+          setConfig(loadConfig(vaultPath));
         }
 
         const output: RefreshIndexOutput = {
