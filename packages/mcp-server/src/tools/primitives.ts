@@ -47,13 +47,16 @@ import {
   findMissingFrontmatter,
 } from './frontmatter.js';
 
+import type { FlywheelConfig } from '../core/config.js';
+
 /**
  * Register all Phase 5 primitive tools
  */
 export function registerPrimitiveTools(
   server: McpServer,
   getIndex: () => VaultIndex,
-  getVaultPath: () => string
+  getVaultPath: () => string,
+  getConfig: () => FlywheelConfig = () => ({})
 ) {
   // ============================================
   // TEMPORAL PRIMITIVES
@@ -353,7 +356,14 @@ export function registerPrimitiveTools(
     async ({ status, folder, tag, limit }) => {
       const index = getIndex();
       const vaultPath = getVaultPath();
-      const result = await getAllTasks(index, vaultPath, { status, folder, tag, limit });
+      const config = getConfig();
+      const result = await getAllTasks(index, vaultPath, {
+        status,
+        folder,
+        tag,
+        limit,
+        excludeTags: config.exclude_task_tags,
+      });
 
       return {
         content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }],
@@ -410,7 +420,12 @@ export function registerPrimitiveTools(
     async ({ status, folder, limit, offset }) => {
       const index = getIndex();
       const vaultPath = getVaultPath();
-      const allResults = await getTasksWithDueDates(index, vaultPath, { status, folder });
+      const config = getConfig();
+      const allResults = await getTasksWithDueDates(index, vaultPath, {
+        status,
+        folder,
+        excludeTags: config.exclude_task_tags,
+      });
       const result = allResults.slice(offset, offset + limit);
 
       return {

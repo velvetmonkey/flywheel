@@ -131,6 +131,7 @@ export async function getAllTasks(
     status?: 'open' | 'completed' | 'cancelled' | 'all';
     folder?: string;
     tag?: string;
+    excludeTags?: string[];
     limit?: number;
   } = {}
 ): Promise<{
@@ -140,7 +141,7 @@ export async function getAllTasks(
   cancelled_count: number;
   tasks: Task[];
 }> {
-  const { status = 'all', folder, tag, limit } = options;
+  const { status = 'all', folder, tag, excludeTags = [], limit } = options;
 
   const allTasks: Task[] = [];
 
@@ -162,6 +163,13 @@ export async function getAllTasks(
   // Filter by tag
   if (tag) {
     filteredTasks = filteredTasks.filter(t => t.tags.includes(tag));
+  }
+
+  // Exclude tasks with specific tags
+  if (excludeTags.length > 0) {
+    filteredTasks = filteredTasks.filter(
+      t => !excludeTags.some(excludeTag => t.tags.includes(excludeTag))
+    );
   }
 
   // Count by status
@@ -205,11 +213,12 @@ export async function getTasksWithDueDates(
   options: {
     status?: 'open' | 'completed' | 'cancelled' | 'all';
     folder?: string;
+    excludeTags?: string[];
   } = {}
 ): Promise<Task[]> {
-  const { status = 'open', folder } = options;
+  const { status = 'open', folder, excludeTags } = options;
 
-  const result = await getAllTasks(index, vaultPath, { status, folder });
+  const result = await getAllTasks(index, vaultPath, { status, folder, excludeTags });
 
   // Filter to only tasks with due dates and sort by date
   return result.tasks
@@ -228,9 +237,10 @@ export async function getTasksWithDueDates(
 export async function getTasksByContext(
   index: VaultIndex,
   vaultPath: string,
-  folder?: string
+  folder?: string,
+  excludeTags?: string[]
 ): Promise<Record<string, { open: number; completed: number; tasks: Task[] }>> {
-  const result = await getAllTasks(index, vaultPath, { folder });
+  const result = await getAllTasks(index, vaultPath, { folder, excludeTags });
 
   const byContext: Record<string, { open: number; completed: number; tasks: Task[] }> = {};
 

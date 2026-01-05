@@ -47,6 +47,14 @@ User: "setup flywheel"
         │
         ▼
 ┌─────────────────────────────────────┐
+│ Phase 2.5: Generate .flywheel.json  │
+│   - Create client config if missing │
+│   - Default: exclude_task_tags: []  │
+│   - Explain customization options   │
+└─────────────────────────────────────┘
+        │
+        ▼
+┌─────────────────────────────────────┐
 │ Phase 3: Validate Connection        │
 │   mcp__flywheel__health_check()    │
 │   - If fail → restart instructions │
@@ -213,6 +221,36 @@ For Windows:
 5. Ask for confirmation (Gate 4)
 6. Write the file
 
+## Phase 2.5: Generate .flywheel.json (Client Config)
+
+After writing `.mcp.json`, create the client-side config file if it doesn't exist:
+
+**Check if `.flywheel.json` exists in the vault root:**
+- If exists → Skip (preserve user customizations)
+- If missing → Create with defaults
+
+**Default `.flywheel.json`:**
+```json
+{
+  "exclude_task_tags": []
+}
+```
+
+**Show user the file and explain customization:**
+```
+## Client Configuration
+
+Created `.flywheel.json` in your vault root.
+
+This file lets you customize Flywheel behavior:
+- `exclude_task_tags`: Tags to exclude from task queries (e.g., `["habit", "recurring"]`)
+
+Example: To hide habit tasks from task queries, edit `.flywheel.json`:
+{
+  "exclude_task_tags": ["habit"]
+}
+```
+
 ## Phase 3: Validate Connection
 
 After writing, check if MCP is available:
@@ -320,6 +358,10 @@ I'll add this to your `.mcp.json`:
 **Confirm?** (This will be merged with any existing MCP servers)
 
 [User confirms]
+
+## Phase 2.5: Client Config
+Created `.flywheel.json` with defaults.
+Edit this file to customize task filtering (e.g., exclude #habit tasks).
 
 ## Phase 3: Validating...
 ✓ MCP server connected

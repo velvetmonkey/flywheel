@@ -15,9 +15,13 @@ import { registerSchemaTools } from './tools/schema.js';
 import { registerComputedTools } from './tools/computed.js';
 import { registerMigrationTools } from './tools/migrations.js';
 import { watchVault } from './core/watcher.js';
+import { loadConfig, type FlywheelConfig } from './core/config.js';
 
 // Default to current working directory if PROJECT_PATH not specified
 const vaultPath: string = process.env.PROJECT_PATH || process.cwd();
+
+// Flywheel config (loaded on startup from .flywheel.json)
+let flywheelConfig: FlywheelConfig = {};
 
 // File watcher enabled by default, set FLYWHEEL_WATCH=false to disable
 const watchEnabled = process.env.FLYWHEEL_WATCH !== 'false';
@@ -65,7 +69,8 @@ registerSystemTools(
 registerPrimitiveTools(
   server,
   () => vaultIndex,
-  () => vaultPath
+  () => vaultPath,
+  () => flywheelConfig
 );
 
 registerPeriodicTools(
@@ -98,6 +103,12 @@ registerMigrationTools(
 );
 
 async function main() {
+  // Load config from .flywheel.json
+  flywheelConfig = loadConfig(vaultPath);
+  if (flywheelConfig.exclude_task_tags?.length) {
+    console.error(`[Flywheel] Excluding task tags: ${flywheelConfig.exclude_task_tags.join(', ')}`);
+  }
+
   // Build the vault index
   console.error('Building vault index...');
   const startTime = Date.now();
