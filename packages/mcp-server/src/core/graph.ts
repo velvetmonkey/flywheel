@@ -356,10 +356,11 @@ export function levenshteinDistance(a: string, b: string): number {
  * Find a similar entity in the index (for detecting typos/broken links)
  * Returns the path of the best matching note, or undefined if no close match
  *
- * Threshold based on string length:
- * - Length ≤ 5: max distance 1
- * - Length ≤ 10: max distance 2
- * - Length > 10: max distance 3
+ * Strict thresholds to minimize false positives:
+ * - Length ≤ 3: skip (acronyms too ambiguous)
+ * - Length 4-5: max distance 1
+ * - Length 6-10: max distance 1
+ * - Length > 10: max distance 2
  *
  * Optimizations:
  * - Skip entities where length difference > maxDist (impossible to match)
@@ -371,7 +372,14 @@ export function findSimilarEntity(
 ): { path: string; entity: string; distance: number } | undefined {
   const normalized = normalizeTarget(target);
   const normalizedLen = normalized.length;
-  const maxDist = normalizedLen <= 5 ? 1 : normalizedLen <= 10 ? 2 : 3;
+
+  // Skip very short strings - acronyms like EDP, DDL are too ambiguous
+  if (normalizedLen <= 3) {
+    return undefined;
+  }
+
+  // Strict thresholds to reduce false positives
+  const maxDist = normalizedLen <= 10 ? 1 : 2;
 
   let bestMatch: { path: string; entity: string; distance: number } | undefined;
 
