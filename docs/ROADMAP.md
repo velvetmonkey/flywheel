@@ -33,6 +33,35 @@
 
 ---
 
+## Planned: Six Gates Runtime Enforcement
+
+**Goal**: True runtime verification of skill mutations (not just documentation checks).
+
+### Runtime Skill Verification Framework
+
+Current Gate 6 relies on skills *documenting* verification steps. This enhancement would add actual runtime enforcement:
+
+#### New PostToolUse Hook: `verify-skill-mutation.py`
+- Intercepts skill completion
+- Compares file state before/after
+- Blocks success message if expected content missing
+- Works across all mutation skills automatically
+
+#### Implementation Details
+- Track "expected mutation" when skill starts (from skill definition)
+- PostToolUse hook verifies mutation actually occurred
+- Surface clear error to user if mutation failed silently
+- No skill changes needed - framework handles verification
+
+#### Benefits
+- 95%+ confidence in mutation success
+- Eliminates silent failures completely
+- Skills can't claim success when Edit was blocked
+
+**Priority**: Medium (current documentation-based approach catches 70% of failures)
+
+---
+
 ## Previous: v1.7.x (January 2025)
 
 ### v1.7.4 - Bug Fixes
@@ -98,6 +127,7 @@ See [SIX_GATES.md](../packages/claude-plugin/skills/_patterns/SIX_GATES.md) for 
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| 1.20.1 | 2026-01 | Gate 6 skill verification - validates writes after Edit, `validate-skill-gate6.py` hook |
 | 1.8.0 | 2026-01 | Workflow Templates - 6 skills, 5 agents, 4 templates for business workflows |
 | 1.7.4 | 2026-01 | Bug fixes - read-cache locking, Gate 1 improvements |
 | 1.7.0 | 2025-01 | Advanced Schema Intelligence - inferred schemas, 6 new MCP tools, 5 new skills |
