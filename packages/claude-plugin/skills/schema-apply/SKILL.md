@@ -85,6 +85,29 @@ tags:
 
 Use Read to get current content, Edit to add fields.
 
+### 5. Verify Changes (Gate 6)
+
+After each Edit:
+1. **Re-read the modified file** to verify changes
+2. **Check if the new fields are present** in frontmatter
+3. **Handle failures**:
+   - If Edit is blocked or failed: Inform user and skip to next file
+   - If fields not found after edit: Alert user "Edit may have failed"
+   - If succeeded: Only report success if verification confirms the fields were added
+
+### 6. Report Results
+
+```
+## Schema Application Complete
+
+Applied to 3 notes:
+✓ meetings/2025-12-20 Client Call.md - 2 fields added
+✓ meetings/2025-12-22 Quick Sync.md - 1 field added
+✗ meetings/2025-12-23 Standup.md - Edit blocked (permission denied)
+
+If any edits failed, you can apply them manually.
+```
+
 ## Six Gates Compliance
 
 | Gate | Implementation |
@@ -94,7 +117,7 @@ Use Read to get current content, Edit to add fields.
 | 3. Chain Validation | N/A (single step) |
 | 4. Mutation Confirmation | Always shows preview, requires confirmation |
 | 5. Health Check | Uses MCP health infrastructure |
-| 6. Post Validation | Confirms changes after applying |
+| 6. Post Validation | Re-reads file after Edit, verifies fields present |
 
 ## Use Cases
 

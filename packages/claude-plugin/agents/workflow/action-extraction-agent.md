@@ -211,6 +211,26 @@ Total Action Items: 8
 - With due dates: 4
 ```
 
+### If Errors Occur
+
+```
+Action Extraction Failed
+========================
+
+Meeting: Not found
+
+Phase Results:
+✗ Phase 1: Meeting note not found at specified path
+✗ Phase 2: Skipped - no note to parse
+✗ Phase 3: Skipped - no content
+✗ Phase 4: Skipped - no content
+✗ Phase 5: Skipped - no tasks
+✗ Phase 6: Cannot generate summary
+
+Error: Meeting note does not exist.
+Recommendation: Check the file path or search for recent meetings.
+```
+
 ## Six Gates Compliance
 
 | Gate | Status | Notes |

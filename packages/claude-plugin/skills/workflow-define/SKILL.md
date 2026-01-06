@@ -53,6 +53,12 @@ Activate when user:
    - Save as `workflows/[name].md`
    - Confirm creation
 
+4. **Verify Creation** (Gate 6)
+   - Re-read the workflow file to verify it was written
+   - If Write is blocked or failed: Inform user "Write failed - workflow not created"
+   - If file not found: Alert user "Workflow may not have been created correctly"
+   - If succeeded: Only report success if verification confirms file exists
+
 ## Workflow Definition Format
 
 ```yaml
@@ -224,12 +230,12 @@ trigger:
 
 | Gate | Status | Notes |
 |------|--------|-------|
-| 1. Read Before Write | ✅ | Reads existing workflows first |
-| 2. File Exists Check | ✅ | Checks for workflow folder |
+| 1. Read Before Write | ✓ | Reads existing workflows first |
+| 2. File Exists Check | ✓ | Checks for workflow folder |
 | 3. Chain Validation | N/A | Single-step skill |
-| 4. Mutation Confirm | ✅ | Confirms before creating |
+| 4. Mutation Confirm | ✓ | Confirms before creating |
 | 5. MCP Health | N/A | No MCP mutations |
-| 6. Post Validation | ✅ | Verifies file created |
+| 6. Post Validation | ✓ | Re-reads file after Write, verifies content (step 4) |
 
 ## Notes
 

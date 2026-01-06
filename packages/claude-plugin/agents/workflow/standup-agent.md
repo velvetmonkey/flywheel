@@ -277,6 +277,25 @@ Team Highlights:
 Summary generated (not written to file - display only)
 ```
 
+### If Errors Occur
+
+```
+Standup Rollup Failed
+=====================
+
+Period: 2026-01-06 to 2026-01-10
+
+Phase Results:
+✗ Phase 1: No standup notes found (checked tags, folders, frontmatter)
+✗ Phase 2: Skipped - no notes to parse
+✗ Phase 3: Skipped - no data to aggregate
+✗ Phase 4: Skipped - no blockers to analyze
+✗ Phase 5: Skipped - no summary to generate
+
+Error: No standup notes found in vault.
+Recommendation: Tag standup notes with #standup or place in standups/ folder.
+```
+
 ## Six Gates Compliance
 
 | Gate | Status | Notes |

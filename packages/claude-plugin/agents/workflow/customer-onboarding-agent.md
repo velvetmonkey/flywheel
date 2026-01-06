@@ -292,6 +292,27 @@ Total: 24 checklist items ready
 Next: Assign an owner and start the onboarding process!
 ```
 
+### If Errors Occur
+
+```
+Customer Onboarding Failed
+==========================
+
+Customer: Acme Corp
+
+Phase Results:
+✓ Phase 1: Customer name parsed: "Acme Corp"
+✗ Phase 2: Template not found at templates/customer-onboarding.md
+✗ Phase 3: Skipped - no template to interpolate
+✗ Phase 4: Skipped - no content
+✗ Phase 5: Skipped - nothing to write
+✗ Phase 6: Skipped - no note to link
+✗ Phase 7: Cannot generate summary
+
+Error: Onboarding template not found.
+Recommendation: Create templates/customer-onboarding.md first.
+```
+
 ## Six Gates Compliance
 
 | Gate | Status | Notes |

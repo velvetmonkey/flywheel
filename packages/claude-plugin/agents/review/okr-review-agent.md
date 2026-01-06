@@ -307,6 +307,26 @@ Recommendations:
 OKR note updated: okrs/2026-Q1.md
 ```
 
+### If Errors Occur
+
+```
+OKR Review Incomplete
+=====================
+
+Quarter: 2026-Q1
+
+Phase Results:
+✓ Phase 1: OKR note found with 3 objectives, 9 key results
+✓ Phase 2: Evidence gathered from 12 weekly notes
+✗ Phase 3: Failed - Only 5/9 key results had evidence
+✗ Phase 4: Skipped - Cannot score without evidence
+✗ Phase 5: Skipped - Report requires scores
+✗ Phase 6: Skipped - No review to plan from
+
+Error: Insufficient evidence for complete OKR scoring.
+Recommendation: Add achievements/metrics to weekly notes for missing KRs.
+```
+
 ## Six Gates Compliance
 
 | Gate | Status | Notes |

@@ -53,6 +53,12 @@ Activate when user:
    - Highlight key wins and challenges
    - Present next week focus areas
 
+4. **Verify Agent Results** (Gate 6)
+   - If agent reports success: Re-read the weekly review note to verify content was written
+   - If blocked or failed: Inform user "Weekly review failed - please complete manually"
+   - If succeeded: Only report success if verification confirms review content present
+   - If not found: Alert user that review may not have been written correctly
+
 ## Difference from /run-rollup
 
 | Aspect | /run-rollup | /weekly-review |
@@ -66,9 +72,9 @@ Activate when user:
 
 | Gate | Status | Notes |
 |------|--------|-------|
-| 1. Read Before Write | N/A | Agent handles |
-| 2. File Exists Check | N/A | Agent validates |
-| 3. Chain Validation | N/A | Single delegation |
-| 4. Mutation Confirm | N/A | Agent confirms |
-| 5. MCP Health | N/A | Agent checks |
-| 6. Post Validation | N/A | Agent verifies |
+| 1. Read Before Write | Via Agent | Agent reads daily notes before rollup |
+| 2. File Exists Check | Via Agent | Agent validates notes exist |
+| 3. Chain Validation | ✓ | Sequential: delegate → verify |
+| 4. Mutation Confirm | Via Agent | Agent confirms before writes |
+| 5. MCP Health | Via Agent | Agent validates MCP connection |
+| 6. Post Validation | ✓ | Re-read note to verify review written (step 4) |

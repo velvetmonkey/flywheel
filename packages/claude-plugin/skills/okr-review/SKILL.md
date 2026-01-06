@@ -58,6 +58,12 @@ Activate when user:
    - Key result progress
    - Next quarter recommendations
 
+4. **Verify Agent Results** (Gate 6)
+   - If agent reports success: Re-read the OKR note to verify scores were added
+   - If blocked or failed: Inform user "OKR review failed - please review manually"
+   - If succeeded: Only report success if verification confirms scores present
+   - If not found: Alert user that scores may not have been written correctly
+
 ## OKR Scoring Guide
 
 | Score | Meaning |
@@ -72,9 +78,9 @@ Activate when user:
 
 | Gate | Status | Notes |
 |------|--------|-------|
-| 1. Read Before Write | N/A | Agent handles |
-| 2. File Exists Check | N/A | Agent validates |
-| 3. Chain Validation | N/A | Single delegation |
-| 4. Mutation Confirm | N/A | Agent confirms |
-| 5. MCP Health | N/A | Agent checks |
-| 6. Post Validation | N/A | Agent verifies |
+| 1. Read Before Write | Via Agent | Agent reads OKR note before scoring |
+| 2. File Exists Check | Via Agent | Agent validates OKR note exists |
+| 3. Chain Validation | ✓ | Sequential: delegate → verify |
+| 4. Mutation Confirm | Via Agent | Agent confirms before writes |
+| 5. MCP Health | Via Agent | Agent validates MCP connection |
+| 6. Post Validation | ✓ | Re-read note to verify scores present (step 4) |

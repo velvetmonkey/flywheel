@@ -1,6 +1,6 @@
 ---
 name: promote-frontmatter
-description: Extract prose patterns like "Key: Value" or "Key: [[wikilink]]" and promote them to YAML frontmatter. Triggers on "promote to frontmatter", "extract frontmatter", "prose to yaml".
+description: "Extract prose patterns like Key: Value and promote them to YAML frontmatter"
 auto_trigger: true
 trigger_keywords:
   - "promote to frontmatter"

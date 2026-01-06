@@ -138,8 +138,19 @@ Write to `.claude/wikilink-entities.json`:
 }
 ```
 
-### Step 4: Report Results
+### Step 4: Verify Write (Gate 6)
 
+After Write:
+1. **Re-read the cache file** to verify it was written
+2. **Check if entities are present** in the JSON
+3. **Handle failures**:
+   - If Write is blocked or failed: Inform user "Cache write failed - please try again"
+   - If file not found after write: Alert user "Cache may not have been created"
+   - Only report success if verification confirms cache was written
+
+### Step 5: Report Results
+
+Report results only if verification succeeded:
 ```
 🖋️ Flywheel - Cache Rebuilt
 ═══════════════════════════════════════════════
@@ -182,7 +193,7 @@ Write to `.claude/wikilink-entities.json`:
 | 3. Chain Validation | N/A (single operation) |
 | 4. Mutation Confirmation | Reports entity count before saving |
 | 5. Health Check | Uses MCP get_all_entities for vault access |
-| 6. Post Validation | Reports cache file location and stats |
+| 6. Post Validation | Re-reads cache file after Write, verifies content (step 4) |
 
 ---
 

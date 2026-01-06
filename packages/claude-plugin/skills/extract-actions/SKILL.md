@@ -52,13 +52,19 @@ Activate when user:
    - Show extracted actions with owners and due dates
    - Offer to create tasks in daily notes (optional)
 
+4. **Verify Agent Results**
+   - If agent reports success: Re-read the meeting note to verify actions were extracted
+   - If blocked or failed: Inform user "Action extraction failed - please extract manually"
+   - If succeeded: Only report success if extraction was verified
+   - If not found: Alert user that actions may not have been extracted correctly
+
 ## Six Gates Compliance
 
 | Gate | Status | Notes |
 |------|--------|-------|
-| 1. Read Before Write | N/A | Read-only skill |
-| 2. File Exists Check | N/A | Agent validates |
-| 3. Chain Validation | N/A | Single delegation |
-| 4. Mutation Confirm | N/A | No direct mutations |
-| 5. MCP Health | N/A | Agent checks |
-| 6. Post Validation | N/A | Agent verifies |
+| 1. Read Before Write | Via Agent | Agent reads meeting note before extraction |
+| 2. File Exists Check | Via Agent | Agent validates meeting note exists |
+| 3. Chain Validation | ✓ | Sequential: identify → delegate → verify |
+| 4. Mutation Confirm | Via Agent | Agent confirms before any writes |
+| 5. MCP Health | Via Agent | Agent validates MCP connection |
+| 6. Post Validation | ✓ | Re-read note to verify extraction succeeded |

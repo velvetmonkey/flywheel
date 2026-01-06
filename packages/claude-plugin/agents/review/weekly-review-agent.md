@@ -220,6 +220,26 @@ Next Week Priorities:
 Weekly note updated: weekly-notes/2026-W01.md
 ```
 
+### If Errors Occur
+
+```
+Weekly Review Incomplete
+========================
+
+Week: 2026-W01
+
+Phase Results:
+✗ Phase 1: Rollup failed - no daily notes found for week
+✗ Phase 2: Skipped - no rollup data to analyze
+✗ Phase 3: Skipped - no weekly context
+✗ Phase 4: Skipped - no tasks to analyze
+✗ Phase 5: Skipped - cannot plan without review
+✗ Phase 6: Skipped - no review to write
+
+Error: No daily notes found for 2026-W01.
+Recommendation: Create daily notes for the week before running review.
+```
+
 ## Six Gates Compliance
 
 | Gate | Status | Notes |

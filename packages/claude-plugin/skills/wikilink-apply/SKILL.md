@@ -83,8 +83,17 @@ Use Edit tool to wrap detected entities with `[[brackets]]`:
 - Preserve original capitalization
 - Don't re-link already wikilinked text
 
-### 7. Report Results
-Confirm what was changed:
+### 7. Verify Changes (Gate 6)
+After Edit:
+1. **Re-read the modified file** to verify wikilinks were applied
+2. **Check for the new [[brackets]]** in the content
+3. **Handle failures**:
+   - If Edit is blocked or failed: Inform user "Edit failed - wikilinks not applied"
+   - If wikilinks not found: Alert user "Wikilinks may not have been applied correctly"
+   - Only report success if verification confirms wikilinks present
+
+### 8. Report Results
+Confirm what was changed (only if verification succeeded):
 ```
 ✓ Successfully applied 9 wikilinks to 2025-12-29.md
 
@@ -162,4 +171,4 @@ Works seamlessly with `wikilink-auto.py` hook:
 | 3. Chain Validation | N/A (single operation) |
 | 4. Mutation Confirmation | Shows preview of entities to be linked (step 5) |
 | 5. Health Check | Uses cache or MCP for entity resolution |
-| 6. Post Validation | Reports count of wikilinks applied (step 7) |
+| 6. Post Validation | Re-reads file after Edit, verifies wikilinks present (step 7) |

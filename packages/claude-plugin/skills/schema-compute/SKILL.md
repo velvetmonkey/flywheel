@@ -90,6 +90,18 @@ reading_time: "8 min"
 **Add these to frontmatter?** (y/n)
 ```
 
+### 4. Apply Changes (with confirmation)
+
+If user confirms:
+1. Read current file content
+2. Use Edit to add computed fields to frontmatter
+3. **Verify the changes**:
+   - Re-read the file after Edit
+   - Check if computed fields are present
+   - If Edit is blocked or failed: Inform user "Edit failed - please add fields manually"
+   - If fields not found: Alert user "Fields may not have been added"
+   - If succeeded: Only report success if verification confirms fields present
+
 ## Six Gates Compliance
 
 | Gate | Implementation |
@@ -99,7 +111,7 @@ reading_time: "8 min"
 | 3. Chain Validation | N/A (single step) |
 | 4. Mutation Confirmation | Shows preview, requires confirmation |
 | 5. Health Check | Uses MCP health infrastructure |
-| 6. Post Validation | Confirms changes after applying |
+| 6. Post Validation | Re-reads file after Edit, verifies fields present |
 
 ## Use Cases
 

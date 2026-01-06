@@ -220,6 +220,14 @@ For Windows:
 4. Show user the proposed config
 5. Ask for confirmation (Gate 4)
 6. Write the file
+7. **Verify the write succeeded** (Gate 6)
+   - Re-read the `.mcp.json` file
+   - Check if the flywheel config is present
+   - If not found: Alert user "Write failed - please add config manually"
+   - If found: Proceed to Phase 3
+8. **Handle write failures**
+   - If Write is blocked or failed: Inform user and provide manual instructions
+   - Only proceed to validation if write verification succeeded
 
 ## Phase 2.5: Generate .flywheel.json (Client Config)
 

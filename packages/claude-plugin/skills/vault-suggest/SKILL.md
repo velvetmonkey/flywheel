@@ -129,6 +129,16 @@ Options:
 - Aggressive linking approach
 - May create some false positives
 
+### 6. Verify Changes (Gate 6)
+
+After each Edit:
+1. **Re-read the modified note** to verify links were applied
+2. **Check for the new [[wikilinks]]** in content
+3. **Handle failures**:
+   - If Edit is blocked or failed: Inform user "Edit failed - links not applied"
+   - If wikilinks not found: Alert user "Links may not have been applied correctly"
+   - If succeeded: Only report success if verification confirms links present
+
 ## Implementation Details
 
 ### Confidence Scoring
@@ -195,7 +205,7 @@ When applying links automatically:
 | 3. Chain Validation | N/A (single operation) |
 | 4. Mutation Confirmation | Shows suggestions with confidence scores, user selects |
 | 5. Health Check | Uses MCP suggest_wikilinks for vault access |
-| 6. Post Validation | Reports count of wikilinks applied |
+| 6. Post Validation | Re-reads note after Edit, verifies wikilinks present (step 6) |
 
 ## Performance
 

@@ -103,6 +103,16 @@ If user chooses option 1 or 2:
   - Apply if yes, skip if no
 - Report: "Applied 3 wikilinks, skipped 2"
 
+### 5. Verify Changes (Gate 6)
+
+After each Edit:
+1. **Re-read the modified file** to verify wikilinks were applied
+2. **Check for the new [[brackets]]** in the content
+3. **Handle failures**:
+   - If Edit is blocked or failed: Inform user "Edit failed - wikilink not applied"
+   - If wikilinks not found: Alert user "Wikilinks may not have been applied correctly"
+   - If succeeded: Only report success if verification confirms wikilinks present
+
 ## Implementation Details
 
 ### Entity Resolution
@@ -179,7 +189,7 @@ Note: Only first occurrence linked (convention to avoid cluttering text).
 | 3. Chain Validation | N/A (single operation) |
 | 4. Mutation Confirmation | Shows mentions found, user chooses auto or review |
 | 5. Health Check | Uses MCP get_unlinked_mentions for vault access |
-| 6. Post Validation | Reports count of wikilinks applied per file |
+| 6. Post Validation | Re-reads file after Edit, verifies wikilinks present (step 5) |
 
 ## Performance
 
