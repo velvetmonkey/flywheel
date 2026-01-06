@@ -78,8 +78,17 @@ User prompts that DO NOT trigger this skill:
    - Use the calendar emoji: 📅 (U+1F4C5) when due date is present
    - Add after the last log entry in the section
    - Use Edit tool to insert the new entry
+   - **Check Edit result** - if blocked or failed:
+     - Inform user: "Edit was blocked or failed. Please confirm the mutation or add manually."
+     - Do NOT proceed to confirmation
 
-8. **Confirm**
+8. **Verify the write succeeded**
+   - Re-read the daily note file
+   - Search for the newly added task text (the exact description + timestamp)
+   - If NOT found: Alert user "Task write failed - please add manually: `- [ ] HH:MM [description]`"
+   - If found: Proceed to confirmation
+
+9. **Confirm** (only if Step 8 succeeded)
    - Display the added task with timestamp, description, and due date
 
 ## Task Entry Format
@@ -142,7 +151,7 @@ User prompts that DO NOT trigger this skill:
 | 3. Chain Validation | N/A (single operation) |
 | 4. Mutation Confirmation | Task shown to user before write |
 | 5. Health Check | Uses vault config infrastructure |
-| 6. Post Validation | Confirms task added with timestamp and due date |
+| 6. Post Validation | **Re-reads file and verifies task was written** (step 8) |
 
 ## Configuration
 

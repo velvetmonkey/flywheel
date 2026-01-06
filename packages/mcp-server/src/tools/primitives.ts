@@ -391,7 +391,8 @@ export function registerPrimitiveTools(
     async ({ path }) => {
       const index = getIndex();
       const vaultPath = getVaultPath();
-      const result = await getTasksFromNote(index, path, vaultPath);
+      const config = getConfig();
+      const result = await getTasksFromNote(index, path, vaultPath, config.exclude_task_tags || []);
 
       if (!result) {
         return {

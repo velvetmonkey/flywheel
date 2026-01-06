@@ -33,8 +33,8 @@ This document defines the Six Gates safety pattern. **All Flywheel skills, agent
 Plugin Level (for ALL users)          Project Level (for developers)
 packages/claude-plugin/hooks/         .claude/hooks/
 ├── pre-mutation-gate.py (1,2,4)      ├── validate-agent-gate3.py (3)
-├── session-gate.py (5)               └── validate-agent-gate3-post.py (3)
-└── verify-mutation.py (6)
+├── session-gate.py (5)               ├── validate-agent-gate3-post.py (3)
+└── verify-mutation.py (6)            └── validate-skill-gate6.py (6)
 ```
 
 ---
@@ -192,6 +192,57 @@ Good:
 
 ---
 
+## Skill Verification Requirements (Gate 6)
+
+**CRITICAL**: The `verify-mutation.py` hook validates **syntax only** (YAML, wikilinks). Skills are responsible for **semantic verification** - confirming that the intended content was actually written.
+
+### Why Skills Must Verify
+
+Hooks cannot know what each skill intended to write. A skill might:
+- Successfully write valid YAML, but write to the wrong section
+- Have its Edit blocked by Gate 4 (user denied confirmation)
+- Receive an error from the Edit tool
+
+Without re-reading, the skill will claim success when the operation failed.
+
+### Required Steps for Mutation Skills
+
+Skills that call Edit or Write tools MUST:
+
+1. **Check Edit result**: If Edit was blocked or failed, inform user
+2. **Re-read the file**: After Edit completes
+3. **Verify content**: Search for the expected text
+4. **Handle failure**: If not found, inform user with manual fallback
+5. **Confirm success**: Only report success if verification passes
+
+### Validation Hook
+
+Skills are validated by `.claude/hooks/validate-skill-gate6.py`:
+- **Blocks** skill writes that call Edit/Write but don't include verification
+- Checks for: verify step, error handling, success/failure distinction
+- Enforces semantic verification documentation
+
+### Example (task-add skill)
+
+```markdown
+7. **Add the task entry**
+   - Use Edit tool to insert the new entry
+   - **Check Edit result** - if blocked or failed:
+     - Inform user: "Edit was blocked or failed."
+     - Do NOT proceed to confirmation
+
+8. **Verify the write succeeded**
+   - Re-read the daily note file
+   - Search for the newly added task text
+   - If NOT found: Alert user "Task write failed - please add manually"
+   - If found: Proceed to confirmation
+
+9. **Confirm** (only if Step 8 succeeded)
+   - Display the added task with timestamp and due date
+```
+
+---
+
 ## Skill Template (MANDATORY)
 
 All new skills MUST follow this template:
@@ -345,12 +396,14 @@ The following hooks enforce gates automatically:
 **Project Level (for Flywheel development):**
 - `.claude/hooks/validate-agent-gate3.py` → Gate 3 (blocks non-compliant agents)
 - `.claude/hooks/validate-agent-gate3-post.py` → Gate 3 (warns after edit)
+- `.claude/hooks/validate-skill-gate6.py` → Gate 6 (blocks non-compliant skills)
 - `packages/claude-plugin/scripts/validate-agents.py` → Gate 3 (CI validation)
 
 ---
 
 ## Version History
 
+- **1.19.1** (2026-01-06): Added skill verification requirements and validate-skill-gate6.py hook
 - **1.6.2** (2025-01-03): REAL enforcement via PreToolUse hooks (Gates 1,2,4 block, Gate 3 at project level)
 - **1.6.1** (2025-01-02): Added session-gate.py and verify-mutation.py (warn only)
 - **1.0.0** (2024-01-15): Initial Six Gates framework

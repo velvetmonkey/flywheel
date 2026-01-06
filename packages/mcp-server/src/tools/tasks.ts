@@ -195,13 +195,23 @@ export async function getAllTasks(
 export async function getTasksFromNote(
   index: VaultIndex,
   notePath: string,
-  vaultPath: string
+  vaultPath: string,
+  excludeTags: string[] = []
 ): Promise<Task[] | null> {
   const note = index.notes.get(notePath);
   if (!note) return null;
 
   const absolutePath = path.join(vaultPath, notePath);
-  return extractTasksFromNote(notePath, absolutePath);
+  let tasks = await extractTasksFromNote(notePath, absolutePath);
+
+  // Filter out tasks with excluded tags
+  if (excludeTags.length > 0) {
+    tasks = tasks.filter(
+      t => !excludeTags.some(excludeTag => t.tags.includes(excludeTag))
+    );
+  }
+
+  return tasks;
 }
 
 /**

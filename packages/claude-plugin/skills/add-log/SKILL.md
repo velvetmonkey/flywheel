@@ -82,8 +82,17 @@ User prompts that trigger this skill:
    - Format: `- HH:MM [log description]`
    - Add after the last log entry in the section
    - Use Edit tool to insert the new entry
+   - **Check Edit result** - if blocked or failed:
+     - Inform user: "Edit was blocked or failed. Please confirm the mutation or add manually."
+     - Do NOT proceed to confirmation
 
-6. **Confirm**
+6. **Verify the write succeeded**
+   - Re-read the daily note file
+   - Search for the newly added log entry (the exact description + timestamp)
+   - If NOT found: Alert user "Log write failed - please add manually: `- HH:MM [description]`"
+   - If found: Proceed to confirmation
+
+7. **Confirm** (only if Step 6 succeeded)
    - Display the added entry with timestamp and location
 
 ## Log Section Format
@@ -121,7 +130,7 @@ User prompts that trigger this skill:
 | 3. Chain Validation | N/A (single operation) |
 | 4. Mutation Confirmation | Entry shown to user before write |
 | 5. Health Check | Uses vault config infrastructure |
-| 6. Post Validation | Confirms entry added with timestamp display |
+| 6. Post Validation | **Re-reads file and verifies entry was written** (step 6) |
 
 ## Configuration
 
