@@ -139,23 +139,6 @@ async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
   console.error('Flywheel MCP server running on stdio');
-
-  // Periodic refresh for automatic index updates
-  const refreshInterval = parseInt(process.env.FLYWHEEL_REFRESH_INTERVAL || '60000', 10);
-  if (refreshInterval > 0) {
-    setInterval(async () => {
-      try {
-        const newIndex = await buildVaultIndex(vaultPath);
-        if (newIndex.notes.size !== vaultIndex.notes.size) {
-          console.error(`[Flywheel] Periodic refresh: ${vaultIndex.notes.size} → ${newIndex.notes.size} notes`);
-        }
-        vaultIndex = newIndex;
-      } catch (err) {
-        console.error('[Flywheel] Periodic refresh failed:', err);
-      }
-    }, refreshInterval);
-    console.error(`[Flywheel] Periodic refresh enabled (${refreshInterval / 1000}s interval)`);
-  }
 }
 
 main().catch((error) => {
