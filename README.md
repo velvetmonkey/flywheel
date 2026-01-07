@@ -155,30 +155,7 @@ When you say "weekly digest", Claude follows your process.
 /plugin install flywheel@bencassie-flywheel
 ```
 
-### 2. Setup
-
-```
-/setup-flywheel
-```
-
-Claude configures everything for your platform.
-
-### 3. Try Queries
-
-```
-"check vault health"           → Graph + schema diagnostics
-"find orphan notes"            → Disconnected notes
-"what links to [[My Note]]"    → Backlink traversal
-"show notes modified today"    → Temporal query
-```
-
-**[Full Installation Guide →](docs/GETTING_STARTED.md)**
-
----
-
-## See It In Action
-
-Pick a demo vault. Ask questions.
+### 2. Pick a Demo
 
 | You Are | Demo | Try Asking |
 |---------|------|------------|
@@ -191,8 +168,19 @@ Pick a demo vault. Ask questions.
 cd demos/carter-strategy
 claude
 /setup-flywheel
+```
+
+### 3. Try Queries
+
+```
+"check vault health"           → Graph + schema diagnostics
+"find orphan notes"            → Disconnected notes
+"what links to [[My Note]]"    → Backlink traversal
+"show notes modified today"    → Temporal query
 "how much have I billed this quarter?"
 ```
+
+**[Full Installation Guide →](docs/GETTING_STARTED.md)**
 
 ---
 
