@@ -1,6 +1,6 @@
 # Getting Started with Flywheel
 
-> Graph intelligence for your vault. One command to set up.
+> Query your markdown vault. One command to set up.
 
 [![npm version](https://img.shields.io/npm/v/@bencassie/flywheel-mcp.svg)](https://www.npmjs.com/package/@bencassie/flywheel-mcp)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -26,117 +26,168 @@
 
 Claude detects your platform, generates config, validates the connection.
 
-### 3. Try It
+### 3. Query Your Vault
 
 ```
-"check vault health"       # Full diagnostics
-"find orphan notes"        # Disconnected notes
-"do a rollup"              # Daily -> weekly summaries
+"what links to [[My Project]]"    # Graph query
+"find orphan notes"               # Disconnected notes
+"show notes modified this week"   # Temporal query
+"what fields exist in projects/"  # Schema query
 ```
 
-**Done.** You now have 40+ graph-aware tools.
+**Done.** Your vault is now queryable.
 
 ---
 
-## What Just Happened
+## Try Queries First
 
-Flywheel built an **in-memory graph** of your vault. Now when you ask questions, Claude queries the index — not the files.
+Start with read-only queries to explore your vault:
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    THE FLYWHEEL LOOP                        │
-├─────────────────────────────────────────────────────────────┤
-│  Your notes  →  Indexed  →  AI queries graph (not files)    │
-│                                                             │
-│  Result: 50 tokens vs 5,000 for "what's blocking X?"        │
-└─────────────────────────────────────────────────────────────┘
-```
+### Graph Intelligence
 
-**Token savings (real numbers):**
-
-| Query | Without Flywheel | With Flywheel |
-|-------|------------------|---------------|
-| "What's blocking X?" | ~5,000 tokens | ~50 tokens |
-| "do a rollup" (7 days) | ~7,000 tokens | ~700 tokens |
-| "log research findings" | ~800 tokens | ~42 tokens |
-
-**Auto-curation**: After every edit, hooks automatically:
-- Add `[[wikilinks]]` to recognized entities
-- Complete frontmatter based on folder patterns
-
-Your notes get smarter without manual tagging.
-
----
-
-## Try These Commands
-
-### Vault Intelligence
-
-| Say This | What Happens |
+| Ask This | What Happens |
 |----------|--------------|
-| "check vault health" | Orphans, hubs, broken links, schema issues |
-| "find orphan notes" | Notes with no backlinks |
-| "show hub notes" | Most connected notes (key concepts) |
-| "path from X to Y" | Shortest link path between notes |
-| "what's blocking X?" | Trace dependencies via frontmatter |
+| "what links to [[Note]]" | Find all backlinks |
+| "show hub notes" | Most connected notes |
+| "find orphan notes" | Notes with no connections |
+| "path from [[A]] to [[B]]" | Shortest link path |
+| "what do X and Y both link to" | Common references |
+
+### Temporal Queries
+
+| Ask This | What Happens |
+|----------|--------------|
+| "show notes modified today" | Recent activity |
+| "what changed last week" | 7-day activity |
+| "find stale important notes" | High-connection, old modification |
+
+### Schema Queries
+
+| Ask This | What Happens |
+|----------|--------------|
+| "show vault schema" | All frontmatter fields |
+| "what values does status have" | Unique field values |
+| "find notes missing owner in projects/" | Schema gaps |
+
+### Search
+
+| Ask This | What Happens |
+|----------|--------------|
+| "find notes tagged #urgent" | Filter by tag |
+| "list notes in meetings/" | Filter by folder |
+| "search for 'review' in titles" | Title matching |
+
+**[Full Query Guide →](./QUERY_GUIDE.md)**
+
+---
+
+## Then Try Commands
+
+Once comfortable with queries, try workflow commands:
 
 ### Daily Operations
 
 | Say This | What Happens |
 |----------|--------------|
-| "log fixed the bug" | Timestamped entry in today's daily note |
-| "do a rollup" | Daily -> weekly -> monthly summaries |
+| "log fixed the bug" | Timestamped entry in daily note |
+| "do a rollup" | Daily → weekly → monthly summaries |
 | "show tasks due" | Tasks with due dates |
-| "add task: review proposal" | Creates task in daily note |
 
-### Schema Analysis
+### Vault Maintenance
 
 | Say This | What Happens |
 |----------|--------------|
-| "show vault schema" | All frontmatter fields in use |
-| "find incomplete notes in projects/" | Notes missing expected fields |
-| "what values does status have?" | Unique values for a field |
+| "check vault health" | Full diagnostics |
+| "fix broken links" | Find and resolve dead links |
+| "normalize this note" | Apply folder schema |
+
+### Reviews
+
+| Say This | What Happens |
+|----------|--------------|
+| "/weekly-review" | Generate weekly summary |
+| "/extract-actions" | Pull action items from meeting notes |
+
+**[Full Command Reference →](./SKILLS_REFERENCE.md)**
 
 ---
 
-## Installation Options
+## Build Your Own Skills
 
-### Marketplace (Recommended)
+When you find yourself repeating workflows, create a skill:
 
-Already done in Quick Start above. That's all you need.
+```markdown
+# packages/claude-plugin/skills/my-skill/SKILL.md
 
-### From Source (Developers)
+---
+name: my-skill
+description: What this skill does
+trigger_keywords:
+  - "trigger phrase"
+allowed-tools: Read, mcp__flywheel__search_notes
+---
 
-```bash
-git clone https://github.com/bencassie/flywheel.git
-cd flywheel && npm install
-cd packages/mcp-server && npm run build && npm link
+## Process
+1. First step
+2. Second step
+3. Verify and confirm
 ```
 
-Then run `/setup-flywheel` — it detects your local build.
+**[Building Skills Guide →](./BUILDING_SKILLS.md)**
+
+---
+
+## How It Works
+
+Flywheel builds an **in-memory graph** at startup:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Your vault  →  Scanned  →  Graph index in memory            │
+│                                                             │
+│  Claude queries index (50 tokens) not files (5,000 tokens)  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**What gets indexed:**
+- Note titles and aliases
+- Wikilinks (relationships)
+- Frontmatter fields
+- Tags
+- Modification dates
+
+**What stays on disk:**
+- File content (only read when needed)
+- Full prose (privacy preserved)
+
+**Token savings:**
+
+| Query | Without Flywheel | With Flywheel |
+|-------|------------------|---------------|
+| "What links to X?" | ~5,000 tokens | ~50 tokens |
+| "Find stale notes" | ~10,000 tokens | ~100 tokens |
+| "do a rollup" | ~7,000 tokens | ~700 tokens |
 
 ---
 
 ## Try a Demo Vault
 
-See Flywheel in action before using on your vault:
+See Flywheel before using on your own vault:
 
 ```bash
 git clone https://github.com/bencassie/flywheel.git
-
-# Pick your scenario
-cd flywheel/demos/carter-strategy    # Consultant (30 notes)
-cd flywheel/demos/solo-operator      # Creator (22 notes)
-cd flywheel/demos/artemis-rocket     # Aerospace (65 notes)
-cd flywheel/demos/startup-ops        # SaaS founder (30 notes)
-cd flywheel/demos/nexus-lab          # Researcher (30 notes)
-
-# Start
+cd flywheel/demos/carter-strategy
 claude
 /setup-flywheel
+"how much have I billed this quarter?"
 ```
 
-**Full demo guide**: [demos/README.md](../demos/README.md)
+| Demo | Notes | Good For |
+|------|-------|----------|
+| [carter-strategy](../demos/carter-strategy/) | 30 | Consultant queries |
+| [startup-ops](../demos/startup-ops/) | 30 | SaaS founder workflows |
+| [artemis-rocket](../demos/artemis-rocket/) | 65 | Technical graph traversal |
+| [nexus-lab](../demos/nexus-lab/) | 30 | Research connections |
 
 ---
 
@@ -144,11 +195,11 @@ claude
 
 | Want To... | Read |
 |-----------|------|
-| See all 44 MCP tools | [MCP Reference](./MCP_REFERENCE.md) |
-| Learn the skills | [Skills Reference](./SKILLS_REFERENCE.md) |
+| Master queries | [Query Guide](./QUERY_GUIDE.md) |
+| See all commands | [Skills Reference](./SKILLS_REFERENCE.md) |
+| Build custom skills | [Building Skills](./BUILDING_SKILLS.md) |
+| See all MCP tools | [MCP Reference](./MCP_REFERENCE.md) |
 | Understand safety | [Six Gates](./SIX_GATES.md) |
-| Build workflows | [Agentic Patterns](./AGENTIC_PATTERNS.md) |
-| Configure rollups | [Workflow Configuration](./WORKFLOW_CONFIGURATION.md) |
 
 ---
 
@@ -160,17 +211,17 @@ Restart Claude Code after installing the plugin, then try again.
 
 ### MCP Tools Not Found
 
-If `get_vault_stats()` returns "Tool not found":
+If queries return "Tool not found":
 
-1. Ensure Claude Code was restarted after setup
+1. Restart Claude Code after setup
 2. Check `.mcp.json` exists in your vault root
-3. If using explicit vault path, verify `PROJECT_PATH` in `.mcp.json`
+3. Verify `PROJECT_PATH` in `.mcp.json` if using explicit path
 
 ### Manual Configuration (Fallback)
 
 If `/setup-flywheel` fails, add to `.mcp.json` manually.
 
-**Zero-config (recommended)** — place `.mcp.json` in your vault root:
+**Zero-config** — place `.mcp.json` in your vault root:
 
 ```json
 {
@@ -185,7 +236,7 @@ If `/setup-flywheel` fails, add to `.mcp.json` manually.
 
 > **Windows**: Use `"command": "cmd", "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"]`
 
-**With explicit vault path** (if `.mcp.json` is elsewhere):
+**With explicit vault path**:
 
 macOS / Linux / WSL:
 ```json
@@ -217,7 +268,7 @@ Windows:
 
 | Platform | Issue | Fix |
 |----------|-------|-----|
-| Windows | "Connection closed" | Use `cmd /c npx` wrapper (see above) |
+| Windows | "Connection closed" | Use `cmd /c npx` wrapper |
 | Windows | Backslash paths fail | Use forward slashes: `C:/Users/...` |
 | WSL | Hooks fail with "python not found" | `sudo apt install python-is-python3` |
 | WSL | Wrong path format | Use `/mnt/c/...` for Windows drives |
@@ -229,9 +280,3 @@ Windows:
 - **Docs**: [Documentation Index](./README.md)
 - **GitHub Issues**: https://github.com/bencassie/flywheel/issues
 - **Demos**: [../demos/README.md](../demos/README.md)
-
----
-
-**Version**: 1.12.1
-**Last Updated**: 2026-01-04
-**License**: Apache 2.0
