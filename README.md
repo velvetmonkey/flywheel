@@ -6,98 +6,183 @@
 
 **Ask questions about your notes without Claude reading every file.**
 
-Flywheel indexes your markdown vault and exposes it through 40+ graph-aware tools. Claude queries the index—not the files—answering in ~50 tokens what would otherwise cost 5,000+.
+Flywheel indexes your markdown vault and exposes it through 40+ graph-aware MCP tools. Claude queries the index—not the files—answering in ~50 tokens what would otherwise cost 5,000+.
 
 ---
 
-## The Query Paradigm
+## Install
+
+Add to `.mcp.json` in your vault root:
+
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@velvetmonkey/flywheel-mcp"]
+    }
+  }
+}
+```
+
+That's it. Flywheel uses the current directory as your vault—no config needed.
+
+<details>
+<summary><strong>Platform notes (Windows, WSL, custom vault path)</strong></summary>
+
+**Windows (native):**
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"]
+    }
+  }
+}
+```
+
+**Different vault location:**
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@velvetmonkey/flywheel-mcp"],
+      "env": {
+        "PROJECT_PATH": "/path/to/your/vault"
+      }
+    }
+  }
+}
+```
+
+**WSL:** Use `npx` directly (not `cmd /c`), with `/mnt/c/...` paths.
+
+</details>
+
+Verify: `claude mcp list` should show `flywheel ✓`
+
+---
+
+## Core Concepts
+
+Flywheel builds an in-memory index at startup. Understanding what gets indexed explains why queries are fast.
+
+### The Index
+
+| Indexed | Not Indexed |
+|---------|-------------|
+| Titles, aliases | File content |
+| Wikilinks `[[Target]]` | Prose text |
+| Frontmatter fields | Code blocks |
+| Tags `#tag` | |
+| Modification dates | |
+| Headings structure | |
+
+**Why this matters:** Graph queries use the index only—zero file reads. Content stays on disk until you explicitly need it.
+
+### Wikilinks
+
+`[[Target]]` creates a navigable link AND a graph connection.
+
+```markdown
+# INV-2025-047
+
+**Client**: [[Acme Corp]]
+**Project**: [[Acme Data Migration]]
+```
+
+This invoice now has outbound links to the client and project. The client gains backlinks from the invoice. Flywheel tracks all of this.
+
+### Frontmatter
+
+YAML at the top of a file creates typed, queryable fields:
+
+```yaml
+---
+type: invoice
+status: paid
+client: "[[Acme Corp]]"
+amount: 15000
+due: 2025-12-15
+---
+```
+
+Now you can query: "Find all paid invoices" or "What's the total amount for Acme Corp?"
+
+### The Graph
+
+Wikilinks create a graph. Flywheel exposes it:
+
+- **Backlinks** — What notes link TO this one?
+- **Forward links** — What does this note link TO?
+- **Hub notes** — Most connected notes (key concepts, central entities)
+- **Orphan notes** — Notes with no incoming links (disconnected)
+- **Link paths** — How is note A connected to note B?
+
+---
+
+## What You Can Query
+
+### Graph Intelligence
 
 ```
-Traditional AI:                    Flywheel:
-"What's blocking the launch?"      "What's blocking the launch?"
-→ Read 50 files                    → Query the graph index
-→ ~50,000 tokens                   → ~50 tokens
-→ 30+ seconds                      → <1 second
-```
-
-Most AI reads files to find answers. Flywheel indexes structure, relationships, and metadata at startup—then Claude queries the index directly.
-
-### What You Can Query
-
-**Graph intelligence:**
-```
-"What links to [[Project Alpha]]?"
-"Find the path from [[Problem]] to [[Solution]]"
-"What notes do Sarah and Mike both reference?"
+"What links to [[Acme Corp]]?"
+"Find the path from [[Invoice]] to [[Project]]"
 "Show hub notes with many connections"
+"Find orphan notes—disconnected from the graph"
 ```
 
-**Temporal queries:**
+| Without Flywheel | With Flywheel |
+|------------------|---------------|
+| Read every file, grep for `[[Acme Corp]]`, parse results | `get_backlinks` → instant from index |
+| ~5,000 tokens | ~50 tokens |
+
+### Schema Queries
+
+```
+"Find notes where status is 'paid'"
+"What fields exist in invoices/?"
+"Show all unique client values"
+"Find notes missing expected fields"
+```
+
+| Without Flywheel | With Flywheel |
+|------------------|---------------|
+| Read all files, parse YAML frontmatter, aggregate | `search_notes`, `get_frontmatter_schema` → index-only |
+| ~3,000 tokens | ~80 tokens |
+
+### Temporal Queries
+
 ```
 "What changed in the last 7 days?"
 "Find stale notes—important but neglected"
-"Show activity for December"
+"Show activity summary for this month"
 ```
 
-**Schema queries:**
+| Without Flywheel | With Flywheel |
+|------------------|---------------|
+| Stat every file, read content to check importance | `get_recent_notes`, `get_stale_notes` → file metadata + backlink count |
+| ~10,000 tokens | ~100 tokens |
+
+### Tasks & Structure
+
 ```
-"What fields exist in projects/?"
-"Find notes where status is 'blocked'"
-"Show all unique client values"
+"Show open tasks across the vault"
+"What's due this week?"
+"Read the Financial Summary section from Acme Corp"
 ```
 
-**Search:**
-```
-"Find notes tagged #urgent in meetings/"
-"List everything with 'review' in the title"
-```
-
-**[Full Query Guide →](docs/QUERY_GUIDE.md)**
+| Without Flywheel | With Flywheel |
+|------------------|---------------|
+| Read every file, regex for `- [ ]`, parse dates | `get_all_tasks` → indexed at startup |
+| Read full file to get one section | `get_section_content` → returns only that heading |
+| ~3,000 tokens | ~60 tokens |
 
 ---
 
-## How It Works
-
-```
-┌─────────────────────────────────────────┐
-│  YOU (thinking, deciding, creating)     │
-├─────────────────────────────────────────┤
-│  CLAUDE CODE (AI co-processor)          │
-│  - Asks questions in natural language   │
-│  - Gets answers from the graph          │
-│  - Reads files only when needed         │
-├─────────────────────────────────────────┤
-│  FLYWHEEL (graph intelligence)          │  ← The Index
-│  - 40+ query tools                      │
-├─────────────────────────────────────────┤
-│  YOUR VAULT (plain markdown)            │
-│  - Edit with any tool you want          │
-│  - Obsidian, VSCode, vim, whatever      │
-│  - Git-versioned, future-proof          │
-└─────────────────────────────────────────┘
-```
-
-At startup, Flywheel scans your vault and builds an in-memory graph:
-- **Titles and aliases** → entity lookup
-- **Wikilinks** → relationship traversal
-- **Frontmatter** → schema queries
-- **Tags** → filtering
-- **Modification dates** → temporal analysis
-
-Claude queries this index. Files stay on disk.
-
----
-
-## Quick Start
-
-### 1. Install
-
-```bash
-/plugin marketplace add velvetmonkey/flywheel
-/plugin install flywheel@velvetmonkey-flywheel
-```
-
-### 2. Pick a Demo
+## Try a Demo
 
 | You Are | Demo | Try Asking |
 |---------|------|------------|
@@ -109,28 +194,17 @@ Claude queries this index. Files stay on disk.
 ```bash
 cd demos/carter-strategy
 claude
-/setup-flywheel
 ```
-
-### 3. Try Queries
-
-```
-"find orphan notes"            → Disconnected notes
-"what links to [[My Note]]"    → Backlink traversal
-"show notes modified today"    → Temporal query
-"how much have I billed this quarter?"
-```
-
-**[Full Installation Guide →](docs/GETTING_STARTED.md)**
 
 ---
 
-## Token Savings (Real Numbers)
+## Token Savings
 
 | Operation | Traditional | With Flywheel | Savings |
 |-----------|-------------|---------------|---------|
 | "What's blocking X?" | ~5,000 tokens | ~50 tokens | **100x** |
 | "Find stale notes" | ~10,000 tokens | ~100 tokens | **100x** |
+| "Check overdue tasks" | ~3,000 tokens | ~80 tokens | **40x** |
 
 Flywheel reads sections, not files. Queries index, not content.
 
@@ -146,10 +220,10 @@ Flywheel reads sections, not files. Queries index, not content.
 | Slow, expensive | Fast, cheap |
 
 **Plus:**
-- **Git-native** — your business history, versioned
+- **Git-native** — your vault is version-controlled
 - **Plain text** — future-proof, no lock-in
-- **Extensible** — add your own workflows
 - **Privacy** — files stay on disk, only sections sent when needed
+- **Editor-agnostic** — Obsidian, VSCode, vim, whatever
 
 ---
 
@@ -157,9 +231,10 @@ Flywheel reads sections, not files. Queries index, not content.
 
 | Doc | What It Covers |
 |-----|----------------|
-| **[Query Guide](docs/QUERY_GUIDE.md)** | Graph, temporal, schema queries |
+| **[MCP Tools Reference](docs/MCP_REFERENCE.md)** | All 40+ tools with parameters |
+| **[Query Guide](docs/QUERY_GUIDE.md)** | Graph, temporal, schema query patterns |
 | **[Getting Started](docs/GETTING_STARTED.md)** | Installation, platform setup |
-| **[MCP Tools](docs/MCP_REFERENCE.md)** | All 40+ graph query tools |
+| **[How It Works](docs/HOW_IT_WORKS.md)** | Technical architecture |
 
 ---
 
