@@ -34,7 +34,9 @@ C:*
 c:*
 
 # Claude-mem literal ** folder artifacts (Windows bug)
-\*\*/
+# The ** folders still exist on disk (claude-mem can keep using them)
+[*][*]/
+
 
 # Logs
 *.log
