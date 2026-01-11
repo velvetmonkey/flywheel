@@ -182,6 +182,96 @@ Wikilinks create a graph. Flywheel exposes it:
 
 ---
 
+## See It In Action
+
+Here's what working with Flywheel looks like in Claude Code:
+
+### Graph Query
+
+```
+You: "What depends on the Turbopump?"
+
+┌─ QUERY ──────────────────────────────────────────┐
+│ Source: Graph index (backlinks + forward links)  │
+│ Tokens: ~80 vs ~4,000 without Flywheel           │
+└──────────────────────────────────────────────────┘
+
+Turbopump Dependencies
+======================
+
+Linked FROM (6 notes depend on this):
+- Engine Design → Turbopump specifications
+- Risk Register → R-003 delivery delay risk
+- Project Roadmap → Critical path item
+- ADR-001 Propellant Selection → Selection rationale
+- Vendor Meeting Acme Aerospace → Supplier negotiations
+- Upcoming Tests → Test 4 requires flight unit
+
+Linked TO (4 dependencies):
+- Propulsion System → Parent system
+- Marcus Johnson → Component owner
+- Precision Components Inc → Backup supplier
+- Engine Controller → Control interface
+
+Impact: High connectivity (10 links) - changes cascade widely.
+```
+
+### Schema Query
+
+```
+You: "Show me all pending invoices"
+
+┌─ QUERY ──────────────────────────────────────────┐
+│ Source: Frontmatter index (status: pending)      │
+│ Tokens: ~50 vs ~1,500 without Flywheel           │
+└──────────────────────────────────────────────────┘
+
+Pending Invoices (1)
+====================
+
+INV-2025-048
+  Client:  Acme Corp
+  Amount:  $12,000
+  Issued:  2025-12-15
+  Due:     2026-01-15
+  Project: Acme Data Migration
+
+Total Outstanding: $12,000
+```
+
+### Temporal Query
+
+```
+You: "Find important notes I haven't touched in 2 weeks"
+
+┌─ QUERY ──────────────────────────────────────────┐
+│ Source: Modification dates + backlink counts     │
+│ Tokens: ~100 vs ~8,000 without Flywheel          │
+└──────────────────────────────────────────────────┘
+
+Stale Hub Notes (3)
+===================
+
+ADR-001 Propellant Selection
+  Last modified: 2025-08-20 (144 days ago)
+  Backlinks: 12
+  → Referenced by Engine Design, Risk Register, Project Roadmap
+
+Safety Requirements
+  Last modified: 2025-11-15 (57 days ago)
+  Backlinks: 8
+  → Referenced by Risk Register, Test Campaign, Fairing Design
+
+Budget Tracker
+  Last modified: 2025-12-01 (41 days ago)
+  Backlinks: 6
+  → Referenced by Project Roadmap, Risk Register
+
+Recommendation: Review these high-impact notes for accuracy.
+```
+
+---
+
 ## Try a Demo
 
 | You Are | Demo | Try Asking |
