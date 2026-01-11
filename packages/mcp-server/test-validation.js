@@ -20,8 +20,8 @@ const tests = [
   { name: 'Study 2025 📕.md', path: '/vault/Study 2025 📕.md', shouldFail: true, reason: 'emoji' },
   { name: 'Mind Dump 🧠.md', path: '/vault/Mind Dump 🧠.md', shouldFail: true, reason: 'emoji' },
   { name: 'Regular Note.md', path: '/vault/Regular Note.md', shouldFail: false },
-  { name: 'Another Note.md', path: 'C:\\Users\\benca\\obsidian\\Ben\\' + 'a'.repeat(240) + '.md', shouldFail: true, reason: 'length' },
-  { name: 'Normal.md', path: 'C:\\Users\\benca\\obsidian\\Ben\\Normal.md', shouldFail: false },
+  { name: 'Another Note.md', path: '/vault/' + 'a'.repeat(240) + '.md', shouldFail: true, reason: 'length' },
+  { name: 'Normal.md', path: '/vault/', shouldFail: false },
   { name: 'Repomix 📦.md', path: '/vault/Repomix 📦.md', shouldFail: true, reason: 'emoji' },
 ];
 

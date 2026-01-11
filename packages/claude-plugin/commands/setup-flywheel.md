@@ -91,7 +91,6 @@ The `Platform:` field in environment info is **authoritative**:
 - Command: `cmd /c npx`
 
 ## Phase 2: Configuration
-Vault path: C:/Users/benca/obsidian/Ben
 
 I'll add this to your `.mcp.json`:
 
@@ -99,10 +98,7 @@ I'll add this to your `.mcp.json`:
   "mcpServers": {
     "flywheel": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
-      "env": {
-        "PROJECT_PATH": "C:/Users/benca/obsidian/Ben"
-      }
+      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"]
     }
   }
 }

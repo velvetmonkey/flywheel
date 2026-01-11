@@ -96,7 +96,7 @@ Flywheel includes 8 hooks:
 
 ```
 MCP Gate Check: ✓ PASS
-  PROJECT_PATH: C:/Users/benca/obsidian/Ben
+  PROJECT_PATH: /xx/yy/zz
   Flywheel MCP: Connected
 
 Action: Session ready
