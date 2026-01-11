@@ -33,6 +33,9 @@ credentials.json
 C:*
 c:*
 
+# Claude-mem literal ** folder artifacts (Windows bug)
+\*\*/
+
 # Logs
 *.log
 npm-debug.log*
