@@ -3,16 +3,8 @@ name: add-log
 description: Add timestamped log entry to daily note when user wants to log their work
 auto_trigger: true
 trigger_keywords:
+  - "/add-log"
   - "add log entry"
-  - "log entry"
-  - "log to daily"
-  - "add to log"
-  - "add to my log"
-  - "captains log"
-  - "log this to daily"
-  - "record to daily"
-  - "write this down"
-  - "document this"
 allowed-tools: Read, Edit
 ---
 

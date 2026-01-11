@@ -3,15 +3,9 @@ name: task-add
 description: This skill should be used when the user asks to "add a task", "create task", "new task", or "task to do X". Adds timestamped tasks to daily note log with optional due dates.
 auto_trigger: true
 trigger_keywords:
+  - "/task-add"
   - "add a task"
   - "add task"
-  - "create task"
-  - "create a task"
-  - "task to do"
-  - "new task"
-  - "task for"
-  - "task due"
-  - "task by"
 allowed-tools: Read, Edit
 ---
 
