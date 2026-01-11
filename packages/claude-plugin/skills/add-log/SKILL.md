@@ -4,7 +4,7 @@ description: Add timestamped log entry to daily note when user wants to log thei
 auto_trigger: true
 trigger_keywords:
   - "/add-log"
-  - "add log entry"
+  - "add log"
 allowed-tools: Read, Edit
 ---
 
