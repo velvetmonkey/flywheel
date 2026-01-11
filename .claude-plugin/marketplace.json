@@ -4,7 +4,7 @@
   "description": "Workflow templates, wikilink automation, periodic note rollups, vault health, and privacy protection for markdown vaults",
   "owner": {
     "name": "Ben Cassie",
-    "email": "bencassie@github"
+    "email": "velvetmonkey@github"
   },
   "plugins": [
     {

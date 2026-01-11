@@ -1,8 +1,8 @@
 # Flywheel - Query Your Markdown Like a Database
 
-[![npm version](https://img.shields.io/npm/v/@bencassie/flywheel-mcp.svg)](https://www.npmjs.com/package/@bencassie/flywheel-mcp)
+[![npm version](https://img.shields.io/npm/v/@velvetmonkey/flywheel-mcp.svg)](https://www.npmjs.com/package/@velvetmonkey/flywheel-mcp)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/bencassie/flywheel)
+[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/velvetmonkey/flywheel)
 
 **Ask questions about your notes without Claude reading every file.**
 
@@ -93,8 +93,8 @@ Claude queries this index. Files stay on disk.
 ### 1. Install
 
 ```bash
-/plugin marketplace add bencassie/flywheel
-/plugin install flywheel@bencassie-flywheel
+/plugin marketplace add velvetmonkey/flywheel
+/plugin install flywheel@velvetmonkey-flywheel
 ```
 
 ### 2. Pick a Demo
@@ -122,40 +122,6 @@ claude
 ```
 
 **[Full Installation Guide →](docs/GETTING_STARTED.md)**
-
----
-
-## The Flywheel Loop
-
-Your vault gets smarter over time:
-
-```
-┌────────────────────────────────────────────────────────────────┐
-│                     THE FLYWHEEL LOOP                          │
-├────────────────────────────────────────────────────────────────┤
-│                                                                │
-│  WIKILINKS ←──────────────────────────────→ FRONTMATTER        │
-│  [[Acme Corp]]                              status: active     │
-│  [[Sarah Chen]]                             contact: Sarah     │
-│                                             rate: $250/hr      │
-│         ↑                                          ↑           │
-│         │         AUTO-CURATION HOOKS              │           │
-│         │    ┌──────────────────────────┐          │           │
-│         └────│ wikilink-auto.py         │──────────┘           │
-│              │ frontmatter-auto.py      │                      │
-│              └──────────────────────────┘                      │
-│                         ↓                                      │
-│         After every Edit/Write, hooks auto-apply:              │
-│         ✓ Wikilinks to known entities                          │
-│         ✓ Frontmatter from folder patterns                     │
-│                                                                │
-└────────────────────────────────────────────────────────────────┘
-```
-
-1. **You write naturally** — hooks add links automatically
-2. **More links** → better graph queries
-3. **Consistent frontmatter** → better schema queries
-4. **Each interaction improves the next**
 
 ---
 
@@ -205,4 +171,4 @@ macOS / Linux / WSL / Windows
 
 ---
 
-Apache 2.0 License | [GitHub](https://github.com/bencassie/flywheel) | [Issues](https://github.com/bencassie/flywheel/issues)
+Apache 2.0 License | [GitHub](https://github.com/velvetmonkey/flywheel) | [Issues](https://github.com/velvetmonkey/flywheel/issues)

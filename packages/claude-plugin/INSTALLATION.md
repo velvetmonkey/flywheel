@@ -41,7 +41,7 @@ Add to `.mcp.json` in your vault (or `~/.claude.json` for user-level):
   "mcpServers": {
     "flywheel": {
       "command": "npx",
-      "args": ["-y", "@bencassie/flywheel-mcp"],
+      "args": ["-y", "@velvetmonkey/flywheel-mcp"],
       "env": {
         "PROJECT_PATH": "/path/to/your/vault"
       }
@@ -56,7 +56,7 @@ Add to `.mcp.json` in your vault (or `~/.claude.json` for user-level):
   "mcpServers": {
     "flywheel": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
+      "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"],
       "env": {
         "PROJECT_PATH": "C:/path/to/your/vault"
       }
@@ -70,8 +70,8 @@ Add to `.mcp.json` in your vault (or `~/.claude.json` for user-level):
 In Claude Code, run these commands:
 
 ```
-/plugin marketplace add bencassie/flywheel
-/plugin install flywheel@bencassie-flywheel
+/plugin marketplace add velvetmonkey/flywheel
+/plugin install flywheel@velvetmonkey-flywheel
 ```
 
 ### Step 3: Create Vault Configuration (Optional)
@@ -99,7 +99,7 @@ Close and reopen Claude Code to load the plugin.
 
 **Verify plugin loaded:**
 - On session start, you should see the Flywheel briefing
-- Skills like `/vault-health`, `/auto-log` should be available
+- Query commands like `/vault-health` should be available
 
 ---
 
@@ -110,7 +110,7 @@ For contributors or users who want to run from a local clone.
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/bencassie/flywheel.git
+git clone https://github.com/velvetmonkey/flywheel.git
 ```
 
 Note your plugin path:
@@ -134,7 +134,7 @@ Add the plugin to your Claude Code settings file.
     }
   },
   "enabledPlugins": {
-    "flywheel@bencassie-flywheel": true
+    "flywheel@velvetmonkey-flywheel": true
   }
 }
 ```
@@ -151,7 +151,7 @@ Add the plugin to your Claude Code settings file.
     }
   },
   "enabledPlugins": {
-    "flywheel@bencassie-flywheel": true
+    "flywheel@velvetmonkey-flywheel": true
   }
 }
 ```
@@ -168,7 +168,7 @@ Add the plugin to your Claude Code settings file.
     }
   },
   "enabledPlugins": {
-    "flywheel@bencassie-flywheel": true
+    "flywheel@velvetmonkey-flywheel": true
   }
 }
 ```
@@ -191,7 +191,7 @@ If you use both Windows and WSL, create the appropriate `.mcp.json` for each env
   "mcpServers": {
     "flywheel": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
+      "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"],
       "env": { "PROJECT_PATH": "C:/Users/YOUR_USER/obsidian/YOUR_VAULT" }
     }
   }
@@ -204,7 +204,7 @@ If you use both Windows and WSL, create the appropriate `.mcp.json` for each env
   "mcpServers": {
     "flywheel": {
       "command": "npx",
-      "args": ["-y", "@bencassie/flywheel-mcp"],
+      "args": ["-y", "@velvetmonkey/flywheel-mcp"],
       "env": { "PROJECT_PATH": "/mnt/c/Users/YOUR_USER/obsidian/YOUR_VAULT" }
     }
   }
@@ -245,7 +245,7 @@ See [rules.md](rules.md) for available rules:
 ### Skills not available
 
 1. **Check marketplace**: Run `/plugin` to verify flywheel is installed
-2. **Check `enabledPlugins`**: Must include `"flywheel@bencassie-flywheel": true`
+2. **Check `enabledPlugins`**: Must include `"flywheel@velvetmonkey-flywheel": true`
 
 ### Flywheel MCP not connecting
 
@@ -259,7 +259,7 @@ See [rules.md](rules.md) for available rules:
 
 **Marketplace install:**
 ```
-/plugin uninstall flywheel@bencassie-flywheel
+/plugin uninstall flywheel@velvetmonkey-flywheel
 /plugin marketplace remove flywheel
 ```
 

@@ -21,7 +21,7 @@ Removes Flywheel completely: both the Claude Code plugin and MCP server configur
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │ Phase 2: Uninstall Plugin                                       │
-│   /plugin uninstall flywheel@bencassie-flywheel                 │
+│   /plugin uninstall flywheel@velvetmonkey-flywheel                 │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
@@ -74,7 +74,7 @@ Remove Flywheel from both? (y/n)
 
 Uninstalling plugin...
 
-/plugin uninstall flywheel@bencassie-flywheel
+/plugin uninstall flywheel@velvetmonkey-flywheel
 
 ✓ Plugin uninstalled
 
@@ -87,8 +87,8 @@ Uninstalling plugin...
 Flywheel has been fully removed.
 
 To reinstall later:
-/plugin marketplace add bencassie/flywheel
-/plugin install flywheel@bencassie-flywheel
+/plugin marketplace add velvetmonkey/flywheel
+/plugin install flywheel@velvetmonkey-flywheel
 ```
 
 ## Reinstallation
@@ -96,8 +96,8 @@ To reinstall later:
 If you want to reinstall Flywheel later:
 
 ```
-/plugin marketplace add bencassie/flywheel
-/plugin install flywheel@bencassie-flywheel
+/plugin marketplace add velvetmonkey/flywheel
+/plugin install flywheel@velvetmonkey-flywheel
 ```
 
 Then say "setup flywheel" to reconfigure the MCP server.

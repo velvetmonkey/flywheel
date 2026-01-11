@@ -2,9 +2,9 @@
 
 > Query your markdown vault. One command to set up.
 
-[![npm version](https://img.shields.io/npm/v/@bencassie/flywheel-mcp.svg)](https://www.npmjs.com/package/@bencassie/flywheel-mcp)
+[![npm version](https://img.shields.io/npm/v/@velvetmonkey/flywheel-mcp.svg)](https://www.npmjs.com/package/@velvetmonkey/flywheel-mcp)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/bencassie/flywheel)
+[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/velvetmonkey/flywheel)
 
 ---
 
@@ -14,8 +14,8 @@
 
 ```bash
 # In Claude Code
-/plugin marketplace add bencassie/flywheel
-/plugin install flywheel@bencassie-flywheel
+/plugin marketplace add velvetmonkey/flywheel
+/plugin install flywheel@velvetmonkey-flywheel
 ```
 
 ### 2. Setup
@@ -118,7 +118,7 @@ Flywheel builds an **in-memory graph** at startup:
 See Flywheel before using on your own vault:
 
 ```bash
-git clone https://github.com/bencassie/flywheel.git
+git clone https://github.com/velvetmonkey/flywheel.git
 cd flywheel/demos/carter-strategy
 claude
 /setup-flywheel
@@ -168,13 +168,13 @@ If `/setup-flywheel` fails, add to `.mcp.json` manually.
   "mcpServers": {
     "flywheel": {
       "command": "npx",
-      "args": ["-y", "@bencassie/flywheel-mcp"]
+      "args": ["-y", "@velvetmonkey/flywheel-mcp"]
     }
   }
 }
 ```
 
-> **Windows**: Use `"command": "cmd", "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"]`
+> **Windows**: Use `"command": "cmd", "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"]`
 
 **With explicit vault path**:
 
@@ -184,7 +184,7 @@ macOS / Linux / WSL:
   "mcpServers": {
     "flywheel": {
       "command": "npx",
-      "args": ["-y", "@bencassie/flywheel-mcp"],
+      "args": ["-y", "@velvetmonkey/flywheel-mcp"],
       "env": { "PROJECT_PATH": "/path/to/vault" }
     }
   }
@@ -197,7 +197,7 @@ Windows:
   "mcpServers": {
     "flywheel": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
+      "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"],
       "env": { "PROJECT_PATH": "C:/path/to/vault" }
     }
   }
@@ -218,5 +218,5 @@ Windows:
 ## Getting Help
 
 - **Docs**: [Documentation Index](./README.md)
-- **GitHub Issues**: https://github.com/bencassie/flywheel/issues
+- **GitHub Issues**: https://github.com/velvetmonkey/flywheel/issues
 - **Demos**: [../demos/README.md](../demos/README.md)

@@ -1,6 +1,6 @@
 # Flywheel MCP Tool Reference
 
-Complete reference for MCP tools provided by `@bencassie/flywheel-mcp`.
+Complete reference for MCP tools provided by `@velvetmonkey/flywheel-mcp`.
 
 See the [README](../README.md) for installation and configuration.
 

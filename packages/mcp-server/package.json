@@ -1,5 +1,5 @@
 {
-  "name": "@bencassie/flywheel-mcp",
+  "name": "@velvetmonkey/flywheel-mcp",
   "version": "1.23.1",
   "description": "Flywheel MCP server - graph intelligence for markdown vaults",
   "type": "module",
@@ -54,12 +54,12 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bencassie/flywheel.git"
+    "url": "git+https://github.com/velvetmonkey/flywheel.git"
   },
   "bugs": {
-    "url": "https://github.com/bencassie/flywheel/issues"
+    "url": "https://github.com/velvetmonkey/flywheel/issues"
   },
-  "homepage": "https://github.com/bencassie/flywheel#readme",
+  "homepage": "https://github.com/velvetmonkey/flywheel#readme",
   "engines": {
     "node": ">=18"
   }

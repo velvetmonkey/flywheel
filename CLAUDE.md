@@ -254,7 +254,7 @@ When version changes:
 ### Don't Auto-Push
 
 - Only push when user explicitly asks
-- Users run `/plugin update flywheel@bencassie-flywheel` to get latest version
+- Users run `/plugin update flywheel@velvetmonkey-flywheel` to get latest version
 
 ## Vision
 

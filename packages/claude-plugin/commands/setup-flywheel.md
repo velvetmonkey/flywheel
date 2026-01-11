@@ -98,7 +98,7 @@ I'll add this to your `.mcp.json`:
   "mcpServers": {
     "flywheel": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"]
+      "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"]
     }
   }
 }

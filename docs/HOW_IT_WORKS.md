@@ -15,7 +15,7 @@ Your notes ARE your business. Flywheel turns them into queryable infrastructure.
 
 ## Overview
 
-Flywheel is an MCP (Model Context Protocol) server that provides Claude with intelligent access to your markdown knowledge base. Instead of sending entire files to AI, Flywheel builds an in-memory graph index and exposes 40+ specialized tools for queries and mutations.
+Flywheel is an MCP (Model Context Protocol) server that provides Claude with intelligent access to your markdown knowledge base. Instead of sending entire files to AI, Flywheel builds an in-memory graph index and exposes 40+ specialized query tools.
 
 ---
 
@@ -39,7 +39,6 @@ At startup, Flywheel scans your vault and builds an in-memory index containing:
 This means:
 - Graph queries use **index only** (zero file reads)
 - Content queries read **only relevant sections** (not full files)
-- Mutations target **specific sections** (append to `## Log`, not rewrite file)
 
 ---
 
@@ -84,63 +83,6 @@ Some operations require full file content:
 - When explicitly requested by user
 
 Even then, Flywheel sends **one file** rather than searching through many.
-
----
-
-## Mutation Architecture
-
-Mutations modify files in a controlled way:
-
-### Section Append
-
-```
-You: "/log finished the proposal"
-
-Tool: append_to_section(
-  path: "daily/2026-01-04.md",
-  section: "Log",
-  content: "- 14:32 finished the proposal"
-)
-```
-
-1. Flywheel reads the file
-2. Finds the `## Log` section
-3. Appends the new line
-4. Writes the file back
-
-**Token cost:** ~40 tokens (read section + write confirmation)
-
-### Field Update
-
-```
-You: "update Acme status to active"
-
-Tool: update_frontmatter(
-  path: "clients/acme.md",
-  field: "status",
-  value: "active"
-)
-```
-
-1. Flywheel reads frontmatter
-2. Updates the field
-3. Writes back (preserving all other content)
-
-**Token cost:** ~30 tokens
-
-### File Creation
-
-```
-You: "create a decision record for titanium valves"
-
-Tool: create_note(
-  path: "decisions/DR-015-titanium-valves.md",
-  frontmatter: {date: "2026-01-04", status: "approved"},
-  content: "..."
-)
-```
-
-Claude generates content, Flywheel writes the file.
 
 ---
 
@@ -249,39 +191,6 @@ Checks consistency between frontmatter and prose:
     }
   ]
 }
-```
-
----
-
-## The Business Loop
-
-These tools combine into an improvement cycle:
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    THE BUSINESS LOOP                        │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│   1. CAPTURE                                                │
-│      User logs work → Claude writes to daily note           │
-│                                                             │
-│   2. DETECT                                                 │
-│      suggest_wikilinks() finds unlinked mentions            │
-│      Claude: "I found 3 unlinked mentions. Add links?"      │
-│                                                             │
-│   3. ENHANCE                                                │
-│      infer_folder_conventions() detects patterns            │
-│      Claude: "clients/ notes typically have 'rate' field"   │
-│                                                             │
-│   4. COMPLETE                                               │
-│      find_incomplete_notes() identifies gaps                │
-│      Claude: "Acme Corp is missing 'rate'. Add it?"         │
-│                                                             │
-│   5. VALIDATE                                               │
-│      validate_cross_layer() checks consistency              │
-│      Claude: "Frontmatter says active but prose says closed"│
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
 ```
 
 ---

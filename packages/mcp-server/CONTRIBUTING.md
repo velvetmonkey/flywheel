@@ -6,7 +6,7 @@ Thanks for your interest in contributing! Here's how to help.
 
 ```bash
 # Clone the repo
-git clone https://github.com/bencassie/flywheel.git
+git clone https://github.com/velvetmonkey/flywheel.git
 cd flywheel/packages/mcp-server
 
 # Install dependencies
