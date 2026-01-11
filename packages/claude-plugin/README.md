@@ -197,7 +197,7 @@ Autonomous agents for note aggregation:
 
 ## Required: Flywheel MCP Server
 
-This plugin requires the [@bencassie/flywheel-mcp](https://github.com/bencassie/flywheel) MCP server for vault intelligence and wikilink management.
+This plugin requires the [@velvetmonkey/flywheel-mcp](https://github.com/velvetmonkey/flywheel) MCP server for vault intelligence and wikilink management.
 
 **macOS/Linux/WSL:**
 ```json
@@ -205,7 +205,7 @@ This plugin requires the [@bencassie/flywheel-mcp](https://github.com/bencassie/
   "mcpServers": {
     "flywheel": {
       "command": "npx",
-      "args": ["-y", "@bencassie/flywheel-mcp"],
+      "args": ["-y", "@velvetmonkey/flywheel-mcp"],
       "env": {
         "PROJECT_PATH": "/path/to/your/vault"
       }
@@ -220,7 +220,7 @@ This plugin requires the [@bencassie/flywheel-mcp](https://github.com/bencassie/
   "mcpServers": {
     "flywheel": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
+      "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"],
       "env": {
         "PROJECT_PATH": "C:/Users/YOUR_USER/path/to/vault"
       }

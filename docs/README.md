@@ -67,4 +67,4 @@ See query patterns in action:
 
 ---
 
-**[GitHub](https://github.com/bencassie/flywheel)**
+**[GitHub](https://github.com/velvetmonkey/flywheel)**

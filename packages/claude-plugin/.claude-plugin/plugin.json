@@ -4,10 +4,10 @@
   "description": "Workflow templates, wikilink automation, periodic note rollups, vault health, and privacy protection for markdown vaults",
   "author": {
     "name": "Ben Cassie",
-    "github": "bencassie"
+    "github": "velvetmonkey"
   },
-  "homepage": "https://github.com/bencassie/flywheel",
-  "repository": "https://github.com/bencassie/flywheel",
+  "homepage": "https://github.com/velvetmonkey/flywheel",
+  "repository": "https://github.com/velvetmonkey/flywheel",
   "license": "Apache-2.0",
   "keywords": [
     "obsidian",

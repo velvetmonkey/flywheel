@@ -17,8 +17,8 @@ Get hands-on with Flywheel's core features in 10 minutes.
 ### Step 1: Install the Plugin
 
 ```bash
-/plugin marketplace add bencassie/flywheel
-/plugin install flywheel@bencassie-flywheel
+/plugin marketplace add velvetmonkey/flywheel
+/plugin install flywheel@velvetmonkey-flywheel
 ```
 
 ### Step 2: Setup Flywheel
@@ -162,7 +162,7 @@ Make sure you're in the correct directory. The working directory should be your 
 
 In 10 minutes you learned to:
 
-1. **Install** - `/plugin install flywheel@bencassie-flywheel`
+1. **Install** - `/plugin install flywheel@velvetmonkey-flywheel`
 2. **Setup** - Say "setup flywheel"
 3. **Navigate** - "what links to X", "how do A and B connect"
 4. **Query** - Graph, temporal, and schema queries

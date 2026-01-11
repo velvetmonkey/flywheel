@@ -448,6 +448,43 @@ export function registerPrimitiveTools(
     }
   );
 
+  // get_incomplete_tasks
+  server.registerTool(
+    'get_incomplete_tasks',
+    {
+      title: 'Get Incomplete Tasks',
+      description: 'Get all incomplete (open) tasks from the vault. Simpler interface that defaults to open tasks only.',
+      inputSchema: {
+        folder: z.string().optional().describe('Limit to notes in this folder'),
+        tag: z.string().optional().describe('Filter to tasks with this tag'),
+        limit: z.number().default(50).describe('Maximum tasks to return'),
+        offset: z.number().default(0).describe('Number of results to skip (for pagination)'),
+      },
+    },
+    async ({ folder, tag, limit: requestedLimit, offset }) => {
+      const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
+      const index = getIndex();
+      const vaultPath = getVaultPath();
+      const config = getConfig();
+      const result = await getAllTasks(index, vaultPath, {
+        status: 'open',
+        folder,
+        tag,
+        limit: limit + offset,
+        excludeTags: config.exclude_task_tags,
+      });
+      const paginatedTasks = result.tasks.slice(offset, offset + limit);
+
+      return {
+        content: [{ type: 'text' as const, text: JSON.stringify({
+          total_incomplete: result.open_count,
+          returned_count: paginatedTasks.length,
+          tasks: paginatedTasks,
+        }, null, 2) }],
+      };
+    }
+  );
+
   // ============================================
   // ADVANCED GRAPH PRIMITIVES
   // ============================================
