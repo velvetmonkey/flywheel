@@ -7,9 +7,10 @@ import * as path from 'path';
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex } from '../core/types.js';
-import { buildVaultIndex } from '../core/graph.js';
+import { buildVaultIndex, setIndexState, setIndexError } from '../core/graph.js';
 import { loadConfig, inferConfig, saveConfig, type FlywheelConfig } from '../core/config.js';
 import { MAX_LIMIT } from '../core/constants.js';
+import { requireIndex } from '../core/indexGuard.js';
 
 /**
  * Register system/utility tools with the MCP server
@@ -52,9 +53,14 @@ export function registerSystemTools(
       const vaultPath = getVaultPath();
       const startTime = Date.now();
 
+      // Mark index as building during refresh
+      setIndexState('building');
+      setIndexError(null);
+
       try {
         const newIndex = await buildVaultIndex(vaultPath);
         setIndex(newIndex);
+        setIndexState('ready');
 
         // Infer config from vault, merge with existing, save
         if (setConfig) {
@@ -81,6 +87,9 @@ export function registerSystemTools(
           structuredContent: output,
         };
       } catch (err) {
+        setIndexState('error');
+        setIndexError(err instanceof Error ? err : new Error(String(err)));
+
         const output: RefreshIndexOutput = {
           success: false,
           notes_count: 0,
@@ -149,6 +158,7 @@ export function registerSystemTools(
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: GetAllEntitiesOutput;
     }> => {
+      requireIndex();
       const index = getIndex();
 
       // Cap limit to prevent massive payloads
@@ -254,6 +264,7 @@ export function registerSystemTools(
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: GetRecentNotesOutput;
     }> => {
+      requireIndex();
       const index = getIndex();
 
       // Cap limit to prevent massive payloads
@@ -373,6 +384,7 @@ export function registerSystemTools(
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: GetUnlinkedMentionsOutput;
     }> => {
+      requireIndex();
       const index = getIndex();
       const vaultPath = getVaultPath();
 
@@ -510,6 +522,7 @@ export function registerSystemTools(
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: GetNoteMetadataOutput;
     }> => {
+      requireIndex();
       const index = getIndex();
       const vaultPath = getVaultPath();
 
@@ -628,6 +641,7 @@ export function registerSystemTools(
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: GetFolderStructureOutput;
     }> => {
+      requireIndex();
       const index = getIndex();
 
       // Build folder map

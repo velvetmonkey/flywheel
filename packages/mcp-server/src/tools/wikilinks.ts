@@ -7,6 +7,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex } from '../core/types.js';
 import { MAX_LIMIT } from '../core/constants.js';
 import { resolveTarget } from '../core/graph.js';
+import { requireIndex } from '../core/indexGuard.js';
 
 /**
  * Match entity in text, avoiding existing wikilinks and code blocks

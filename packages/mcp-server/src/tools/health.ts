@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex } from '../core/types.js';
-import { resolveTarget, getBacklinksForNote, findSimilarEntity } from '../core/graph.js';
+import { resolveTarget, getBacklinksForNote, findSimilarEntity, getIndexState, getIndexProgress, getIndexError, type IndexState } from '../core/graph.js';
 import { MAX_LIMIT } from '../core/constants.js';
 
 /** Staleness threshold in seconds (5 minutes) */
@@ -21,10 +21,18 @@ export function registerHealthTools(
   getVaultPath: () => string
 ): void {
   // health_check - MCP server health status (Gate 5: MCP Connection Verification)
+  const IndexProgressSchema = z.object({
+    parsed: z.number().describe('Number of files parsed so far'),
+    total: z.number().describe('Total number of files to parse'),
+  }).optional();
+
   const HealthCheckOutputSchema = {
     status: z.enum(['healthy', 'degraded', 'unhealthy']).describe('Overall health status'),
     vault_accessible: z.boolean().describe('Whether the vault path is accessible'),
     vault_path: z.string().describe('The vault path being used'),
+    index_state: z.enum(['building', 'ready', 'error']).describe('Current state of the vault index'),
+    index_progress: IndexProgressSchema.describe('Progress of index build (when building)'),
+    index_error: z.string().optional().describe('Error message if index failed to build'),
     index_built: z.boolean().describe('Whether the index has been built'),
     index_age_seconds: z.number().describe('Seconds since the index was built'),
     index_stale: z.boolean().describe('Whether the index is stale (>5 minutes old)'),
@@ -38,6 +46,9 @@ export function registerHealthTools(
     status: 'healthy' | 'degraded' | 'unhealthy';
     vault_accessible: boolean;
     vault_path: string;
+    index_state: IndexState;
+    index_progress?: { parsed: number; total: number };
+    index_error?: string;
     index_built: boolean;
     index_age_seconds: number;
     index_stale: boolean;
@@ -64,6 +75,11 @@ export function registerHealthTools(
       const vaultPath = getVaultPath();
       const recommendations: string[] = [];
 
+      // Get index state info
+      const indexState = getIndexState();
+      const indexProgress = getIndexProgress();
+      const indexErrorObj = getIndexError();
+
       // Check vault accessibility
       let vaultAccessible = false;
       try {
@@ -75,30 +91,37 @@ export function registerHealthTools(
       }
 
       // Check index status
-      const indexBuilt = index !== undefined && index.notes !== undefined;
+      const indexBuilt = indexState === 'ready' && index !== undefined && index.notes !== undefined;
       const indexAge = indexBuilt && index.builtAt
         ? Math.floor((Date.now() - index.builtAt.getTime()) / 1000)
         : -1;
-      const indexStale = indexAge > STALE_THRESHOLD_SECONDS;
+      const indexStale = indexBuilt && indexAge > STALE_THRESHOLD_SECONDS;
 
-      if (indexStale) {
+      // Add state-specific recommendations
+      if (indexState === 'building') {
+        const { parsed, total } = indexProgress;
+        const progress = total > 0 ? ` (${parsed}/${total} files)` : '';
+        recommendations.push(`Index is building${progress}. Some tools may not be available yet.`);
+      } else if (indexState === 'error') {
+        recommendations.push(`Index failed to build: ${indexErrorObj?.message || 'unknown error'}`);
+      } else if (indexStale) {
         recommendations.push(`Index is ${Math.floor(indexAge / 60)} minutes old. Consider running refresh_index.`);
       }
 
-      // Count metrics
+      // Count metrics (only if index is ready)
       const noteCount = indexBuilt ? index.notes.size : 0;
       const entityCount = indexBuilt ? index.entities.size : 0;
       const tagCount = indexBuilt ? index.tags.size : 0;
 
-      if (noteCount === 0 && vaultAccessible) {
+      if (indexBuilt && noteCount === 0 && vaultAccessible) {
         recommendations.push('No notes found in vault. Is PROJECT_PATH pointing to a markdown vault?');
       }
 
       // Determine overall status
       let status: 'healthy' | 'degraded' | 'unhealthy';
-      if (!vaultAccessible || !indexBuilt) {
+      if (!vaultAccessible || indexState === 'error') {
         status = 'unhealthy';
-      } else if (indexStale || recommendations.length > 0) {
+      } else if (indexState === 'building' || indexStale || recommendations.length > 0) {
         status = 'degraded';
       } else {
         status = 'healthy';
@@ -108,6 +131,9 @@ export function registerHealthTools(
         status,
         vault_accessible: vaultAccessible,
         vault_path: vaultPath,
+        index_state: indexState,
+        index_progress: indexState === 'building' ? indexProgress : undefined,
+        index_error: indexState === 'error' && indexErrorObj ? indexErrorObj.message : undefined,
         index_built: indexBuilt,
         index_age_seconds: indexAge,
         index_stale: indexStale,

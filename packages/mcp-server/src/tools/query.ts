@@ -6,6 +6,7 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex, VaultNote } from '../core/types.js';
 import { MAX_LIMIT } from '../core/constants.js';
+import { requireIndex } from '../core/indexGuard.js';
 
 /**
  * Check if a note matches frontmatter filters

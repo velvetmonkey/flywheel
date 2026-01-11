@@ -7,6 +7,7 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex } from '../core/types.js';
+import { requireIndex } from '../core/indexGuard.js';
 
 /**
  * Date pattern regexes for different note types

@@ -15,6 +15,7 @@ import {
   findHubNotes,
   resolveTarget,
 } from '../core/graph.js';
+import { requireIndex } from '../core/indexGuard.js';
 
 /**
  * Get surrounding context for a backlink
@@ -91,6 +92,7 @@ export function registerGraphTools(
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: GetBacklinksOutput;
     }> => {
+      requireIndex();
       const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
       const vaultPath = getVaultPath();
@@ -191,6 +193,7 @@ export function registerGraphTools(
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: GetForwardLinksOutput;
     }> => {
+      requireIndex();
       const index = getIndex();
 
       // Try to resolve the path if it's just a title
@@ -272,6 +275,7 @@ export function registerGraphTools(
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: FindOrphansOutput;
     }> => {
+      requireIndex();
       const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
 
@@ -346,6 +350,7 @@ export function registerGraphTools(
       content: Array<{ type: 'text'; text: string }>;
       structuredContent: FindHubsOutput;
     }> => {
+      requireIndex();
       const limit = Math.min(requestedLimit ?? 50, MAX_LIMIT);
       const index = getIndex();
 

@@ -2,7 +2,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import type { VaultIndex } from './core/types.js';
-import { buildVaultIndex } from './core/graph.js';
+import { buildVaultIndex, setIndexState, setIndexError } from './core/graph.js';
 import { registerGraphTools } from './tools/graph.js';
 import { registerWikilinkTools } from './tools/wikilinks.js';
 import { registerHealthTools } from './tools/health.js';
@@ -101,44 +101,49 @@ registerMigrationTools(
 );
 
 async function main() {
-  // Build the vault index
-  console.error('Building vault index...');
-  const startTime = Date.now();
-
-  try {
-    vaultIndex = await buildVaultIndex(vaultPath);
-    const duration = Date.now() - startTime;
-    console.error(`Vault index built in ${duration}ms`);
-  } catch (err) {
-    console.error('Failed to build vault index:', err);
-    process.exit(1);
-  }
-
-  // Load existing config, infer from vault, merge and save
-  const existing = loadConfig(vaultPath);
-  const inferred = inferConfig(vaultIndex, vaultPath);
-  saveConfig(vaultPath, inferred, existing);
-  flywheelConfig = loadConfig(vaultPath); // Reload merged config
-
-  if (flywheelConfig.vault_name) {
-    console.error(`[Flywheel] Vault: ${flywheelConfig.vault_name}`);
-  }
-  if (flywheelConfig.paths) {
-    const detectedPaths = Object.entries(flywheelConfig.paths)
-      .filter(([, v]) => v)
-      .map(([k, v]) => `${k}: ${v}`);
-    if (detectedPaths.length) {
-      console.error(`[Flywheel] Detected paths: ${detectedPaths.join(', ')}`);
-    }
-  }
-  if (flywheelConfig.exclude_task_tags?.length) {
-    console.error(`[Flywheel] Excluding task tags: ${flywheelConfig.exclude_task_tags.join(', ')}`);
-  }
-
-  // Start the MCP server
+  // Start the MCP server FIRST (immediate - no waiting for index)
   const transport = new StdioServerTransport();
   await server.connect(transport);
   console.error('Flywheel MCP server running on stdio');
+
+  // Build the vault index in background (non-blocking)
+  console.error('Building vault index in background...');
+  const startTime = Date.now();
+
+  buildVaultIndex(vaultPath)
+    .then((index) => {
+      vaultIndex = index;
+      setIndexState('ready');
+      const duration = Date.now() - startTime;
+      console.error(`Vault index ready in ${duration}ms`);
+
+      // Now that index is ready, load/infer config
+      const existing = loadConfig(vaultPath);
+      const inferred = inferConfig(vaultIndex, vaultPath);
+      saveConfig(vaultPath, inferred, existing);
+      flywheelConfig = loadConfig(vaultPath);
+
+      if (flywheelConfig.vault_name) {
+        console.error(`[Flywheel] Vault: ${flywheelConfig.vault_name}`);
+      }
+      if (flywheelConfig.paths) {
+        const detectedPaths = Object.entries(flywheelConfig.paths)
+          .filter(([, v]) => v)
+          .map(([k, v]) => `${k}: ${v}`);
+        if (detectedPaths.length) {
+          console.error(`[Flywheel] Detected paths: ${detectedPaths.join(', ')}`);
+        }
+      }
+      if (flywheelConfig.exclude_task_tags?.length) {
+        console.error(`[Flywheel] Excluding task tags: ${flywheelConfig.exclude_task_tags.join(', ')}`);
+      }
+    })
+    .catch((err) => {
+      setIndexState('error');
+      setIndexError(err instanceof Error ? err : new Error(String(err)));
+      console.error('Failed to build vault index:', err);
+      // Don't exit - server is still running, tools will report the error
+    });
 }
 
 main().catch((error) => {

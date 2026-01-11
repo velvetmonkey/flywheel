@@ -11,6 +11,7 @@ import * as path from 'path';
 import matter from 'gray-matter';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex, VaultNote } from '../core/types.js';
+import { requireIndex } from '../core/indexGuard.js';
 
 // =============================================================================
 // TYPES

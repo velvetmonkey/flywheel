@@ -21,6 +21,52 @@ const PARSE_CONCURRENCY = 50;
 /** Progress reporting interval (every N files) */
 const PROGRESS_INTERVAL = 100;
 
+// =============================================================================
+// Index State Tracking (for async startup)
+// =============================================================================
+
+/** Possible states of the vault index */
+export type IndexState = 'building' | 'ready' | 'error';
+
+/** Current state of the index */
+let indexState: IndexState = 'building';
+
+/** Progress of index building */
+let indexProgress = { parsed: 0, total: 0 };
+
+/** Error if index building failed */
+let indexError: Error | null = null;
+
+/** Get the current index state */
+export function getIndexState(): IndexState {
+  return indexState;
+}
+
+/** Get the current index build progress */
+export function getIndexProgress(): { parsed: number; total: number } {
+  return { ...indexProgress };
+}
+
+/** Get the index error (if any) */
+export function getIndexError(): Error | null {
+  return indexError;
+}
+
+/** Set the index state (called by index.ts during startup) */
+export function setIndexState(state: IndexState): void {
+  indexState = state;
+}
+
+/** Set the index error (called by index.ts on failure) */
+export function setIndexError(error: Error | null): void {
+  indexError = error;
+}
+
+/** Update index progress (called during build) */
+function updateIndexProgress(parsed: number, total: number): void {
+  indexProgress = { parsed, total };
+}
+
 /**
  * Normalize a link target for matching
  * - Lowercase for case-insensitive matching
@@ -92,6 +138,9 @@ async function buildVaultIndexInternal(
   const files = await scanVault(vaultPath);
   console.error(`Found ${files.length} markdown files`);
 
+  // Initialize progress tracking
+  updateIndexProgress(0, files.length);
+
   // Parse all notes with concurrency control
   const notes = new Map<string, VaultNote>();
   const parseErrors: string[] = [];
@@ -121,7 +170,10 @@ async function buildVaultIndexInternal(
       parsedCount++;
     }
 
-    // Progress reporting
+    // Update progress tracking (always)
+    updateIndexProgress(parsedCount, files.length);
+
+    // Progress reporting to console (at intervals)
     if (parsedCount % PROGRESS_INTERVAL === 0 || parsedCount === files.length) {
       const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
       console.error(`Parsed ${parsedCount}/${files.length} files (${elapsed}s)`);
