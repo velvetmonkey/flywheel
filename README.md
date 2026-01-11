@@ -69,8 +69,6 @@ Most AI reads files to find answers. Flywheel indexes structure, relationships, 
 ├─────────────────────────────────────────┤
 │  FLYWHEEL (graph intelligence)          │  ← The Index
 │  - 40+ query tools                      │
-│  - 50+ workflow commands                │
-│  - Auto-curation hooks                  │
 ├─────────────────────────────────────────┤
 │  YOUR VAULT (plain markdown)            │
 │  - Edit with any tool you want          │
@@ -87,62 +85,6 @@ At startup, Flywheel scans your vault and builds an in-memory graph:
 - **Modification dates** → temporal analysis
 
 Claude queries this index. Files stay on disk.
-
----
-
-## Pre-Built Commands
-
-Beyond queries, Flywheel includes 50+ workflow commands:
-
-| Category | Examples |
-|----------|----------|
-| **Daily ops** | `/log research findings`, `/rollup` (daily → weekly → monthly) |
-| **Graph analysis** | `/vault-health`, `/vault-orphans`, `/vault-hubs` |
-| **Schema management** | `/vault-schema`, `/normalize-note`, `/promote-frontmatter` |
-| **Tasks** | `/vault-tasks`, `/vault-due`, `/extract-actions` |
-| **Reviews** | `/weekly-review`, `/okr-review`, `/standup-rollup` |
-
-```
-You: "log the client call with Acme"
-
-Claude:
-- Queries your entities for [[Acme Corp]]
-- Reads only the ## Log section of today's daily note
-- Appends timestamped entry with wikilinks
-- Confirms: "✓ Added log entry with 3 entities linked"
-```
-
-**[Full Command Reference →](docs/SKILLS_REFERENCE.md)**
-
----
-
-## Build Your Own Skills
-
-Skills are markdown files that teach Claude workflows. No code required.
-
-```markdown
-# packages/claude-plugin/skills/weekly-digest/SKILL.md
-
----
-name: weekly-digest
-description: Generate digest of vault activity
-trigger_keywords:
-  - "weekly digest"
-  - "what happened this week"
-allowed-tools: Read, Write, mcp__flywheel__get_recent_notes
----
-
-## Process
-
-1. Query recent activity (last 7 days)
-2. Group by folder
-3. Generate summary
-4. Present to user
-```
-
-When you say "weekly digest", Claude follows your process.
-
-**[Building Skills Guide →](docs/BUILDING_SKILLS.md)**
 
 ---
 
@@ -173,7 +115,6 @@ claude
 ### 3. Try Queries
 
 ```
-"check vault health"           → Graph + schema diagnostics
 "find orphan notes"            → Disconnected notes
 "what links to [[My Note]]"    → Backlink traversal
 "show notes modified today"    → Temporal query
@@ -224,8 +165,6 @@ Your vault gets smarter over time:
 |-----------|-------------|---------------|---------|
 | "What's blocking X?" | ~5,000 tokens | ~50 tokens | **100x** |
 | "Find stale notes" | ~10,000 tokens | ~100 tokens | **100x** |
-| "/log research" | ~800 tokens | ~42 tokens | **19x** |
-| "do a rollup" (7 days) | ~7,000 tokens | ~700 tokens | **10x** |
 
 Flywheel reads sections, not files. Queries index, not content.
 
@@ -243,7 +182,7 @@ Flywheel reads sections, not files. Queries index, not content.
 **Plus:**
 - **Git-native** — your business history, versioned
 - **Plain text** — future-proof, no lock-in
-- **Extensible** — add your own skills, agents, hooks
+- **Extensible** — add your own workflows
 - **Privacy** — files stay on disk, only sections sent when needed
 
 ---
@@ -254,10 +193,7 @@ Flywheel reads sections, not files. Queries index, not content.
 |-----|----------------|
 | **[Query Guide](docs/QUERY_GUIDE.md)** | Graph, temporal, schema queries |
 | **[Getting Started](docs/GETTING_STARTED.md)** | Installation, platform setup |
-| **[Building Skills](docs/BUILDING_SKILLS.md)** | Create custom workflows |
 | **[MCP Tools](docs/MCP_REFERENCE.md)** | All 40+ graph query tools |
-| **[Skills Reference](docs/SKILLS_REFERENCE.md)** | 50+ pre-built commands |
-| **[Six Gates](docs/SIX_GATES.md)** | Safety framework |
 
 ---
 

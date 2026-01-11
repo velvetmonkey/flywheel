@@ -291,8 +291,6 @@ These tools combine into an improvement cycle:
 | Operation | Without Flywheel | With Flywheel | Savings |
 |-----------|------------------|---------------|---------|
 | Graph query ("what's blocking X?") | ~5,000 tokens | ~50 tokens | **100x** |
-| Log entry | ~800 tokens | ~42 tokens | **19x** |
-| Rollup (7 days) | ~7,000 tokens | ~700 tokens | **10x** |
 | Check overdue tasks | ~3,000 tokens | ~100 tokens | **30x** |
 | Find orphan notes | ~10,000 tokens | ~80 tokens | **125x** |
 
@@ -311,26 +309,23 @@ Flywheel exposes tools via MCP, so Claude:
 2. **Chooses the right tool** based on the query
 3. **Chains tools** for complex operations
 
-Example chain for "do a rollup":
+Example chain for "what's blocking the milestone?":
 
 ```
-1. get_recent_notes(days: 7)
-   → Returns 7 daily note paths
+1. get_backlinks(path: "Propulsion Milestone")
+   → Returns notes linking to milestone
 
-2. get_section_content(path: each, heading: "Log")
-   → Returns log sections (not full files)
+2. search_notes(where: { status: "blocked" })
+   → Returns blocked items
 
-3. [Claude summarizes the logs]
+3. get_link_path(from: "Turbopump Test", to: "Propulsion Milestone")
+   → Returns dependency chain
 
-4. create_note(path: "weekly/2026-W01.md", content: summary)
-
-5. append_to_section(path: "monthly/2026-01.md", section: "Weeks", content: link)
-
-6. append_to_section(path: "Achievements.md", section: "January", content: wins)
+4. [Claude explains the blocker path]
 ```
 
-**Total tokens:** ~700 (section reads + writes)
-**Without Flywheel:** ~7,000 (reading 7 full daily notes)
+**Total tokens:** ~50 (index queries only)
+**Without Flywheel:** ~5,000 (reading all related files)
 
 ---
 
@@ -345,50 +340,8 @@ The privacy benefit isn't just policy — it's architecture. Claude physically c
 
 ---
 
-## Extending Flywheel
-
-### Custom Skills
-
-Add `/your-command` skills in `.claude/skills/`:
-
-```markdown
-# my-skill.md
----
-trigger: /standup
----
-
-Read today's daily note and generate a standup summary.
-Use get_section_content for the Log section.
-```
-
-### Custom Hooks
-
-React to events in `.claude/hooks/`:
-
-```python
-# on-daily-create.py
-# Runs when a new daily note is created
-# Adds standard template sections
-```
-
-### MCP Tool Extensions
-
-Add new graph query tools by extending the MCP server:
-
-```typescript
-// src/tools/custom.ts
-export function myCustomQuery(index: VaultIndex, params: MyParams) {
-  // Query the index
-  // Return structured data
-}
-```
-
----
-
 ## Related Documentation
 
-- [Getting Started](GETTING_STARTED.md) — Installation and first commands
+- [Getting Started](GETTING_STARTED.md) — Installation and first queries
 - [MCP Tools Reference](MCP_REFERENCE.md) — All 40+ tools documented
-- [Skills Reference](SKILLS_REFERENCE.md) — Slash commands
-- [Agentic Patterns](AGENTIC_PATTERNS.md) — Reliable AI workflows
-- [Six Gates](SIX_GATES.md) — Safety framework for mutations
+- [Query Guide](QUERY_GUIDE.md) — Graph, temporal, and schema queries

@@ -81,62 +81,6 @@ Start with read-only queries to explore your vault:
 
 ---
 
-## Then Try Commands
-
-Once comfortable with queries, try workflow commands:
-
-### Daily Operations
-
-| Say This | What Happens |
-|----------|--------------|
-| "log fixed the bug" | Timestamped entry in daily note |
-| "do a rollup" | Daily → weekly → monthly summaries |
-| "show tasks due" | Tasks with due dates |
-
-### Vault Maintenance
-
-| Say This | What Happens |
-|----------|--------------|
-| "check vault health" | Full diagnostics |
-| "fix broken links" | Find and resolve dead links |
-| "normalize this note" | Apply folder schema |
-
-### Reviews
-
-| Say This | What Happens |
-|----------|--------------|
-| "/weekly-review" | Generate weekly summary |
-| "/extract-actions" | Pull action items from meeting notes |
-
-**[Full Command Reference →](./SKILLS_REFERENCE.md)**
-
----
-
-## Build Your Own Skills
-
-When you find yourself repeating workflows, create a skill:
-
-```markdown
-# packages/claude-plugin/skills/my-skill/SKILL.md
-
----
-name: my-skill
-description: What this skill does
-trigger_keywords:
-  - "trigger phrase"
-allowed-tools: Read, mcp__flywheel__search_notes
----
-
-## Process
-1. First step
-2. Second step
-3. Verify and confirm
-```
-
-**[Building Skills Guide →](./BUILDING_SKILLS.md)**
-
----
-
 ## How It Works
 
 Flywheel builds an **in-memory graph** at startup:
@@ -166,7 +110,6 @@ Flywheel builds an **in-memory graph** at startup:
 |-------|------------------|---------------|
 | "What links to X?" | ~5,000 tokens | ~50 tokens |
 | "Find stale notes" | ~10,000 tokens | ~100 tokens |
-| "do a rollup" | ~7,000 tokens | ~700 tokens |
 
 ---
 
@@ -196,10 +139,7 @@ claude
 | Want To... | Read |
 |-----------|------|
 | Master queries | [Query Guide](./QUERY_GUIDE.md) |
-| See all commands | [Skills Reference](./SKILLS_REFERENCE.md) |
-| Build custom skills | [Building Skills](./BUILDING_SKILLS.md) |
 | See all MCP tools | [MCP Reference](./MCP_REFERENCE.md) |
-| Understand safety | [Six Gates](./SIX_GATES.md) |
 
 ---
 

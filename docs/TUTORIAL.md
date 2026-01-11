@@ -8,8 +8,7 @@ Get hands-on with Flywheel's core features in 10 minutes.
 
 - Install and configure Flywheel
 - Explore a knowledge graph
-- Run your first rollup
-- Understand natural language skill invocation
+- Query your vault efficiently
 
 ---
 
@@ -62,24 +61,21 @@ You should see:
 - **Hub notes**: 2 highly connected
 ```
 
-### Step 2: Check Vault Health
-
-Say: **"check vault health"**
-
-This runs a comprehensive analysis:
-- Graph statistics (links, orphans, hubs)
-- Schema analysis (frontmatter patterns)
-- Issues and recommendations
-
-### Step 3: Find Hub Notes
+### Step 2: Find Hub Notes
 
 Say: **"show hub notes"**
 
 Hub notes are your most connected knowledge - good entry points for understanding the vault.
 
+### Step 3: Find Orphan Notes
+
+Say: **"find orphan notes"**
+
+These are notes with no incoming links - they might need connections.
+
 ---
 
-## Part 3: Graph Intelligence (2 min)
+## Part 3: Graph Intelligence (3 min)
 
 ### Backlinks
 
@@ -87,56 +83,39 @@ Say: **"show backlinks for Ben Carter"**
 
 See all notes that reference Ben Carter.
 
-### Orphan Notes
-
-Say: **"find orphan notes"**
-
-These are notes with no incoming links - they might need connections.
-
 ### Path Finding
 
 Say: **"how do Project Alpha and Client ABC connect?"**
 
 Finds the shortest path of links between two notes.
 
+### Common References
+
+Say: **"what do Sarah and Mike both link to?"**
+
+Find notes that multiple people or concepts reference together.
+
 ---
 
-## Part 4: Your First Rollup (3 min)
+## Part 4: Schema Queries (2 min)
 
-The rollup feature aggregates scattered daily notes into structured summaries.
+### Frontmatter Fields
 
-### How Rollup Works
+Say: **"what fields exist in projects/"**
 
-```
-Daily Notes                Weekly              Monthly            Yearly
-───────────────────────────────────────────────────────────────────────────
-Jan 1  ─┐
-Jan 2  ─┼─► Week 1 ─┐
-Jan 3  ─┤          │
-...    ─┘          │
-Jan 8  ─┐          ├─► January ─┐
-Jan 9  ─┼─► Week 2 ─┤           │
-...    ─┘          │           ├─► 2026 ─► Achievements.md
-                   ...         │
-                              ...
-```
+See all frontmatter fields used in a folder.
 
-### Run the Rollup
+### Field Values
 
-Say: **"do a rollup"**
+Say: **"show all unique values for status"**
 
-Claude will:
-1. Ask to confirm scope (default: last 2 months)
-2. Process daily notes → weekly summaries
-3. Process weekly → monthly → quarterly → yearly
-4. Extract achievements
+See the vocabulary used across your vault.
 
-### See the Results
+### Filtered Search
 
-Check the generated summary files:
-- `weekly-notes/YYYY-WXX.md`
-- `monthly-notes/YYYY-MM.md`
-- `Achievements.md`
+Say: **"find notes where status is blocked"**
+
+Query notes by frontmatter values.
 
 ---
 
@@ -149,22 +128,19 @@ cd /path/to/your/vault
 # Say: "setup flywheel"
 ```
 
-### Explore More Skills
-
-All skills are triggered by natural language:
+### Explore More Queries
 
 | Say This | What Happens |
 |----------|--------------|
-| "add log entry: finished feature X" | Appends to today's daily note |
-| "find broken links" | Scans for dead wikilinks |
-| "extract actions from meeting" | Pulls action items from meeting notes |
-| "review my OKRs" | Score quarterly objectives |
+| "show notes modified this week" | Temporal query |
+| "find stale important notes" | High-connection, old modification |
+| "find notes tagged #urgent" | Tag filtering |
+| "list notes in meetings/" | Folder filtering |
 
 ### Read More
 
-- [AGENTIC_PATTERNS.md](AGENTIC_PATTERNS.md) - Understand how Flywheel makes AI reliable
-- [ARCHITECTURE.md](ARCHITECTURE.md) - System design deep dive
-- [SKILLS_REFERENCE.md](SKILLS_REFERENCE.md) - All 49 skills
+- [QUERY_GUIDE.md](QUERY_GUIDE.md) - Complete query reference
+- [MCP_REFERENCE.md](MCP_REFERENCE.md) - All 40+ MCP tools
 
 ---
 
@@ -180,10 +156,6 @@ All skills are triggered by natural language:
 
 Make sure you're in the correct directory. The working directory should be your vault root.
 
-### "No daily notes found"
-
-Flywheel auto-detects your daily notes folder. If you use a non-standard structure, check that you have files matching `YYYY-MM-DD.md` pattern.
-
 ---
 
 ## Summary
@@ -192,8 +164,7 @@ In 10 minutes you learned to:
 
 1. **Install** - `/plugin install flywheel@bencassie-flywheel`
 2. **Setup** - Say "setup flywheel"
-3. **Explore** - "check vault health", "find orphan notes"
-4. **Rollup** - "do a rollup" to aggregate notes
-5. **Navigate** - "what links to X", "how do A and B connect"
+3. **Navigate** - "what links to X", "how do A and B connect"
+4. **Query** - Graph, temporal, and schema queries
 
 Flywheel gives your AI full intelligence over your knowledge graph - just describe what you want in natural language.
