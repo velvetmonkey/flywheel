@@ -2,7 +2,7 @@
 
 Query your markdown vault like a database.
 
-**[Getting Started](GETTING_STARTED.md)** | **[Query Guide](QUERY_GUIDE.md)** | **[Demo Vaults](../demos/)**
+**[Query Guide](QUERY_GUIDE.md)** | **[MCP Tools](MCP_REFERENCE.md)** | **[Demo Vaults](../demos/)**
 
 ---
 
@@ -45,7 +45,6 @@ Answer in ~50 tokens (vs 5,000+ reading files)
 ## Documentation Index
 
 ### Getting Started
-- **[Quick Start](GETTING_STARTED.md)** — Install, setup, first queries
 - **[Tutorial](TUTORIAL.md)** — 10-minute hands-on guide
 - **[Query Guide](QUERY_GUIDE.md)** — Graph, temporal, schema queries
 

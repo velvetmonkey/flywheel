@@ -251,6 +251,5 @@ The privacy benefit isn't just policy — it's architecture. Claude physically c
 
 ## Related Documentation
 
-- [Getting Started](GETTING_STARTED.md) — Installation and first queries
 - [MCP Tools Reference](MCP_REFERENCE.md) — All 40+ tools documented
 - [Query Guide](QUERY_GUIDE.md) — Graph, temporal, and schema queries
