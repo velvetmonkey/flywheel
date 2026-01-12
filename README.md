@@ -323,7 +323,6 @@ Flywheel reads sections, not files. Queries index, not content.
 |-----|----------------|
 | **[MCP Tools Reference](docs/MCP_REFERENCE.md)** | All 40+ tools with parameters |
 | **[Query Guide](docs/QUERY_GUIDE.md)** | Graph, temporal, schema query patterns |
-| **[Getting Started](docs/GETTING_STARTED.md)** | Installation, platform setup |
 | **[How It Works](docs/HOW_IT_WORKS.md)** | Technical architecture |
 
 ---
@@ -331,8 +330,6 @@ Flywheel reads sections, not files. Queries index, not content.
 ## Platform Support
 
 macOS / Linux / WSL / Windows
-
-**[Platform Setup →](docs/GETTING_STARTED.md#platform-specific-notes)**
 
 ---
 

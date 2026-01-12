@@ -379,7 +379,6 @@ Flywheel's agentic patterns make AI workflows reliable:
 ## Next Steps
 
 - **Try it**: [demos/](../demos/) - 4 demo vaults with concrete examples
-- **Install**: [GETTING_STARTED.md](./GETTING_STARTED.md) - 30-second setup
 - **Deep dive**: [SIX_GATES.md](./SIX_GATES.md) - Full safety framework
 - **Build**: [AGENTS_REFERENCE.md](./AGENTS_REFERENCE.md) - Write your own agents
 
