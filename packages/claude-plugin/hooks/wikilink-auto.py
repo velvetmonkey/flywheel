@@ -25,6 +25,8 @@ Protected zones (never wikilinked):
 - HTML/XML tags (<tag>)
 - Obsidian comments (%% ... %%)
 - Math expressions ($ ... $)
+- Markdown headings (# ... through ###### ...)
+- List markers (1. , - , * , + )
 
 Exit codes:
 - 0: Always (informational only, never blocks)
@@ -175,8 +177,17 @@ def apply_wikilinks(content: str, entities_to_link: list) -> tuple[str, int]:
     math_block_pattern = r'\$\$[\s\S]*?\$\$|\$[^\$]+\$'
     math_blocks = list(re.finditer(math_block_pattern, content))
 
+    # Remove markdown headings (lines starting with # - don't wikify heading text)
+    heading_pattern = r'^#{1,6}\s+.*$'
+    headings = list(re.finditer(heading_pattern, content, re.MULTILINE))
+
+    # Remove list markers (numbered lists like "1. ", "2. " and bullets "- ", "* ", "+ ")
+    # Only protect the marker itself, not the entire line content
+    list_marker_pattern = r'^\s*(?:\d+\.|[-*+])\s'
+    list_markers = list(re.finditer(list_marker_pattern, content, re.MULTILINE))
+
     # Combine all skip zones (frontmatter MUST be first to protect it)
-    skip_zones = frontmatter + [(m.start(), m.end()) for m in code_blocks + inline_codes + existing_links + markdown_links + bare_urls + hashtags + html_tags + obsidian_comments + math_blocks]
+    skip_zones = frontmatter + [(m.start(), m.end()) for m in code_blocks + inline_codes + existing_links + markdown_links + bare_urls + hashtags + html_tags + obsidian_comments + math_blocks + headings + list_markers]
     skip_zones.sort()
 
     links_added = 0
@@ -320,6 +331,10 @@ def find_linkable_candidates(content: str, existing_wikilinks: set) -> dict:
     content_no_code = re.sub(r'%%.*?%%', '', content_no_code, flags=re.DOTALL)
     # Remove math expressions
     content_no_code = re.sub(r'\$\$[\s\S]*?\$\$|\$[^\$]+\$', '', content_no_code)
+    # Remove markdown headings (structural elements, not content)
+    content_no_code = re.sub(r'^#{1,6}\s+.*$', '', content_no_code, flags=re.MULTILINE)
+    # Remove list markers (don't wikify "1." or "- " markers)
+    content_no_code = re.sub(r'^\s*(?:\d+\.|[-*+])\s', ' ', content_no_code, flags=re.MULTILINE)
 
     # Pattern 1: Capitalized multi-word phrases (2-4 words)
     multi_word_pattern = r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3})\b'
@@ -465,6 +480,10 @@ def main():
         content_no_code = re.sub(r'<[^>]+>', '', content_no_code)
         content_no_code = re.sub(r'%%.*?%%', '', content_no_code, flags=re.DOTALL)
         content_no_code = re.sub(r'\$\$[\s\S]*?\$\$|\$[^\$]+\$', '', content_no_code)
+        # Remove markdown headings (structural elements, not content)
+        content_no_code = re.sub(r'^#{1,6}\s+.*$', '', content_no_code, flags=re.MULTILINE)
+        # Remove list markers (don't wikify "1." or "- " markers)
+        content_no_code = re.sub(r'^\s*(?:\d+\.|[-*+])\s', ' ', content_no_code, flags=re.MULTILINE)
 
         # TIER 1: Find cache-based candidates (entities with backing notes)
         cache_candidates = find_linkable_candidates(content, existing_wikilinks)
