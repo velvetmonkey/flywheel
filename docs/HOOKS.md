@@ -35,7 +35,6 @@ Flywheel includes 8 hooks:
 | `syntax-validate.py` | PostToolUse (Edit/Write) | Warn about syntax issues (angle brackets, wrapped wikilinks) | - |
 | `wikilink-auto.py` | PostToolUse (Edit/Write) | Auto-apply `[[brackets]]` to recognized entities | - |
 | `frontmatter-auto.py` | PostToolUse (Edit/Write) | Auto-add frontmatter from folder patterns | - |
-| `achievement-detect.py` | PostToolUse (Edit/Write) | Detect accomplishments, update Achievements.md | - |
 
 ---
 
@@ -77,8 +76,6 @@ Flywheel includes 8 hooks:
 │  syntax-validate.py            │
 │  ↓                              │
 │  wikilink-auto.py              │
-│  ↓                              │
-│  achievement-detect.py         │
 └────────────────────────────────┘
 ```
 
@@ -342,50 +339,14 @@ Met with [[John Smith]] to discuss [[Flywheel]] roadmap.
 
 ---
 
-### `achievement-detect.py`
+### Achievement Detection (vault-personal)
 
-**Trigger**: PostToolUse (Edit, Write)
+**Note**: Achievement detection has been moved to the [vault-personal](https://github.com/velvetmonkey/vault-personal) plugin as part of the personal workflow features.
 
-**Purpose**: Detect significant accomplishments and update Achievements.md
-
-**Detection Patterns**:
-
-1. **Action verbs**: completed, delivered, shipped, launched, deployed, finished
-2. **Impact markers**: successfully, critical, major, significant
-3. **Graph signals**: New hub notes, orphan reduction, broken link repairs
-
-**Example**:
-
-**Daily Log Entry**:
-```
-## Log
-
-- 10:00 Completed authentication refactor
-- 14:00 Successfully deployed v2.1.0 to production
-- 16:00 Fixed critical bug in payment flow
-```
-
-**Achievement Detected**:
-```
-✓ Achievement detected in "daily-notes/2026-01-03.md"
-  - Completed authentication refactor
-  - Successfully deployed v2.1.0 to production
-  - Fixed critical bug in payment flow
-
-Updated: personal/goals/Achievements.md
-```
-
-**Achievements.md Format**:
-
-```markdown
-# Achievements
-
-## 2026
-
-- **2026-01-03**: Completed authentication refactor
-- **2026-01-03**: Successfully deployed v2.1.0 to production
-- **2026-01-03**: Fixed critical bug in payment flow
-```
+If you need achievement tracking, install vault-personal which includes:
+- `achievement-detect.py` hook - Detects accomplishments from log entries
+- Automatic Achievements.md updates
+- Pattern matching for action verbs and impact markers
 
 ---
 

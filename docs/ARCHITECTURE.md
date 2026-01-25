@@ -14,19 +14,18 @@ A comprehensive guide to Flywheel's system design for developers and power users
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                       SKILLS (49)                                │
+│                       SKILLS (1 in core)                         │
 │     User-facing commands. Detect keywords & natural language     │
 │     Read-only: Run immediately                                   │
-│     Mutation: Ask Gate 4 confirmation first                      │
-│     Delegation: Call Task() to agents                            │
+│     For workflow skills: install vault-personal (49+ skills)     │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                       AGENTS (14)                                │
+│                 AGENTS (0 in core, 14 in vault-personal)         │
 │     Multi-step workflows. Called by Task() only.                 │
 │     Sequential execution (Gate 3).                               │
-│     Can call other agents as sub-agents.                         │
+│     Install vault-personal for workflow agents                   │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
@@ -49,72 +48,57 @@ A comprehensive guide to Flywheel's system design for developers and power users
 
 ## Core Components
 
-### 1. Skills (49 total)
+### 1. Skills (1 in core, 49+ in vault-personal)
 
 Skills are user-facing commands triggered by natural language or keywords.
 
 **Location**: `packages/claude-plugin/skills/`
 
-**Structure**:
-```
-skills/
-├── check-health/
-│   └── SKILL.md       # Skill definition
-├── auto-log/
-│   └── SKILL.md
-└── run-rollup/
-    └── SKILL.md
-```
+**Core Skill**:
+- `vault-tasks` - Extract and display tasks from vault
+
+**Workflow Skills (vault-personal plugin)**:
+For logging, rollups, task management, nutrition tracking, and other personal workflow features, install the separate [vault-personal](https://github.com/velvetmonkey/vault-personal) plugin which provides 49+ additional skills.
 
 **Skill Definition Format**:
 ```yaml
 ---
-name: check-health
-description: Comprehensive vault health diagnostics with recommendations
+name: vault-tasks
+description: Extract and display tasks from vault
 auto_trigger: true
 trigger_keywords:
-  - "check vault health"
-  - "vault health"
-  - "health check"
-allowed-tools: mcp__flywheel__get_vault_stats, mcp__flywheel__find_orphan_notes
+  - "show tasks"
+  - "find tasks"
+allowed-tools: mcp__flywheel__get_all_tasks
 ---
 
-# Check Health
+# Vault Tasks
 
 [Skill documentation and process]
 ```
 
-**Skill Categories**:
+**Core Focus Areas**:
 
-| Category | Count | Examples |
-|----------|-------|----------|
-| Graph Analysis (Read-Only) | 12 | backlinks, orphans, hubs |
-| Schema Analysis (Read-Only) | 5 | schema, field values |
-| Vault Health (Read-Only) | 5 | health, stale notes |
-| Task Queries (Read-Only) | 2 | tasks, due dates |
-| Logging (Mutation) | 2 | add-log, add-task |
-| Wikilink Ops (Mutation) | 4 | fix-links, apply-wikilinks |
-| Schema Ops (Mutation) | 4 | apply, migrate, compute |
-| Workflows (Delegation) | 6 | rollup, weekly-review |
-| Setup | 3 | setup-flywheel, rebuild-cache |
+| Category | Examples |
+|----------|----------|
+| Vault Intelligence (Read-Only) | vault-tasks (via MCP) |
+| Safety Hooks | Six Gates enforcement |
+| Wikilink Automation | Auto-suggest, syntax validation |
+| Frontmatter Automation | Auto-injection, schema validation |
 
-### 2. Agents (14 total)
+### 2. Agents (0 in core, 14 in vault-personal)
 
 Agents are multi-step workflow executors called by skills via `Task()`.
 
-**Location**: `packages/claude-plugin/agents/`
+**Core Plugin**: Contains no agents. Flywheel core focuses on infrastructure (hooks, MCP, safety).
 
-**Key Agents**:
-
-| Agent | Triggered By | Purpose |
-|-------|--------------|---------|
-| `rollup-agent` | `run-rollup` skill | Orchestrate daily→yearly rollup chain |
-| `rollup-weekly-agent` | `rollup-agent` | Aggregate daily → weekly |
-| `rollup-monthly-agent` | `rollup-agent` | Aggregate weekly → monthly |
-| `weekly-review-agent` | `weekly-review` skill | Week reflection + planning |
-| `okr-review-agent` | `okr-review` skill | Score OKRs, plan next quarter |
-| `action-extraction-agent` | `extract-actions` skill | Parse meetings for tasks |
-| `customer-onboarding-agent` | `onboard-customer` skill | Create onboarding checklists |
+**Workflow Agents (vault-personal plugin)**:
+For multi-step workflows like rollups, reviews, and orchestration, install the separate [vault-personal](https://github.com/velvetmonkey/vault-personal) plugin which provides 14 workflow agents including:
+- Rollup chain (daily → weekly → monthly → quarterly → yearly)
+- Weekly/OKR reviews
+- Action extraction
+- Customer onboarding
+- And more...
 
 **Agent Requirements (Gate 3)**:
 
@@ -123,6 +107,8 @@ All multi-step agents MUST include:
 - Error handling strategy
 - Verification checkpoints between phases
 - Expected output showing ✓/✗ for each step
+
+See vault-personal plugin documentation for agent details.
 
 ### 3. Hooks
 
@@ -142,7 +128,7 @@ Hooks are event-driven scripts that enforce safety and add automation.
 | `verify-mutation.py` | After Edit/Write | Gate 6: validate output | Warn |
 | `wikilink-auto.py` | After Edit/Write | Auto-apply wikilinks | No |
 | `frontmatter-auto.py` | After Edit/Write | Auto-add frontmatter | No |
-| `achievement-detect.py` | After Edit/Write | Detect achievements | No |
+| *(achievement-detect)* | *(vault-personal)* | *(Detect achievements - in vault-personal plugin)* | - |
 
 ### 4. MCP Server (50+ tools)
 
@@ -339,15 +325,15 @@ Skills are triggered by **semantic matching**, not slash commands.
 | What | Where |
 |------|-------|
 | Plugin manifest | `packages/claude-plugin/.claude-plugin/plugin.json` |
-| All skills | `packages/claude-plugin/skills/` (49 folders) |
-| All agents | `packages/claude-plugin/agents/` (14 files) |
+| Core skill | `packages/claude-plugin/skills/vault-tasks/` |
 | All hooks | `packages/claude-plugin/hooks/` |
 | Slash commands | `packages/claude-plugin/commands/` |
 | Config loader | `packages/claude-plugin/config/loader.py` |
 | Six Gates spec | `packages/claude-plugin/skills/_patterns/SIX_GATES.md` |
-| Agent template | `packages/claude-plugin/agents/_templates/MULTI_STEP_AGENT.md` |
 | MCP server | `packages/mcp-server/src/index.ts` |
 | MCP tools | `packages/mcp-server/src/tools/` |
+| Workflow skills (49+) | vault-personal plugin |
+| Agents (14) | vault-personal plugin |
 
 ---
 
@@ -384,37 +370,12 @@ npm run test:hooks
 
 ---
 
-## Appendix: Complete Skills Reference
+## Appendix: Core Skills Reference
 
-### Graph Analysis (Read-Only)
+### Vault Intelligence (Read-Only)
 
 | Skill | Say This |
 |-------|----------|
-| `show-backlinks` | "show backlinks for X" |
-| `find-orphans` | "find orphan notes" |
-| `find-hubs` | "what are my hub notes" |
-| `find-dead-ends` | "find dead end notes" |
-| `check-bidirectional` | "find mutual links" |
-| `show-common-links` | "what do X and Y both link to" |
-| `show-path` | "how do X and Y connect" |
-| `check-link-strength` | "how related are X and Y" |
+| `vault-tasks` | "show tasks", "find tasks" |
 
-### Workflow & Reviews (Delegation)
-
-| Skill | Say This | Agent |
-|-------|----------|-------|
-| `run-rollup` | "do a rollup" | `rollup-agent` |
-| `weekly-review` | "run weekly review" | `weekly-review-agent` |
-| `okr-review` | "review my OKRs" | `okr-review-agent` |
-| `extract-actions` | "extract actions from meeting" | `action-extraction-agent` |
-| `standup-rollup` | "aggregate team standups" | `standup-agent` |
-| `onboard-customer` | "onboard customer Acme" | `customer-onboarding-agent` |
-
-### Mutation Skills
-
-| Skill | Say This | Output |
-|-------|----------|--------|
-| `add-log` | "add log entry: [text]" | Daily note → Log section |
-| `add-task` | "add task: [text]" | Daily note → Tasks section |
-| `fix-links` | "fix broken links" | In-place edits |
-| `normalize-note` | "normalize this note" | In-place edit |
+**For workflow skills** (add-log, rollup, food tracking, etc.), install the [vault-personal](https://github.com/velvetmonkey/vault-personal) plugin which provides 49+ additional skills.

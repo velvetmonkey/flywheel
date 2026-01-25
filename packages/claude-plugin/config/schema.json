@@ -36,12 +36,12 @@
         "achievements": {
           "type": "string",
           "default": "Achievements.md",
-          "description": "Path to achievements file. Defaults to vault root; created automatically if missing."
+          "description": "[vault-personal feature] Path to achievements file. Defaults to vault root; created automatically if missing."
         },
         "templates": {
           "type": "string",
           "default": "templates",
-          "description": "Folder for note templates"
+          "description": "[vault-personal feature] Folder for note templates"
         }
       }
     },
@@ -52,12 +52,12 @@
         "log": {
           "type": "string",
           "default": "Log",
-          "description": "Header text for log section"
+          "description": "[vault-personal feature] Header text for log section"
         },
         "food": {
           "type": "string",
           "default": "Food",
-          "description": "Header text for food section"
+          "description": "[vault-personal feature] Header text for food section"
         },
         "tasks": {
           "type": "string",
@@ -67,7 +67,7 @@
         "habits": {
           "type": "string",
           "default": "Habits",
-          "description": "Header text for habits section"
+          "description": "[vault-personal feature] Header text for habits section"
         }
       }
     },
@@ -99,7 +99,7 @@
       "type": "array",
       "items": {"type": "string"},
       "default": ["Walk", "Stretch", "Vitamins"],
-      "description": "Habit names to track in daily notes"
+      "description": "[vault-personal feature] Habit names to track in daily notes"
     }
   }
 }

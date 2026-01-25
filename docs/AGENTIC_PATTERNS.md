@@ -112,50 +112,52 @@ Search: Grep everything               Search: Semantic queries
 
 **Flywheel's Solution**: Hierarchical agent orchestration with verification gates.
 
-### Rollup Chain Example
+### Hierarchical Orchestrator Example
 
-The rollup workflow aggregates notes from daily → weekly → monthly → quarterly → yearly:
+Multi-step workflows use orchestrator agents that spawn and coordinate sub-agents:
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                         ROLLUP CHAIN                             │
+│                    ORCHESTRATOR PATTERN                          │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
-│  rollup-agent (Orchestrator)                                     │
+│  orchestrator-agent (Parent)                                     │
 │       │                                                          │
-│       ├─▶ weekly-agent                                           │
-│       │    ├─ Read daily-notes/2025-01-*.md (7 notes)            │
-│       │    ├─ Extract: habits, food, log entries                 │
-│       │    ├─ Write weekly-notes/2025-W01.md                     │
+│       ├─▶ sub-agent-1                                            │
+│       │    ├─ Read source files                                  │
+│       │    ├─ Process/transform data                             │
+│       │    ├─ Write output                                       │
 │       │    └─ VERIFY ✓ File exists, content valid               │
 │       │                                                          │
-│       ├─▶ monthly-agent                                          │
-│       │    ├─ Read weekly-notes/2025-W*.md (4 weeks)             │
-│       │    ├─ Aggregate: totals, achievements, trends            │
-│       │    ├─ Write monthly-notes/2025-01.md                     │
-│       │    └─ VERIFY ✓ File exists, data accurate               │
+│       ├─▶ sub-agent-2                                            │
+│       │    ├─ Read processed files                               │
+│       │    ├─ Aggregate/synthesize                               │
+│       │    ├─ Write summary                                      │
+│       │    └─ VERIFY ✓ Output accurate                          │
 │       │                                                          │
-│       ├─▶ quarterly-agent (if end of quarter)                    │
-│       │    ├─ Read monthly-notes/2025-*.md (3 months)            │
-│       │    ├─ Synthesize: quarter highlights, goal progress      │
-│       │    ├─ Write quarterly-notes/2025-Q1.md                   │
-│       │    └─ VERIFY ✓ File exists, synthesis complete          │
+│       ├─▶ sub-agent-3 (conditional)                              │
+│       │    ├─ Read aggregated data                               │
+│       │    ├─ Generate report                                    │
+│       │    ├─ Write final output                                 │
+│       │    └─ VERIFY ✓ Complete                                 │
 │       │                                                          │
 │       └─▶ Report Summary                                         │
-│            ✓ Weekly: 2025-W01.md created                         │
-│            ✓ Monthly: Not triggered (week 1)                     │
-│            ✓ Quarterly: Not triggered                            │
+│            ✓ Step 1: Complete                                    │
+│            ✓ Step 2: Complete                                    │
+│            ✓ Step 3: Skipped (conditions not met)                │
 └──────────────────────────────────────────────────────────────────┘
 ```
+
+**Concrete Example**: See [vault-personal](https://github.com/velvetmonkey/vault-personal) plugin's rollup chain (daily → weekly → monthly → quarterly → yearly).
 
 ### Agent Spawning Pattern
 
 ```python
 # Parent agent spawns sub-agent
 Task(
-    subagent_type="rollup-weekly-agent",
-    description="Process week 2025-W01",
-    prompt="Process daily notes for week 2025-W01 (Jan 1-7). Extract habits, food entries, and log summaries."
+    subagent_type="sub-agent-1",
+    description="Process data step 1",
+    prompt="Read source files and transform data according to schema."
 )
 
 # Sub-agent executes, returns results
@@ -263,8 +265,8 @@ Task(subagent_type="research-hackernews", ...)
 - Results can be aggregated afterward
 
 ✗ **Don't parallelize when**:
-- Tasks depend on prior results (rollup chain)
-- Order matters (weekly before monthly)
+- Tasks depend on prior results (e.g., aggregation chains)
+- Order matters (step 1 must complete before step 2)
 - Shared file mutations (write conflicts)
 
 ---
@@ -316,18 +318,20 @@ Task(subagent_type="research-hackernews", ...)
 
 **The Solution**: Python modules in `hooks/lib/` for shared functionality.
 
-### Example: Achievement Detection
+### Example: Shared Validation Library
 
 ```
-hooks/lib/achievement_detector.py  ← Shared library
-├─ Used by: hooks/achievement-detect.py (real-time)
-└─ Used by: agents/achievement/extract-agent.md (batch)
+hooks/lib/validation_utils.py  ← Shared library
+├─ Used by: hooks/pre-mutation-gate.py (pre-operation)
+└─ Used by: hooks/verify-mutation.py (post-operation)
 ```
 
 **Benefits**:
 - Single source of truth
 - Consistent behavior
 - Easier testing
+
+**Note**: Achievement detection (vault-personal plugin) also uses this pattern with `achievement_detector.py` shared between hooks and agents.
 - DRY principle
 
 ---

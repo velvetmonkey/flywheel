@@ -1,34 +1,43 @@
 # Flywheel Plugin
 
-A comprehensive Claude Code plugin for markdown vault automation, note rollups, and knowledge graph management.
+**Vault automation infrastructure for markdown-based knowledge management.**
 
-## Features
+Flywheel provides the foundation layer: safety hooks, wikilink automation, and MCP-powered graph intelligence. For workflow skills (logging, rollups, task management, nutrition tracking), install the separate [vault-personal](https://github.com/velvetmonkey/vault-personal) plugin.
+
+## Core Features
+
+### Six Gates Safety Framework
+**Enforced safeguards preventing data corruption and accidental mutations:**
+
+| Gate | Purpose | Enforcement |
+|------|---------|-------------|
+| **1. Read Before Write** | Read before write | `pre-mutation-gate.py` (BLOCKS) |
+| **2. File Exists for Edit** | Validate targets | `pre-mutation-gate.py` (BLOCKS) |
+| **3. Agent Chain Validation** | Verify each step | Hook validation (BLOCKS) |
+| **4. Mutation Confirmation** | User confirmation | `pre-mutation-gate.py` (BLOCKS) |
+| **5. MCP Health Check** | Health check | `session-gate.py` (WARN) |
+| **6. Post-Execution Validation** | Verify writes | `verify-mutation.py` (WARN) |
+
+See `docs/SIX_GATES.md` for full specification.
 
 ### Automatic Wikilink Management
 - **Session Start Hook**: Validates daily notes and rebuilds wikilink cache
 - **Suggest Wikilinks Hook**: Auto-applies `[[wikilinks]]` to recognized entities
 - **Syntax Validation Hook**: Prevents angle brackets and wrapped wikilinks that break Obsidian
 
-### Note Rollup System
-Automated aggregation from daily notes up through yearly summaries:
-- **Daily → Weekly**: Extract achievements, habits, macros, weight data
-- **Weekly → Monthly**: Aggregate weekly summaries into monthly overviews
-- **Monthly → Quarterly**: Synthesize quarterly progress and goals
-- **Quarterly → Yearly**: Compile annual reviews
-
-### Nutrition Tracking
-- **Food Logging**: Log meals with timestamps to daily notes
-- **Macro Calculation**: Calculate daily nutrition totals from food entries
+### Frontmatter Automation
+- **Auto-injection**: Add context and metadata during file operations
+- **Schema validation**: Ensure consistent frontmatter structure
+- **Type enforcement**: Validate field types across your vault
 
 ### Vault Intelligence (requires Flywheel MCP)
-16 vault analysis skills powered by the Flywheel MCP server:
+Graph analysis and vault health powered by the Flywheel MCP server:
 - **Health Diagnostics**: Overall vault health score
 - **Orphan Detection**: Find isolated notes
 - **Link Analysis**: Backlinks, forward links, bidirectional connections
 - **Hub Discovery**: Find highly connected notes
 - **Cluster Detection**: Identify knowledge clusters
 - **Gap Analysis**: Find topics needing expansion
-- And more...
 
 ## Requirements
 
@@ -70,19 +79,7 @@ Create `.flywheel.json` in your markdown vault root:
     "weekly_notes": "weekly-notes",
     "monthly_notes": "monthly-notes",
     "quarterly_notes": "quarterly-notes",
-    "yearly_notes": "yearly-notes",
-    "templates": "templates",
-    "achievements": "personal/goals/Achievements.md"
-  },
-  "habits": [
-    { "name": "Walk", "tag": "#habit" },
-    { "name": "Stretch", "tag": "#habit" },
-    { "name": "Vitamins", "tag": "#habit" }
-  ],
-  "sections": {
-    "log": "## Log",
-    "food": "# Food",
-    "habits": "# Habits"
+    "yearly_notes": "yearly-notes"
   },
   "folders": {
     "protected": ["personal", "work", "tech"]
@@ -100,100 +97,50 @@ Create `.flywheel.json` in your markdown vault root:
 | `paths.monthly_notes` | Path to monthly notes folder | `monthly-notes` |
 | `paths.quarterly_notes` | Path to quarterly notes folder | `quarterly-notes` |
 | `paths.yearly_notes` | Path to yearly notes folder | `yearly-notes` |
-| `paths.templates` | Path to templates folder | `templates` |
-| `paths.achievements` | Path to achievements file | `personal/goals/Achievements.md` |
-| `habits` | Array of habits to track | Walk, Stretch, Vitamins |
-| `sections.log` | Log section header in daily notes | `## Log` |
-| `sections.food` | Food section header in daily notes | `# Food` |
-| `sections.habits` | Habits section header in daily notes | `# Habits` |
 | `folders.protected` | Folders requiring subfolders | `["personal", "work", "tech"]` |
+
+**Note:** Configuration options for `habits`, `achievements`, `sections.log`, `sections.food` are supported for backward compatibility but are vault-personal features. See the [vault-personal plugin](https://github.com/velvetmonkey/vault-personal) for documentation.
 
 ## Directory Structure
 
 ```
 packages/claude-plugin/
-├── plugin.json           # Plugin manifest
+├── .claude-plugin/
+│   ├── plugin.json           # Plugin manifest
+│   └── marketplace.json      # Marketplace metadata
 ├── config/
-│   └── config-schema.json
+│   └── config-schema.json    # Configuration schema
 ├── hooks/
-│   ├── session-start.py
-│   ├── inject-context.py
-│   ├── auto-approve-vault.py
-│   ├── validate-obsidian-syntax.py
-│   ├── suggest-wikilinks.py
-│   └── detect-achievement.py
+│   ├── session-start.py      # Session initialization
+│   ├── inject-context.py     # Context injection
+│   ├── auto-approve-vault.py # Auto-approve vault operations
+│   ├── validate-obsidian-syntax.py  # Syntax validation
+│   ├── suggest-wikilinks.py  # Wikilink automation
+│   ├── pre-mutation-gate.py  # Six Gates enforcement (Gates 1-4)
+│   ├── session-gate.py       # MCP health check (Gate 5)
+│   └── verify-mutation.py    # Post-execution verification (Gate 6)
 ├── skills/
-│   ├── core/
-│   │   ├── rollup/
-│   │   ├── rebuild-wikilink-cache/
-│   │   ├── task-add/
-│   │   ├── task-status/
-│   │   └── add-log/
-│   ├── nutrition/
-│   │   ├── food/
-│   │   └── food-macros/
-│   └── vault/
-│       ├── health/
-│       ├── orphans/
-│       ├── backlinks/
-│       └── ... (16 total)
-├── agents/
-│   └── rollup/
-│       ├── rollup-agent.md
-│       ├── weekly-agent.md
-│       ├── monthly-agent.md
-│       ├── quarterly-agent.md
-│       └── yearly-agent.md
-├── rules.md              # Documentation for manual rule installation
-└── templates/
-    ├── daily.md
-    ├── weekly.md
-    ├── monthly.md
-    ├── quarterly.md
-    └── yearly.md
+│   └── vault-tasks/          # Task extraction and management
+└── rules.md                  # Documentation for manual rule installation
 ```
 
 ## Skills Reference
 
-### Core Skills
+### Core Skill
+
 | Skill | Trigger | Description |
 |-------|---------|-------------|
-| `rollup` | "rollup", "summarize week" | Run the complete rollup chain |
-| `rebuild-wikilink-cache` | "rebuild cache", "refresh entities" | Rebuild wikilink entity cache |
-| `task-add` | "add task", "new task" | Add tasks to daily notes |
-| `task-status` | "task status", "show tasks" | Show task status |
-| `add-log` | "log", "add to log" | Add entries to daily log |
+| `vault-tasks` | "show tasks", "find tasks" | Extract and display tasks from vault |
 
-### Nutrition Skills
-| Skill | Trigger | Description |
-|-------|---------|-------------|
-| `food` | "I ate", "breakfast", "lunch" | Log food to daily note |
-| `food-macros` | "macros", "calories" | Calculate daily macros |
+### Workflow Skills (vault-personal)
 
-### Vault Skills (requires Flywheel MCP)
-| Skill | Description |
-|-------|-------------|
-| `vault-health` | Overall vault health diagnostics |
-| `vault-orphans` | Find orphan notes |
-| `vault-backlinks` | Show note backlinks |
-| `vault-fix-links` | Repair broken wikilinks |
-| `vault-hubs` | Find hub notes |
-| `vault-clusters` | Find knowledge clusters |
-| `vault-stale` | Find stale notes |
-| `vault-gaps` | Find knowledge gaps |
-
-## Agents
-
-### Rollup Agents
-Autonomous agents for note aggregation:
-
-| Agent | Invocation | Description |
-|-------|------------|-------------|
-| `rollup-agent` | Automatic | Orchestrates complete rollup chain |
-| `rollup-weekly-agent` | `2025-W52` | Daily → Weekly aggregation |
-| `rollup-monthly-agent` | `2025-12` | Weekly → Monthly aggregation |
-| `rollup-quarterly-agent` | `2025-Q4` | Monthly → Quarterly aggregation |
-| `rollup-yearly-agent` | `2025` | Quarterly → Yearly aggregation |
+For daily logging, task management, nutrition tracking, and note rollups, install [vault-personal](https://github.com/velvetmonkey/vault-personal):
+- `add-log` - Add entries to daily log
+- `task-add` - Add tasks to daily notes
+- `food` - Log meals with timestamps
+- `food-macros` - Calculate daily nutrition
+- `rollup` - Aggregate notes (daily → weekly → monthly → quarterly → yearly)
+- And 44 more skills...
 
 ## Required: Flywheel MCP Server
 
@@ -230,6 +177,22 @@ This plugin requires the [@velvetmonkey/flywheel-mcp](https://github.com/velvetm
 ```
 
 See [INSTALLATION.md](INSTALLATION.md) for detailed platform-specific instructions.
+
+## Migration from v1.23.x
+
+**Breaking Changes in v1.24.0:**
+- Personal vault features moved to separate `vault-personal` plugin
+- Templates removed (now in vault-personal)
+- Skills removed: `add-log`, `task-add`, `food`, `food-macros`, `rollup`
+- Agents removed: All rollup agents
+
+**Backward Compatibility:**
+- Existing `.flywheel.json` configs still work (personal config options accepted but unused)
+- MCP server unchanged
+- Core hooks unchanged
+- To continue using personal features, install [vault-personal](https://github.com/velvetmonkey/vault-personal)
+
+See [docs/MIGRATION_v1.24.md](../../docs/MIGRATION_v1.24.md) for full migration guide.
 
 ## License
 

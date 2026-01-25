@@ -1,7 +1,7 @@
 {
   "name": "flywheel",
-  "version": "1.23.1",
-  "description": "Workflow templates, wikilink automation, periodic note rollups, vault health, and privacy protection for markdown vaults",
+  "version": "1.24.0",
+  "description": "Vault automation infrastructure: wikilink automation, safety hooks, MCP intelligence. Install vault-personal for workflow skills.",
   "author": {
     "name": "Ben Cassie",
     "github": "velvetmonkey"
@@ -13,9 +13,10 @@
     "obsidian",
     "wikilinks",
     "knowledge-management",
-    "periodic-notes",
     "vault-health",
-    "automation"
+    "automation",
+    "mcp",
+    "safety-hooks"
   ],
   "skills": "./skills",
   "commands": "./commands",
