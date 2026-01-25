@@ -129,6 +129,7 @@ See `packages/claude-plugin/` - Claude Code plugin with skills powered by Flywhe
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
+| #390 | 10:33 PM | 🔵 | MCP Server Package README Reviewed | ~342 |
 | #218 | 3:05 PM | ⚖️ | Explore agent compiled comprehensive reference map of all skill/agent/command mentions | ~555 |
 | #200 | 3:01 PM | 🔵 | MCP server README is focused on query tools and infrastructure | ~365 |
 </claude-mem-context>

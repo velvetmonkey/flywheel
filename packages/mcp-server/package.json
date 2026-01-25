@@ -1,11 +1,11 @@
 {
-  "name": "@velvetmonkey/flywheel-mcp",
+  "name": "flywheel-mcp",
   "version": "1.23.1",
   "description": "Flywheel MCP server - graph intelligence for markdown vaults",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "flywheel-mcp": "./dist/index.js"
+    "flywheel-mcp": "dist/index.js"
   },
   "scripts": {
     "build": "npx esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.js --packages=external",

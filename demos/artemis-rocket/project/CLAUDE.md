@@ -7,5 +7,5 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
-| #226 | 3:10 PM | 🔵 | setup-flywheel command is MCP configuration utility referencing a skill | ~447 |
+| #400 | 10:38 PM | ⚖️ | Claude CLI Console Examples Designed for README | ~421 |
 </claude-mem-context>
