@@ -1,6 +1,6 @@
 {
   "name": "@velvetmonkey/flywheel",
-  "version": "1.25.1",
+  "version": "1.25.2",
   "private": true,
   "description": "Query your markdown like a database. 100x token savings for AI agents.",
   "keywords": [
