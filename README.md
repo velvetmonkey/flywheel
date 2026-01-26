@@ -1,16 +1,32 @@
-# Flywheel - Query Your Markdown Like a Database
+# Flywheel
+
+### Stop burning tokens. Start building agents.
 
 [![npm version](https://img.shields.io/npm/v/@bencassie/flywheel-mcp.svg)](https://www.npmjs.com/package/@bencassie/flywheel-mcp)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/velvetmonkey/flywheel)
 
-**Ask questions about your notes without Claude reading every file.**
+Claude reading your entire vault on every query? **5,000 tokens burned.**
 
-Flywheel indexes your markdown vault and exposes it through 40+ graph-aware MCP tools. Claude queries the index—not the files—answering in ~50 tokens what would otherwise cost 5,000+.
+Flywheel queries an index instead. **50 tokens.** That's 100x savings.
+
+**The real win:** Your agents can now query your knowledge *hundreds of times* during long-running tasks without blowing up the context window.
+
+You couldn't do this before. Now you can.
 
 ---
 
-## Install
+## What This Unlocks
+
+- **Agentic workflows** that query your vault repeatedly without token bloat
+- **Long-running tasks** that reference your knowledge throughout execution
+- **Graph intelligence** — backlinks, forward links, hub notes — all instant
+- **Schema queries** on frontmatter without reading files
+- **Zero context pollution** — files stay on disk until you need them
+
+---
+
+## Install (30 seconds)
 
 Add to `.mcp.json` in your vault root:
 
@@ -61,276 +77,100 @@ That's it. Flywheel uses the current directory as your vault—no config needed.
 
 </details>
 
-Verify: `claude mcp list` should show `flywheel ✓`
+Verify with `claude mcp list` — you should see `flywheel ✓`
 
 ---
 
-## Core Concepts
+## How It Works
 
-Flywheel builds an in-memory index at startup. Understanding what gets indexed explains why queries are fast.
+Flywheel indexes structure, not content:
 
-### The Index
+| Indexed (instant queries) | Not Indexed (stays on disk) |
+|---------------------------|----------------------------|
+| Titles, aliases, wikilinks | File content, prose |
+| Frontmatter, tags | Code blocks |
+| Headings, modification dates | |
 
-| Indexed | Not Indexed |
-|---------|-------------|
-| Titles, aliases | File content |
-| Wikilinks `[[Target]]` | Prose text |
-| Frontmatter fields | Code blocks |
-| Tags `#tag` | |
-| Modification dates | |
-| Headings structure | |
-
-**Why this matters:** Graph queries use the index only—zero file reads. Content stays on disk until you explicitly need it.
-
-### Wikilinks
-
-`[[Target]]` creates a navigable link AND a graph connection.
-
-```markdown
-# INV-2025-047
-
-**Client**: [[Acme Corp]]
-**Project**: [[Acme Data Migration]]
-```
-
-This invoice now has outbound links to the client and project. The client gains backlinks from the invoice. Flywheel tracks all of this.
-
-### Frontmatter
-
-YAML at the top of a file creates typed, queryable fields:
-
-```yaml
----
-type: invoice
-status: paid
-client: "[[Acme Corp]]"
-amount: 15000
-due: 2025-12-15
----
-```
-
-Now you can query: "Find all paid invoices" or "What's the total amount for Acme Corp?"
-
-### The Graph
-
-Wikilinks create a graph. Flywheel exposes it:
-
-- **Backlinks** — What notes link TO this one?
-- **Forward links** — What does this note link TO?
-- **Hub notes** — Most connected notes (key concepts, central entities)
-- **Orphan notes** — Notes with no incoming links (disconnected)
-- **Link paths** — How is note A connected to note B?
+Graph queries never read files. Content only loads when you explicitly need it.
 
 ---
 
-## What You Can Query
+## 44 Tools. Three Query Types.
 
-### Graph Intelligence
-
-```
-"What links to [[Acme Corp]]?"
-"Find the path from [[Invoice]] to [[Project]]"
-"Show hub notes with many connections"
-"Find orphan notes—disconnected from the graph"
-```
-
-| Without Flywheel | With Flywheel |
-|------------------|---------------|
-| Read every file, grep for `[[Acme Corp]]`, parse results | `get_backlinks` → instant from index |
-| ~5,000 tokens | ~50 tokens |
-
-### Schema Queries
+### Graph Queries — "What connects to what?"
 
 ```
-"Find notes where status is 'paid'"
-"What fields exist in invoices/?"
-"Show all unique client values"
-"Find notes missing expected fields"
+"What depends on [[Turbopump]]?"  → 6 notes link to it, 4 dependencies found
+"How does [[Invoice]] connect to [[Project]]?"  → 2-hop path via [[Client]]
+"Find hub notes"  → 8 notes with 10+ connections
 ```
 
-| Without Flywheel | With Flywheel |
-|------------------|---------------|
-| Read all files, parse YAML frontmatter, aggregate | `search_notes`, `get_frontmatter_schema` → index-only |
-| ~3,000 tokens | ~80 tokens |
-
-### Temporal Queries
+### Schema Queries — "Find notes where..."
 
 ```
-"What changed in the last 7 days?"
-"Find stale notes—important but neglected"
-"Show activity summary for this month"
+"All invoices where status is 'pending'"  → 3 notes, $47K outstanding
+"What fields exist in meetings/?"  → attendees, date, decisions, follow-ups
+"Notes missing required fields"  → 12 incomplete records
 ```
 
-| Without Flywheel | With Flywheel |
-|------------------|---------------|
-| Stat every file, read content to check importance | `get_recent_notes`, `get_stale_notes` → file metadata + backlink count |
-| ~10,000 tokens | ~100 tokens |
-
-### Tasks & Structure
+### Temporal Queries — "What changed when?"
 
 ```
-"Show open tasks across the vault"
-"What's due this week?"
-"Read the Financial Summary section from Acme Corp"
+"Activity in the last 7 days"  → 23 notes modified, 4 new
+"Stale but important notes"  → 5 hub notes untouched in 30+ days
+"What was I working on with [[Client X]]?"  → Timeline of related edits
 ```
-
-| Without Flywheel | With Flywheel |
-|------------------|---------------|
-| Read every file, regex for `- [ ]`, parse dates | `get_all_tasks` → indexed at startup |
-| Read full file to get one section | `get_section_content` → returns only that heading |
-| ~3,000 tokens | ~60 tokens |
 
 ---
 
-## See It In Action
+## The Difference
 
-Here's what working with Flywheel looks like in Claude Code:
+| Query | Without Flywheel | With Flywheel |
+|-------|------------------|---------------|
+| "What depends on X?" | Read files, grep, parse → ~5,000 tokens | Index query → **~50 tokens** |
+| "Find stale important notes" | Stat files, read content → ~10,000 tokens | Index lookup → **~100 tokens** |
+| "Invoices where status = paid" | Read files, parse YAML → ~3,000 tokens | Frontmatter query → **~80 tokens** |
 
-### Graph Query
-
-```
-You: "What depends on the Turbopump?"
-
-┌─ QUERY ──────────────────────────────────────────┐
-│ Source: Graph index (backlinks + forward links)  │
-│ Tokens: ~80 vs ~4,000 without Flywheel           │
-└──────────────────────────────────────────────────┘
-
-Turbopump Dependencies
-======================
-
-Linked FROM (6 notes depend on this):
-- Engine Design → Turbopump specifications
-- Risk Register → R-003 delivery delay risk
-- Project Roadmap → Critical path item
-- ADR-001 Propellant Selection → Selection rationale
-- Vendor Meeting Acme Aerospace → Supplier negotiations
-- Upcoming Tests → Test 4 requires flight unit
-
-Linked TO (4 dependencies):
-- Propulsion System → Parent system
-- Marcus Johnson → Component owner
-- Precision Components Inc → Backup supplier
-- Engine Controller → Control interface
-
-Impact: High connectivity (10 links) - changes cascade widely.
-```
-
-### Schema Query
-
-```
-You: "Show me all pending invoices"
-
-┌─ QUERY ──────────────────────────────────────────┐
-│ Source: Frontmatter index (status: pending)      │
-│ Tokens: ~50 vs ~1,500 without Flywheel           │
-└──────────────────────────────────────────────────┘
-
-Pending Invoices (1)
-====================
-
-INV-2025-048
-  Client:  Acme Corp
-  Amount:  $12,000
-  Issued:  2025-12-15
-  Due:     2026-01-15
-  Project: Acme Data Migration
-
-Total Outstanding: $12,000
-```
-
-### Temporal Query
-
-```
-You: "Find important notes I haven't touched in 2 weeks"
-
-┌─ QUERY ──────────────────────────────────────────┐
-│ Source: Modification dates + backlink counts     │
-│ Tokens: ~100 vs ~8,000 without Flywheel          │
-└──────────────────────────────────────────────────┘
-
-Stale Hub Notes (3)
-===================
-
-ADR-001 Propellant Selection
-  Last modified: 2025-08-20 (144 days ago)
-  Backlinks: 12
-  → Referenced by Engine Design, Risk Register, Project Roadmap
-
-Safety Requirements
-  Last modified: 2025-11-15 (57 days ago)
-  Backlinks: 8
-  → Referenced by Risk Register, Test Campaign, Fairing Design
-
-Budget Tracker
-  Last modified: 2025-12-01 (41 days ago)
-  Backlinks: 6
-  → Referenced by Project Roadmap, Risk Register
-
-Recommendation: Review these high-impact notes for accuracy.
-```
+**Now multiply by 50 queries in an agentic workflow.** That's the difference between possible and impossible.
 
 ---
 
 ## Try a Demo
 
-| You Are | Demo | Try Asking |
-|---------|------|------------|
-| **Consultant** | [Carter Strategy](./demos/carter-strategy/) | "How much have I billed Acme Corp?" |
-| **Startup founder** | [Startup Ops](./demos/startup-ops/) | "Walk me through onboarding DataDriven" |
-| **Researcher** | [Nexus Lab](./demos/nexus-lab/) | "How does AlphaFold connect to my experiment?" |
-| **Technical lead** | [Artemis Rocket](./demos/artemis-rocket/) | "What's blocking the propulsion milestone?" |
+5 ready-to-use vaults. `cd` in and start asking questions.
+
+| Demo | Try Asking |
+|------|------------|
+| [artemis-rocket](./demos/artemis-rocket/) | "What's blocking the propulsion milestone?" |
+| [carter-strategy](./demos/carter-strategy/) | "How much have I billed Acme Corp?" |
+| [nexus-lab](./demos/nexus-lab/) | "How does AlphaFold connect to my experiment?" |
+| [solo-operator](./demos/solo-operator/) | "What's my financial runway?" |
+| [startup-ops](./demos/startup-ops/) | "Walk me through onboarding DataDriven" |
 
 ```bash
-cd demos/carter-strategy
-claude
+cd demos/artemis-rocket && claude
 ```
 
 ---
 
-## Token Savings
+## Why Markdown + Graph?
 
-| Operation | Traditional | With Flywheel | Savings |
-|-----------|-------------|---------------|---------|
-| "What's blocking X?" | ~5,000 tokens | ~50 tokens | **100x** |
-| "Find stale notes" | ~10,000 tokens | ~100 tokens | **100x** |
-| "Check overdue tasks" | ~3,000 tokens | ~80 tokens | **40x** |
-
-Flywheel reads sections, not files. Queries index, not content.
+- **Git-native** — version-controlled knowledge
+- **Plain text** — future-proof, zero lock-in
+- **Privacy** — files stay local, only what you need gets sent
+- **Editor-agnostic** — Obsidian, VSCode, Cursor, vim, whatever
+- **AI-native** — 44 tools purpose-built for agent workflows
 
 ---
 
-## Why Flywheel
+## Docs
 
-| Traditional AI | Flywheel |
-|----------------|----------|
-| Reads files to answer | Queries graph index |
-| Sends full content | Sends metadata only |
-| 5,000+ tokens per question | 50-200 tokens |
-| Slow, expensive | Fast, cheap |
-
-**Plus:**
-- **Git-native** — your vault is version-controlled
-- **Plain text** — future-proof, no lock-in
-- **Privacy** — files stay on disk, only sections sent when needed
-- **Editor-agnostic** — Obsidian, VSCode, vim, whatever
+- **[MCP Tools Reference](docs/MCP_REFERENCE.md)** — All 44 tools
+- **[Query Guide](docs/QUERY_GUIDE.md)** — Patterns and examples
+- **[How It Works](docs/HOW_IT_WORKS.md)** — Architecture
 
 ---
-
-## Documentation
-
-| Doc | What It Covers |
-|-----|----------------|
-| **[MCP Tools Reference](docs/MCP_REFERENCE.md)** | All 40+ tools with parameters |
-| **[Query Guide](docs/QUERY_GUIDE.md)** | Graph, temporal, schema query patterns |
-| **[How It Works](docs/HOW_IT_WORKS.md)** | Technical architecture |
-
----
-
-## Platform Support
 
 macOS / Linux / WSL / Windows
 
----
-
-Apache 2.0 License | [GitHub](https://github.com/velvetmonkey/flywheel) | [Issues](https://github.com/velvetmonkey/flywheel/issues)
+Apache 2.0 License · [GitHub](https://github.com/velvetmonkey/flywheel) · [Issues](https://github.com/velvetmonkey/flywheel/issues)
