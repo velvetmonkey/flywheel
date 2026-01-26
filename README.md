@@ -27,8 +27,8 @@ Add to `.mcp.json` in your vault root:
 
 That's it. Flywheel uses the current directory as your vault—no config needed.
 
-(details)
-(summary)(strong)Platform notes (Windows, WSL, custom vault path)(/strong)(/summary)
+<details>
+<summary><strong>Platform notes (Windows, WSL, custom vault path)</strong></summary>
 
 **Windows (native):**
 ```json
@@ -59,7 +59,7 @@ That's it. Flywheel uses the current directory as your vault—no config needed.
 
 **WSL:** Use `npx` directly (not `cmd /c`), with `/mnt/c/...` paths.
 
-(/details)
+</details>
 
 Verify: `claude mcp list` should show `flywheel ✓`
 
