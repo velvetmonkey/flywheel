@@ -4,15 +4,6 @@
 
 ---
 
-## Who This Is For
-
-You're a **solo operator** — consultant, founder, freelancer, creator.
-
-You run everything yourself: clients, projects, finances, content, decisions.
-Your notes ARE your business. Flywheel turns them into queryable infrastructure.
-
----
-
 ## Overview
 
 Flywheel is an MCP (Model Context Protocol) server that provides Claude with intelligent access to your markdown knowledge base. Instead of sending entire files to AI, Flywheel builds an in-memory graph index and exposes 40+ specialized query tools.
@@ -199,9 +190,9 @@ Checks consistency between frontmatter and prose:
 
 | Operation | Without Flywheel | With Flywheel | Savings |
 |-----------|------------------|---------------|---------|
-| Graph query ("what's blocking X?") | ~5,000 tokens | ~50 tokens | **100x** |
-| Check overdue tasks | ~3,000 tokens | ~100 tokens | **30x** |
-| Find orphan notes | ~10,000 tokens | ~80 tokens | **125x** |
+| Graph query ("what's blocking X?") | ~5,000 tokens | ~50 tokens | **up to 100x** |
+| Check overdue tasks | ~3,000 tokens | ~100 tokens | **~30x** |
+| Find orphan notes | ~10,000 tokens | ~80 tokens | **~125x** |
 
 **Why the savings?**
 1. **Index queries** return structured data, not file content
