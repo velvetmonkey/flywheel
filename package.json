@@ -35,7 +35,7 @@
   "scripts": {
     "build": "npm run build --workspaces",
     "test": "npm run test --workspaces",
-    "dev:mcp": "npm run dev -w @bencassie/flywheel-mcp",
+    "dev:mcp": "npm run dev -w @velvetmonkey/flywheel-mcp",
     "lint": "npm run lint --workspaces",
     "clean": "npm run clean --workspaces && rm -rf node_modules"
   },

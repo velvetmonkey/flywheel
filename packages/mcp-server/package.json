@@ -1,5 +1,5 @@
 {
-  "name": "@bencassie/flywheel-mcp",
+  "name": "@velvetmonkey/flywheel-mcp",
   "version": "1.25.1",
   "description": "Query your markdown like a database. 100x token savings for AI agents.",
   "type": "module",
