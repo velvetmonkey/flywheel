@@ -6,9 +6,9 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/velvetmonkey/flywheel)
 
-Claude reading your entire vault on every query? **5,000 tokens burned.**
+Claude reading your entire vault on every query? **~5,000 tokens burned.**
 
-Flywheel queries an index instead. **50 tokens.** That's 100x savings.
+Flywheel queries an index instead. **~50 tokens.** That's up to 100x savings.
 
 **The real win:** Your agents can now query your knowledge *hundreds of times* during long-running tasks without blowing up the context window.
 
@@ -137,19 +137,35 @@ Graph queries never read files. Content only loads when you explicitly need it.
 
 ## Try a Demo
 
-5 ready-to-use vaults. `cd` in and start asking questions.
+5 production-ready vaults representing real knowledge work personas. Each vault is fully validated with 100% valid YAML and authentic linking patterns.
 
-| Demo | Try Asking |
-|------|------------|
-| [artemis-rocket](./demos/artemis-rocket/) | "What's blocking the propulsion milestone?" |
-| [carter-strategy](./demos/carter-strategy/) | "How much have I billed Acme Corp?" |
-| [nexus-lab](./demos/nexus-lab/) | "How does AlphaFold connect to my experiment?" |
-| [solo-operator](./demos/solo-operator/) | "What's my financial runway?" |
-| [startup-ops](./demos/startup-ops/) | "Walk me through onboarding DataDriven" |
+| Demo | Persona | Notes | Try Asking | Validation |
+|------|---------|-------|------------|------------|
+| **[carter-strategy](demos/carter-strategy/)** | Solo Consultant | 32 | "How much have I billed Acme Corp?" | [✅ Report](demos/carter-strategy/VALIDATION_REPORT.md) |
+| **[artemis-rocket](demos/artemis-rocket/)** | Aerospace Engineer | 65 | "What's blocking the propulsion milestone?" | [✅ Report](demos/artemis-rocket/VALIDATION-REPORT.md) |
+| **[startup-ops](demos/startup-ops/)** | SaaS Co-Founder | 31 | "Walk me through onboarding DataDriven" | [✅ Report](demos/startup-ops/VALIDATION_REPORT.md) |
+| **[nexus-lab](demos/nexus-lab/)** | PhD Researcher | 32 | "How does AlphaFold connect to my experiment?" | [✅ 85%+ links](demos/nexus-lab/README.md) |
+| **[solo-operator](demos/solo-operator/)** | Content Creator | 19 | "What's my financial runway?" | [✅ Report](demos/solo-operator/VALIDATION_REPORT.md) |
 
 ```bash
-cd demos/artemis-rocket && claude
+# Clone and explore
+git clone https://github.com/velvetmonkey/flywheel.git
+cd flywheel/demos/artemis-rocket
+
+# Start Claude Code
+claude
 ```
+
+### Validation Status
+
+All demos are comprehensively tested and production-ready:
+
+- ✅ **179 total markdown files** with 100% valid YAML
+- ✅ **Persona-specific workflows** validated (invoices, ADRs, experiments, etc.)
+- ✅ **Realistic knowledge graphs** with hub notes and bidirectional linking
+- ✅ **Authentic linking patterns** from sparse (22%) to dense (94%) resolution
+
+📋 **See [DEMO_VALIDATION.md](DEMO_VALIDATION.md) for comprehensive validation report**
 
 ---
 
