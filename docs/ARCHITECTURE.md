@@ -1,6 +1,6 @@
 # Flywheel Architecture
 
-A comprehensive guide to Flywheel's system design for developers and power users.
+A guide to Flywheel's MCP server design for developers.
 
 ---
 
@@ -8,212 +8,61 @@ A comprehensive guide to Flywheel's system design for developers and power users
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                         YOU (User)                               │
-│              "Do rollup" or "find orphan notes"                  │
+│                    MCP Client (Claude, etc.)                     │
+│              Requests vault intelligence via MCP                 │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                       SKILLS (1 in core)                         │
-│     User-facing commands. Detect keywords & natural language     │
-│     Read-only: Run immediately                                   │
-│     For workflow skills: install vault-personal (49+ skills)     │
+│                    FLYWHEEL MCP SERVER                           │
+│            44 tools for vault intelligence                       │
+│                                                                  │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
+│  │   Graph     │  │   Schema    │  │   Search    │             │
+│  │   Tools     │  │   Tools     │  │   Tools     │             │
+│  └─────────────┘  └─────────────┘  └─────────────┘             │
+│                                                                  │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
+│  │   Tasks     │  │  Structure  │  │  Periodic   │             │
+│  │   Tools     │  │   Tools     │  │   Tools     │             │
+│  └─────────────┘  └─────────────┘  └─────────────┘             │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                 AGENTS (0 in core, 14 in vault-personal)         │
-│     Multi-step workflows. Called by Task() only.                 │
-│     Sequential execution (Gate 3).                               │
-│     Install vault-personal for workflow agents                   │
+│                      Your Markdown Vault                         │
+│                        .md files                                 │
 └─────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    MCP TOOLS (50+)                               │
-│     Vault intelligence: search, links, frontmatter               │
-│     All vault operations go through MCP server                   │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-          ┌───────────────────┼───────────────────┐
-          ▼                   ▼                   ▼
-┌─────────────────┐   ┌───────────────┐   ┌─────────────────┐
-│  HOOKS (Pre)    │   │  Your Vault   │   │  HOOKS (Post)   │
-│  Gate 1,2,3,4   │   │  .md files    │   │  Gate 5,6       │
-│  Can BLOCK      │   │               │   │  WARN only      │
-└─────────────────┘   └───────────────┘   └─────────────────┘
 ```
 
 ---
 
-## Core Components
+## MCP Server (44 tools)
 
-### 1. Skills (1 in core, 49+ in vault-personal)
-
-Skills are user-facing commands triggered by natural language or keywords.
-
-**Location**: `packages/claude-plugin/skills/`
-
-**Core Skill**:
-- `vault-tasks` - Extract and display tasks from vault
-
-**Workflow Skills (vault-personal plugin)**:
-For logging, rollups, task management, nutrition tracking, and other personal workflow features, install the separate [vault-personal](https://github.com/velvetmonkey/vault-personal) plugin which provides 49+ additional skills.
-
-**Skill Definition Format**:
-```yaml
----
-name: vault-tasks
-description: Extract and display tasks from vault
-auto_trigger: true
-trigger_keywords:
-  - "show tasks"
-  - "find tasks"
-allowed-tools: mcp__flywheel__get_all_tasks
----
-
-# Vault Tasks
-
-[Skill documentation and process]
-```
-
-**Core Focus Areas**:
-
-| Category | Examples |
-|----------|----------|
-| Vault Intelligence (Read-Only) | vault-tasks (via MCP) |
-| Safety Hooks | Six Gates enforcement |
-| Wikilink Automation | Auto-suggest, syntax validation |
-| Frontmatter Automation | Auto-injection, schema validation |
-
-### 2. Agents (0 in core, 14 in vault-personal)
-
-Agents are multi-step workflow executors called by skills via `Task()`.
-
-**Core Plugin**: Contains no agents. Flywheel core focuses on infrastructure (hooks, MCP, safety).
-
-**Workflow Agents (vault-personal plugin)**:
-For multi-step workflows like rollups, reviews, and orchestration, install the separate [vault-personal](https://github.com/velvetmonkey/vault-personal) plugin which provides 14 workflow agents including:
-- Rollup chain (daily → weekly → monthly → quarterly → yearly)
-- Weekly/OKR reviews
-- Action extraction
-- Customer onboarding
-- And more...
-
-**Agent Requirements (Gate 3)**:
-
-All multi-step agents MUST include:
-- `## Critical Rules` section with sequential execution
-- Error handling strategy
-- Verification checkpoints between phases
-- Expected output showing ✓/✗ for each step
-
-See vault-personal plugin documentation for agent details.
-
-### 3. Hooks
-
-Hooks are event-driven scripts that enforce safety and add automation.
-
-**Location**: `packages/claude-plugin/hooks/`
-
-**Hook Types**:
-
-| Hook | Event | Purpose | Blocks? |
-|------|-------|---------|---------|
-| `session-start.py` | Session start | Show daily status, available skills | No |
-| `session-gate.py` | Session start | Gate 5: MCP health check | Warn |
-| `pre-mutation-gate.py` | Before Edit/Write | Gates 1, 2, 4 | Yes |
-| `validate-agent-gate3.py` | Before agent Write | Gate 3: agent compliance | Yes |
-| `read-cache.py` | After Read | Record reads for Gate 1 | No |
-| `verify-mutation.py` | After Edit/Write | Gate 6: validate output | Warn |
-| `wikilink-auto.py` | After Edit/Write | Auto-apply wikilinks | No |
-| `frontmatter-auto.py` | After Edit/Write | Auto-add frontmatter | No |
-| *(achievement-detect)* | *(vault-personal)* | *(Detect achievements - in vault-personal plugin)* | - |
-
-### 4. MCP Server (50+ tools)
-
-The MCP server provides vault intelligence to Claude.
+The MCP server provides vault intelligence to any MCP-compatible client.
 
 **Location**: `packages/mcp-server/`
 
-**Tool Categories**:
+### Tool Categories
 
-| Category | Examples |
-|----------|----------|
-| Graph | `get_backlinks`, `find_hub_notes`, `get_link_path` |
-| Search | `search_notes`, `find_sections`, `get_recent_notes` |
-| Schema | `get_frontmatter_schema`, `validate_frontmatter` |
-| Tasks | `get_all_tasks`, `get_tasks_with_due_dates` |
-| Structure | `get_note_structure`, `get_section_content` |
-| Periodic | `detect_periodic_notes` (auto-finds daily/weekly/etc folders) |
+| Category | Tools | Purpose |
+|----------|-------|---------|
+| **Graph** | `get_backlinks`, `get_forward_links`, `find_hub_notes`, `find_orphan_notes`, `get_link_path`, `find_bidirectional_links`, `find_dead_ends`, `get_connection_strength`, `get_common_neighbors` | Link traversal and graph analysis |
+| **Search** | `search_notes`, `find_sections`, `get_recent_notes`, `get_stale_notes`, `get_notes_modified_on`, `get_notes_in_range`, `get_contemporaneous_notes` | Finding and filtering notes |
+| **Schema** | `get_frontmatter_schema`, `validate_frontmatter`, `find_frontmatter_inconsistencies`, `infer_folder_conventions`, `find_incomplete_notes`, `suggest_field_values`, `compute_frontmatter`, `rename_field`, `migrate_field_values` | Frontmatter analysis and management |
+| **Tasks** | `get_all_tasks`, `get_tasks_from_note`, `get_tasks_with_due_dates` | Task extraction from notes |
+| **Structure** | `get_note_structure`, `get_headings`, `get_section_content`, `get_note_metadata` | Note content analysis |
+| **Periodic** | `detect_periodic_notes` | Auto-detect daily/weekly/monthly note patterns |
+| **Wikilinks** | `suggest_wikilinks`, `validate_links`, `find_broken_links`, `get_unlinked_mentions`, `suggest_wikilinks_in_frontmatter` | Link suggestions and validation |
+| **Vault** | `health_check`, `get_vault_stats`, `get_folder_structure`, `get_activity_summary`, `get_all_entities`, `refresh_index` | Vault-wide operations |
+| **Prose** | `detect_prose_patterns`, `suggest_frontmatter_from_prose`, `validate_cross_layer` | Bidirectional bridge tools |
 
----
+### Tool Design Principles
 
-## Six Gates Safety Framework
-
-### Gate Summary
-
-| Gate | Name | Enforces | Blocks? | Hook |
-|------|------|----------|---------|------|
-| 1 | Read Before Write | Must read file before editing | ✅ YES | `pre-mutation-gate.py` |
-| 2 | File Exists Check | Edit only existing files | ✅ YES | `pre-mutation-gate.py` |
-| 3 | Agent Chain Validation | Agents have checkpoints | ✅ YES | `validate-agent-gate3.py` |
-| 4 | Mutation Confirm | User confirms writes | ✅ YES | `pre-mutation-gate.py` |
-| 5 | MCP Health Check | MCP is accessible | ⚠️ WARN | `session-gate.py` |
-| 6 | Post-Write Verify | Output is valid | ⚠️ WARN | `verify-mutation.py` |
-
-### What Each Gate Does
-
-**Gate 1 - Read Before Write**:
-- Tracks `Read(file_path)` calls
-- Blocks `Edit(file_path)` if not read
-- Prevents blind file modifications
-
-**Gate 2 - File Exists Check**:
-- Validates file exists before Edit
-- Write can create new files
-- Edit only modifies existing
-
-**Gate 3 - Agent Chain Validation**:
-- Checks agent markdown for required sections
-- Verifies sequential execution is documented
-- Only structural compliance, not runtime enforcement
-
-**Gate 4 - Mutation Confirm**:
-- User must confirm before Edit/Write
-- Can be bypassed if tool is whitelisted
-- Shows what will change before applying
-
-**Gate 5 - MCP Health Check**:
-- Runs at session start
-- Warns if MCP not responding
-- Does not block session
-
-**Gate 6 - Post-Write Verify**:
-- Validates YAML is parseable
-- Checks wikilink syntax
-- Warns on issues, doesn't block
-
-### Gate 3 Clarification
-
-Gate 3 ensures agents are *designed* for safety via documentation requirements. It does NOT guarantee runtime enforcement.
-
-**What Gate 3 VALIDATES**:
-- `## Critical Rules` section exists
-- Sequential execution documented
-- Error handling considered
-- Verification format (✓/✗) used
-
-**What Gate 3 does NOT guarantee**:
-- Actual sequential execution (depends on Claude following docs)
-- Error recovery (documented, not enforced at runtime)
-- Correct agent behavior
-
-### Gate 4 Whitelist Caveat
-
-Gate 4 confirmation can be bypassed if `Edit`/`Write` is in the user's permission whitelist.
-
-**Recommendation**: Don't whitelist `Edit`/`Write` to preserve Gate 4 protection for mutations.
+1. **Read-only by default**: Tools query but don't modify files
+2. **Pagination built-in**: All list tools support `limit` and `offset`
+3. **Confidence scores**: Detection tools return confidence levels
+4. **Auto-detection**: No configuration required for common patterns
 
 ---
 
@@ -231,9 +80,9 @@ mcp__flywheel__detect_periodic_notes(type="daily")
 Returns:
 {
   "detected": true,
-  "folder": "daily-notes",           ← Found by scanning
-  "pattern": "YYYY-MM-DD",           ← Detected from filenames
-  "confidence": 0.87,                ← Based on evidence
+  "folder": "daily-notes",           <- Found by scanning
+  "pattern": "YYYY-MM-DD",           <- Detected from filenames
+  "confidence": 0.87,                <- Based on evidence
   "today_path": "daily-notes/2026-01-03.md"
 }
 ```
@@ -273,7 +122,7 @@ Section matching is **forgiving by design**:
 ```json
 {
   "sections": {
-    "log": "Log",        // NOT "## Log"
+    "log": "Log",
     "tasks": "Tasks"
   }
 }
@@ -283,40 +132,7 @@ Section matching is **forgiving by design**:
 
 1. `.flywheel.json` explicit config (highest)
 2. MCP auto-detection (smart defaults)
-3. DEFAULTS in `config/loader.py` (fallback)
-
----
-
-## Skill Invocation
-
-### How Skills Are Triggered
-
-Skills are triggered by **semantic matching**, not slash commands.
-
-**Matching Process**:
-1. User says: "check vault health"
-2. Claude matches against skill `description` field
-3. Skill's `trigger_keywords` provide additional matching hints
-4. Matched skill is executed
-
-**Note**: `trigger_keywords` is Flywheel-specific metadata, not official Claude Code.
-
-### Invocation Patterns
-
-| Say This | Matches Skill | Why |
-|----------|---------------|-----|
-| "check vault health" | `check-health` | Trigger keyword match |
-| "find orphan notes" | `find-orphans` | Description match |
-| "do a rollup" | `run-rollup` | Trigger keyword match |
-| "setup flywheel" | `setup-flywheel` | Trigger keyword match |
-
-### Read-Only vs Mutation
-
-| Type | Behavior | Example |
-|------|----------|---------|
-| Read-Only | Runs immediately | "find orphan notes" |
-| Mutation | Asks confirmation (Gate 4) | "add log entry: fixed bug" |
-| Delegation | Launches agent, then confirms | "do a rollup" |
+3. Built-in defaults (fallback)
 
 ---
 
@@ -324,58 +140,72 @@ Skills are triggered by **semantic matching**, not slash commands.
 
 | What | Where |
 |------|-------|
-| Plugin manifest | `packages/claude-plugin/.claude-plugin/plugin.json` |
-| Core skill | `packages/claude-plugin/skills/vault-tasks/` |
-| All hooks | `packages/claude-plugin/hooks/` |
-| Slash commands | `packages/claude-plugin/commands/` |
-| Config loader | `packages/claude-plugin/config/loader.py` |
-| Six Gates spec | `packages/claude-plugin/skills/_patterns/SIX_GATES.md` |
-| MCP server | `packages/mcp-server/src/index.ts` |
+| MCP server entry | `packages/mcp-server/src/index.ts` |
 | MCP tools | `packages/mcp-server/src/tools/` |
-| Workflow skills (49+) | vault-personal plugin |
-| Agents (14) | vault-personal plugin |
+| Configuration | `packages/mcp-server/src/config/` |
+| Tests | `packages/mcp-server/src/__tests__/` |
 
 ---
 
 ## Development Workflow
 
-### Adding a New Skill
-
-1. Create folder: `skills/my-skill/SKILL.md`
-2. Define frontmatter with name, description, triggers
-3. Document the process
-4. Add Six Gates compliance checklist
-5. Test skill invocation
-
-### Adding a New Agent
-
-1. Check if multi-step (calls `Task()`)
-2. Use template: `agents/_templates/MULTI_STEP_AGENT.md`
-3. Include `## Critical Rules` section
-4. Add verification checkpoints
-5. Run `npm run validate:agents`
-
-### Validation
+### Building
 
 ```bash
-# Validate all agents (Gate 3 compliance)
-npm run validate:agents
+# Install dependencies
+npm install
 
 # Build MCP server
-npm run build:mcp
+npm run build
 
-# Test hooks
-npm run test:hooks
+# Run in development mode
+npm run dev:mcp
 ```
+
+### Testing
+
+```bash
+# Run tests
+npm test
+
+# Run MCP server against a vault
+PROJECT_PATH=/path/to/vault npm run dev:mcp
+```
+
+### Adding a New Tool
+
+1. Create tool file in `packages/mcp-server/src/tools/`
+2. Export tool definition with name, description, parameters
+3. Implement handler function
+4. Register in `index.ts`
+5. Add tests
 
 ---
 
-## Appendix: Core Skills Reference
+## Integration
 
-### Vault Intelligence (Read-Only)
+### MCP Configuration
 
-| Skill | Say This |
-|-------|----------|
-| `vault-tasks` | "show tasks", "find tasks" |
+Add to your `.mcp.json`:
 
-**For workflow skills** (add-log, rollup, food tracking, etc.), install the [vault-personal](https://github.com/velvetmonkey/vault-personal) plugin which provides 49+ additional skills.
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@bencassie/flywheel-mcp"],
+      "env": {
+        "PROJECT_PATH": "/path/to/vault"
+      }
+    }
+  }
+}
+```
+
+### Platform-Specific Commands
+
+| Platform | Command |
+|----------|---------|
+| Linux/WSL | `npx` |
+| macOS | `npx` |
+| Windows | `cmd /c npx` |

@@ -1,12 +1,12 @@
 # Flywheel Tutorial: 10 Minutes to Productivity
 
-Get hands-on with Flywheel's core features in 10 minutes.
+Get hands-on with Flywheel's MCP tools in 10 minutes.
 
 ---
 
 ## What You'll Learn
 
-- Install and configure Flywheel
+- Configure Flywheel MCP server
 - Explore a knowledge graph
 - Query your vault efficiently
 
@@ -14,27 +14,47 @@ Get hands-on with Flywheel's core features in 10 minutes.
 
 ## Part 1: Installation (2 min)
 
-### Step 1: Install the Plugin
+### Step 1: Create MCP Configuration
 
-```bash
-/plugin marketplace add velvetmonkey/flywheel
-/plugin install flywheel@velvetmonkey-flywheel
+Add to `.mcp.json` in your vault root:
+
+**Linux/macOS/WSL:**
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@bencassie/flywheel-mcp"]
+    }
+  }
+}
 ```
 
-### Step 2: Setup Flywheel
+**Windows (native):**
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"]
+    }
+  }
+}
+```
 
-Just say: **"setup flywheel"**
+### Step 2: Restart Claude Code
 
-Claude will:
-1. Detect your platform (Windows/macOS/Linux/WSL)
-2. Generate the correct `.mcp.json` configuration
-3. Ask you to confirm before writing
-4. Validate the MCP connection
-5. Show your vault stats
+The MCP server loads on startup. After creating `.mcp.json`, restart Claude Code.
 
-### Step 3: Restart if Needed
+### Step 3: Verify Connection
 
-If the MCP wasn't already loaded, you'll need to restart Claude Code. After restart, say "setup flywheel" again to see your vault stats.
+Use the health check tool:
+
+```
+mcp__flywheel__health_check()
+```
+
+You should see vault stats including note count and link metrics.
 
 ---
 
@@ -48,28 +68,33 @@ Let's use the included demo vault to learn.
 cd demos/carter-strategy
 ```
 
-Then say: **"setup flywheel"**
+Create `.mcp.json` with the configuration above, then restart Claude Code.
+
+### Step 2: Check Vault Stats
+
+```
+mcp__flywheel__get_vault_stats()
+```
 
 You should see:
+- Note count
+- Total wikilinks
+- Orphan notes
+- Hub notes
+
+### Step 3: Find Hub Notes
+
 ```
-## Flywheel Connected!
-
-### Your Vault
-- **Notes**: 30 markdown files
-- **Wikilinks**: 87 connections
-- **Orphans**: 3 unlinked notes
-- **Hub notes**: 2 highly connected
+mcp__flywheel__find_hub_notes({ min_links: 5 })
 ```
-
-### Step 2: Find Hub Notes
-
-Say: **"show hub notes"**
 
 Hub notes are your most connected knowledge - good entry points for understanding the vault.
 
-### Step 3: Find Orphan Notes
+### Step 4: Find Orphan Notes
 
-Say: **"find orphan notes"**
+```
+mcp__flywheel__find_orphan_notes()
+```
 
 These are notes with no incoming links - they might need connections.
 
@@ -79,19 +104,25 @@ These are notes with no incoming links - they might need connections.
 
 ### Backlinks
 
-Say: **"show backlinks for Ben Carter"**
+```
+mcp__flywheel__get_backlinks({ path: "Ben Carter" })
+```
 
 See all notes that reference Ben Carter.
 
 ### Path Finding
 
-Say: **"how do Project Alpha and Client ABC connect?"**
+```
+mcp__flywheel__get_link_path({ from: "Project Alpha", to: "Client ABC" })
+```
 
 Finds the shortest path of links between two notes.
 
 ### Common References
 
-Say: **"what do Sarah and Mike both link to?"**
+```
+mcp__flywheel__get_common_neighbors({ note_a: "Sarah", note_b: "Mike" })
+```
 
 Find notes that multiple people or concepts reference together.
 
@@ -101,19 +132,25 @@ Find notes that multiple people or concepts reference together.
 
 ### Frontmatter Fields
 
-Say: **"what fields exist in projects/"**
+```
+mcp__flywheel__infer_folder_conventions({ folder: "projects" })
+```
 
 See all frontmatter fields used in a folder.
 
 ### Field Values
 
-Say: **"show all unique values for status"**
+```
+mcp__flywheel__get_field_values({ field: "status" })
+```
 
 See the vocabulary used across your vault.
 
 ### Filtered Search
 
-Say: **"find notes where status is blocked"**
+```
+mcp__flywheel__search_notes({ where: { "status": "blocked" } })
+```
 
 Query notes by frontmatter values.
 
@@ -123,24 +160,24 @@ Query notes by frontmatter values.
 
 ### On Your Own Vault
 
-```bash
-cd /path/to/your/vault
-# Say: "setup flywheel"
-```
+1. Navigate to your vault directory
+2. Create `.mcp.json` with Flywheel config
+3. Restart Claude Code
+4. Run `mcp__flywheel__health_check()`
 
-### Explore More Queries
+### Explore More Tools
 
-| Say This | What Happens |
-|----------|--------------|
-| "show notes modified this week" | Temporal query |
-| "find stale important notes" | High-connection, old modification |
-| "find notes tagged #urgent" | Tag filtering |
-| "list notes in meetings/" | Folder filtering |
+| Tool | Purpose |
+|------|---------|
+| `get_recent_notes({ days: 7 })` | Notes modified this week |
+| `get_stale_notes({ days: 30 })` | Important but neglected notes |
+| `search_notes({ has_tag: "urgent" })` | Tag filtering |
+| `search_notes({ folder: "meetings" })` | Folder filtering |
 
 ### Read More
 
-- [QUERY_GUIDE.md](QUERY_GUIDE.md) - Complete query reference
-- [MCP_REFERENCE.md](MCP_REFERENCE.md) - All 40+ MCP tools
+- [ARCHITECTURE.md](ARCHITECTURE.md) - System design
+- [MCP_REFERENCE.md](MCP_REFERENCE.md) - All 44 MCP tools
 
 ---
 
@@ -149,8 +186,9 @@ cd /path/to/your/vault
 ### "MCP not connected"
 
 1. Check `.mcp.json` exists in your vault root
-2. Restart Claude Code
-3. Say "setup flywheel" again
+2. Verify JSON syntax is valid
+3. Restart Claude Code
+4. Run `mcp__flywheel__health_check()`
 
 ### "Vault path not found"
 
@@ -162,9 +200,9 @@ Make sure you're in the correct directory. The working directory should be your 
 
 In 10 minutes you learned to:
 
-1. **Install** - `/plugin install flywheel@velvetmonkey-flywheel`
-2. **Setup** - Say "setup flywheel"
-3. **Navigate** - "what links to X", "how do A and B connect"
-4. **Query** - Graph, temporal, and schema queries
+1. **Configure** - Add Flywheel to `.mcp.json`
+2. **Verify** - Run `health_check()` to confirm connection
+3. **Navigate** - Use `get_backlinks()`, `get_link_path()`, `get_common_neighbors()`
+4. **Query** - Use `search_notes()`, `get_field_values()`, `infer_folder_conventions()`
 
-Flywheel gives your AI full intelligence over your knowledge graph - just describe what you want in natural language.
+Flywheel gives AI clients full intelligence over your markdown vault through 44 MCP tools.

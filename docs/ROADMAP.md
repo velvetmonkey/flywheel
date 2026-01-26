@@ -1,125 +1,56 @@
 # Flywheel Roadmap
 
-## Current: v1.8.0 - Workflow Templates (January 2026)
+## Current: v1.25.0 - Pure MCP Server (January 2026)
 
-**Goal**: Pre-built automation for common business processes.
+**Goal**: Focused MCP server for vault intelligence.
 
-### New Skills (6)
-- `/extract-actions` - Extract action items from meeting notes (NLP parsing)
-- `/weekly-review` - Comprehensive weekly review with reflection and planning
-- `/standup-rollup` - Aggregate team standups into summary
-- `/okr-review` - Quarterly OKR scoring and next quarter planning
-- `/onboard-customer` - Create customer onboarding checklist from template
-- `/workflow-define` - Define custom workflows as markdown
+### Changes
+- Removed Claude plugin infrastructure
+- 44 MCP tools for graph and schema intelligence
+- Zero external dependencies beyond MCP protocol
 
-### New Agents (5)
-- `action-extraction-agent` - Parse meetings for explicit and implicit action items
-- `weekly-review-agent` - Rollup + reflection + goal progress + planning
-- `standup-agent` - Team standup aggregation with blocker analysis
-- `okr-review-agent` - OKR scoring (0-1.0) with evidence matching
-- `customer-onboarding-agent` - Template-based checklist creation
+---
 
-### New Templates (4)
-- `meeting.md` - Standard meeting note with attendees, agenda, actions
-- `standup.md` - Team standup format (Yesterday/Today/Blockers)
-- `okr.md` - OKR tracking with objectives and key results tables
-- `customer-onboarding.md` - Phased onboarding checklist
+## Planned: v1.26.0 - Enhanced Graph Analysis
+
+**Goal**: Deeper graph intelligence tools.
+
+### New MCP Tools
+- `find_clusters()` - Detect knowledge clusters (groups of highly connected notes)
+- `get_neighborhood(path, depth)` - Get all notes within N hops of a note
+- `calculate_pagerank()` - Identify most important notes by link structure
+- `find_bridges()` - Find notes that connect otherwise separate clusters
+
+### Enhanced Tools
+- `get_vault_stats()` - Add graph density, clustering coefficient metrics
+- `find_hub_notes()` - Add centrality scoring options
+
+---
+
+## Planned: v1.27.0 - Schema Enforcement
+
+**Goal**: Runtime schema validation for vault consistency.
+
+### New MCP Tools
+- `define_schema(folder, schema)` - Set expected schema for a folder
+- `validate_vault()` - Check all notes against folder schemas
+- `generate_schema_report()` - Comprehensive schema analysis report
 
 ### Features
-- NLP-style action extraction (not just checkboxes)
-- Team workflow support (standups, OKRs)
-- Template interpolation with variables
-- Workflow definition format for custom processes
+- Schema definition stored in `.flywheel.json`
+- Validation returns actionable fix suggestions
+- Support for required fields, allowed values, type checking
 
 ---
 
-## Planned: Six Gates Runtime Enforcement
+## Future: v2.0 - Multi-Vault Support
 
-**Goal**: True runtime verification of skill mutations (not just documentation checks).
+**Goal**: Cross-vault intelligence.
 
-### Runtime Skill Verification Framework
-
-Current Gate 6 relies on skills *documenting* verification steps. This enhancement would add actual runtime enforcement:
-
-#### New PostToolUse Hook: `verify-skill-mutation.py`
-- Intercepts skill completion
-- Compares file state before/after
-- Blocks success message if expected content missing
-- Works across all mutation skills automatically
-
-#### Implementation Details
-- Track "expected mutation" when skill starts (from skill definition)
-- PostToolUse hook verifies mutation actually occurred
-- Surface clear error to user if mutation failed silently
-- No skill changes needed - framework handles verification
-
-#### Benefits
-- 95%+ confidence in mutation success
-- Eliminates silent failures completely
-- Skills can't claim success when Edit was blocked
-
-**Priority**: Medium (current documentation-based approach catches 70% of failures)
-
----
-
-## Previous: v1.7.x (January 2025)
-
-### v1.7.4 - Bug Fixes
-- Fix read-cache locking bug for parallel Reads
-- Gate 1 now allows Write to new files
-- Gate 1 session cache for context summarization
-
-### v1.7.0 - Advanced Schema Intelligence
-
-**Goal**: Make frontmatter as powerful as a database - with zero configuration.
-
-#### New MCP Tools (6)
-- `infer_folder_conventions(folder)` - Auto-detect metadata conventions per folder
-- `find_incomplete_notes(folder)` - Find notes missing expected fields
-- `suggest_field_values(field, context)` - Context-aware value suggestions
-- `compute_frontmatter(path, fields)` - Auto-compute derived fields
-- `rename_field(old, new, scope)` - Bulk rename frontmatter fields
-- `migrate_field_values(field, mapping)` - Transform values in bulk
-
-#### New Skills (5)
-- `/schema-infer`, `/schema-gaps`, `/schema-apply`, `/schema-compute`, `/schema-migrate`
-
----
-
-## Previous: v1.6.x (January 2025)
-
-### v1.6.3 - Foundation Fix
-- Registered missing frontmatter MCP tools
-- Added `/onboard` skill for first-run experience
-- Added `docs/QUICKSTART.md`
-
-### v1.6.2 - Six Gates REAL Enforcement
-- Gates 1, 2, 4 enforced via PreToolUse hooks (can block)
-- Gate 3 enforced via project-level agent validation
-- All 8 agents Gate 3 compliant
-
-See [SIX_GATES.md](../packages/claude-plugin/skills/_patterns/SIX_GATES.md) for full specification.
-
----
-
-## v2.0 - Enterprise Features
-
-**Goal**: Ready for teams and enterprises.
-
-### Multi-Vault
-- Cross-vault linking
-- Vault federation
-- Shared schemas across vaults
-
-### Collaboration
-- Real-time presence (who's editing what)
-- Comment threads on notes
-- Review workflows
-
-### Compliance
-- Audit logging
-- Access control
-- Data retention policies
+### Features
+- Cross-vault linking resolution
+- Federated search across vaults
+- Shared schema definitions
 
 ---
 
@@ -127,17 +58,12 @@ See [SIX_GATES.md](../packages/claude-plugin/skills/_patterns/SIX_GATES.md) for 
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| 1.20.1 | 2026-01 | Gate 6 skill verification - validates writes after Edit, `validate-skill-gate6.py` hook |
-| 1.8.0 | 2026-01 | Workflow Templates - 6 skills, 5 agents, 4 templates for business workflows |
-| 1.7.4 | 2026-01 | Bug fixes - read-cache locking, Gate 1 improvements |
-| 1.7.0 | 2025-01 | Advanced Schema Intelligence - inferred schemas, 6 new MCP tools, 5 new skills |
-| 1.6.3 | 2025-01 | Register missing frontmatter tools, /onboard skill, QUICKSTART.md |
-| 1.6.2 | 2025-01 | Six Gates REAL enforcement, Gate 3 hooks |
-| 1.6.1 | 2025-01 | Six Gates framework, session/verify hooks |
-| 1.6.0 | 2025-01 | Bidirectional Bridge |
-| 1.5.0 | 2024-12 | Startup Ops demo, marketplace installation |
-| 1.4.0 | 2024-12 | Periodic note detection |
-| 1.3.0 | 2024-11 | Task management tools |
-| 1.2.0 | 2024-11 | Structure tools (headings, sections) |
-| 1.1.0 | 2024-10 | Temporal tools (stale, concurrent) |
-| 1.0.0 | 2024-10 | Initial release |
+| 1.25.0 | 2026-01 | Clean MCP server - removed plugin infrastructure |
+| 1.24.0 | 2026-01 | Architecture split - moved personal features to vault-personal |
+| 1.23.0 | 2026-01 | Bidirectional bridge tools |
+| 1.22.0 | 2026-01 | Schema intelligence - inferred conventions, 9 new tools |
+| 1.21.0 | 2026-01 | Periodic note detection |
+| 1.20.0 | 2025-12 | Task management tools |
+| 1.19.0 | 2025-12 | Structure tools (headings, sections) |
+| 1.18.0 | 2025-11 | Temporal tools (stale, concurrent) |
+| 1.0.0 | 2025-10 | Initial release - graph tools |
