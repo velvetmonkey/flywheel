@@ -1,7 +1,7 @@
 {
   "name": "@bencassie/flywheel-mcp",
   "version": "1.25.0",
-  "description": "Flywheel MCP server - graph intelligence for markdown vaults",
+  "description": "Query your markdown like a database. 100x token savings for AI agents.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
@@ -42,13 +42,18 @@
     "model-context-protocol",
     "claude",
     "claude-code",
+    "ai-agents",
+    "agentic-workflows",
+    "token-optimization",
     "knowledge-graph",
     "wikilinks",
     "backlinks",
     "vault-health",
     "markdown",
     "pkm",
-    "zettelkasten"
+    "zettelkasten",
+    "knowledge-management",
+    "graph-intelligence"
   ],
   "author": "Ben Cassie",
   "license": "Apache-2.0",

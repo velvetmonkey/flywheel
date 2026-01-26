@@ -2,18 +2,26 @@
   "name": "@velvetmonkey/flywheel",
   "version": "1.25.0",
   "private": true,
-  "description": "MCP server providing graph intelligence for markdown vaults",
+  "description": "Query your markdown like a database. 100x token savings for AI agents.",
   "keywords": [
     "markdown",
     "knowledge-management",
     "ai",
+    "ai-agents",
+    "agentic-workflows",
+    "token-optimization",
     "claude",
+    "claude-code",
     "mcp",
+    "model-context-protocol",
     "obsidian",
     "pkm",
     "graph",
+    "graph-intelligence",
     "frontmatter",
-    "automation"
+    "automation",
+    "wikilinks",
+    "backlinks"
   ],
   "repository": {
     "type": "git",
