@@ -4,7 +4,7 @@ skill: setup-flywheel
 
 # /setup-flywheel - Configure and Onboard to Flywheel
 
-Complete Flywheel setup in one command: configure MCP, validate connection, and see your vault stats.
+[[Complete Flywheel]] setup in [[One]] [[Command]]: configure MCP, validate connection, and [[See]] your vault stats.
 
 ## Usage
 
@@ -98,7 +98,7 @@ I'll add this to your `.mcp.json`:
   "mcpServers": {
     "flywheel": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"]
+      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"]
     }
   }
 }

@@ -1,6 +1,6 @@
 # Flywheel - Query Your Markdown Like a Database
 
-[![npm version](https://img.shields.io/npm/v/@velvetmonkey/flywheel-mcp.svg)](https://www.npmjs.com/package/@velvetmonkey/flywheel-mcp)
+[![npm version](https://img.shields.io/npm/v/@bencassie/flywheel-mcp.svg)](https://www.npmjs.com/package/@bencassie/flywheel-mcp)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/velvetmonkey/flywheel)
 
@@ -19,7 +19,7 @@ Add to `.mcp.json` in your vault root:
   "mcpServers": {
     "flywheel": {
       "command": "npx",
-      "args": ["-y", "@velvetmonkey/flywheel-mcp"]
+      "args": ["-y", "@bencassie/flywheel-mcp"]
     }
   }
 }
@@ -27,8 +27,8 @@ Add to `.mcp.json` in your vault root:
 
 That's it. Flywheel uses the current directory as your vault—no config needed.
 
-<details>
-<summary><strong>Platform notes (Windows, WSL, custom vault path)</strong></summary>
+(details)
+(summary)(strong)Platform notes (Windows, WSL, custom vault path)(/strong)(/summary)
 
 **Windows (native):**
 ```json
@@ -36,7 +36,7 @@ That's it. Flywheel uses the current directory as your vault—no config needed.
   "mcpServers": {
     "flywheel": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"]
+      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"]
     }
   }
 }
@@ -48,7 +48,7 @@ That's it. Flywheel uses the current directory as your vault—no config needed.
   "mcpServers": {
     "flywheel": {
       "command": "npx",
-      "args": ["-y", "@velvetmonkey/flywheel-mcp"],
+      "args": ["-y", "@bencassie/flywheel-mcp"],
       "env": {
         "PROJECT_PATH": "/path/to/your/vault"
       }
@@ -59,7 +59,7 @@ That's it. Flywheel uses the current directory as your vault—no config needed.
 
 **WSL:** Use `npx` directly (not `cmd /c`), with `/mnt/c/...` paths.
 
-</details>
+(/details)
 
 Verify: `claude mcp list` should show `flywheel ✓`
 

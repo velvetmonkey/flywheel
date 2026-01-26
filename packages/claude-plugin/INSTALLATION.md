@@ -1,17 +1,17 @@
 # Installation Guide
 
-Platform-specific installation instructions for Flywheel Plugin.
+Platform-[[Specific]] installation instructions for [[Flywheel Plugin]].
 
 ## Prerequisites
 
 ### All Platforms
 
-1. **Python 3.8+** installed and available as `python3` in PATH
-2. **Claude Code** installed with plugin support
+1. **[[Python 3.8]]+** installed and [[Available]] as `python3` in PATH
+2. [[Claude Code]] installed with plugin support
 
 ### Windows
 
-Ensure Python is installed and added to PATH during installation.
+[[Ensure Python]] is installed and [[Added]] to PATH during installation.
 
 **Verify installation:**
 ```powershell
@@ -33,7 +33,7 @@ brew install python
 
 ### Step 1: Configure Flywheel MCP Server
 
-Add to `.mcp.json` in your vault (or `~/.claude.json` for user-level):
+Add to `.mcp.[[JSON]]` in your vault (or `~/.claude.[[JSON]]` for user-level):
 
 **macOS/Linux/WSL:**
 ```json
@@ -41,7 +41,7 @@ Add to `.mcp.json` in your vault (or `~/.claude.json` for user-level):
   "mcpServers": {
     "flywheel": {
       "command": "npx",
-      "args": ["-y", "@velvetmonkey/flywheel-mcp"],
+      "args": ["-y", "@bencassie/flywheel-mcp"],
       "env": {
         "PROJECT_PATH": "/path/to/your/vault"
       }
@@ -56,7 +56,7 @@ Add to `.mcp.json` in your vault (or `~/.claude.json` for user-level):
   "mcpServers": {
     "flywheel": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"],
+      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
       "env": {
         "PROJECT_PATH": "C:/path/to/your/vault"
       }
@@ -76,7 +76,7 @@ In Claude Code, run these commands:
 
 ### Step 3: Create Vault Configuration (Optional)
 
-Create `.flywheel.json` in your vault root for customization:
+Create `.[[Flywheel]].json` in your vault root for customization:
 
 ```json
 {
@@ -114,7 +114,7 @@ git clone https://github.com/velvetmonkey/flywheel.git
 ```
 
 Note your plugin path:
-- **WSL**: `/mnt/c/Users/YOUR_USER/src/flywheel/packages/claude-plugin`
+- **WSL**: `/mnt/c/Users/YOUR_USER/src/[[Flywheel]]/packages/claude-plugin`
 - **Windows**: `C:/Users/YOUR_USER/src/flywheel/packages/claude-plugin`
 - **macOS/Linux**: `~/src/flywheel/packages/claude-plugin`
 
@@ -191,7 +191,7 @@ If you use both Windows and WSL, create the appropriate `.mcp.json` for each env
   "mcpServers": {
     "flywheel": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"],
+      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
       "env": { "PROJECT_PATH": "C:/Users/YOUR_USER/obsidian/YOUR_VAULT" }
     }
   }
@@ -204,7 +204,7 @@ If you use both Windows and WSL, create the appropriate `.mcp.json` for each env
   "mcpServers": {
     "flywheel": {
       "command": "npx",
-      "args": ["-y", "@velvetmonkey/flywheel-mcp"],
+      "args": ["-y", "@bencassie/flywheel-mcp"],
       "env": { "PROJECT_PATH": "/mnt/c/Users/YOUR_USER/obsidian/YOUR_VAULT" }
     }
   }
@@ -266,4 +266,4 @@ See [rules.md](rules.md) for available rules:
 **Directory install:**
 1. Remove `extraKnownMarketplaces` and `enabledPlugins` entries from settings
 2. Delete `.flywheel.json` from vault (optional)
-3. Restart Claude Code
+3. [[Restart Claude Code]]

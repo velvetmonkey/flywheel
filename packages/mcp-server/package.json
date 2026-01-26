@@ -1,5 +1,5 @@
 {
-  "name": "flywheel-mcp",
+  "name": "@bencassie/flywheel-mcp",
   "version": "1.24.0",
   "description": "Flywheel MCP server - graph intelligence for markdown vaults",
   "type": "module",

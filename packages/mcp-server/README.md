@@ -2,7 +2,7 @@
 
 The intelligence layer of [Flywheel](https://github.com/velvetmonkey/flywheel) — MCP tools for vault graph queries, wikilink services, and structure analysis.
 
-[![npm](https://img.shields.io/npm/v/@velvetmonkey/flywheel-mcp)](https://www.npmjs.com/package/@velvetmonkey/flywheel-mcp)
+[![npm](https://img.shields.io/npm/v/@bencassie/flywheel-mcp)](https://www.npmjs.com/package/@bencassie/flywheel-mcp)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-blue)](https://modelcontextprotocol.io/)
 
@@ -17,30 +17,30 @@ Add to your project's `.mcp.json` (in your vault root). **Zero-config** if `.mcp
   "mcpServers": {
     "flywheel": {
       "command": "npx",
-      "args": ["-y", "@velvetmonkey/flywheel-mcp"]
+      "args": ["-y", "@bencassie/flywheel-mcp"]
     }
   }
 }
 ```
 
-> **Note**: Windows native requires `"command": "cmd", "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"]`
+> **Note**: Windows native requires `"command": "cmd", "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"]`
 
-<details>
-<summary><strong>Advanced: Pointing to a different vault</strong></summary>
+(details)
+(summary)(strong)Advanced: Pointing to a different vault(/strong)(/summary)
 
 If `.mcp.json` is NOT in your vault, or you want to use a different vault, set `PROJECT_PATH`:
 
 **Choose config based on where Claude Code runs, NOT where your vault is stored.**
 
-<details>
-<summary><strong>Linux / macOS</strong></summary>
+(details)
+(summary)(strong)Linux / macOS(/strong)(/summary)
 
 ```json
 {
   "mcpServers": {
     "flywheel": {
       "command": "npx",
-      "args": ["-y", "@velvetmonkey/flywheel-mcp"],
+      "args": ["-y", "@bencassie/flywheel-mcp"],
       "env": {
         "PROJECT_PATH": "/path/to/your/vault"
       }
@@ -49,10 +49,10 @@ If `.mcp.json` is NOT in your vault, or you want to use a different vault, set `
 }
 ```
 
-</details>
+(/details)
 
-<details>
-<summary><strong>WSL (Windows Subsystem for Linux)</strong></summary>
+(details)
+(summary)(strong)WSL (Windows Subsystem for Linux)(/strong)(/summary)
 
 > ⚠️ **Common mistake**: Your vault may be on `C:\Users\...` (Windows filesystem), but if Claude Code runs in WSL, this is Linux—use `npx` directly, **not** `cmd /c`.
 
@@ -61,7 +61,7 @@ If `.mcp.json` is NOT in your vault, or you want to use a different vault, set `
   "mcpServers": {
     "flywheel": {
       "command": "npx",
-      "args": ["-y", "@velvetmonkey/flywheel-mcp"],
+      "args": ["-y", "@bencassie/flywheel-mcp"],
       "env": {
         "PROJECT_PATH": "/mnt/c/Users/yourname/path/to/vault"
       }
@@ -70,17 +70,17 @@ If `.mcp.json` is NOT in your vault, or you want to use a different vault, set `
 }
 ```
 
-</details>
+(/details)
 
-<details>
-<summary><strong>Windows (native, not WSL)</strong></summary>
+(details)
+(summary)(strong)Windows (native, not WSL)(/strong)(/summary)
 
 ```json
 {
   "mcpServers": {
     "flywheel": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"],
+      "args": ["/c", "npx", "-y", "@bencassie/flywheel-mcp"],
       "env": {
         "PROJECT_PATH": "C:/Users/yourname/path/to/vault"
       }
@@ -89,7 +89,7 @@ If `.mcp.json` is NOT in your vault, or you want to use a different vault, set `
 }
 ```
 
-</details>
+(/details)
 
 #### Detecting Your Platform
 
@@ -101,19 +101,19 @@ Check the environment info shown at the start of your Claude Code session:
 | `win32` | Windows |
 | `darwin` | macOS |
 
-</details>
+(/details)
 
 ### Via CLI
 
 ```bash
 # Zero-config (run from vault directory)
-claude mcp add flywheel -- npx -y @velvetmonkey/flywheel-mcp
+claude mcp add flywheel -- npx -y @bencassie/flywheel-mcp
 
 # With explicit vault path
-claude mcp add flywheel --env PROJECT_PATH=/path/to/vault -- npx -y @velvetmonkey/flywheel-mcp
+claude mcp add flywheel --env PROJECT_PATH=/path/to/vault -- npx -y @bencassie/flywheel-mcp
 
 # Windows (native) - with explicit path
-claude mcp add flywheel --env PROJECT_PATH=C:/path/to/vault -- cmd /c npx -y @velvetmonkey/flywheel-mcp
+claude mcp add flywheel --env PROJECT_PATH=C:/path/to/vault -- cmd /c npx -y @bencassie/flywheel-mcp
 ```
 
 ### Verify
@@ -170,7 +170,7 @@ The server scans the vault on startup and builds an in-memory index. No database
 
 **Design decisions:**
 - File-first: Parses markdown directly, no database
-- Eager loading: Full index on startup (fine for <5000 notes)
+- Eager loading: Full index on startup (fine for (5000 notes)
 - In-memory graph: <10ms query times
 - Privacy by design: Returns structure/metadata, not content
 
@@ -190,7 +190,7 @@ The server scans the vault on startup and builds an in-memory index. No database
 | Malformed YAML | Skipped, file treated as content |
 | Binary files | Detected and skipped |
 | Empty files | Indexed with no links/tags |
-| Large files (>10MB) | Skipped with warning |
+| Large files ()10MB) | Skipped with warning |
 | Missing files | Graceful degradation |
 
 ## Development
