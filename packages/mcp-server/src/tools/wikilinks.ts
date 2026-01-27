@@ -24,6 +24,10 @@ interface EntityMatch {
  * - Case-insensitive matching
  * - Avoids matching inside existing [[wikilinks]]
  * - Avoids matching inside `code` or ```code blocks```
+ * - Avoids matching inside markdown headings (lines starting with #)
+ * - Avoids matching inside YAML frontmatter (--- blocks at document start)
+ * - Avoids matching inside footnote definitions ([^1]: text)
+ * - Avoids matching inside HTML tags and comments
  * - Matches longest entities first (e.g., "Claude Code" before "Claude")
  */
 function findEntityMatches(text: string, entities: Map<string, string>): EntityMatch[] {
@@ -37,9 +41,15 @@ function findEntityMatches(text: string, entities: Map<string, string>): EntityM
   // Find regions to skip (existing wikilinks and code blocks)
   const skipRegions: Array<{ start: number; end: number }> = [];
 
+  // Skip YAML frontmatter (must be at document start)
+  const frontmatterRegex = /^---\r?\n[\s\S]*?\r?\n---/;
+  let match = frontmatterRegex.exec(text);
+  if (match) {
+    skipRegions.push({ start: match.index, end: match.index + match[0].length });
+  }
+
   // Skip existing wikilinks
   const wikilinkRegex = /\[\[[^\]]+\]\]/g;
-  let match;
   while ((match = wikilinkRegex.exec(text)) !== null) {
     skipRegions.push({ start: match.index, end: match.index + match[0].length });
   }
@@ -53,6 +63,30 @@ function findEntityMatches(text: string, entities: Map<string, string>): EntityM
   // Skip URLs
   const urlRegex = /https?:\/\/[^\s)>\]]+/g;
   while ((match = urlRegex.exec(text)) !== null) {
+    skipRegions.push({ start: match.index, end: match.index + match[0].length });
+  }
+
+  // Skip markdown headings (lines starting with #)
+  const headingRegex = /^#{1,6}\s.*$/gm;
+  while ((match = headingRegex.exec(text)) !== null) {
+    skipRegions.push({ start: match.index, end: match.index + match[0].length });
+  }
+
+  // Skip footnote definitions ([^id]: content until next blank line or EOF)
+  const footnoteRegex = /^\[\^[^\]]+\]:.*(?:\r?\n(?![\r\n]).*)*$/gm;
+  while ((match = footnoteRegex.exec(text)) !== null) {
+    skipRegions.push({ start: match.index, end: match.index + match[0].length });
+  }
+
+  // Skip HTML comments
+  const htmlCommentRegex = /<!--[\s\S]*?-->/g;
+  while ((match = htmlCommentRegex.exec(text)) !== null) {
+    skipRegions.push({ start: match.index, end: match.index + match[0].length });
+  }
+
+  // Skip HTML tags (both self-closing and paired)
+  const htmlTagRegex = /<[a-zA-Z][^>]*>[\s\S]*?<\/[a-zA-Z][^>]*>|<[a-zA-Z][^>]*\/>/g;
+  while ((match = htmlTagRegex.exec(text)) !== null) {
     skipRegions.push({ start: match.index, end: match.index + match[0].length });
   }
 
