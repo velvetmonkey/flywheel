@@ -16,6 +16,34 @@ You couldn't do this before. Now you can.
 
 ---
 
+## 44 Tools. Three Query Types.
+
+### Graph Queries — "What connects to what?"
+
+```
+"What depends on [[Turbopump]]?"  → 6 notes link to it, 4 dependencies found
+"How does [[Invoice]] connect to [[Project]]?"  → 2-hop path via [[Client]]
+"Find hub notes"  → 8 notes with 10+ connections
+```
+
+### Schema Queries — "Find notes where..."
+
+```
+"All invoices where status is 'pending'"  → 3 notes, $47K outstanding
+"What fields exist in meetings/?"  → attendees, date, decisions, follow-ups
+"Notes missing required fields"  → 12 incomplete records
+```
+
+### Temporal Queries — "What changed when?"
+
+```
+"Activity in the last 7 days"  → 23 notes modified, 4 new
+"Stale but important notes"  → 5 hub notes untouched in 30+ days
+"What was I working on with [[Client X]]?"  → Timeline of related edits
+```
+
+---
+
 ## What This Unlocks
 
 - **Agentic workflows** that query your vault repeatedly without token bloat
@@ -92,34 +120,6 @@ Flywheel indexes structure, not content:
 | Headings, modification dates | |
 
 Graph queries never read files. Content only loads when you explicitly need it.
-
----
-
-## 44 Tools. Three Query Types.
-
-### Graph Queries — "What connects to what?"
-
-```
-"What depends on [[Turbopump]]?"  → 6 notes link to it, 4 dependencies found
-"How does [[Invoice]] connect to [[Project]]?"  → 2-hop path via [[Client]]
-"Find hub notes"  → 8 notes with 10+ connections
-```
-
-### Schema Queries — "Find notes where..."
-
-```
-"All invoices where status is 'pending'"  → 3 notes, $47K outstanding
-"What fields exist in meetings/?"  → attendees, date, decisions, follow-ups
-"Notes missing required fields"  → 12 incomplete records
-```
-
-### Temporal Queries — "What changed when?"
-
-```
-"Activity in the last 7 days"  → 23 notes modified, 4 new
-"Stale but important notes"  → 5 hub notes untouched in 30+ days
-"What was I working on with [[Client X]]?"  → Timeline of related edits
-```
 
 ---
 
