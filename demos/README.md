@@ -28,7 +28,7 @@ cd demos/carter-strategy
   "mcpServers": {
     "flywheel": {
       "command": "npx",
-      "args": ["-y", "@bencassie/flywheel-mcp"]
+      "args": ["-y", "@velvetmonkey/flywheel-mcp"]
     }
   }
 }
