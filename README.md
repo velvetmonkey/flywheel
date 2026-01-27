@@ -21,9 +21,12 @@ You couldn't do this before. Now you can.
 ### Graph Queries — "What connects to what?"
 
 ```
-"What depends on [[Turbopump]]?"  → 6 notes link to it, 4 dependencies found
-"How does [[Invoice]] connect to [[Project]]?"  → 2-hop path via [[Client]]
-"Find hub notes"  → 8 notes with 10+ connections
+"What depends on [[Turbopump]]?"        → 6 backlinks, 4 critical dependencies
+"Find orphan notes"                     → 12 disconnected notes need linking
+"Show hub notes"                        → 8 knowledge centers with 10+ connections
+"Path from [[Invoice]] to [[Project]]"  → 2-hop path via [[Client]]
+"Find bidirectional links"              → 23 strongly connected note pairs
+"What's connected to [[Q1 Goals]]?"     → Forward links, backlinks, shared neighbors
 ```
 
 ### Schema Queries — "Find notes where..."
@@ -44,13 +47,53 @@ You couldn't do this before. Now you can.
 
 ---
 
+## Why Graph Intelligence Matters
+
+Most file-based tools treat your vault as a filesystem. Flywheel treats it as a **knowledge graph**.
+
+### Vault Health Metrics
+
+| Metric | What It Reveals | Why It Matters |
+|--------|-----------------|----------------|
+| **Orphan notes** | Notes with zero backlinks | Disconnected knowledge that needs integration |
+| **Hub notes** | Notes with 10+ connections | Your vault's knowledge centers — keep them current |
+| **Dead ends** | Notes linked TO but linking to nothing | Information sinks that should connect outward |
+| **Stale hubs** | Important notes not updated recently | Critical knowledge drifting out of date |
+
+### What Other MCPs Don't Have
+
+Generic file MCPs can read and write files. **Only Flywheel understands:**
+
+- The **link structure** between your notes
+- Which notes are **orphaned** vs **well-connected**
+- How ideas **flow** through your vault via wikilinks
+- When your **knowledge graph is degrading** (stale hubs, broken links)
+
+This is the difference between a filesystem and a **second brain**.
+
+### Connection Discovery
+
+Your vault contains relationships you haven't noticed:
+
+```
+"Path from [[Meeting Notes]] to [[Q4 Strategy]]"
+→ Meeting Notes → [[Client Feedback]] → [[Product Roadmap]] → Q4 Strategy
+
+"Common neighbors of [[React]] and [[Performance]]"
+→ Both link to [[Virtual DOM]], [[Memoization]], [[Bundle Size]]
+```
+
+**Graph intelligence reveals the hidden structure of your thinking.**
+
+---
+
 ## What This Unlocks
 
-- **Agentic workflows** that query your vault repeatedly without token bloat
-- **Long-running tasks** that reference your knowledge throughout execution
-- **Graph intelligence** — backlinks, forward links, hub notes — all instant
+- **Graph intelligence** — backlinks, orphans, hubs, connection paths — your vault as a queryable knowledge graph
+- **Vault health monitoring** — find disconnected notes, stale hubs, broken links instantly
+- **Connection discovery** — "how does X relate to Y?" answered in milliseconds
 - **Schema queries** on frontmatter without reading files
-- **Zero context pollution** — files stay on disk until you need them
+- **Agentic workflows** that query your knowledge hundreds of times without token bloat
 
 ---
 
@@ -71,8 +114,8 @@ Add to `.mcp.json` in your vault root:
 
 That's it. Flywheel uses the current directory as your vault—no config needed.
 
-<details>
-<summary><strong>Platform notes (Windows, WSL, custom vault path)</strong></summary>
+(details)
+(summary)(strong)Platform notes (Windows, WSL, custom vault path)(/strong)(/summary)
 
 **Windows (native):**
 ```json
@@ -103,7 +146,7 @@ That's it. Flywheel uses the current directory as your vault—no config needed.
 
 **WSL:** Use `npx` directly (not `cmd /c`), with `/mnt/c/...` paths.
 
-</details>
+(/details)
 
 Verify with `claude mcp list` — you should see `flywheel ✓`
 
@@ -127,9 +170,17 @@ Graph queries never read files. Content only loads when you explicitly need it.
 
 | Query | Without Flywheel | With Flywheel |
 |-------|------------------|---------------|
-| "What depends on X?" | Read files, grep, parse → ~5,000 tokens | Index query → **~50 tokens** |
-| "Find stale important notes" | Stat files, read content → ~10,000 tokens | Index lookup → **~100 tokens** |
+| **Graph Intelligence** | | |
+| "What depends on X?" | Impossible without reading every file | Instant backlink query → **~50 tokens** |
+| "Find orphan notes" | Not possible — no link awareness | Index scan → **~80 tokens** |
+| "Hub notes needing updates" | Manual review of entire vault | Graph + temporal query → **~100 tokens** |
+| **Schema Queries** | | |
 | "Invoices where status = paid" | Read files, parse YAML → ~3,000 tokens | Frontmatter query → **~80 tokens** |
+| "Notes missing required fields" | Read and validate every file | Schema scan → **~100 tokens** |
+
+**Other MCPs:** File read/write only. No link awareness. No graph queries. No vault health.
+
+**Flywheel:** Your vault is a queryable knowledge graph. Connections, orphans, hubs, paths — all instant.
 
 **Now multiply by 50 queries in an agentic workflow.** That's the difference between possible and impossible.
 
