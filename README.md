@@ -97,9 +97,17 @@ Your vault contains relationships you haven't noticed:
 
 ---
 
-## Install (30 seconds)
+## Installation
 
-Add to `.mcp.json` in your vault root:
+### Prerequisites
+
+- **Node.js 18+** installed ([download here](https://nodejs.org))
+- **Claude Code** or compatible MCP client ([install guide](https://github.com/anthropics/claude-code))
+- An **Obsidian vault** (or any markdown folder)
+
+### Quick Start (30 seconds)
+
+**1. Create MCP config** in your vault root as `.mcp.json`:
 
 ```json
 {
@@ -112,10 +120,20 @@ Add to `.mcp.json` in your vault root:
 }
 ```
 
+> **📁 Config File Scopes:**
+> - **`.mcp.json`** (in vault root) — **PROJECT-SCOPED** config. Recommended for vault-specific servers like Flywheel. Can be version controlled.
+> - **`~/.claude.json`** (in home directory) — **USER-SCOPED** config. For personal servers used across all projects (e.g., filesystem, git).
+>
+> **Use `.mcp.json` in your vault root** for Flywheel — this makes the server available only when working in that vault, keeping your setup clean and portable.
+
+**2. Restart Claude Code** (if already running)
+
+**3. Verify**: Run `claude mcp list` — you should see `flywheel ✓`
+
 That's it. Flywheel uses the current directory as your vault—no config needed.
 
-(details)
-(summary)(strong)Platform notes (Windows, WSL, custom vault path)(/strong)(/summary)
+<details>
+<summary><strong>Platform notes (Windows, WSL, custom vault path)</strong></summary>
 
 **Windows (native):**
 ```json
@@ -146,9 +164,31 @@ That's it. Flywheel uses the current directory as your vault—no config needed.
 
 **WSL:** Use `npx` directly (not `cmd /c`), with `/mnt/c/...` paths.
 
-(/details)
+</details>
 
-Verify with `claude mcp list` — you should see `flywheel ✓`
+### Test It
+
+Try your first query to confirm Flywheel is working:
+
+```bash
+cd /path/to/your/vault
+claude
+```
+
+Then ask:
+- **"Find my hub notes"** → See your most-connected notes
+- **"What notes did I modify this week?"** → Recent activity
+- **"Show me orphan notes"** → Disconnected notes that need linking
+
+### Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| **`npx: command not found`** | Node.js isn't installed. [Download Node.js 18+](https://nodejs.org) |
+| **`flywheel ✗` in mcp list** | Wrong file location. `.mcp.json` must be in your vault root |
+| **"No notes found"** | Not in vault directory. Run `claude` from inside your vault folder |
+| **Windows: spawn errors** | Use `cmd /c npx` config (see Platform notes above) |
+| **MCP server won't start** | Check Node version: `node --version` (need 18+) |
 
 ---
 
