@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import chokidar from 'chokidar';
 import type { VaultIndex } from './core/types.js';
 import { buildVaultIndex, setIndexState, setIndexError } from './core/graph.js';
 import { registerGraphTools } from './tools/graph.js';
@@ -136,6 +137,42 @@ async function main() {
       }
       if (flywheelConfig.exclude_task_tags?.length) {
         console.error(`[Flywheel] Excluding task tags: ${flywheelConfig.exclude_task_tags.join(', ')}`);
+      }
+
+      // Setup file watcher if enabled
+      if (process.env.FLYWHEEL_WATCH === 'true') {
+        const debounceMs = parseInt(process.env.FLYWHEEL_DEBOUNCE_MS || '500');
+        console.error(`[flywheel] File watcher enabled (debounce: ${debounceMs}ms)`);
+
+        const watcher = chokidar.watch(vaultPath, {
+          ignored: /(^|[\/\\])\../, // ignore dotfiles
+          persistent: true,
+          ignoreInitial: true,
+          awaitWriteFinish: {
+            stabilityThreshold: 300,
+            pollInterval: 100
+          }
+        });
+
+        let rebuildTimer: NodeJS.Timeout;
+        watcher.on('all', (event, path) => {
+          if (!path.endsWith('.md')) return;
+          clearTimeout(rebuildTimer);
+          rebuildTimer = setTimeout(() => {
+            console.error('[flywheel] Rebuilding index (file changed)');
+            buildVaultIndex(vaultPath)
+              .then((index) => {
+                vaultIndex = index;
+                setIndexState('ready');
+                console.error('[flywheel] Index rebuilt successfully');
+              })
+              .catch((err) => {
+                setIndexState('error');
+                setIndexError(err instanceof Error ? err : new Error(String(err)));
+                console.error('[flywheel] Failed to rebuild index:', err);
+              });
+          }, debounceMs);
+        });
       }
     })
     .catch((err) => {

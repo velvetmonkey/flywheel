@@ -3,7 +3,7 @@
 ### Stop burning tokens. Start building agents.
 
 [![npm version](https://img.shields.io/npm/v/@velvetmonkey/flywheel-mcp.svg)](https://www.npmjs.com/package/@velvetmonkey/flywheel-mcp)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/velvetmonkey/flywheel)
 
 Claude reading your entire vault on every query? **~5,000 tokens burned.**
@@ -166,6 +166,55 @@ That's it. Flywheel uses the current directory as your vault—no config needed.
 
 </details>
 
+<details>
+<summary><strong>File watching (auto-rebuild on changes)</strong></summary>
+
+**Enable file watching** to automatically rebuild the index when vault files change:
+
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@velvetmonkey/flywheel-mcp"],
+      "env": {
+        "FLYWHEEL_WATCH": "true"
+      }
+    }
+  }
+}
+```
+
+**Optional: Custom debounce delay** (default is 500ms):
+
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@velvetmonkey/flywheel-mcp"],
+      "env": {
+        "FLYWHEEL_WATCH": "true",
+        "FLYWHEEL_DEBOUNCE_MS": "1000"
+      }
+    }
+  }
+}
+```
+
+**How it works:**
+- Watches vault directory for `.md` file changes
+- Automatically ignores dotfiles (`.obsidian`, `.trash`, etc.)
+- Debounces rapid changes to avoid excessive rebuilds
+- Uses `awaitWriteFinish` to prevent indexing partial writes
+- Logs rebuild events to stderr
+
+**When to use:** Enable file watching if you're editing notes while an agent is actively working in your vault. Without watching, the agent sees a snapshot from when the MCP server started.
+
+**Performance:** Minimal overhead. Rebuilds only trigger on `.md` file changes, not every filesystem event.
+
+</details>
+
 ### Test It
 
 Try your first query to confirm Flywheel is working:
@@ -285,4 +334,4 @@ All demos are comprehensively tested and production-ready:
 
 macOS / Linux / WSL / Windows
 
-Apache 2.0 License · [GitHub](https://github.com/velvetmonkey/flywheel) · [Issues](https://github.com/velvetmonkey/flywheel/issues)
+AGPL-3.0 License · [GitHub](https://github.com/velvetmonkey/flywheel) · [Issues](https://github.com/velvetmonkey/flywheel/issues)

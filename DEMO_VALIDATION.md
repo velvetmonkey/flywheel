@@ -1,18 +1,16 @@
-# Demo Vault Validation Report
+# [[Demo Vault Validation Report]]
 
-**Navigation:** [← Back to README](README.md) | [Individual Demo Reports](#individual-validation-reports)
+**Navigation:** [← Back to README](README.md)
 
 Last validated: 2026-01-26
 
-## Overview
+## [[Overview
 
-All 5 Flywheel demo vaults have been comprehensively tested and validated as production-ready. Each demo represents a realistic persona with authentic knowledge management workflows.
+All]] 5 Flywheel demo vaults have been comprehensively tested and validated as production-ready. Each demo represents a realistic persona with authentic knowledge management workflows.
 
-📋 **Individual validation reports available in each demo directory** (see links below)
+## [[Validation Results]]
 
-## Validation Results
-
-| Demo | Notes | YAML Validity | Wikilinks | Hub Structure | Status |
+| Demo | Notes | [[YAML Validity]] | Wikilinks | [[Hub Structure]] | Status |
 |------|-------|---------------|-----------|---------------|--------|
 | **carter-strategy** | 32 | 100% (32/32) | 51% resolved | ✓ Strong client hubs | ✅ PASS |
 | **artemis-rocket** | 65 | 100% (65/65) | 22% resolved | ✓ Team/system hubs | ✅ PASS |
@@ -22,11 +20,9 @@ All 5 Flywheel demo vaults have been comprehensively tested and validated as pro
 
 **Total:** 179 markdown files with 100% valid YAML frontmatter
 
-## Demo-Specific Findings
+## Demo-[[Specific Findings]]
 
-> 💡 **Detailed per-demo reports:** Each demo has a comprehensive validation report in its directory. See [Individual Validation Reports](#individual-validation-reports) below.
-
-### carter-strategy (Solo Consultant)
+### carter-strategy ([[Solo Consultant]])
 
 **Persona:** Independent consultant managing clients, projects, and invoices
 
@@ -36,36 +32,36 @@ All 5 Flywheel demo vaults have been comprehensively tested and validated as pro
 - ✅ Bidirectional relationships (clients ↔ projects ↔ invoices)
 - ✅ Daily/weekly/monthly periodic reviews
 
-**Top Hub Notes:**
-1. Acme Corp (38 backlinks) - Primary client
-2. Acme Data Migration (37 backlinks) - Flagship project
-3. TechStart Phase 2 (32 backlinks) - Major proposal
+**[[Top Hub Notes]]:**
+1. [[Acme Corp]] (38 backlinks) - Primary client
+2. [[Acme Data Migration]] (37 backlinks) - Flagship project
+3. [[TechStart Phase 2]] (32 backlinks) - Major proposal
 
-**Why 51% link resolution?** Intentionally includes broken links to external people, subcomponents, and metadata nodes that don't require full notes. This reflects real-world consulting workflows.
+**[[Why 51]]% link resolution?** Intentionally includes broken links to external people, subcomponents, and metadata nodes that don't require full notes. This reflects real-world consulting workflows.
 
 ---
 
-### artemis-rocket (Aerospace Engineer)
+### artemis-rocket ([[Aerospace Engineer]])
 
 **Persona:** Aerospace engineer managing rocket subsystems and team coordination
 
 **Validation:**
 - ✅ All decision records follow ADR-XXX format
-- ✅ Team roster links all 4 subsystems (Propulsion, Avionics, GNC, Structures)
-- ✅ Technical depth with specifications (ARM Cortex-M7, thermal calculations)
+- ✅ [[Team Roster]] links [[All 4]] subsystems (Propulsion, Avionics, GNC, Structures)
+- ✅ Technical depth with specifications ([[ARM Cortex]]-M7, thermal calculations)
 - ✅ 5 architectural decision records with complete rationale
 
-**Top Hub Notes:**
-1. Elena Rodriguez (129 backlinks) - Avionics Lead
-2. Sarah Chen (125 backlinks) - GNC Lead
-3. Flight Computer (125 backlinks) - Critical component
+**[[Top Hub Notes]]:**
+1. [[Elena Rodriguez]] (129 backlinks) - [[Avionics Lead]]
+2. [[Sarah Chen]] (125 backlinks) - [[GNC Lead]]
+3. [[Flight Computer]] (125 backlinks) - Critical component
 
-**Technical Highlights:**
-- Engine controller specs: ARM Cortex-M7 @ 400 MHz, 1000 Hz control loop
+**[[Technical Highlights]]:**
+- [[Engine Controller]] specs: [[ARM Cortex]]-M7 @ 400 MHz, 1000 Hz control loop
 - Thermal analysis: 40 MW/m² heat flux, regenerative cooling
 - Test campaign planning with 4 procedure files
 
-**Why 22% link resolution?** References external standards, suppliers, and domain concepts that don't require dedicated notes in the demo vault.
+**[[Why 22]]% link resolution?** References external standards, suppliers, and domain concepts that don't require dedicated notes in the demo vault.
 
 ---
 
@@ -75,22 +71,22 @@ All 5 Flywheel demo vaults have been comprehensively tested and validated as pro
 
 **Validation:**
 - ✅ All customer notes include MRR tracking
-- ✅ All 4 playbooks have step-by-step executable structure
+- ✅ [[All 4]] playbooks have step-by-step executable structure
 - ✅ Operational workflows (onboarding, support, metrics, investor updates)
 - ✅ Financial tracking with revenue and burn rate
 
-**Top Hub Notes:**
-1. DataDriven Co (57 backlinks) - Key customer
-2. GrowthStack (36 backlinks) - Major account
-3. Alex Chen (31 backlinks) - Team member
+**[[Top Hub Notes]]:**
+1. [[DataDriven Co]] (57 backlinks) - Key customer
+2. [[GrowthStack]] (36 backlinks) - Major account
+3. [[Alex Chen]] (31 backlinks) - Team member
 
 **Playbooks:**
-- Investor Update (quarterly cadence)
-- Customer Onboarding (3-phase process)
-- Support Escalation (tier-based routing)
-- Weekly Metrics Review (KPI tracking)
+- [[Investor Update]] (quarterly cadence)
+- [[Customer Onboarding]] (3-phase process)
+- [[Support Escalation]] (tier-based routing)
+- [[Weekly Metrics Review]] (KPI tracking)
 
-**Why 23% link resolution?** Demonstrates authentic founder note-taking with prose-embedded brackets and forward-references to future notes (realistic for fast-moving startups).
+**[[Why 23]]% link resolution?** Demonstrates authentic founder note-taking with prose-embedded brackets and forward-references to future notes (realistic for fast-moving startups).
 
 ---
 
@@ -104,79 +100,79 @@ All 5 Flywheel demo vaults have been comprehensively tested and validated as pro
 - ✅ Academic grounding with 7 peer-reviewed papers (2002-2021)
 - ✅ Chronological experiment tracking (2024-11-18 to 2024-11-22)
 
-**Top Hub Notes:**
-1. Experiment-2024-11-18 (14 backlinks) - Central milestone
-2. Centrality Measures (10 backlinks) - Core methodology
-3. Experiment-2024-11-20 (9 backlinks) - Major experiment
+**[[Top Hub Notes]]:**
+1. [[Experiment-2024-11-18]] (14 backlinks) - Central milestone
+2. [[Centrality Measures]] (10 backlinks) - Core methodology
+3. [[Experiment-2024-11-20]] (9 backlinks) - Major experiment
 
-**Research Structure:**
+**[[Research Structure]]:**
 - 10 experiments with proper lab notebook format
-- 7 literature references (Barabási, AlphaFold, CRISPR, etc.)
-- 6 methodology notes (AMBER Force Field, Centrality Measures, etc.)
-- 2 active projects (Drug-Target Prediction, Single-Cell RNA-Seq)
+- 7 literature references (Barabási, [[AlphaFold]], CRISPR, etc.)
+- 6 methodology notes ([[AMBER Force Field]], [[Centrality Measures]], etc.)
+- 2 active projects ([[Drug-Target Prediction]], Single-Cell RNA-Seq)
 
-**Why 85% link resolution?** Realistic incomplete linking reflects active research in progress. Missing links represent early-stage experiments that haven't been fully connected yet.
+**[[Why 85]]% link resolution?** Realistic incomplete linking reflects active research in progress. Missing links represent early-stage experiments that haven't been fully connected yet.
 
 ---
 
-### solo-operator (Content Creator)
+### solo-operator ([[Content Creator]])
 
 **Persona:** Independent content creator managing newsletters, courses, and consulting
 
 **Validation:**
 - ✅ Daily notes present with consistent format
 - ✅ Revenue sources have `price` and `status` fields
-- ✅ Operational triangle: Revenue Tracker ↔ Subscriber Metrics ↔ Content Calendar
+- ✅ Operational triangle: [[Revenue Tracker]] ↔ [[Subscriber Metrics]] ↔ [[Content Calendar]]
 - ✅ Automation workflows documented
 
-**Top Hub Notes:**
-1. Revenue Tracker (16 backlinks) - Financial operations
-2. Subscriber Metrics (13 backlinks) - Analytics hub
-3. Content Calendar (13 backlinks) - Workflow coordination
+**[[Top Hub Notes]]:**
+1. [[Revenue Tracker]] (16 backlinks) - Financial operations
+2. [[Subscriber Metrics]] (13 backlinks) - Analytics hub
+3. [[Content Calendar]] (13 backlinks) - Workflow coordination
 
-**Content Workflow:**
+**[[Content Workflow]]:**
 - Newsletter: 15K subscribers, 52% open rate
-- AI Automation Course: $297 product
+- [[AI Automation Course]]: $297 product
 - Consulting Services: $150/hr
 - Weekly content planning with automation templates
 
-**Why 94% link resolution?** Most complete linking of all demos, reflecting the tighter operational scope of a solo content business.
+**[[Why 94]]% link resolution?** Most complete linking of all demos, reflecting the tighter operational scope of a solo content business.
 
 **Minor cleanup recommended:** 3 wikilinks have trailing backslashes that should be removed.
 
 ---
 
-## Validation Methodology
+## [[Validation Methodology]]
 
-**Scope:** This validation focused on structural integrity and content quality. Performance claims (token savings, query efficiency) are documented in the main Flywheel docs and were not re-measured here.
+**Scope:** This validation focused on structural integrity and content quality. Performance claims (token savings, query efficiency) are documented in the [[Main Flywheel]] docs and were not re-measured here.
 
 Each demo was tested against the following criteria:
 
-### Structure Validation
-- ✅ Note count matches README expectations (within 10%)
+### [[Structure Validation]]
+- ✅ Note count matches [[README]] expectations (within 10%)
 - ✅ Folder structure follows logical organization
 - ✅ File naming conventions consistent
 
-### Content Validation
+### [[Content Validation]]
 - ✅ All frontmatter parses as valid YAML
 - ✅ Required frontmatter fields present for note types
 - ✅ Wikilinks extracted and resolution tested
 
-### Graph Validation
+### [[Graph Validation]]
 - ✅ Hub notes identified (notes with 5+ backlinks)
 - ✅ Bidirectional relationships present
 - ✅ Graph structure appropriate for persona
 
-### Persona Validation
+### [[Persona Validation]]
 - ✅ Demo-specific requirements met (see above)
 - ✅ Content reflects realistic workflows
 - ✅ Linking patterns authentic to use case
 
-## Understanding Link Resolution Rates
+## [[Understanding Link Resolution Rates]]
 
 The varying wikilink resolution rates (22%-94%) across demos are **intentional and valuable**:
 
-### Low Resolution (22-23%) - Technical Domains
+### [[Low Resolution]] (22-23%) - [[Technical Domains]]
 **artemis-rocket, startup-ops**
 
 These demos include references to:
@@ -187,12 +183,12 @@ These demos include references to:
 
 This teaches users that **not everything needs a note** and demonstrates realistic knowledge work where references extend beyond your personal knowledge base.
 
-### Medium Resolution (51%) - Professional Services
+### [[Medium Resolution]] (51%) - [[Professional Services]]
 **carter-strategy**
 
 Balanced between internal knowledge and external references. Links to client contacts, external vendors, and project deliverables that don't require full documentation.
 
-### High Resolution (85-94%) - Focused Operations
+### [[High Resolution]] (85-94%) - [[Focused Operations]]
 **nexus-lab, solo-operator**
 
 Tighter knowledge graphs reflecting:
@@ -200,9 +196,9 @@ Tighter knowledge graphs reflecting:
 - Solo operations with contained scope
 - Active curation within a bounded domain
 
-## Using These Demos
+## [[Using These Demos]]
 
-### Quick Start
+### [[Quick Start]]
 ```bash
 # Clone the repository
 git clone https://github.com/velvetmonkey/flywheel.git
@@ -256,43 +252,29 @@ To test a demo with Flywheel MCP:
 - Study paper-method-experiment linking patterns
 - Adapt to your research domain
 
-## Contributing
+## [[Contributing
 
-Found issues or improvements? These demos are validated but always evolving:
+Found]] issues or improvements? These demos are validated but always evolving:
 
 1. Fork the repository
 2. Make improvements to demos
 3. Run validation tests (see methodology above)
 4. Submit PR with validation results
 
-## Individual Validation Reports
+## [[Related Documentation]]
 
-Detailed validation reports for each demo vault:
-
-| Demo | Report Location | Key Findings |
-|------|-----------------|--------------|
-| **carter-strategy** | [demos/carter-strategy/VALIDATION_REPORT.md](demos/carter-strategy/VALIDATION_REPORT.md) | 32 notes, 50.8% link resolution, invoice/client validation |
-| **artemis-rocket** | [demos/artemis-rocket/VALIDATION-REPORT.md](demos/artemis-rocket/VALIDATION-REPORT.md) | 65 notes, ADR format compliance, technical depth |
-| **startup-ops** | [demos/startup-ops/VALIDATION_REPORT.md](demos/startup-ops/VALIDATION_REPORT.md) | 31 notes, MRR tracking, operational playbooks |
-| **nexus-lab** | [demos/nexus-lab/README.md](demos/nexus-lab/README.md) | 32 notes, 85%+ research links, paper-method-experiment |
-| **solo-operator** | [demos/solo-operator/VALIDATION_REPORT.md](demos/solo-operator/VALIDATION_REPORT.md) | 19 notes, 94% link resolution, content creator ops |
-
----
-
-## Related Documentation
-
-- **[README.md](README.md)** - Main Flywheel documentation
-- **[docs/MCP_REFERENCE.md](docs/MCP_REFERENCE.md)** - All 44 MCP tools
+- **[README.md](README.md)** - [[Main Flywheel]] documentation
+- **[docs/MCP_REFERENCE.md](docs/MCP_REFERENCE.md)** - [[All 44]] MCP tools
 - **[docs/QUERY_GUIDE.md](docs/QUERY_GUIDE.md)** - Query patterns and examples
 - **[docs/HOW_IT_WORKS.md](docs/HOW_IT_WORKS.md)** - Architecture details
 
 ---
 
-## Validation History
+## [[Validation History]]
 
 | Date | Validator | Status | Notes |
 |------|-----------|--------|-------|
-| 2026-01-26 | Claude Code | ✅ All Pass | Initial comprehensive validation |
+| 2026-01-26 | [[Claude Code]] | ✅ [[All Pass]] | Initial comprehensive validation |
 
 ---
 
