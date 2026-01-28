@@ -3,7 +3,7 @@
 The intelligence layer of [Flywheel](https://github.com/velvetmonkey/flywheel) — MCP tools for vault graph queries, wikilink services, and structure analysis.
 
 [![npm](https://img.shields.io/npm/v/@velvetmonkey/flywheel-mcp)](https://www.npmjs.com/package/@velvetmonkey/flywheel-mcp)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL_3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-blue)](https://modelcontextprotocol.io/)
 
 ## Installation
@@ -214,7 +214,7 @@ npm run inspect
 
 ## License
 
-Apache 2.0 — [Ben Cassie](https://github.com/velvetmonkey)
+AGPL-3.0 — [Ben Cassie](https://github.com/velvetmonkey)
 
 ## Links
 
