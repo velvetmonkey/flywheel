@@ -214,7 +214,7 @@ npm run inspect
 
 ## License
 
-AGPL-3.0 — [Ben Cassie](https://github.com/velvetmonkey)
+AGPL-3.0 — [velvetmonkey](https://github.com/velvetmonkey)
 
 ## Links
 
