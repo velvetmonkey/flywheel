@@ -27,6 +27,27 @@ Restart Claude Code. Run `claude mcp list` — you should see `flywheel ✓`
 
 See [Installation](#installation) for prerequisites and troubleshooting.
 
+### Configuration Options
+
+#### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PROJECT_PATH` | Auto-detect | Override vault location |
+| `FLYWHEEL_WATCH` | `false` | Auto-rebuild index on file changes |
+| `FLYWHEEL_DEBOUNCE_MS` | `60000` | Debounce delay for file watching (ms) |
+| `FLYWHEEL_TOOLS` | `standard` | Tool categories to load (see below) |
+
+#### Tool Presets
+
+| Preset | Categories | Use Case |
+|--------|------------|----------|
+| `minimal` | core | Just vault stats and metadata |
+| `standard` | core, graph, search, tasks | Most common workflows (default) |
+| `full` | all | Every tool available |
+
+Custom: `FLYWHEEL_TOOLS=core,graph,tasks` to pick specific categories.
+
 ---
 
 Claude reading your entire vault on every query? **~5,000 tokens burned.**
@@ -53,7 +74,7 @@ You couldn't do this before. Now you can.
                  │                             │                             │
                  ▼                             ▼                             ▼
     ┌────────────────────┐       ┌────────────────────┐       ┌────────────────────┐
-    │   PDR Review       │──────▶│    Team Roster     │◀──────│  Year End Review   │
+    │ [[PDR Review]]     │──────▶│  [[Team Roster]]   │◀──────│[[Year End Review]] │
     │   ───────────      │       │    ───────────     │       │   ──────────────   │
     │   type: meeting    │       │   type: hub        │       │   type: meeting    │
     │   date: 2025-12-18 │       │   status: active   │       │   date: 2025-12-30 │
@@ -63,7 +84,7 @@ You couldn't do this before. Now you can.
               │          ┌──────────┘    │    │    └──────────┐        │
               │          ▼               ▼    ▼               ▼        │
               │   ┌──────────────┐ ┌──────────────┐ ┌──────────────┐   │
-              │   │ Sarah Chen   │ │ Marcus J.    │ │ Elena R.     │   │
+              │   │[[Sarah Chen]]│ │[[Marcus J.]] │ │ [[Elena R.]] │   │
               │   │ ──────────── │ │ ──────────── │ │ ──────────── │   │
               │   │ role: Lead   │ │ role: Prop.  │ │ role: Avion. │   │
               └──▶│ team: Core   │ │ team: Core   │ │ team: Core   │◀──┘
@@ -71,7 +92,7 @@ You couldn't do this before. Now you can.
                          │                │                │
                          ▼                ▼                ▼
                   ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-                  │ GNC System   │ │ Turbopump    │ │ Avionics     │
+                  │[[GNC System]]│ │[[Turbopump]] │ │ [[Avionics]] │
                   │ ──────────── │ │ ──────────── │ │ ──────────── │
                   │ status: test │ │ status: dev  │ │ status: done │
                   │ risk: medium │ │ risk: high   │ │ risk: low    │
@@ -343,7 +364,7 @@ That's it. Flywheel uses the current directory as your vault—no config needed.
 }
 ```
 
-**Optional: Custom debounce delay** (default is 500ms):
+**Optional: Custom debounce delay** (default is 60000ms / 1 minute):
 
 ```json
 {

@@ -233,7 +233,7 @@ async function main() {
 
       // Setup file watcher if enabled
       if (process.env.FLYWHEEL_WATCH === 'true') {
-        const debounceMs = parseInt(process.env.FLYWHEEL_DEBOUNCE_MS || '500');
+        const debounceMs = parseInt(process.env.FLYWHEEL_DEBOUNCE_MS || '60000');
         console.error(`[flywheel] File watcher enabled (debounce: ${debounceMs}ms)`);
 
         const watcher = chokidar.watch(vaultPath, {
