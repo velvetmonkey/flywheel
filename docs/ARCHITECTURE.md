@@ -96,7 +96,7 @@ Detection process:
 
 ### Optional Config Override
 
-Create `.flywheel.json` in vault root to override auto-detection:
+Create `.claude/.flywheel.json` to override auto-detection:
 
 ```json
 {

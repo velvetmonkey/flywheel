@@ -33,20 +33,48 @@ See [Installation](#installation) for prerequisites and troubleshooting.
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PROJECT_PATH` | Auto-detect | Override vault location |
-| `FLYWHEEL_WATCH` | `false` | Auto-rebuild index on file changes |
-| `FLYWHEEL_DEBOUNCE_MS` | `60000` | Debounce delay for file watching (ms) |
-| `FLYWHEEL_TOOLS` | `standard` | Tool categories to load (see below) |
+| `PROJECT_PATH` | Auto-detect | Path to your vault. Only needed if running Claude from outside your vault folder. |
+| `FLYWHEEL_WATCH` | `false` | When `true`, automatically rebuilds the index when you edit notes. Useful if you're editing in Obsidian while Claude is working. |
+| `FLYWHEEL_DEBOUNCE_MS` | `60000` | How long to wait after a file change before rebuilding (in milliseconds). Default 1 minute batches rapid edits together. |
+| `FLYWHEEL_TOOLS` | `standard` | Which tool categories to load. Use `minimal` for less context usage, `full` for everything. |
 
 #### Tool Presets
 
-| Preset | Categories | Use Case |
-|--------|------------|----------|
-| `minimal` | core | Just vault stats and metadata |
-| `standard` | core, graph, search, tasks | Most common workflows (default) |
-| `full` | all | Every tool available |
+Control which tools are available to reduce token usage:
 
-Custom: `FLYWHEEL_TOOLS=core,graph,tasks` to pick specific categories.
+| Preset | What's included | Best for |
+|--------|-----------------|----------|
+| `minimal` | Core vault info only | Quick queries, low token usage |
+| `standard` | Core + graph + search + tasks | Most users (default) |
+| `full` | All 44 tools | Power users who need everything |
+
+Mix and match: `FLYWHEEL_TOOLS=core,graph,tasks`
+
+#### Vault Config File (`.claude/.flywheel.json`)
+
+Flywheel auto-creates this file on first run by analyzing your vault. Edit it to override auto-detected settings.
+
+| Field | What it does |
+|-------|--------------|
+| `vault_name` | Display name shown in tool responses |
+| `paths.daily_notes` | Where your daily notes live (e.g., `"journal/daily"`) |
+| `paths.weekly_notes` | Where your weekly notes live |
+| `paths.templates` | Your templates folder (excluded from some queries) |
+| `exclude_task_tags` | Tags to ignore in task queries (e.g., `["#habit", "#someday"]`) |
+
+**Example** - customize for a non-standard vault layout:
+```json
+{
+  "vault_name": "Work Notes",
+  "paths": {
+    "daily_notes": "Logs/Daily",
+    "templates": "Meta/Templates"
+  },
+  "exclude_task_tags": ["#recurring", "#habit"]
+}
+```
+
+> **Tip:** Most users don't need to edit this file. Flywheel auto-detects folders named `daily`, `journal`, `weekly`, `templates`, etc.
 
 ---
 
