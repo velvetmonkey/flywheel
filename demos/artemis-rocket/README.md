@@ -111,26 +111,23 @@ Decision: Switching to titanium valves for improved
 temperature tolerance based on hot fire results.
 ```
 
-### Do a rollup
+### Find all blockers
 
 ```
-You: "do a rollup"
+You: "What's blocking the launch?"
 
 ┌─ CHAIN ──────────────────────────────────────────┐
-│ Reads:   7 daily notes, ## Log sections          │
-│          (~700 tokens vs ~7,000 full files)      │
-│ Creates: weekly-notes/2026-W01.md                │
-│ Appends: Achievements.md                         │
+│ Queries: Milestones with status=blocked          │
+│          Backlinks to find blocking dependencies │
+│          Forward links to trace root causes      │
+│          (~200 tokens vs ~5,000 full reads)      │
 └──────────────────────────────────────────────────┘
 
-### weekly-notes/2026-W01.md (created)
-## Week 1 Summary
-- Turbopump hot fire: 98% efficiency achieved
-- Seal supplier delay: pushed to Jan 18
-- Decision: switching to titanium valves (DR-015)
+Claude traces the dependency chain:
+  [[Launch Milestone]] ← blocked by ← [[Propulsion Milestone]]
+    ← blocked by ← [[Turbopump Test]] ← waiting on ← [[Seal Supplier]]
 
-## Achievements
-- First successful turbopump hot fire test         ← NEW
+"Three blockers traced to root cause: Apex Materials seal delay (Jan 18 ETA)"
 ```
 
 ---

@@ -49,7 +49,7 @@ Open this vault with Flywheel MCP connected, then ask Claude:
 "How's revenue this month?"
 "What content is due this week?"
 "Show me subscriber growth"
-"Do rollup"
+"How am I doing this month?"
 ```
 
 ---
@@ -59,7 +59,7 @@ Open this vault with Flywheel MCP connected, then ask Claude:
 - **Automation handles daily ops** - standup, tracking, alerts
 - **Track multiple revenue streams** in one place
 - **Connect content calendar** to actual writing workflow
-- **Watch the rollup chain** turn daily logs into achievements
+- **Track your wins** automatically from daily logs
 
 ---
 
@@ -177,27 +177,25 @@ Target: $8,000
 Progress: 36% (on track)
 ```
 
-### Do a rollup
+### Check my numbers
 
 ```
-You: "do a rollup"
+You: "How am I doing this month?"
 
 ┌─ CHAIN ──────────────────────────────────────────┐
-│ Reads:   7 daily notes, ## Log sections          │
-│          (~700 tokens vs ~7,000 full files)      │
-│ Creates: weekly-notes/2026-W01.md                │
-│ Appends: monthly-notes/2026-01.md                │
-│ Appends: Achievements.md                         │
+│ Queries: Revenue Tracker frontmatter             │
+│          Subscriber Tracker frontmatter          │
+│          Content Calendar due dates              │
+│          (~120 tokens vs ~2,000 full reads)      │
 └──────────────────────────────────────────────────┘
 
-### weekly-notes/2026-W01.md (created)
-## Week 1 Summary
-- Sent 2 newsletters (avg 40% open rate)
-- Course sales: $891 (3 sales)
-- Consulting: 6 hours billed
+January 2026 Dashboard
+======================
+Revenue: $2,888 / $8,000 (36%) ✓ on track
+Subscribers: 2,847 (+47 this month)
+Content: 4 newsletters sent, 2 due this week
 
-## Achievements
-- First week with 3+ course sales                  ← NEW
+Top win: 42% open rate on Tuesday's newsletter
 ```
 
 ---

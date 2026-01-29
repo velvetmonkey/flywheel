@@ -29,7 +29,7 @@ When exploring this vault, begin with:
 | Content due dates | `get_tasks_with_due_dates` in content/ |
 | Subscriber metrics | `get_note_metadata` for Subscriber Tracker |
 | Find automation playbooks | `search_notes` in automations/ |
-| Weekly rollup | `get_notes_in_range` for daily notes |
+| Weekly summary | `get_notes_in_range` for daily notes |
 | Track achievements | `get_backlinks` on Achievements.md |
 
 ### Query Patterns

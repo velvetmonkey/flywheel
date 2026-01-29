@@ -126,34 +126,25 @@ These papers are in your library but not connected
 to any methods or experiments yet.
 ```
 
-### Do a rollup
+### Map my research
 
 ```
-You: "Summarize my November research"
+You: "How does my work connect to the literature?"
 
 ┌─ CHAIN ──────────────────────────────────────────┐
-│ Reads:   30 daily notes, ## Log sections         │
-│          (~1,500 tokens vs ~15,000 full files)   │
-│ Returns: Structured summary                      │
+│ Queries: Papers with forward links to methods    │
+│          Methods with backlinks from experiments │
+│          Build citation flow map                 │
+│          (~180 tokens vs ~4,000 full reads)      │
 └──────────────────────────────────────────────────┘
 
-November 2025 Research Summary
-==============================
+Research Connection Map
+=======================
+[[AlphaFold 2]] → [[Protein Folding Method]] → 7 experiments
+[[ESMFold]] → [[Structure Prediction]] → 3 experiments
+[[GROMACS]] → (no connections yet)
 
-Experiments Run: 12
-- Docking runs 1-7 (improving RMSD)
-- Folding validation 1-5
-
-Key Results:
-- Best RMSD: 0.3Å (run 7)
-- Validated folding method against 3 known structures
-
-Papers Read: 4
-- Added [[AlphaFold 2]], [[ESMFold]] to library
-
-Next Steps:
-- [ ] Run docking with ESMFold structures
-- [ ] Write methods section for thesis
+Suggestion: Link GROMACS to your MD simulation work
 ```
 
 ---

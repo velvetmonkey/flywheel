@@ -78,7 +78,7 @@ If the answer to all three is no, I don't do it.
 - I prefer short, actionable summaries over lengthy reports
 - Flag anything that's off-track, don't hide problems
 - When in doubt, ask before acting
-- I review weekly rollups every Sunday evening
+- I review weekly summaries every Sunday evening
 
 ## Related
 

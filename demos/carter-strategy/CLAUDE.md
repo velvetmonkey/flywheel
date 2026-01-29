@@ -98,7 +98,7 @@ If Claude picks the wrong tool:
 carter-strategy/
 ├── daily-notes/     # Daily log with ## Log sections
 ├── weekly-notes/    # Weekly summaries
-├── monthly-notes/   # Monthly rollups
+├── monthly-notes/   # Monthly summaries
 ├── clients/         # One note per client
 ├── projects/        # Active and completed projects
 ├── invoices/        # INV-### invoice records

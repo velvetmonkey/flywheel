@@ -68,7 +68,7 @@ Self-paced video course teaching AI workflow automation.
 ### Module 2: Daily Operations (60 min)
 - Building a daily standup automation
 - Tracking metrics without spreadsheets
-- The log-rollup-review cycle
+- The daily log and review cycle
 
 ### Module 3: Content Automation (60 min)
 - Newsletter prep workflow

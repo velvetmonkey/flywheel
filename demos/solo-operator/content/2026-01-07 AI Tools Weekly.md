@@ -60,12 +60,12 @@ No spreadsheet needed.
 
 **Time saved**: 30 min/week
 
-### 4. Weekly Rollup
+### 4. Weekly Review
 
-Every Sunday, `do rollup` creates a weekly summary:
+Every Sunday, I ask Claude to create a weekly summary:
 - Aggregates daily notes
 - Calculates metrics
-- Extracts achievements
+- Highlights achievements
 
 **Time saved**: 1 hour/week
 

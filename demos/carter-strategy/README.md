@@ -89,23 +89,23 @@ Overdue Tasks (3):
 - invoices/INV-042.md: Payment reminder 📅 Jan 3
 ```
 
-### Do a rollup
+### Show my pipeline
 
 ```
-You: "do a rollup"
+You: "Show my revenue pipeline"
 
 ┌─ CHAIN ──────────────────────────────────────────┐
-│ Reads:   7 daily notes, ## Log sections          │
-│          (~500 tokens vs ~5,000 full files)      │
-│ Creates: weekly-notes/2026-W01.md                │
-│ Appends: monthly-notes/2026-01.md                │
+│ Queries: All clients with status field           │
+│          Invoices linked to each client          │
+│          Sum amounts by status (paid/pending)    │
+│          (~150 tokens vs ~3,000 full reads)      │
 └──────────────────────────────────────────────────┘
 
-### weekly-notes/2026-W01.md (created)
-## Week 1 Summary
-- Completed Acme strategy deck
-- 3 client calls
-- $12K invoiced
+Revenue Pipeline
+================
+Paid (Q4): $28,400
+Pending:   $12,200  ← Acme API Architecture
+Pipeline:  $8,000   ← TechStart proposal
 ```
 
 ### Check client revenue

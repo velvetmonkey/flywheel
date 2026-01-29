@@ -5,7 +5,7 @@ updated: 2026-01-07
 ---
 # Achievements
 
-Rolling log of wins, milestones, and progress. Updated by weekly rollups.
+Rolling log of wins, milestones, and progress. Updated weekly.
 
 ---
 
@@ -53,7 +53,7 @@ Rolling log of wins, milestones, and progress. Updated by weekly rollups.
 
 ## How this file is updated
 
-The weekly rollup automation (`do rollup`) scans daily notes for achievements and appends them here.
+The weekly review process scans daily notes for achievements and appends them here.
 
 Criteria for achievements:
 - Revenue milestones
