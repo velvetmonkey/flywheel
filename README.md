@@ -16,6 +16,141 @@ You couldn't do this before. Now you can.
 
 ---
 
+## Your Vault as a Knowledge Graph
+
+```
+                        ┌─────────────────────────────────────────────────────┐
+                        │              Your Vault (65 notes)                  │
+                        │                        · · ·                        │
+                        │    ·  Orphan  ·              ·  Orphan  ·           │
+                        │         ↓                        ↓                  │
+                        └─────────────────────────────────────────────────────┘
+                                               │
+                 ┌─────────────────────────────┼─────────────────────────────┐
+                 │                             │                             │
+                 ▼                             ▼                             ▼
+    ┌────────────────────┐       ┌────────────────────┐       ┌────────────────────┐
+    │   PDR Review       │──────▶│    Team Roster     │◀──────│  Year End Review   │
+    │   ───────────      │       │    ───────────     │       │   ──────────────   │
+    │   type: meeting    │       │   type: hub        │       │   type: meeting    │
+    │   date: 2025-12-18 │       │   status: active   │       │   date: 2025-12-30 │
+    │   attendees: [5]   │       │   owner: [[Sarah]] │       │   attendees: [8]   │
+    └────────────────────┘       └────────────────────┘       └────────────────────┘
+              │                     │    │    │    │                    │
+              │          ┌──────────┘    │    │    └──────────┐        │
+              │          ▼               ▼    ▼               ▼        │
+              │   ┌──────────────┐ ┌──────────────┐ ┌──────────────┐   │
+              │   │ Sarah Chen   │ │ Marcus J.    │ │ Elena R.     │   │
+              │   │ ──────────── │ │ ──────────── │ │ ──────────── │   │
+              │   │ role: Lead   │ │ role: Prop.  │ │ role: Avion. │   │
+              └──▶│ team: Core   │ │ team: Core   │ │ team: Core   │◀──┘
+                  └──────────────┘ └──────────────┘ └──────────────┘
+                         │                │                │
+                         ▼                ▼                ▼
+                  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+                  │ GNC System   │ │ Turbopump    │ │ Avionics     │
+                  │ ──────────── │ │ ──────────── │ │ ──────────── │
+                  │ status: test │ │ status: dev  │ │ status: done │
+                  │ risk: medium │ │ risk: high   │ │ risk: low    │
+                  └──────────────┘ └──────────────┘ └──────────────┘
+
+Legend:  ─────▶ Wikilink (edge)     │ type: meeting │ Frontmatter (attributes)
+         ◀───── Backlink            │ status: done  │ Queryable via Flywheel
+```
+
+**Notes are nodes. Wikilinks are edges. Frontmatter is queryable metadata.**
+
+---
+
+## See It In Action
+
+Real conversations with Claude using Flywheel:
+
+### Finding Connections
+
+```
+You: What connects my meeting notes to the Q4 strategy?
+
+Claude: Let me trace the path through your vault.
+[uses get_shortest_path]
+
+Found a 3-hop connection:
+  Meeting Notes → [[Client Feedback]] → [[Product Roadmap]] → Q4 Strategy
+
+The link runs through client feedback captured in your October meetings.
+```
+
+### Vault Health Check
+
+```
+You: Is my vault healthy?
+
+Claude: Let me check the key metrics.
+[uses get_orphan_notes, get_hub_notes, get_dead_ends]
+
+Your vault has 847 notes:
+- 12 orphan notes (no backlinks) - consider linking these
+- 8 hub notes (10+ connections) - your knowledge centers
+- 3 stale hubs not updated in 30+ days - may need attention
+
+Would you like me to list the orphans?
+```
+
+### Semantic Search
+
+```
+You: Find everything about authentication
+
+Claude: [uses search_notes]
+
+Found 7 notes mentioning authentication:
+- Auth Architecture.md (hub note, 12 backlinks)
+- JWT Implementation.md
+- OAuth Provider Setup.md
+- Login Flow.md
+- Session Management.md
+- Security Audit Q3.md
+- API Authentication.md
+
+Auth Architecture is your hub - want me to show what links to it?
+```
+
+### Frontmatter as Queryable Attributes
+
+```
+You: Show me all pending meetings for Project Alpha
+
+Claude: [uses query_notes with frontmatter filter]
+
+Found 3 pending meetings:
+- meetings/2026-01-30-alpha-kickoff.md (scheduled for tomorrow)
+- meetings/2026-02-05-alpha-review.md
+- meetings/2026-02-12-alpha-demo.md
+
+Each has attendees, agenda, and action items in frontmatter.
+Want me to show the attendees across all three?
+```
+
+### Combining Graph + Attributes
+
+```
+You: What meetings mention Sam Chen, and are any of them overdue?
+
+Claude: [uses get_backlinks for "Sam Chen", filters by type: "meeting"]
+
+Sam Chen is mentioned in 5 meetings.
+
+[uses query_notes to check status field]
+
+2 are overdue (status: "pending", date in past):
+- meetings/2026-01-15-sprint-planning.md - overdue by 14 days
+- meetings/2026-01-22-design-review.md - overdue by 7 days
+
+Want me to update their status or flag them for follow-up?
+```
+
+---
+
 ## 44 Tools. Three Query Types.
 
 ### Graph Queries — "What connects to what?"
