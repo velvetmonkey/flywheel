@@ -32,7 +32,7 @@ Flywheel provides 44 MCP tools for querying your vault. All tools return structu
 
 The primary query interface for filtering notes.
 
-### search_notes
+### mcp__flywheel__search_notes
 
 Search by frontmatter fields, tags, folder, and title.
 
@@ -62,18 +62,18 @@ Understand relationships between notes.
 
 | Tool | Purpose | Key Args |
 |------|---------|----------|
-| `get_backlinks` | Notes linking TO this note | `path`, `include_context` |
-| `get_forward_links` | Notes this note links TO | `path` |
-| `find_hub_notes` | Most connected notes | `min_links`, `limit` |
-| `find_orphan_notes` | Notes with no backlinks | `folder`, `limit` |
-| `get_link_path` | Shortest path between notes | `from`, `to`, `max_depth` |
-| `get_common_neighbors` | Notes both reference | `note_a`, `note_b` |
-| `find_bidirectional_links` | Mutual link pairs | `path` |
-| `find_dead_ends` | Has backlinks, no outlinks | `folder`, `min_backlinks` |
-| `find_sources` | Has outlinks, no backlinks | `folder`, `min_outlinks` |
-| `get_connection_strength` | Relevance score | `note_a`, `note_b` |
+| `mcp__flywheel__get_backlinks` | Notes linking TO this note | `path`, `include_context` |
+| `mcp__flywheel__get_forward_links` | Notes this note links TO | `path` |
+| `mcp__flywheel__find_hub_notes` | Most connected notes | `min_links`, `limit` |
+| `mcp__flywheel__find_orphan_notes` | Notes with no backlinks | `folder`, `limit` |
+| `mcp__flywheel__get_link_path` | Shortest path between notes | `from`, `to`, `max_depth` |
+| `mcp__flywheel__get_common_neighbors` | Notes both reference | `note_a`, `note_b` |
+| `mcp__flywheel__find_bidirectional_links` | Mutual link pairs | `path` |
+| `mcp__flywheel__find_dead_ends` | Has backlinks, no outlinks | `folder`, `min_backlinks` |
+| `mcp__flywheel__find_sources` | Has outlinks, no backlinks | `folder`, `min_outlinks` |
+| `mcp__flywheel__get_connection_strength` | Relevance score | `note_a`, `note_b` |
 
-### get_backlinks
+### mcp__flywheel__get_backlinks
 
 ```json
 {
@@ -85,7 +85,7 @@ Understand relationships between notes.
 
 **Returns:** `{ note, backlink_count, backlinks: [{ source, line, context }] }`
 
-### find_hub_notes
+### mcp__flywheel__find_hub_notes
 
 ```json
 {
@@ -96,7 +96,7 @@ Understand relationships between notes.
 
 **Returns:** `{ hubs: [{ path, title, backlink_count, forward_link_count, total_connections }] }`
 
-### get_link_path
+### mcp__flywheel__get_link_path
 
 ```json
 {
@@ -108,7 +108,7 @@ Understand relationships between notes.
 
 **Returns:** `{ found, path: ["people/Alice.md", "projects/Alpha.md", "projects/Gamma.md"], length }`
 
-### get_common_neighbors
+### mcp__flywheel__get_common_neighbors
 
 ```json
 {
@@ -127,14 +127,14 @@ Query notes by modification date.
 
 | Tool | Purpose | Key Args |
 |------|---------|----------|
-| `get_recent_notes` | Modified in last N days | `days`, `limit`, `folder` |
-| `get_notes_modified_on` | Modified on specific date | `date` (YYYY-MM-DD) |
-| `get_notes_in_range` | Modified in date range | `start_date`, `end_date` |
-| `get_stale_notes` | Important but neglected | `days`, `min_backlinks` |
-| `get_contemporaneous_notes` | Edited around same time | `path`, `hours` |
-| `get_activity_summary` | Activity overview | `days` |
+| `mcp__flywheel__get_recent_notes` | Modified in last N days | `days`, `limit`, `folder` |
+| `mcp__flywheel__get_notes_modified_on` | Modified on specific date | `date` (YYYY-MM-DD) |
+| `mcp__flywheel__get_notes_in_range` | Modified in date range | `start_date`, `end_date` |
+| `mcp__flywheel__get_stale_notes` | Important but neglected | `days`, `min_backlinks` |
+| `mcp__flywheel__get_contemporaneous_notes` | Edited around same time | `path`, `hours` |
+| `mcp__flywheel__get_activity_summary` | Activity overview | `days` |
 
-### get_recent_notes
+### mcp__flywheel__get_recent_notes
 
 ```json
 {
@@ -146,7 +146,7 @@ Query notes by modification date.
 
 **Returns:** `{ count, days, notes: [{ path, title, modified, tags }] }`
 
-### get_stale_notes
+### mcp__flywheel__get_stale_notes
 
 ```json
 {
@@ -166,17 +166,17 @@ Analyze frontmatter patterns.
 
 | Tool | Purpose | Key Args |
 |------|---------|----------|
-| `get_frontmatter_schema` | All fields in use | none |
-| `get_field_values` | Unique values for field | `field` |
-| `find_frontmatter_inconsistencies` | Fields with mixed types | none |
-| `validate_frontmatter` | Check against schema | `schema`, `folder` |
-| `find_missing_frontmatter` | Notes missing fields | `folder_schemas` |
+| `mcp__flywheel__get_frontmatter_schema` | All fields in use | none |
+| `mcp__flywheel__get_field_values` | Unique values for field | `field` |
+| `mcp__flywheel__find_frontmatter_inconsistencies` | Fields with mixed types | none |
+| `mcp__flywheel__validate_frontmatter` | Check against schema | `schema`, `folder` |
+| `mcp__flywheel__find_missing_frontmatter` | Notes missing fields | `folder_schemas` |
 
-### get_frontmatter_schema
+### mcp__flywheel__get_frontmatter_schema
 
 **Returns:** `{ fields: [{ name, types, count, example_values }] }`
 
-### get_field_values
+### mcp__flywheel__get_field_values
 
 ```json
 {
@@ -186,7 +186,7 @@ Analyze frontmatter patterns.
 
 **Returns:** `{ field, values: ["active", "blocked", "done"], counts: { "active": 15, "blocked": 3 } }`
 
-### find_missing_frontmatter
+### mcp__flywheel__find_missing_frontmatter
 
 ```json
 {
@@ -207,12 +207,12 @@ Query note internal structure.
 
 | Tool | Purpose | Key Args |
 |------|---------|----------|
-| `get_note_structure` | Full heading tree | `path` |
-| `get_headings` | Headings only (lightweight) | `path` |
-| `get_section_content` | Content under heading | `path`, `heading` |
-| `find_sections` | Search headings across vault | `pattern`, `folder` |
+| `mcp__flywheel__get_note_structure` | Full heading tree | `path` |
+| `mcp__flywheel__get_headings` | Headings only (lightweight) | `path` |
+| `mcp__flywheel__get_section_content` | Content under heading | `path`, `heading` |
+| `mcp__flywheel__find_sections` | Search headings across vault | `pattern`, `folder` |
 
-### get_section_content
+### mcp__flywheel__get_section_content
 
 ```json
 {
@@ -224,7 +224,7 @@ Query note internal structure.
 
 **Returns:** `{ path, heading, content, line_start, line_end }`
 
-### find_sections
+### mcp__flywheel__find_sections
 
 ```json
 {
@@ -243,11 +243,11 @@ Extract and query tasks.
 
 | Tool | Purpose | Key Args |
 |------|---------|----------|
-| `get_all_tasks` | All tasks with filters | `status`, `folder`, `tag` |
-| `get_tasks_from_note` | Tasks from specific note | `path` |
-| `get_tasks_with_due_dates` | Tasks sorted by due | `status`, `folder` |
+| `mcp__flywheel__get_all_tasks` | All tasks with filters | `status`, `folder`, `tag` |
+| `mcp__flywheel__get_tasks_from_note` | Tasks from specific note | `path` |
+| `mcp__flywheel__get_tasks_with_due_dates` | Tasks sorted by due | `status`, `folder` |
 
-### get_all_tasks
+### mcp__flywheel__get_all_tasks
 
 ```json
 {
@@ -259,7 +259,7 @@ Extract and query tasks.
 
 **Returns:** `{ tasks: [{ text, status, due_date, source_path, line }] }`
 
-### get_tasks_with_due_dates
+### mcp__flywheel__get_tasks_with_due_dates
 
 ```json
 {
@@ -278,20 +278,20 @@ Diagnostics and infrastructure.
 
 | Tool | Purpose | Key Args |
 |------|---------|----------|
-| `health_check` | MCP server status | none |
-| `get_vault_stats` | Comprehensive statistics | none |
-| `find_broken_links` | Links to non-existent notes | `folder`, `limit` |
-| `refresh_index` | Rebuild vault index | none |
-| `get_all_entities` | All linkable titles + aliases | `include_aliases` |
-| `get_unlinked_mentions` | Text mentions not linked | `entity`, `limit` |
-| `get_note_metadata` | Metadata without content | `path` |
-| `get_folder_structure` | Vault organization | none |
+| `mcp__flywheel__health_check` | MCP server status | none |
+| `mcp__flywheel__get_vault_stats` | Comprehensive statistics | none |
+| `mcp__flywheel__find_broken_links` | Links to non-existent notes | `folder`, `limit` |
+| `mcp__flywheel__refresh_index` | Rebuild vault index | none |
+| `mcp__flywheel__get_all_entities` | All linkable titles + aliases | `include_aliases` |
+| `mcp__flywheel__get_unlinked_mentions` | Text mentions not linked | `entity`, `limit` |
+| `mcp__flywheel__get_note_metadata` | Metadata without content | `path` |
+| `mcp__flywheel__get_folder_structure` | Vault organization | none |
 
-### health_check
+### mcp__flywheel__health_check
 
 **Returns:** `{ status, vault_accessible, index_built, note_count, recommendations }`
 
-### get_vault_stats
+### mcp__flywheel__get_vault_stats
 
 **Returns:** `{ total_notes, total_links, orphan_notes, broken_links, most_linked_notes, top_tags, folders }`
 
@@ -303,10 +303,10 @@ Suggest and validate links.
 
 | Tool | Purpose | Key Args |
 |------|---------|----------|
-| `suggest_wikilinks` | Find linkable text | `text`, `limit` |
-| `validate_links` | Check for broken links | `path` |
+| `mcp__flywheel__suggest_wikilinks` | Find linkable text | `text`, `limit` |
+| `mcp__flywheel__validate_links` | Check for broken links | `path` |
 
-### suggest_wikilinks
+### mcp__flywheel__suggest_wikilinks
 
 ```json
 {
@@ -324,12 +324,12 @@ Bridge prose and frontmatter.
 
 | Tool | Purpose | Key Args |
 |------|---------|----------|
-| `detect_prose_patterns` | Find "Key: Value" in prose | `path` |
-| `suggest_frontmatter_from_prose` | YAML from prose patterns | `path` |
-| `suggest_wikilinks_in_frontmatter` | Convert strings to links | `path` |
-| `validate_cross_layer` | Check prose ↔ YAML consistency | `path` |
+| `mcp__flywheel__detect_prose_patterns` | Find "Key: Value" in prose | `path` |
+| `mcp__flywheel__suggest_frontmatter_from_prose` | YAML from prose patterns | `path` |
+| `mcp__flywheel__suggest_wikilinks_in_frontmatter` | Convert strings to links | `path` |
+| `mcp__flywheel__validate_cross_layer` | Check prose ↔ YAML consistency | `path` |
 
-### suggest_frontmatter_from_prose
+### mcp__flywheel__suggest_frontmatter_from_prose
 
 ```json
 {
@@ -345,7 +345,7 @@ Bridge prose and frontmatter.
 
 Detect daily/weekly/monthly note patterns.
 
-### detect_periodic_notes
+### mcp__flywheel__detect_periodic_notes
 
 ```json
 {
@@ -385,4 +385,4 @@ All tools return structured errors:
 }
 ```
 
-Use `health_check` at session start to verify connectivity.
+Use `mcp__flywheel__health_check` at session start to verify connectivity.

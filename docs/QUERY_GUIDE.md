@@ -146,37 +146,37 @@ Understand note internals without reading.
 ## Query Tools Reference
 
 ### Graph Tools
-- `get_backlinks` - Notes linking TO a target
-- `get_forward_links` - Notes linked FROM a target
-- `get_link_path` - Shortest path between notes
-- `get_common_neighbors` - Shared references
-- `find_hub_notes` - Highly connected notes
-- `find_orphan_notes` - Disconnected notes
-- `find_bidirectional_links` - Mutual links
-- `get_connection_strength` - Relevance scoring
+- `mcp__flywheel__get_backlinks` - Notes linking TO a target
+- `mcp__flywheel__get_forward_links` - Notes linked FROM a target
+- `mcp__flywheel__get_link_path` - Shortest path between notes
+- `mcp__flywheel__get_common_neighbors` - Shared references
+- `mcp__flywheel__find_hub_notes` - Highly connected notes
+- `mcp__flywheel__find_orphan_notes` - Disconnected notes
+- `mcp__flywheel__find_bidirectional_links` - Mutual links
+- `mcp__flywheel__get_connection_strength` - Relevance scoring
 
 ### Temporal Tools
-- `get_recent_notes` - Modified in last N days
-- `get_notes_modified_on` - Activity on specific date
-- `get_notes_in_range` - Activity in date range
-- `get_stale_notes` - Important but neglected
-- `get_contemporaneous_notes` - Edited around same time
-- `get_activity_summary` - Vault activity overview
+- `mcp__flywheel__get_recent_notes` - Modified in last N days
+- `mcp__flywheel__get_notes_modified_on` - Activity on specific date
+- `mcp__flywheel__get_notes_in_range` - Activity in date range
+- `mcp__flywheel__get_stale_notes` - Important but neglected
+- `mcp__flywheel__get_contemporaneous_notes` - Edited around same time
+- `mcp__flywheel__get_activity_summary` - Vault activity overview
 
 ### Schema Tools
-- `get_frontmatter_schema` - Field inventory
-- `get_field_values` - Unique values for field
-- `find_frontmatter_inconsistencies` - Type mismatches
-- `find_missing_fields` - Notes lacking expected fields
-- `validate_against_schema` - Check compliance
+- `mcp__flywheel__get_frontmatter_schema` - Field inventory
+- `mcp__flywheel__get_field_values` - Unique values for field
+- `mcp__flywheel__find_frontmatter_inconsistencies` - Type mismatches
+- `mcp__flywheel__find_missing_fields` - Notes lacking expected fields
+- `mcp__flywheel__validate_against_schema` - Check compliance
 
 ### Search Tools
-- `search_notes` - Multi-filter search (tags, folder, frontmatter, title)
+- `mcp__flywheel__search_notes` - Multi-filter search (tags, folder, frontmatter, title)
 
 ### Structure Tools
-- `get_note_structure` - Heading tree
-- `get_section_content` - Extract specific section
-- `find_sections` - Find sections across vault
+- `mcp__flywheel__get_note_structure` - Heading tree
+- `mcp__flywheel__get_section_content` - Extract specific section
+- `mcp__flywheel__find_sections` - Find sections across vault
 
 ---
 

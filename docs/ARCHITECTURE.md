@@ -47,15 +47,15 @@ The MCP server provides vault intelligence to any MCP-compatible client.
 
 | Category | Tools | Purpose |
 |----------|-------|---------|
-| **Graph** | `get_backlinks`, `get_forward_links`, `find_hub_notes`, `find_orphan_notes`, `get_link_path`, `find_bidirectional_links`, `find_dead_ends`, `get_connection_strength`, `get_common_neighbors` | Link traversal and graph analysis |
-| **Search** | `search_notes`, `find_sections`, `get_recent_notes`, `get_stale_notes`, `get_notes_modified_on`, `get_notes_in_range`, `get_contemporaneous_notes` | Finding and filtering notes |
-| **Schema** | `get_frontmatter_schema`, `validate_frontmatter`, `find_frontmatter_inconsistencies`, `infer_folder_conventions`, `find_incomplete_notes`, `suggest_field_values`, `compute_frontmatter`, `rename_field`, `migrate_field_values` | Frontmatter analysis and management |
-| **Tasks** | `get_all_tasks`, `get_tasks_from_note`, `get_tasks_with_due_dates` | Task extraction from notes |
-| **Structure** | `get_note_structure`, `get_headings`, `get_section_content`, `get_note_metadata` | Note content analysis |
-| **Periodic** | `detect_periodic_notes` | Auto-detect daily/weekly/monthly note patterns |
-| **Wikilinks** | `suggest_wikilinks`, `validate_links`, `find_broken_links`, `get_unlinked_mentions`, `suggest_wikilinks_in_frontmatter` | Link suggestions and validation |
-| **Vault** | `health_check`, `get_vault_stats`, `get_folder_structure`, `get_activity_summary`, `get_all_entities`, `refresh_index` | Vault-wide operations |
-| **Prose** | `detect_prose_patterns`, `suggest_frontmatter_from_prose`, `validate_cross_layer` | Bidirectional bridge tools |
+| **Graph** | `mcp__flywheel__get_backlinks`, `mcp__flywheel__get_forward_links`, `mcp__flywheel__find_hub_notes`, `mcp__flywheel__find_orphan_notes`, `mcp__flywheel__get_link_path`, `mcp__flywheel__find_bidirectional_links`, `mcp__flywheel__find_dead_ends`, `mcp__flywheel__get_connection_strength`, `mcp__flywheel__get_common_neighbors` | Link traversal and graph analysis |
+| **Search** | `mcp__flywheel__search_notes`, `mcp__flywheel__find_sections`, `mcp__flywheel__get_recent_notes`, `mcp__flywheel__get_stale_notes`, `mcp__flywheel__get_notes_modified_on`, `mcp__flywheel__get_notes_in_range`, `mcp__flywheel__get_contemporaneous_notes` | Finding and filtering notes |
+| **Schema** | `mcp__flywheel__get_frontmatter_schema`, `mcp__flywheel__validate_frontmatter`, `mcp__flywheel__find_frontmatter_inconsistencies`, `mcp__flywheel__infer_folder_conventions`, `mcp__flywheel__find_incomplete_notes`, `mcp__flywheel__suggest_field_values`, `mcp__flywheel__compute_frontmatter`, `mcp__flywheel__rename_field`, `mcp__flywheel__migrate_field_values` | Frontmatter analysis and management |
+| **Tasks** | `mcp__flywheel__get_all_tasks`, `mcp__flywheel__get_tasks_from_note`, `mcp__flywheel__get_tasks_with_due_dates` | Task extraction from notes |
+| **Structure** | `mcp__flywheel__get_note_structure`, `mcp__flywheel__get_headings`, `mcp__flywheel__get_section_content`, `mcp__flywheel__get_note_metadata` | Note content analysis |
+| **Periodic** | `mcp__flywheel__detect_periodic_notes` | Auto-detect daily/weekly/monthly note patterns |
+| **Wikilinks** | `mcp__flywheel__suggest_wikilinks`, `mcp__flywheel__validate_links`, `mcp__flywheel__find_broken_links`, `mcp__flywheel__get_unlinked_mentions`, `mcp__flywheel__suggest_wikilinks_in_frontmatter` | Link suggestions and validation |
+| **Vault** | `mcp__flywheel__health_check`, `mcp__flywheel__get_vault_stats`, `mcp__flywheel__get_folder_structure`, `mcp__flywheel__get_activity_summary`, `mcp__flywheel__get_all_entities`, `mcp__flywheel__refresh_index` | Vault-wide operations |
+| **Prose** | `mcp__flywheel__detect_prose_patterns`, `mcp__flywheel__suggest_frontmatter_from_prose`, `mcp__flywheel__validate_cross_layer` | Bidirectional bridge tools |
 
 ### Tool Design Principles
 

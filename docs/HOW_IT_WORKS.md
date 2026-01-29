@@ -40,10 +40,10 @@ This means:
 When you ask "What's blocking the course launch?", Claude uses tools like:
 
 ```
-get_backlinks(path: "Course Launch Plan.md")
+mcp__flywheel__get_backlinks(path: "Course Launch Plan.md")
 → Returns: [{source: "Payment Setup.md", line: 12}]
 
-search_notes(where: {status: "blocked"})
+mcp__flywheel__search_notes(where: {status: "blocked"})
 → Returns: [{path: "Course Launch Plan.md", frontmatter: {...}}]
 ```
 
@@ -57,7 +57,7 @@ These queries hit the **in-memory index**. No files are read from disk.
 When you ask for specific content, Flywheel reads **only the section**:
 
 ```
-get_section_content(path: "daily/2026-01-04.md", heading: "Log")
+mcp__flywheel__get_section_content(path: "daily/2026-01-04.md", heading: "Log")
 → Returns: "- 09:00 Morning review\n- 10:30 Client call"
 ```
 
@@ -81,7 +81,7 @@ Even then, Flywheel sends **one file** rather than searching through many.
 
 Flywheel analyzes your existing notes to detect patterns:
 
-### `infer_folder_conventions(folder: "clients/")`
+### `mcp__flywheel__infer_folder_conventions(folder: "clients/")`
 
 Scans all notes in `clients/` and returns:
 
@@ -104,7 +104,7 @@ Scans all notes in `clients/` and returns:
 3. Detects value patterns (enums, numbers, dates)
 4. Returns confidence score
 
-### `find_incomplete_notes(folder: "clients/")`
+### `mcp__flywheel__find_incomplete_notes(folder: "clients/")`
 
 Uses inferred conventions to find notes missing expected fields:
 
@@ -117,7 +117,7 @@ Uses inferred conventions to find notes missing expected fields:
 }
 ```
 
-### `suggest_field_values(field: "status", folder: "clients/")`
+### `mcp__flywheel__suggest_field_values(field: "status", folder: "clients/")`
 
 Suggests values based on what's commonly used:
 
@@ -134,7 +134,7 @@ Suggests values based on what's commonly used:
 
 Flywheel can detect unlinked mentions and suggest wikilinks:
 
-### `suggest_wikilinks(text: "...")`
+### `mcp__flywheel__suggest_wikilinks(text: "...")`
 
 Analyzes text and finds mentions of known entities:
 
@@ -152,7 +152,7 @@ Analyzes text and finds mentions of known entities:
 2. Scans prose for matches (case-insensitive)
 3. Returns positions for easy linking
 
-### `suggest_frontmatter_from_prose(path: "...")`
+### `mcp__flywheel__suggest_frontmatter_from_prose(path: "...")`
 
 Detects `Key: Value` patterns in prose:
 
@@ -167,7 +167,7 @@ Detects `Key: Value` patterns in prose:
 
 Useful for migrating unstructured notes to structured frontmatter.
 
-### `validate_cross_layer(path: "...")`
+### `mcp__flywheel__validate_cross_layer(path: "...")`
 
 Checks consistency between frontmatter and prose:
 
@@ -212,13 +212,13 @@ Flywheel exposes tools via MCP, so Claude:
 Example chain for "what's blocking the milestone?":
 
 ```
-1. get_backlinks(path: "Propulsion Milestone")
+1. mcp__flywheel__get_backlinks(path: "Propulsion Milestone")
    → Returns notes linking to milestone
 
-2. search_notes(where: { status: "blocked" })
+2. mcp__flywheel__search_notes(where: { status: "blocked" })
    → Returns blocked items
 
-3. get_link_path(from: "Turbopump Test", to: "Propulsion Milestone")
+3. mcp__flywheel__get_link_path(from: "Turbopump Test", to: "Propulsion Milestone")
    → Returns dependency chain
 
 4. [Claude explains the blocker path]

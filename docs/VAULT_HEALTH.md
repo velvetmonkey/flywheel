@@ -36,7 +36,7 @@ Ask Claude to assess your vault:
 You: Is my vault healthy?
 
 Claude: Let me check the key metrics.
-[uses get_orphan_notes, get_hub_notes, get_dead_ends]
+[uses mcp__flywheel__find_orphan_notes, mcp__flywheel__find_hub_notes, mcp__flywheel__find_dead_ends]
 
 Your vault has 847 notes:
 - 12 orphan notes (no backlinks) - consider linking these
@@ -74,7 +74,7 @@ Would you like me to list the orphans?
 ```
 You: Show me orphan notes in projects/
 
-Claude: [uses find_orphan_notes]
+Claude: [uses mcp__flywheel__find_orphan_notes]
 
 Found 4 orphan notes in projects/:
 - projects/old-idea.md - created 6 months ago, never linked
@@ -98,7 +98,7 @@ Want me to suggest where to link these?
 ```
 You: Which of my hub notes are stale?
 
-Claude: [uses find_hub_notes, filters by modification date]
+Claude: [uses mcp__flywheel__find_hub_notes, filters by modification date]
 
 3 hub notes haven't been updated in 30+ days:
 
@@ -126,7 +126,7 @@ Want me to show what's linking to these?
 ```
 You: Find dead ends with more than 5 backlinks
 
-Claude: [uses find_dead_ends]
+Claude: [uses mcp__flywheel__find_dead_ends]
 
 Found 2 high-traffic dead ends:
 
@@ -152,7 +152,7 @@ The concepts note could benefit from connecting to your auth-related project not
 ```
 You: Are there any broken links?
 
-Claude: [uses find_broken_links]
+Claude: [uses mcp__flywheel__find_broken_links]
 
 Found 3 broken wikilinks:
 
