@@ -52,95 +52,176 @@ Ask Claude:
 
 ---
 
-## How mutations work
+## How it works
 
-When you ask Claude to make changes:
+When you ask Claude questions or request changes, here's the flow:
 
-### Log a customer interaction
-
-```
-You: "/log call with DataDriven - they want API access"
-
-┌─ MUTATION ───────────────────────────────────────┐
-│ Reads:   ## Log section (38 tokens)              │
-│ Appends: daily-notes/2026-01-04.md               │
-└──────────────────────────────────────────────────┘
-
-## Log
-- 10:00 Standup with Sarah
-- 11:30 call with DataDriven - they want API access ← NEW
-```
-
-### Check MRR
+### Check MRR (metadata aggregation)
 
 ```
 You: "What's our current MRR?"
 
-┌─ QUERY ──────────────────────────────────────────┐
-│ Source: Graph index (customer frontmatter)       │
-│ Tokens: ~40 vs ~1,500 without Flywheel           │
-└──────────────────────────────────────────────────┘
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Sum MRR across all active customers         │
+│ Strategy: Query customer frontmatter, aggregate     │
+│ Tools: mcp__flywheel__get_field_values              │
+└─────────────────────────────────────────────────────┘
 
-MRR Dashboard
-=============
-Active Customers: 3
-Total MRR: $4,200/mo
+┌─ FLYWHEEL READS ────────────────────────────────────┐
+│ mcp__flywheel__get_field_values                     │
+│   folder: "customers/"                              │
+│   field: "mrr"                                      │
+│   → datadriven-co.md: 1500, status: active          │
+│   → techstart-inc.md: 1200, status: active          │
+│   → metrics-plus.md: 1500, status: active           │
+│   → newclient.md: 2000, status: trial               │
+│                                                     │
+│ Total: ~80 tokens (vs ~4,600 reading all files)     │
+└─────────────────────────────────────────────────────┘
 
-Breakdown:
-- DataDriven Co: $1,500/mo (pilot → paid)
-- TechStart Inc: $1,200/mo (annual contract)
-- Metrics Plus: $1,500/mo (monthly)
+┌─ CLAUDE SYNTHESIZES ────────────────────────────────┐
+│ Filter by status=active, sum MRR values             │
+│ No file reads needed - frontmatter sufficient       │
+└─────────────────────────────────────────────────────┘
 
-Pipeline: $3,800/mo (2 in trial)
+MRR Dashboard: $4,200/mo (3 active customers)
+  DataDriven Co: $1,500/mo
+  TechStart Inc: $1,200/mo
+  Metrics Plus: $1,500/mo
+Pipeline: $2,000/mo (1 in trial)
 ```
 
-### Update customer record
-
-```
-You: "update DataDriven status to pilot"
-
-┌─ MUTATION ───────────────────────────────────────┐
-│ Reads:   customers/datadriven-co.md frontmatter  │
-│ Modifies: customers/datadriven-co.md             │
-└──────────────────────────────────────────────────┘
-
----
-status: pilot                                      ← CHANGED from 'lead'
-last_contact: 2026-01-04
-mrr: 1500
----
-```
-
-### Run a playbook
+### Run a playbook (requires file read)
 
 ```
 You: "Walk me through onboarding a new customer"
 
-┌─ QUERY ──────────────────────────────────────────┐
-│ Source: playbooks/customer-onboarding.md         │
-│ Tokens: ~200 (playbook only)                     │
-└──────────────────────────────────────────────────┘
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Get step-by-step onboarding instructions    │
+│ Strategy: Find playbook, read full content          │
+│ Tools: mcp__flywheel__search_notes, then Read       │
+└─────────────────────────────────────────────────────┘
+
+┌─ FLYWHEEL READS ────────────────────────────────────┐
+│ mcp__flywheel__search_notes("onboarding playbook")  │
+│   → ops/playbooks/customer-onboarding.md            │
+│                                                     │
+│ Total: ~40 tokens (search result only)              │
+└─────────────────────────────────────────────────────┘
+
+┌─ CLAUDE DECIDES: NEED FULL PLAYBOOK ────────────────┐
+│ Search found the file, but "walk me through"        │
+│ requires reading all steps and instructions         │
+└─────────────────────────────────────────────────────┘
+
+┌─ SELECTIVE FILE READ ───────────────────────────────┐
+│ Read("ops/playbooks/customer-onboarding.md")        │
+│   → Full playbook with 5 steps and templates        │
+│                                                     │
+│ Total: ~300 tokens (1 playbook file)                │
+└─────────────────────────────────────────────────────┘
 
 Customer Onboarding Playbook
 ============================
-
-Step 1: Create customer record
-  → /create customer [name]
-
-Step 2: Schedule kickoff call
-  → Check calendar availability
-
-Step 3: Send welcome email
-  → Template: templates/welcome-email.md
-
-Step 4: Set up their workspace
-  → Provision API keys
-  → Create Slack channel
-
-Step 5: Log completion
-  → /log onboarded [customer name]
+Step 1: Create customer record → /create customer [name]
+Step 2: Schedule kickoff call → Check calendar
+Step 3: Send welcome email → Use templates/welcome-email.md
+Step 4: Set up workspace → Provision API keys, Slack channel
+Step 5: Log completion → /log onboarded [customer name]
 
 Ready to start? Tell me the customer name.
+```
+
+### Customer summary (metadata + selective read)
+
+```
+You: "What's happening with DataDriven?"
+
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Get current status + recent activity        │
+│ Strategy: Metadata first, then read if needed       │
+│ Tools: mcp__flywheel__get_note_metadata,            │
+│        mcp__flywheel__get_backlinks                 │
+└─────────────────────────────────────────────────────┘
+
+┌─ FLYWHEEL READS ────────────────────────────────────┐
+│ mcp__flywheel__get_note_metadata("customers/data..")│
+│   → status: active, mrr: 1500, contract: monthly    │
+│   → health: green, next_renewal: 2026-02-01         │
+│                                                     │
+│ mcp__flywheel__get_backlinks("customers/data...")   │
+│   → daily-notes/2026-01-04.md (mentioned today)     │
+│   → meetings/2026-01-02-kickoff.md                  │
+│                                                     │
+│ Total: ~100 tokens                                  │
+└─────────────────────────────────────────────────────┘
+
+┌─ CLAUDE DECIDES: NEED RECENT CONTEXT ───────────────┐
+│ Metadata shows status, but "what's happening"       │
+│ needs recent meeting notes for context              │
+└─────────────────────────────────────────────────────┘
+
+┌─ SELECTIVE FILE READ ───────────────────────────────┐
+│ Read("daily-notes/2026-01-04.md", section="Log")    │
+│   → "call with DataDriven - they want API access"   │
+│                                                     │
+│ Total: ~150 tokens (1 section read)                 │
+└─────────────────────────────────────────────────────┘
+
+DataDriven Co: Active ($1,500/mo)
+  Health: Green | Renewal: Feb 1
+  Latest: They want API access (discussed today)
+  Next step: Send API documentation
+```
+
+### Update customer record (write operation)
+
+```
+You: "Update DataDriven status to pilot"
+
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Change status field in customer frontmatter │
+│ Strategy: Direct frontmatter update                 │
+│ Tools: mcp__flywheel-crank__vault_update_frontmatter│
+└─────────────────────────────────────────────────────┘
+
+┌─ CRANK WRITES ──────────────────────────────────────┐
+│ mcp__flywheel-crank__vault_update_frontmatter       │
+│   path: "customers/datadriven-co.md"                │
+│   updates:                                          │
+│     status: "pilot"                                 │
+│     last_contact: "2026-01-04"                      │
+└─────────────────────────────────────────────────────┘
+
+---
+status: pilot                    ← CHANGED from 'lead'
+last_contact: 2026-01-04         ← UPDATED
+mrr: 1500
+---
+```
+
+### Log customer interaction (write operation)
+
+```
+You: "/log call with DataDriven - they want API access"
+
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Append to today's log section               │
+│ Strategy: Direct write - no reads needed            │
+│ Tools: mcp__flywheel-crank__vault_add_to_section    │
+└─────────────────────────────────────────────────────┘
+
+┌─ CRANK WRITES ──────────────────────────────────────┐
+│ mcp__flywheel-crank__vault_add_to_section           │
+│   path: "daily-notes/2026-01-04.md"                 │
+│   section: "Log"                                    │
+│   content: "call with DataDriven - they want API.." │
+│   format: "timestamp-bullet"                        │
+└─────────────────────────────────────────────────────┘
+
+## Log
+- 10:00 Standup with Sarah
+- 11:30 call with DataDriven - they want API access ← NEW
 ```
 
 ---

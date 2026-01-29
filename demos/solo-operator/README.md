@@ -112,90 +112,166 @@ Try: "Run my morning briefing"
 
 ---
 
-## How mutations work
+## How it works
 
-When you ask Claude to make changes:
+When you ask Claude questions or request changes, here's the flow:
 
-### Run morning briefing
+### Check revenue (metadata only)
+
+```
+You: "How's revenue this month?"
+
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Get current month revenue breakdown         │
+│ Strategy: Read tracker frontmatter only             │
+│ Tools: mcp__flywheel__get_note_metadata             │
+└─────────────────────────────────────────────────────┘
+
+┌─ FLYWHEEL READS ────────────────────────────────────┐
+│ mcp__flywheel__get_note_metadata("ops/Revenue...")  │
+│   → revenue_mtd: 2888                               │
+│   → target: 8000                                    │
+│   → course_sales: 1188                              │
+│   → consulting: 1200                                │
+│   → sponsors: 500                                   │
+│                                                     │
+│ Total: ~60 tokens (vs ~800 reading full file)       │
+└─────────────────────────────────────────────────────┘
+
+┌─ CLAUDE SYNTHESIZES ────────────────────────────────┐
+│ Frontmatter has all metrics - no file read needed   │
+│ Calculate percentage, format dashboard              │
+└─────────────────────────────────────────────────────┘
+
+Revenue Dashboard (January 2026)
+================================
+Course Sales: $1,188 (4 sales)
+Consulting: $1,200 (4 hours)
+Newsletter Sponsors: $500/mo
+--------------------------------
+Total MTD: $2,888 / $8,000 (36%)
+```
+
+### Morning briefing (multi-source + file read)
 
 ```
 You: "Run my morning briefing"
 
-┌─ CHAIN ──────────────────────────────────────────┐
-│ Reads: yesterday's daily note, Revenue Tracker,  │
-│        Content Calendar (~150 tokens)            │
-│ Writes: daily-notes/2026-01-07.md               │
-└──────────────────────────────────────────────────┘
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Compile yesterday + today + alerts          │
+│ Strategy: Multiple metadata queries + content read  │
+│ Tools: mcp__flywheel__get_note_metadata (×3),       │
+│        Read for yesterday's log content             │
+└─────────────────────────────────────────────────────┘
 
-## Briefing (auto-generated 9:00am)
+┌─ FLYWHEEL READS ────────────────────────────────────┐
+│ mcp__flywheel__get_note_metadata("ops/Revenue...")  │
+│   → revenue_mtd, target (for alerts)                │
+│                                                     │
+│ mcp__flywheel__get_note_metadata("ops/Subscriber..")│
+│   → subscribers: 2847, growth_this_month: 47        │
+│                                                     │
+│ mcp__flywheel__get_tasks_with_due_dates             │
+│   → content/: 2 tasks due this week                 │
+│                                                     │
+│ Total: ~120 tokens                                  │
+└─────────────────────────────────────────────────────┘
+
+┌─ CLAUDE DECIDES: NEED YESTERDAY'S DETAILS ──────────┐
+│ Metadata shows metrics, but briefing needs          │
+│ yesterday's actual activities from ## Log           │
+└─────────────────────────────────────────────────────┘
+
+┌─ SELECTIVE FILE READ ───────────────────────────────┐
+│ Read("daily-notes/2026-01-06.md")                   │
+│   → ## Log section with activities                  │
+│                                                     │
+│ Total: ~200 tokens (1 daily note)                   │
+└─────────────────────────────────────────────────────┘
+
+┌─ CLAUDE SYNTHESIZES ────────────────────────────────┐
+│ Combines: yesterday's log + tracker metrics +       │
+│ content calendar tasks → structured briefing        │
+└─────────────────────────────────────────────────────┘
+
+## Briefing
 
 **Yesterday:**
-- Newsletter sent: "AI Tools Weekly" (42% open rate)
-- Course sales: 1 ($297)
+- 2 course sales ($594)
+- Newsletter outline completed
+- Identified subscriber growth concern
 
 **Today:**
 - Draft next newsletter (due Thu)
-- Follow up with consulting lead
+- TechCorp consulting session (2pm)
 
 **Alerts:**
-- [!] Subscriber growth slowed                     ← NEW
+- [yellow] Subscriber growth below target (-28%)
 ```
 
-### Add a log entry
+### Add a log entry (write operation)
 
 ```
 You: "log sent newsletter, 42% open rate"
 
-┌─ MUTATION ───────────────────────────────────────┐
-│ Reads:   ## Log section (38 tokens)              │
-│ Appends: daily-notes/2026-01-07.md               │
-└──────────────────────────────────────────────────┘
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Append to today's log section               │
+│ Strategy: Direct write - no reads needed            │
+│ Tools: mcp__flywheel-crank__vault_add_to_section    │
+└─────────────────────────────────────────────────────┘
+
+┌─ CRANK WRITES ──────────────────────────────────────┐
+│ mcp__flywheel-crank__vault_add_to_section           │
+│   path: "daily-notes/2026-01-07.md"                 │
+│   section: "Log"                                    │
+│   content: "sent newsletter, 42% open rate"         │
+│   format: "timestamp-bullet"                        │
+└─────────────────────────────────────────────────────┘
 
 ## Log
 - 09:00 Morning review
 - 10:30 sent newsletter, 42% open rate             ← NEW
 ```
 
-### Check revenue
+### Analyze a newsletter (requires file read)
 
 ```
-You: "How's revenue this month?"
+You: "Why did Tuesday's newsletter perform so well?"
 
-┌─ QUERY ──────────────────────────────────────────┐
-│ Source: Graph index (no file reads)              │
-│ Tokens: ~50 vs ~800 full file                    │
-└──────────────────────────────────────────────────┘
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Understand what drove high performance      │
+│ Strategy: Get metadata first, then read content     │
+│ Tools: mcp__flywheel__search_notes, then Read       │
+└─────────────────────────────────────────────────────┘
 
-Revenue Dashboard (January 2026)
-================================
-Newsletter Sponsors: $500/mo
-Course Sales: $1,188 (4 sales)
-Consulting: $1,200 (4 hours)
---------------------------------
-Total MTD: $2,888
-Target: $8,000
-Progress: 36% (on track)
-```
+┌─ FLYWHEEL READS ────────────────────────────────────┐
+│ mcp__flywheel__search_notes("Tuesday newsletter")   │
+│   → content/2026-01-07 AI Tools Weekly.md           │
+│                                                     │
+│ mcp__flywheel__get_note_metadata("content/2026...") │
+│   → open_rate: 0.42, click_rate: 0.091              │
+│   → course_sales: 1                                 │
+│                                                     │
+│ Total: ~80 tokens                                   │
+└─────────────────────────────────────────────────────┘
 
-### Check my numbers
+┌─ CLAUDE DECIDES: NEED CONTENT ANALYSIS ─────────────┐
+│ Metrics show it performed well, but "why" requires  │
+│ reading the subject line, content, and notes        │
+└─────────────────────────────────────────────────────┘
 
-```
-You: "How am I doing this month?"
+┌─ SELECTIVE FILE READ ───────────────────────────────┐
+│ Read("content/2026-01-07 AI Tools Weekly.md")       │
+│   → Subject line, content structure, ## Notes       │
+│                                                     │
+│ Total: ~400 tokens (1 file)                         │
+└─────────────────────────────────────────────────────┘
 
-┌─ CHAIN ──────────────────────────────────────────┐
-│ Queries: Revenue Tracker frontmatter             │
-│          Subscriber Tracker frontmatter          │
-│          Content Calendar due dates              │
-│          (~120 tokens vs ~2,000 full reads)      │
-└──────────────────────────────────────────────────┘
-
-January 2026 Dashboard
-======================
-Revenue: $2,888 / $8,000 (36%) ✓ on track
-Subscribers: 2,847 (+47 this month)
-Content: 4 newsletters sent, 2 due this week
-
-Top win: 42% open rate on Tuesday's newsletter
+Claude: "Tuesday's 42% open rate (best in Q4) likely
+came from: 1) Number + specific outcome subject line
+('5 workflows that save me 10 hours/week'), 2) Reply
+CTA ('Reply SYSTEM') drove 47 replies - high engagement
+signals boost deliverability."
 ```
 
 ---

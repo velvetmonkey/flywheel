@@ -43,6 +43,54 @@ Then start asking questions about the business.
 
 ---
 
-**Token savings:** Each note in these vaults averages ~155 lines (~2,300 tokens).
-With Flywheel, graph queries cost ~50-100 tokens instead of reading full files.
-That's **23-46x savings** per query—enabling hundreds of queries in agentic workflows.
+## Why Flywheel Saves Tokens
+
+**The problem:** LLMs like Claude have no persistent memory between queries. Every time you ask "What's blocking propulsion?", Claude must:
+
+1. **Read the relevant files** into its context window
+2. **Process the content** to find the answer
+3. **Discard everything** when the response is complete
+
+Ask a follow-up question? Claude reads the files again. Run an agentic workflow with 50 queries? That's 50 file reads.
+
+```
+Without Flywheel (3 related queries):
+┌──────────────────────────────────────────────────────────┐
+│ Query 1: "What's blocking propulsion?"                   │
+│   Read: propulsion.md (2,500 tokens)                     │
+│   Read: turbopump.md (1,800 tokens)                      │
+│   Read: supplier.md (1,200 tokens)                       │
+│   Total: 5,500 tokens                                    │
+│                                                          │
+│ Query 2: "Who owns the turbopump work?"                  │
+│   Read: turbopump.md (1,800 tokens) ← AGAIN              │
+│   Read: team-roster.md (900 tokens)                      │
+│   Total: 2,700 tokens                                    │
+│                                                          │
+│ Query 3: "What decisions affect turbopump?"              │
+│   Read: turbopump.md (1,800 tokens) ← AGAIN              │
+│   Read: decisions/DR-003.md (600 tokens)                 │
+│   Read: decisions/DR-007.md (550 tokens)                 │
+│   Total: 2,950 tokens                                    │
+│                                                          │
+│ Session total: 11,150 tokens                             │
+└──────────────────────────────────────────────────────────┘
+
+With Flywheel (same 3 queries):
+┌──────────────────────────────────────────────────────────┐
+│ Query 1: mcp__flywheel__get_note_metadata (×3)           │
+│   → frontmatter only: ~120 tokens                        │
+│                                                          │
+│ Query 2: mcp__flywheel__get_backlinks + metadata         │
+│   → link data only: ~80 tokens                           │
+│                                                          │
+│ Query 3: mcp__flywheel__search_notes + metadata          │
+│   → index results: ~100 tokens                           │
+│                                                          │
+│ Session total: ~300 tokens (37x savings)                 │
+└──────────────────────────────────────────────────────────┘
+```
+
+**The key insight:** Most queries don't need full file content. Flywheel returns just the metadata, links, and structure—letting Claude answer from the index instead of re-reading files.
+
+When Claude *does* need full content (explaining "why" or reading detailed notes), it does a **selective file read** of just that one file, not the entire vault.

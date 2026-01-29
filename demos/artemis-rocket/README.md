@@ -51,83 +51,141 @@ Ask Claude:
 
 ---
 
-## How mutations work
+## How it works
 
-When you ask Claude to make changes:
+When you ask Claude questions or request changes, here's the flow:
 
-### Add a standup note
-
-```
-You: "/log turbopump test successful - 98% efficiency"
-
-┌─ MUTATION ───────────────────────────────────────┐
-│ Reads:   ## Log section (42 tokens)              │
-│ Appends: daily-notes/2026-01-04.md               │
-└──────────────────────────────────────────────────┘
-
-## Log
-- 09:15 Team sync
-- 14:47 turbopump test successful - 98% efficiency ← NEW
-```
-
-### Trace a blocker
+### Trace a blocker (metadata only)
 
 ```
 You: "What's blocking propulsion?"
 
-┌─ QUERY ──────────────────────────────────────────┐
-│ Source: Graph index (no file reads)              │
-│ Tokens: ~50 vs ~3,000 without Flywheel           │
-└──────────────────────────────────────────────────┘
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Find what's blocking propulsion             │
+│ Strategy: Trace blocked_by links through graph      │
+│ Tools: mcp__flywheel__get_note_metadata (×3)        │
+└─────────────────────────────────────────────────────┘
 
-Claude traces the graph:
-  [[Propulsion Milestone]] → blocked by → [[Turbopump Test]]
-  [[Turbopump Test]] → waiting on → [[Seal Supplier]]
-  [[Seal Supplier]] → status: delayed, ETA: Jan 18
+┌─ FLYWHEEL READS ────────────────────────────────────┐
+│ mcp__flywheel__get_note_metadata("Propulsion...")   │
+│   → status: blocked, blocked_by: [[Turbopump Test]] │
+│                                                     │
+│ mcp__flywheel__get_note_metadata("Turbopump Test")  │
+│   → status: waiting, depends_on: [[Seal Supplier]]  │
+│                                                     │
+│ mcp__flywheel__get_note_metadata("Seal Supplier")   │
+│   → status: delayed, eta: 2026-01-18                │
+│                                                     │
+│ Total: ~120 tokens (vs ~7,500 reading 3 full files) │
+└─────────────────────────────────────────────────────┘
+
+┌─ CLAUDE SYNTHESIZES ────────────────────────────────┐
+│ Metadata sufficient - no file reads needed          │
+│ Chain: Propulsion ← Turbopump ← Seal Supplier       │
+└─────────────────────────────────────────────────────┘
 
 Claude: "Propulsion is blocked by the turbopump test,
 which is waiting on seals from Apex Materials.
-Current ETA is Jan 18 - 14 days out."
+ETA: Jan 18 (14 days out)."
+```
+
+### Explain a decision (requires file read)
+
+```
+You: "Why did we choose LOX over hypergolics?"
+
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Explain propellant decision rationale       │
+│ Strategy: Find decision record, read full context   │
+│ Tools: mcp__flywheel__search_notes, then Read       │
+└─────────────────────────────────────────────────────┘
+
+┌─ FLYWHEEL READS ────────────────────────────────────┐
+│ mcp__flywheel__search_notes("LOX hypergolic")       │
+│   → decisions/DR-003-lox-propellant.md              │
+│   → systems/propulsion/Engine Design.md             │
+│                                                     │
+│ Total: ~80 tokens (search results only)             │
+└─────────────────────────────────────────────────────┘
+
+┌─ CLAUDE DECIDES: NEED MORE DETAIL ──────────────────┐
+│ Search found the file, but I need the full          │
+│ rationale to answer "why" - metadata not enough     │
+└─────────────────────────────────────────────────────┘
+
+┌─ SELECTIVE FILE READ ───────────────────────────────┐
+│ Read("decisions/DR-003-lox-propellant.md")          │
+│   → Full decision record with pros/cons analysis    │
+│                                                     │
+│ Total: ~400 tokens (1 targeted file read)           │
+└─────────────────────────────────────────────────────┘
+
+┌─ CLAUDE SYNTHESIZES ────────────────────────────────┐
+│ Combines search context + full decision rationale   │
+└─────────────────────────────────────────────────────┘
+
+Claude: "We chose LOX over hypergolics in DR-003 for
+three reasons: 1) Higher specific impulse (better
+performance), 2) Non-toxic handling (safer ops),
+3) Supplier availability. The tradeoff was added
+complexity in cryogenic systems."
+```
+
+### Add a log entry (write operation)
+
+```
+You: "/log turbopump test successful - 98% efficiency"
+
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Append to today's daily note log section    │
+│ Strategy: Write directly - no reads needed          │
+│ Tools: mcp__flywheel-crank__vault_add_to_section    │
+└─────────────────────────────────────────────────────┘
+
+┌─ CRANK WRITES ──────────────────────────────────────┐
+│ mcp__flywheel-crank__vault_add_to_section           │
+│   path: "daily-notes/2026-01-04.md"                 │
+│   section: "Log"                                    │
+│   content: "turbopump test successful - 98%..."     │
+│   format: "timestamp-bullet"                        │
+└─────────────────────────────────────────────────────┘
+
+## Log
+- 09:15 Team sync
+- 14:47 turbopump test successful - 98% efficiency  ← NEW
 ```
 
 ### Create a decision record
 
 ```
-You: "record decision: switching to titanium valves"
+You: "Record decision: switching to titanium valves"
 
-┌─ MUTATION ───────────────────────────────────────┐
-│ Reads:   decisions/ folder conventions           │
-│ Creates: decisions/DR-015-titanium-valves.md     │
-└──────────────────────────────────────────────────┘
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Create new decision record with context     │
+│ Strategy: Check folder conventions, create note     │
+│ Tools: mcp__flywheel__get_folder_structure,         │
+│        mcp__flywheel-crank__vault_create_note       │
+└─────────────────────────────────────────────────────┘
 
-# DR-015: Titanium Valves
----
-date: 2026-01-04
-status: approved
-context: "[[Turbopump Test Results]]"
----
+┌─ FLYWHEEL READS ────────────────────────────────────┐
+│ mcp__flywheel__get_folder_structure("decisions/")   │
+│   → Pattern: DR-###-slug.md                         │
+│   → Next number: DR-015                             │
+│                                                     │
+│ Total: ~60 tokens                                   │
+└─────────────────────────────────────────────────────┘
 
-Decision: Switching to titanium valves for improved
-temperature tolerance based on hot fire results.
-```
+┌─ CRANK WRITES ──────────────────────────────────────┐
+│ mcp__flywheel-crank__vault_create_note              │
+│   path: "decisions/DR-015-titanium-valves.md"       │
+│   frontmatter:                                      │
+│     date: 2026-01-04                                │
+│     status: approved                                │
+│     context: "[[Turbopump Test Results]]"           │
+│   content: "Switching to titanium valves..."        │
+└─────────────────────────────────────────────────────┘
 
-### Find all blockers
-
-```
-You: "What's blocking the launch?"
-
-┌─ CHAIN ──────────────────────────────────────────┐
-│ Queries: Milestones with status=blocked          │
-│          Backlinks to find blocking dependencies │
-│          Forward links to trace root causes      │
-│          (~200 tokens vs ~5,000 full reads)      │
-└──────────────────────────────────────────────────┘
-
-Claude traces the dependency chain:
-  [[Launch Milestone]] ← blocked by ← [[Propulsion Milestone]]
-    ← blocked by ← [[Turbopump Test]] ← waiting on ← [[Seal Supplier]]
-
-"Three blockers traced to root cause: Apex Materials seal delay (Jan 18 ETA)"
+Created: decisions/DR-015-titanium-valves.md
 ```
 
 ---

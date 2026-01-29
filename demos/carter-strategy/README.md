@@ -54,34 +54,35 @@ Ask Claude:
 
 ---
 
-## How mutations work
+## How it works
 
-When you ask Claude to make changes:
+When you ask Claude questions or request changes, here's the flow:
 
-### Add a log entry
-
-```
-You: "/log finished Acme strategy deck"
-
-┌─ MUTATION ───────────────────────────────────────┐
-│ Reads:   ## Log section (35 tokens)              │
-│ Appends: daily-notes/2026-01-04.md               │
-└──────────────────────────────────────────────────┘
-
-## Log
-- 10:15 Morning review
-- 14:32 finished Acme strategy deck                ← NEW
-```
-
-### Check what's overdue
+### Check what's overdue (metadata only)
 
 ```
 You: "What's overdue this week?"
 
-┌─ QUERY ──────────────────────────────────────────┐
-│ Source: Task index (no file reads)               │
-│ Tokens: ~60 vs ~2,000 without Flywheel           │
-└──────────────────────────────────────────────────┘
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Find tasks with due dates in the past       │
+│ Strategy: Query task index, no content needed       │
+│ Tools: mcp__flywheel__get_tasks_with_due_dates      │
+└─────────────────────────────────────────────────────┘
+
+┌─ FLYWHEEL READS ────────────────────────────────────┐
+│ mcp__flywheel__get_tasks_with_due_dates             │
+│   → 3 tasks with due_date < today                   │
+│   → clients/acme.md: "Follow up on proposal"        │
+│   → projects/beta-api.md: "Send status update"      │
+│   → invoices/INV-042.md: "Payment reminder"         │
+│                                                     │
+│ Total: ~90 tokens (vs ~6,000 reading all files)     │
+└─────────────────────────────────────────────────────┘
+
+┌─ CLAUDE SYNTHESIZES ────────────────────────────────┐
+│ Metadata sufficient - task text + dates returned    │
+│ No file reads needed                                │
+└─────────────────────────────────────────────────────┘
 
 Overdue Tasks (3):
 - clients/acme.md: Follow up on proposal 📅 Jan 2
@@ -89,44 +90,101 @@ Overdue Tasks (3):
 - invoices/INV-042.md: Payment reminder 📅 Jan 3
 ```
 
-### Show my pipeline
-
-```
-You: "Show my revenue pipeline"
-
-┌─ CHAIN ──────────────────────────────────────────┐
-│ Queries: All clients with status field           │
-│          Invoices linked to each client          │
-│          Sum amounts by status (paid/pending)    │
-│          (~150 tokens vs ~3,000 full reads)      │
-└──────────────────────────────────────────────────┘
-
-Revenue Pipeline
-================
-Paid (Q4): $28,400
-Pending:   $12,200  ← Acme API Architecture
-Pipeline:  $8,000   ← TechStart proposal
-```
-
-### Check client revenue
+### Client revenue (metadata + aggregation)
 
 ```
 You: "How much have I billed Acme Corp?"
 
-┌─ QUERY ──────────────────────────────────────────┐
-│ Source: Graph index (frontmatter + links)        │
-│ Tokens: ~40 vs ~1,200 without Flywheel           │
-└──────────────────────────────────────────────────┘
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Sum all invoice amounts for one client      │
+│ Strategy: Get backlinks from Acme, sum amounts      │
+│ Tools: mcp__flywheel__get_backlinks,                │
+│        mcp__flywheel__get_note_metadata (×N)        │
+└─────────────────────────────────────────────────────┘
 
-Acme Corp Revenue
-=================
-Total Billed: $28,400
-Paid: $16,200
-Outstanding: $12,200
+┌─ FLYWHEEL READS ────────────────────────────────────┐
+│ mcp__flywheel__get_backlinks("clients/acme.md")     │
+│   → invoices/INV-001.md, invoices/INV-007.md        │
+│   → projects/data-strategy.md                       │
+│                                                     │
+│ mcp__flywheel__get_note_metadata("INV-001.md")      │
+│   → amount: 16200, status: paid                     │
+│                                                     │
+│ mcp__flywheel__get_note_metadata("INV-007.md")      │
+│   → amount: 12200, status: pending                  │
+│                                                     │
+│ Total: ~120 tokens (vs ~3,600 reading full files)   │
+└─────────────────────────────────────────────────────┘
 
-Projects:
-- Data Strategy Phase 1: $16,200 (paid)
-- API Architecture: $12,200 (pending)
+┌─ CLAUDE SYNTHESIZES ────────────────────────────────┐
+│ Aggregates amounts by status from frontmatter       │
+│ No file content needed - just metadata              │
+└─────────────────────────────────────────────────────┘
+
+Acme Corp Revenue: $28,400
+  Paid: $16,200 (Data Strategy Phase 1)
+  Outstanding: $12,200 (API Architecture)
+```
+
+### Summarize a project (requires file read)
+
+```
+You: "What's the status of the Acme API project?"
+
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Get detailed project status + context       │
+│ Strategy: Get metadata first, then read for detail  │
+│ Tools: mcp__flywheel__get_note_metadata, then Read  │
+└─────────────────────────────────────────────────────┘
+
+┌─ FLYWHEEL READS ────────────────────────────────────┐
+│ mcp__flywheel__get_note_metadata("projects/acme-..") │
+│   → status: active, client: [[Acme Corp]]           │
+│   → budget: 12200, hours_remaining: 8               │
+│                                                     │
+│ Total: ~60 tokens                                   │
+└─────────────────────────────────────────────────────┘
+
+┌─ CLAUDE DECIDES: NEED MORE DETAIL ──────────────────┐
+│ Metadata shows status, but user wants "what's       │
+│ happening" - need to read deliverables/notes        │
+└─────────────────────────────────────────────────────┘
+
+┌─ SELECTIVE FILE READ ───────────────────────────────┐
+│ Read("projects/acme-api-architecture.md")           │
+│   → ## Deliverables, ## Recent Updates sections     │
+│                                                     │
+│ Total: ~350 tokens (1 targeted file)                │
+└─────────────────────────────────────────────────────┘
+
+Claude: "Acme API project is active with 8 hours
+remaining. Last update: endpoint spec delivered,
+awaiting client review. Next: integration testing
+scheduled for next week."
+```
+
+### Add a log entry (write operation)
+
+```
+You: "/log finished Acme strategy deck"
+
+┌─ CLAUDE INTERPRETS ─────────────────────────────────┐
+│ Intent: Append to today's daily note log            │
+│ Strategy: Direct write - no reads needed            │
+│ Tools: mcp__flywheel-crank__vault_add_to_section    │
+└─────────────────────────────────────────────────────┘
+
+┌─ CRANK WRITES ──────────────────────────────────────┐
+│ mcp__flywheel-crank__vault_add_to_section           │
+│   path: "daily-notes/2026-01-04.md"                 │
+│   section: "Log"                                    │
+│   content: "finished Acme strategy deck"            │
+│   format: "timestamp-bullet"                        │
+└─────────────────────────────────────────────────────┘
+
+## Log
+- 10:15 Morning review
+- 14:32 finished Acme strategy deck                ← NEW
 ```
 
 ---
