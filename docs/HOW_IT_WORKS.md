@@ -142,7 +142,7 @@ Analyzes text and finds mentions of known entities:
 {
   "suggestions": [
     {"text": "Acme Corp", "match": "Acme Corp", "start": 45, "end": 54},
-    {"text": "Sarah", "match": "Sarah Chen", "start": 112, "end": 117}
+    {"text": "Jordan", "match": "Jordan Lee", "start": 112, "end": 118}
   ]
 }
 ```
