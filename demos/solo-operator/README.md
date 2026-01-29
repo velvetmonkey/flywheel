@@ -13,6 +13,31 @@
 
 Your challenge: doing everything yourself. Claude Code is your chief of staff - it handles ops, tracking, and automation while you focus on creating.
 
+## Vault Map
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    SOLO OPERATOR                        │
+│                                                         │
+│                   ┌─────────────┐                       │
+│                   │ Reference   │ (context hub)         │
+│                   └──────┬──────┘                       │
+│          ┌───────────────┼───────────────┐             │
+│          ▼               ▼               ▼             │
+│   ┌────────────┐  ┌────────────┐  ┌────────────┐       │
+│   │  Revenue   │  │ Subscriber │  │  Content   │       │
+│   │  Tracker   │  │  Tracker   │  │  Calendar  │       │
+│   └──────┬─────┘  └──────┬─────┘  └──────┬─────┘       │
+│          │               │               │             │
+│          └───────────────┼───────────────┘             │
+│                    updates│                            │
+│                          ▼                             │
+│                  ┌─────────────┐                       │
+│                  │ Daily Notes │───► Achievements      │
+│                  └─────────────┘                       │
+└─────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## Try it now

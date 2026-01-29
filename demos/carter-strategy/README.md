@@ -8,6 +8,34 @@
 
 **Your situation**: You manage 3 clients, 4 active projects, $42K in pending invoices, and 15 open tasks. Your expertise is data strategy and API architecture. Your challenge is keeping everything organized without an assistant.
 
+## Vault Map
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                   CARTER STRATEGY                       │
+│                                                         │
+│                   ┌─────────────┐                       │
+│                   │ Reference   │ (rates, context)      │
+│                   └──────┬──────┘                       │
+│                          │                              │
+│        ┌─────────────────┼─────────────────┐           │
+│        ▼                 ▼                 ▼           │
+│  ┌───────────┐    ┌───────────┐    ┌───────────┐       │
+│  │ Acme Corp │    │ TechStart │    │GlobalBank │       │
+│  └─────┬─────┘    └─────┬─────┘    └─────┬─────┘       │
+│        │ project        │                │             │
+│        ▼                ▼                ▼             │
+│  ┌───────────┐    ┌───────────┐    ┌───────────┐       │
+│  │ Project A │    │ Project B │    │ Project C │       │
+│  └─────┬─────┘    └─────┬─────┘    └─────┬─────┘       │
+│        │ invoice        │                │             │
+│        ▼                ▼                ▼             │
+│  ┌───────────┐    ┌───────────┐    ┌───────────┐       │
+│  │  INV-001  │    │  INV-002  │    │  INV-003  │       │
+│  └───────────┘    └───────────┘    └───────────┘       │
+└─────────────────────────────────────────────────────────┘
+```
+
 ## Try it now
 
 Ask Claude:

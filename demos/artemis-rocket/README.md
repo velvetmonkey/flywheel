@@ -8,6 +8,31 @@
 
 **Your situation**: Building a small launch vehicle to deliver 250kg to orbit. You're 8 months in, between design reviews, running hot fire tests. 65 documents cover propulsion, avionics, structures, team, and decisions.
 
+## Vault Map
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    ARTEMIS ROCKET                       │
+│                                                         │
+│    ┌──────────────┐         ┌──────────────┐           │
+│    │ Team Roster  │◄───────►│   Roadmap    │           │
+│    └──────┬───────┘ staffs  └──────┬───────┘           │
+│           │                        │ defines            │
+│    owns   │    ┌───────────────────┘                   │
+│           ▼    ▼                                        │
+│    ┌─────────────────┐    ┌─────────────────┐          │
+│    │   Propulsion    │───►│   Milestones    │          │
+│    │     System      │    │                 │          │
+│    └────────┬────────┘    └────────┬────────┘          │
+│             │ depends-on           │ blocked-by        │
+│             ▼                      ▼                   │
+│    ┌─────────────────┐    ┌─────────────────┐          │
+│    │   Decisions     │◄───│    Suppliers    │          │
+│    │    (DR-###)     │    │                 │          │
+│    └─────────────────┘    └─────────────────┘          │
+└─────────────────────────────────────────────────────────┘
+```
+
 ## Try it now
 
 Ask Claude:

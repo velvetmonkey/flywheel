@@ -8,6 +8,33 @@
 
 **Your situation**: You're studying protein folding and drug-target prediction. Your notes include 7 foundational papers, 6 methods, 10 experiments, and 2 active projects. You need to trace how ideas flow from literature through your work.
 
+## Vault Map
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                      NEXUS LAB                          │
+│                                                         │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │ PAPERS        AlphaFold 2 ─── ESMFold ─── GROMACS│   │
+│  └────────────────────┬────────────────────────────┘   │
+│                       │ informs                        │
+│                       ▼                                │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │ METHODS           Protein Folding Method        │   │
+│  └────────────────────┬────────────────────────────┘   │
+│                       │ used-by                        │
+│                       ▼                                │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │ EXPERIMENTS   Run 1 ─► Run 2 ─► Run 3 ─► Run 7  │   │
+│  └────────────────────┬────────────────────────────┘   │
+│                       │ feeds                          │
+│                       ▼                                │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │ PROJECTS          Drug Target Prediction        │   │
+│  └─────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────┘
+```
+
 ## Try it now
 
 Ask Claude:

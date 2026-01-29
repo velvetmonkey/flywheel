@@ -8,6 +8,32 @@
 
 **Your situation**: Pre-Series A with 3 customers and 2 co-founders doing everything. You need to run ops (onboarding, support, metrics, investor updates) without hiring yet. You've got playbooks, customer records, and decisions scattered across 30 notes.
 
+## Vault Map
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                     STARTUP OPS                         │
+│                                                         │
+│           ┌──────────────────────────┐                 │
+│           │        Roadmap           │                 │
+│           └────────────┬─────────────┘                 │
+│                        │ drives                        │
+│     ┌──────────────────┼──────────────────┐           │
+│     ▼                  ▼                  ▼           │
+│ ┌─────────┐      ┌─────────┐      ┌─────────┐         │
+│ │DataDrive│      │TechStart│      │MetricsP │         │
+│ │   Co    │      │   Inc   │      │   lus   │         │
+│ └────┬────┘      └────┬────┘      └────┬────┘         │
+│      │                │                │               │
+│      └────────────────┼────────────────┘               │
+│                       │ follows                        │
+│                       ▼                                │
+│  ┌───────────────────────────────────────────────┐    │
+│  │ PLAYBOOKS  Onboard ─► Support ─► Renew ─► Upsell│    │
+│  └───────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────┘
+```
+
 ## Try it now
 
 Ask Claude:
