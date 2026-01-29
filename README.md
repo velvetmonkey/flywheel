@@ -279,13 +279,13 @@ Graph queries never read files. Content only loads when you explicitly need it.
 
 5 production-ready vaults representing real knowledge work personas. Each vault is fully validated with 100% valid YAML and authentic linking patterns.
 
-| Demo | Persona | Notes | Try Asking | Validation |
-|------|---------|-------|------------|------------|
-| **[carter-strategy](demos/carter-strategy/)** | Solo Consultant | 32 | "How much have I billed Acme Corp?" | [✅ Report](demos/carter-strategy/VALIDATION_REPORT.md) |
-| **[artemis-rocket](demos/artemis-rocket/)** | Aerospace Engineer | 65 | "What's blocking the propulsion milestone?" | [✅ Report](demos/artemis-rocket/VALIDATION-REPORT.md) |
-| **[startup-ops](demos/startup-ops/)** | SaaS Co-Founder | 31 | "Walk me through onboarding DataDriven" | [✅ Report](demos/startup-ops/VALIDATION_REPORT.md) |
-| **[nexus-lab](demos/nexus-lab/)** | PhD Researcher | 32 | "How does AlphaFold connect to my experiment?" | [✅ 85%+ links](demos/nexus-lab/README.md) |
-| **[solo-operator](demos/solo-operator/)** | Content Creator | 19 | "What's my financial runway?" | [✅ Report](demos/solo-operator/VALIDATION_REPORT.md) |
+| Demo | Persona | Notes | Try Asking |
+|------|---------|-------|------------|
+| **[carter-strategy](demos/carter-strategy/)** | Solo Consultant | 32 | "How much have I billed Acme Corp?" |
+| **[artemis-rocket](demos/artemis-rocket/)** | Aerospace Engineer | 65 | "What's blocking the propulsion milestone?" |
+| **[startup-ops](demos/startup-ops/)** | SaaS Co-Founder | 31 | "Walk me through onboarding DataDriven" |
+| **[nexus-lab](demos/nexus-lab/)** | PhD Researcher | 32 | "How does AlphaFold connect to my experiment?" |
+| **[solo-operator](demos/solo-operator/)** | Content Creator | 19 | "What's my financial runway?" |
 
 ```bash
 # Clone and explore
@@ -298,14 +298,12 @@ claude
 
 ### Validation Status
 
-All demos are comprehensively tested and production-ready:
+All demos are production-ready:
 
 - ✅ **179 total markdown files** with 100% valid YAML
-- ✅ **Persona-specific workflows** validated (invoices, ADRs, experiments, etc.)
+- ✅ **Persona-specific workflows** (invoices, ADRs, experiments, etc.)
 - ✅ **Realistic knowledge graphs** with hub notes and bidirectional linking
 - ✅ **Authentic linking patterns** from sparse (22%) to dense (94%) resolution
-
-📋 **See [DEMO_VALIDATION.md](DEMO_VALIDATION.md) for comprehensive validation report**
 
 ---
 
