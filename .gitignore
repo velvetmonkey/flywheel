@@ -26,8 +26,12 @@ api-keys.json
 credentials.json
 .flywheel.local.json
 
-# Claude Code
+# Obsidian app settings (user-specific)
+.obsidian/
+
+# Claude Code settings (but keep demo examples)
 .claude/
+!demos/**/.claude/
 
 # Windows path artifacts
 C:*
