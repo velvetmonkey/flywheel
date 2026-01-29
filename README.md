@@ -22,7 +22,7 @@ You couldn't do this before. Now you can.
                         ┌─────────────────────────────────────────────────────┐
                         │              Your Vault (65 notes)                  │
                         │                        · · ·                        │
-                        │    ·  Orphan  ·              ·  Orphan  ·           │
+                        │   · [[Unlinked]] ·        · [[Unlinked]] ·         │
                         │         ↓                        ↓                  │
                         └─────────────────────────────────────────────────────┘
                                                │
@@ -347,6 +347,65 @@ That's it. Flywheel uses the current directory as your vault—no config needed.
 **When to use:** Enable file watching if you're editing notes while an agent is actively working in your vault. Without watching, the agent sees a snapshot from when the MCP server started.
 
 **Performance:** Minimal overhead. Rebuilds only trigger on `.md` file changes, not every filesystem event.
+
+</details>
+
+<details>
+<summary><strong>Tool filtering (reduce context usage)</strong></summary>
+
+**Problem:** Flywheel exposes 51 tools. Each tool definition consumes tokens from your context window. If you only need graph queries, loading task and migration tools wastes context.
+
+**Solution:** Use `FLYWHEEL_TOOLS` to load only the categories you need:
+
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@velvetmonkey/flywheel-mcp"],
+      "env": {
+        "FLYWHEEL_TOOLS": "standard"
+      }
+    }
+  }
+}
+```
+
+**Presets:**
+
+| Preset | Categories | Use Case |
+|--------|------------|----------|
+| `minimal` | core | Just vault stats and metadata |
+| `standard` | core, graph, search, tasks | Most common workflows (default) |
+| `full` | all | Every tool available |
+
+**Categories:**
+
+| Category | Tools | Description |
+|----------|-------|-------------|
+| `core` | 9 | health_check, get_vault_stats, refresh_index, get_note_metadata, get_folder_structure, get_all_entities, get_recent_notes, get_unlinked_mentions, find_broken_links |
+| `graph` | 6 | get_backlinks, get_forward_links, find_orphan_notes, find_hub_notes, suggest_wikilinks, validate_links |
+| `search` | 1 | search_notes |
+| `tasks` | 4 | get_all_tasks, get_tasks_from_note, get_tasks_with_due_dates, get_incomplete_tasks |
+| `schema` | 8 | get_frontmatter_schema, get_field_values, find_frontmatter_inconsistencies, validate_frontmatter, find_missing_frontmatter, infer_folder_conventions, find_incomplete_notes, suggest_field_values |
+| `structure` | 4 | get_note_structure, get_headings, get_section_content, find_sections |
+| `temporal` | 6 | detect_periodic_notes, get_notes_modified_on, get_notes_in_range, get_stale_notes, get_contemporaneous_notes, get_activity_summary |
+| `advanced` | 13 | Bidirectional bridge tools (detect_prose_patterns, suggest_frontmatter_from_prose, etc.), computed frontmatter, field migrations, graph analysis (get_link_path, find_dead_ends, etc.) |
+
+**Custom combinations:**
+
+```bash
+# Core + graph only
+FLYWHEEL_TOOLS=core,graph
+
+# Everything except advanced
+FLYWHEEL_TOOLS=core,graph,search,tasks,schema,structure,temporal
+
+# Just tasks and search
+FLYWHEEL_TOOLS=core,tasks,search
+```
+
+**Note:** `core` is recommended in all combinations as it provides essential vault metadata tools.
 
 </details>
 

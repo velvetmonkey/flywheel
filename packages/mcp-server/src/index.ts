@@ -27,79 +27,171 @@ let flywheelConfig: FlywheelConfig = {};
 // Vault index (built on startup)
 let vaultIndex: VaultIndex;
 
+// ============================================================================
+// Tool Category System
+// ============================================================================
+// FLYWHEEL_TOOLS env var controls which tool categories are loaded.
+// This reduces context window usage by only exposing tools you need.
+//
+// Categories:
+//   core      - health_check, get_vault_stats, refresh_index, get_note_metadata, get_folder_structure
+//   graph     - backlinks, forward_links, orphans, hubs, wikilink suggestions, link validation
+//   search    - search_notes
+//   tasks     - get_all_tasks, get_tasks_from_note, get_tasks_with_due_dates, get_incomplete_tasks
+//   schema    - frontmatter queries, field values, schema inference, validation
+//   structure - note structure, headings, sections
+//   temporal  - date-based queries, periodic notes, activity summaries
+//   advanced  - bidirectional bridge tools, computed frontmatter, migrations
+//
+// Presets:
+//   minimal   - core only (~5% of tools)
+//   standard  - core,graph,search,tasks (~45% of tools) [DEFAULT]
+//   full      - all tools (~100%)
+//
+// Examples:
+//   FLYWHEEL_TOOLS=minimal           # Just vault stats and metadata
+//   FLYWHEEL_TOOLS=core,graph        # Core + graph tools
+//   FLYWHEEL_TOOLS=standard          # Default set (most common use cases)
+//   FLYWHEEL_TOOLS=full              # Everything
+//   FLYWHEEL_TOOLS=core,tasks,schema # Custom combination
+// ============================================================================
+
+type ToolCategory = 'core' | 'graph' | 'search' | 'tasks' | 'schema' | 'structure' | 'temporal' | 'advanced';
+
+// Preset definitions
+const PRESETS: Record<string, ToolCategory[]> = {
+  minimal: ['core'],
+  standard: ['core', 'graph', 'search', 'tasks'],
+  full: ['core', 'graph', 'search', 'tasks', 'schema', 'structure', 'temporal', 'advanced'],
+};
+
+const ALL_CATEGORIES: ToolCategory[] = ['core', 'graph', 'search', 'tasks', 'schema', 'structure', 'temporal', 'advanced'];
+const DEFAULT_PRESET = 'standard';
+
+/**
+ * Parse FLYWHEEL_TOOLS env var into enabled categories
+ */
+function parseEnabledCategories(): Set<ToolCategory> {
+  const envValue = process.env.FLYWHEEL_TOOLS?.trim();
+
+  // No env var = use default preset
+  if (!envValue) {
+    return new Set(PRESETS[DEFAULT_PRESET]);
+  }
+
+  // Check if it's a preset name
+  const lowerValue = envValue.toLowerCase();
+  if (PRESETS[lowerValue]) {
+    return new Set(PRESETS[lowerValue]);
+  }
+
+  // Parse comma-separated categories
+  const categories = new Set<ToolCategory>();
+  for (const item of envValue.split(',')) {
+    const category = item.trim().toLowerCase() as ToolCategory;
+    if (ALL_CATEGORIES.includes(category)) {
+      categories.add(category);
+    } else if (PRESETS[category]) {
+      // Allow preset names in comma list
+      for (const c of PRESETS[category]) {
+        categories.add(c);
+      }
+    } else {
+      console.error(`[Flywheel] Warning: Unknown tool category "${item}" - ignoring`);
+    }
+  }
+
+  // If nothing valid, fall back to default
+  if (categories.size === 0) {
+    console.error(`[Flywheel] No valid categories found, using default (${DEFAULT_PRESET})`);
+    return new Set(PRESETS[DEFAULT_PRESET]);
+  }
+
+  return categories;
+}
+
+const enabledCategories = parseEnabledCategories();
+
+// Track which registration functions have been called (some are shared across categories)
+const registeredModules = new Set<string>();
+
+function shouldRegister(module: string, categories: ToolCategory[]): boolean {
+  if (registeredModules.has(module)) return false;
+  const shouldReg = categories.some(cat => enabledCategories.has(cat));
+  if (shouldReg) registeredModules.add(module);
+  return shouldReg;
+}
+
 const server = new McpServer({
   name: 'flywheel',
   version: '1.7.0',
 });
 
-// Register all tools
-registerGraphTools(
-  server,
-  () => vaultIndex,
-  () => vaultPath
-);
+// Log enabled categories
+const categoryList = Array.from(enabledCategories).sort().join(', ');
+console.error(`[Flywheel] Tool categories: ${categoryList}`);
 
-registerWikilinkTools(
-  server,
-  () => vaultIndex,
-  () => vaultPath
-);
+// ============================================================================
+// Register tools based on enabled categories
+// ============================================================================
 
-registerHealthTools(
-  server,
-  () => vaultIndex,
-  () => vaultPath
-);
+// CORE: Essential vault health and metadata tools
+if (shouldRegister('health', ['core'])) {
+  registerHealthTools(server, () => vaultIndex, () => vaultPath);
+}
 
-registerQueryTools(
-  server,
-  () => vaultIndex,
-  () => vaultPath
-);
+if (shouldRegister('system', ['core'])) {
+  registerSystemTools(
+    server,
+    () => vaultIndex,
+    (newIndex) => { vaultIndex = newIndex; },
+    () => vaultPath,
+    (newConfig) => { flywheelConfig = newConfig; }
+  );
+}
 
-registerSystemTools(
-  server,
-  () => vaultIndex,
-  (newIndex) => { vaultIndex = newIndex; },
-  () => vaultPath,
-  (newConfig) => { flywheelConfig = newConfig; }
-);
+// GRAPH: Link analysis and wikilink tools
+if (shouldRegister('graph', ['graph'])) {
+  registerGraphTools(server, () => vaultIndex, () => vaultPath);
+}
 
-registerPrimitiveTools(
-  server,
-  () => vaultIndex,
-  () => vaultPath,
-  () => flywheelConfig
-);
+if (shouldRegister('wikilinks', ['graph'])) {
+  registerWikilinkTools(server, () => vaultIndex, () => vaultPath);
+}
 
-registerPeriodicTools(
-  server,
-  () => vaultIndex
-);
+// SEARCH: Note search tools
+if (shouldRegister('query', ['search'])) {
+  registerQueryTools(server, () => vaultIndex, () => vaultPath);
+}
 
-registerBidirectionalTools(
-  server,
-  () => vaultIndex,
-  () => vaultPath
-);
+// PRIMITIVES: Contains tools for tasks, structure, temporal, schema, and graph-advanced
+// Register if ANY of these categories are enabled
+if (shouldRegister('primitives', ['tasks', 'structure', 'temporal', 'schema', 'advanced'])) {
+  registerPrimitiveTools(server, () => vaultIndex, () => vaultPath, () => flywheelConfig);
+}
 
-registerSchemaTools(
-  server,
-  () => vaultIndex,
-  () => vaultPath
-);
+// TEMPORAL: Periodic note detection
+if (shouldRegister('periodic', ['temporal'])) {
+  registerPeriodicTools(server, () => vaultIndex);
+}
 
-registerComputedTools(
-  server,
-  () => vaultIndex,
-  () => vaultPath
-);
+// SCHEMA: Folder conventions and schema inference
+if (shouldRegister('schema', ['schema'])) {
+  registerSchemaTools(server, () => vaultIndex, () => vaultPath);
+}
 
-registerMigrationTools(
-  server,
-  () => vaultIndex,
-  () => vaultPath
-);
+// ADVANCED: Bidirectional bridge, computed frontmatter, migrations
+if (shouldRegister('bidirectional', ['advanced'])) {
+  registerBidirectionalTools(server, () => vaultIndex, () => vaultPath);
+}
+
+if (shouldRegister('computed', ['advanced'])) {
+  registerComputedTools(server, () => vaultIndex, () => vaultPath);
+}
+
+if (shouldRegister('migrations', ['advanced'])) {
+  registerMigrationTools(server, () => vaultIndex, () => vaultPath);
+}
 
 async function main() {
   // Start the MCP server FIRST (immediate - no waiting for index)
