@@ -4,7 +4,7 @@
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex } from '../../src/core/types.js';
-import { buildVaultIndex } from '../../src/core/graph.js';
+import { buildVaultIndex, setIndexState } from '../../src/core/graph.js';
 import { registerGraphTools } from '../../src/tools/graph.js';
 import { registerWikilinkTools } from '../../src/tools/wikilinks.js';
 import { registerHealthTools } from '../../src/tools/health.js';
@@ -30,6 +30,9 @@ export interface TestServerContext {
 export async function createTestServer(vaultPath: string): Promise<TestServerContext> {
   // Build the vault index first
   const vaultIndex = await buildVaultIndex(vaultPath);
+
+  // Mark index as ready (required by indexGuard)
+  setIndexState('ready');
 
   // Create a new server instance
   const server = new McpServer({

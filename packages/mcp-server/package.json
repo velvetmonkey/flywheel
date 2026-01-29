@@ -1,6 +1,6 @@
 {
   "name": "@velvetmonkey/flywheel-mcp",
-  "version": "1.26.0",
+  "version": "1.26.1",
   "description": "Query your markdown like a database. 100x token savings for AI agents.",
   "type": "module",
   "main": "dist/index.js",
