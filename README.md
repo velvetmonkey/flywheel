@@ -6,6 +6,29 @@
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/velvetmonkey/flywheel)
 
+## Quick Start
+
+Create `.mcp.json` in your vault root:
+
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@velvetmonkey/flywheel-mcp"]
+    }
+  }
+}
+```
+
+> **Windows:** Use `"command": "cmd", "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"]`
+
+Restart Claude Code. Run `claude mcp list` — you should see `flywheel ✓`
+
+See [Installation](#installation) for prerequisites and troubleshooting.
+
+---
+
 Claude reading your entire vault on every query? **~5,000 tokens burned.**
 
 Flywheel queries an index instead. **~50 tokens.** That's up to 100x savings.
