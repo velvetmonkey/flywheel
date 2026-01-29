@@ -142,7 +142,6 @@ npm run test
 ## Related Documentation
 
 - Bidirectional bridge design: `docs/BIDIRECTIONAL.md`
-- Roadmap: `docs/ROADMAP.md`
 - MCP Server docs: `packages/mcp-server/README.md`
 
 ## Release Workflow (MANDATORY)
