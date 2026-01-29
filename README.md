@@ -1,3 +1,5 @@
+> **Part of the Flywheel Suite:** This is the read-only graph intelligence server. See [Flywheel Crank](https://github.com/velvetmonkey/flywheel-crank) for safe vault mutations with auto-commit and undo.
+
 <div align="center">
   <img src="header.png" alt="Flywheel" width="256"/>
 </div>
