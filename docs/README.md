@@ -45,11 +45,15 @@ Answer in ~50 tokens (vs 5,000+ reading files)
 ## Documentation Index
 
 ### Getting Started
-- **[Tutorial](TUTORIAL.md)** — 10-minute hands-on guide
 - **[Query Guide](QUERY_GUIDE.md)** — Graph, temporal, schema queries
+
+### Deep Dives
+- **[How It Works](HOW_IT_WORKS.md)** — Graph architecture and token savings
+- **[Vault Health](VAULT_HEALTH.md)** — Monitor and improve your knowledge graph
 
 ### Reference
 - **[MCP Tools](MCP_REFERENCE.md)** — All 40+ query tools
+- **[Architecture](ARCHITECTURE.md)** — MCP server design for developers
 
 ---
 
