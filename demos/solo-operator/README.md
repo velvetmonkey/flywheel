@@ -45,7 +45,7 @@ Your challenge: doing everything yourself. Claude Code is your chief of staff - 
 Open this vault with Flywheel MCP connected, then ask Claude:
 
 ```
-"Run my morning standup"
+"Run my morning briefing"
 "How's revenue this month?"
 "What content is due this week?"
 "Show me subscriber growth"
@@ -56,7 +56,7 @@ Open this vault with Flywheel MCP connected, then ask Claude:
 
 ## What you'll discover
 
-- **Automation handles daily ops** - standup, tracking, alerts
+- **Automation handles daily ops** - briefings, tracking, alerts
 - **Track multiple revenue streams** in one place
 - **Connect content calendar** to actual writing workflow
 - **Track your wins** automatically from daily logs
@@ -108,7 +108,7 @@ claude
 
 ### 3. Start operating
 
-Try: "Run my morning standup"
+Try: "Run my morning briefing"
 
 ---
 
@@ -116,10 +116,10 @@ Try: "Run my morning standup"
 
 When you ask Claude to make changes:
 
-### Run morning standup
+### Run morning briefing
 
 ```
-You: "Run my morning standup"
+You: "Run my morning briefing"
 
 ┌─ CHAIN ──────────────────────────────────────────┐
 │ Reads: yesterday's daily note, Revenue Tracker,  │
@@ -127,7 +127,7 @@ You: "Run my morning standup"
 │ Writes: daily-notes/2026-01-07.md               │
 └──────────────────────────────────────────────────┘
 
-## Standup (auto-generated 9:00am)
+## Briefing (auto-generated 9:00am)
 
 **Yesterday:**
 - Newsletter sent: "AI Tools Weekly" (42% open rate)

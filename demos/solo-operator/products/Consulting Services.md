@@ -76,7 +76,7 @@ started: 2025-06-01
 
 | Client | Hours | Revenue | Outcome |
 |--------|-------|---------|---------|
-| StartupXYZ | 4 | $1,200 | Implemented daily standup system |
+| StartupXYZ | 4 | $1,200 | Implemented daily briefing system |
 | ConsultCo | 6 | $1,800 | Full workflow overhaul |
 | SoloFounder | 2 | $600 | Personal productivity setup |
 

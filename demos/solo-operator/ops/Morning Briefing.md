@@ -5,9 +5,9 @@ automation: ai-managed
 owner: system
 last_run: 2026-01-07
 ---
-# Morning Standup
+# Morning Briefing
 
-Automated daily standup routine. Runs each morning to prep the day.
+Automated daily briefing routine. Runs each morning to prep the day.
 
 ## Purpose
 
@@ -18,13 +18,13 @@ Start each day with clarity:
 
 ## Trigger
 
-- **Command**: `/standup` or "run my morning standup"
+- **Command**: `/briefing` or "run my morning briefing"
 - **Timing**: Run after 8am, before starting work
 - **Frequency**: Daily (weekdays)
 
 ## Inputs
 
-The standup reads from:
+The briefing reads from:
 
 1. **Yesterday's daily note** - `## Log` section for activities
 2. [[Revenue Tracker]] - Yesterday's transactions
@@ -39,13 +39,13 @@ The standup reads from:
 4. Check Revenue Tracker for yesterday's sales
 5. Check Content Calendar for today's due items
 6. Check Subscriber Metrics for any alerts
-7. Generate standup summary
-8. Write to today's daily note under `## Standup`
+7. Generate briefing summary
+8. Write to today's daily note under `## Briefing`
 
 ## Output Format
 
 ```markdown
-## Standup (auto-generated)
+## Briefing (auto-generated)
 
 **Yesterday:**
 - [Activity 1]
@@ -64,7 +64,7 @@ The standup reads from:
 ## Example Output
 
 ```markdown
-## Standup (auto-generated)
+## Briefing (auto-generated)
 
 **Yesterday:**
 - Newsletter sent: "5 Claude Code Workflows" (42% open rate)
@@ -91,7 +91,7 @@ The standup reads from:
 
 ## Related
 
-- Command file: [[.claude/commands/morning-standup]]
+- Command file: [[.claude/commands/morning-briefing]]
 - Reference: [[Reference]]
 - Revenue: [[Revenue Tracker]]
 - Content: [[Content Calendar]]

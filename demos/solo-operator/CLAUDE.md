@@ -24,7 +24,7 @@ When exploring this vault, begin with:
 
 | Task | Recommended Tools |
 |------|-------------------|
-| Morning standup | `get_note_metadata` for yesterday's daily note + tracker notes |
+| Morning briefing | `get_note_metadata` for yesterday's daily note + tracker notes |
 | Check revenue | `get_field_values` for revenue-related fields in ops/ |
 | Content due dates | `get_tasks_with_due_dates` in content/ |
 | Subscriber metrics | `get_note_metadata` for Subscriber Tracker |
@@ -33,16 +33,16 @@ When exploring this vault, begin with:
 
 ### Query Patterns
 
-**Morning standup:**
+**Morning briefing:**
 ```
-User: "Run my morning standup"
+User: "Run my morning briefing"
 
 Your approach:
 1. Get yesterday's daily note for recap
 2. Get Revenue Tracker for current numbers
 3. Get Content Calendar for what's due
 4. Check for any alerts or overdue items
-5. Compile into standup format
+5. Compile into briefing format
 ```
 
 **Revenue check:**
@@ -123,8 +123,8 @@ solo-operator/
 
 ## Example Interactions
 
-**Standup:**
-> "Run my morning standup"
+**Briefing:**
+> "Run my morning briefing"
 > → Compile yesterday's activity, today's priorities, any alerts
 
 **Revenue check:**

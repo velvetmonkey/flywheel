@@ -66,7 +66,7 @@ Self-paced video course teaching AI workflow automation.
 - Setting up your environment
 
 ### Module 2: Daily Operations (60 min)
-- Building a daily standup automation
+- Building a daily briefing automation
 - Tracking metrics without spreadsheets
 - The daily log and review cycle
 
@@ -91,7 +91,7 @@ Planned for February 2026 launch:
 
 ## Student Feedback
 
-> "Finally an AI course that's actually practical. I implemented the standup workflow on day one." - Alex T.
+> "Finally an AI course that's actually practical. I implemented the briefing workflow on day one." - Alex T.
 
 > "The markdown-first approach clicked for me. Now I understand why everyone's talking about Obsidian + Claude." - Maria S.
 

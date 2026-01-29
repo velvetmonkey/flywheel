@@ -30,9 +30,9 @@ I've been using Claude Code as my "chief of staff" for 3 months now.
 
 Here are the 5 workflows that actually save me time:
 
-### 1. Morning Standup
+### 1. Morning Briefing
 
-Every morning, I type `/standup` and Claude:
+Every morning, I type `/briefing` and Claude:
 - Summarizes yesterday's notes
 - Checks my content calendar
 - Reviews my revenue tracker
