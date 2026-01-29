@@ -1,0 +1,72 @@
+{
+  "name": "@velvetmonkey/flywheel-mcp",
+  "version": "1.25.4",
+  "description": "Query your markdown like a database. 100x token savings for AI agents.",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "flywheel-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "npx esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.js --packages=external",
+    "postbuild": "node -e \"require('fs').chmodSync('dist/index.js', 0o755)\"",
+    "dev": "npx tsx src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "inspect": "npx @modelcontextprotocol/inspector npx tsx src/index.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.1",
+    "chokidar": "^4.0.0",
+    "gray-matter": "^4.0.3",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "esbuild": "^0.24.0",
+    "mcp-testing-kit": "^0.2.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.0.0",
+    "vitest": "^2.0.0"
+  },
+  "keywords": [
+    "obsidian",
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "claude-code",
+    "ai-agents",
+    "agentic-workflows",
+    "token-optimization",
+    "knowledge-graph",
+    "wikilinks",
+    "backlinks",
+    "vault-health",
+    "markdown",
+    "pkm",
+    "zettelkasten",
+    "knowledge-management",
+    "graph-intelligence"
+  ],
+  "author": "Velvet Monkey",
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/velvetmonkey/flywheel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/velvetmonkey/flywheel/issues"
+  },
+  "homepage": "https://github.com/velvetmonkey/flywheel#readme",
+  "engines": {
+    "node": ">=18"
+  }
+}

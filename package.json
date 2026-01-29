@@ -1,0 +1,49 @@
+{
+  "name": "@velvetmonkey/flywheel",
+  "version": "1.25.2",
+  "private": true,
+  "description": "Query your markdown like a database. 100x token savings for AI agents.",
+  "keywords": [
+    "markdown",
+    "knowledge-management",
+    "ai",
+    "ai-agents",
+    "agentic-workflows",
+    "token-optimization",
+    "claude",
+    "claude-code",
+    "mcp",
+    "model-context-protocol",
+    "obsidian",
+    "pkm",
+    "graph",
+    "graph-intelligence",
+    "frontmatter",
+    "automation",
+    "wikilinks",
+    "backlinks"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/velvetmonkey/flywheel.git"
+  },
+  "license": "AGPL-3.0",
+  "author": "velvetmonkey",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "dev:mcp": "npm run dev -w @velvetmonkey/flywheel-mcp",
+    "lint": "npm run lint --workspaces",
+    "clean": "npm run clean --workspaces && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
