@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="header.png" alt="Flywheel" width="256"/>
+</div>
+
 # Flywheel
 
 ### Stop burning tokens. Start building agents.
