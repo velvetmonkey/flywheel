@@ -17,6 +17,12 @@ import { registerComputedTools } from './tools/computed.js';
 import { registerMigrationTools } from './tools/migrations.js';
 import { loadConfig, inferConfig, saveConfig, type FlywheelConfig } from './core/config.js';
 import { findVaultRoot } from './core/vaultRoot.js';
+import {
+  createVaultWatcher,
+  parseWatcherConfig,
+  processBatch as processBatchIncremental,
+  type VaultWatcher,
+} from './core/watch/index.js';
 
 // Auto-detect vault root, with PROJECT_PATH as override
 const vaultPath: string = process.env.PROJECT_PATH || findVaultRoot();
@@ -233,38 +239,75 @@ async function main() {
 
       // Setup file watcher if enabled
       if (process.env.FLYWHEEL_WATCH === 'true') {
-        const debounceMs = parseInt(process.env.FLYWHEEL_DEBOUNCE_MS || '60000');
-        console.error(`[flywheel] File watcher enabled (debounce: ${debounceMs}ms)`);
+        // Use new battle-hardened watcher if v2 flag is set
+        if (process.env.FLYWHEEL_WATCH_V2 === 'true') {
+          const config = parseWatcherConfig();
+          console.error(`[flywheel] File watcher v2 enabled (debounce: ${config.debounceMs}ms, flush: ${config.flushMs}ms)`);
 
-        const watcher = chokidar.watch(vaultPath, {
-          ignored: /(^|[\/\\])\../, // ignore dotfiles
-          persistent: true,
-          ignoreInitial: true,
-          awaitWriteFinish: {
-            stabilityThreshold: 300,
-            pollInterval: 100
-          }
-        });
-
-        let rebuildTimer: NodeJS.Timeout;
-        watcher.on('all', (event, path) => {
-          if (!path.endsWith('.md')) return;
-          clearTimeout(rebuildTimer);
-          rebuildTimer = setTimeout(() => {
-            console.error('[flywheel] Rebuilding index (file changed)');
-            buildVaultIndex(vaultPath)
-              .then((index) => {
-                vaultIndex = index;
+          const watcher = createVaultWatcher({
+            vaultPath,
+            config,
+            onBatch: async (batch) => {
+              console.error(`[flywheel] Processing ${batch.events.length} file changes`);
+              // For now, do full rebuild on batches (incremental is additive)
+              // In future: use processBatchIncremental for true incremental updates
+              const startTime = Date.now();
+              try {
+                vaultIndex = await buildVaultIndex(vaultPath);
                 setIndexState('ready');
-                console.error('[flywheel] Index rebuilt successfully');
-              })
-              .catch((err) => {
+                console.error(`[flywheel] Index rebuilt in ${Date.now() - startTime}ms`);
+              } catch (err) {
                 setIndexState('error');
                 setIndexError(err instanceof Error ? err : new Error(String(err)));
                 console.error('[flywheel] Failed to rebuild index:', err);
-              });
-          }, debounceMs);
-        });
+              }
+            },
+            onStateChange: (status) => {
+              if (status.state === 'dirty') {
+                console.error('[flywheel] Warning: Index may be stale');
+              }
+            },
+            onError: (err) => {
+              console.error('[flywheel] Watcher error:', err.message);
+            },
+          });
+
+          watcher.start();
+        } else {
+          // Legacy watcher (global debounce)
+          const debounceMs = parseInt(process.env.FLYWHEEL_DEBOUNCE_MS || '60000');
+          console.error(`[flywheel] File watcher v1 enabled (debounce: ${debounceMs}ms)`);
+
+          const legacyWatcher = chokidar.watch(vaultPath, {
+            ignored: /(^|[\/\\])\../, // ignore dotfiles
+            persistent: true,
+            ignoreInitial: true,
+            awaitWriteFinish: {
+              stabilityThreshold: 300,
+              pollInterval: 100
+            }
+          });
+
+          let rebuildTimer: NodeJS.Timeout;
+          legacyWatcher.on('all', (event, path) => {
+            if (!path.endsWith('.md')) return;
+            clearTimeout(rebuildTimer);
+            rebuildTimer = setTimeout(() => {
+              console.error('[flywheel] Rebuilding index (file changed)');
+              buildVaultIndex(vaultPath)
+                .then((index) => {
+                  vaultIndex = index;
+                  setIndexState('ready');
+                  console.error('[flywheel] Index rebuilt successfully');
+                })
+                .catch((err) => {
+                  setIndexState('error');
+                  setIndexError(err instanceof Error ? err : new Error(String(err)));
+                  console.error('[flywheel] Failed to rebuild index:', err);
+                });
+            }, debounceMs);
+          });
+        }
       }
     })
     .catch((err) => {
