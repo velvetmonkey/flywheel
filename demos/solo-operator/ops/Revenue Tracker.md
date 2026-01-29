@@ -82,5 +82,4 @@ Where sales originate:
 
 - Products: [[AI Automation Course]], [[Consulting Services]]
 - Subscribers: [[Subscriber Metrics]]
-- Achievements: [[Achievements]]
 - Weekly review: [[2026-W01]]

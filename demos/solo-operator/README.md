@@ -33,7 +33,7 @@ Your challenge: doing everything yourself. Claude Code is your chief of staff - 
 │                    updates│                            │
 │                          ▼                             │
 │                  ┌─────────────┐                       │
-│                  │ Daily Notes │───► Achievements      │
+│                  │ Daily Notes │                       │
 │                  └─────────────┘                       │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -211,7 +211,6 @@ solo-operator/
 ├── ops/                # Revenue and subscriber metrics
 ├── automations/        # Playbooks for recurring workflows
 ├── Reference.md        # Personal context for AI
-├── Achievements.md     # Rolling log of wins
 └── .claude/            # Custom commands and config
 ```
 

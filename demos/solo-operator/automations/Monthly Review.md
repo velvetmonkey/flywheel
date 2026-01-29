@@ -14,7 +14,6 @@ End-of-month review automation. Aggregates the month's data into a comprehensive
 - Summarize monthly performance across all metrics
 - Identify wins and concerns
 - Set focus for next month
-- Update [[Achievements]] with milestones
 
 ## Schedule
 
@@ -49,16 +48,10 @@ End-of-month review automation. Aggregates the month's data into a comprehensive
 - Revenue trends
 - Growth acceleration/deceleration
 
-### Step 4: Extract Achievements
-- Any records broken
-- Milestones hit
-- New clients acquired
-- Add to [[Achievements]]
-
-### Step 5: Generate Review
+### Step 4: Generate Review
 Create monthly note in `monthly-notes/` folder
 
-### Step 6: Set Next Month Focus
+### Step 5: Set Next Month Focus
 Based on gaps and opportunities, suggest 3 priorities
 
 ## Output Format
@@ -117,9 +110,6 @@ Best performer: Issue #X
 2. [Priority 2]
 3. [Priority 3]
 
-## Achievements Logged
-
-- [x] [Achievement added to Achievements.md]
 ```
 
 ## Example Output
@@ -166,5 +156,4 @@ subscriber_growth: 155
 
 - Revenue: [[Revenue Tracker]]
 - Subscribers: [[Subscriber Metrics]]
-- Achievements: [[Achievements]]
 - Weekly: [[2026-W01]]

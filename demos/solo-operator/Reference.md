@@ -84,4 +84,3 @@ If the answer to all three is no, I don't do it.
 
 - Daily tracking: [[daily-notes/2026-01-07|Today's Note]]
 - Revenue: [[Revenue Tracker]]
-- Achievements: [[Achievements]]

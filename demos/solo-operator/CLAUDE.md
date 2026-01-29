@@ -30,7 +30,6 @@ When exploring this vault, begin with:
 | Subscriber metrics | `get_note_metadata` for Subscriber Tracker |
 | Find automation playbooks | `search_notes` in automations/ |
 | Weekly summary | `get_notes_in_range` for daily notes |
-| Track achievements | `get_backlinks` on Achievements.md |
 
 ### Query Patterns
 
@@ -105,7 +104,6 @@ solo-operator/
 ├── ops/             # Revenue and subscriber metrics
 ├── automations/     # Playbooks for recurring workflows
 ├── Reference.md     # Personal context for AI
-└── Achievements.md  # Rolling log of wins
 ```
 
 ### Linking Style
@@ -120,7 +118,6 @@ solo-operator/
 - `ops/Subscriber Tracker.md` - Newsletter metrics
 - `content/Content Calendar.md` - Publishing schedule
 - `Reference.md` - Personal context and preferences
-- `Achievements.md` - Running log of wins
 
 ---
 
