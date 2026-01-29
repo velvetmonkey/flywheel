@@ -209,3 +209,9 @@ The result: Claude operates as your chief of staff, handling the operational ove
 ---
 
 *22 notes. Just start asking questions.*
+
+---
+
+**Token savings:** Each note in this vault averages ~140 lines (~2,100 tokens).
+With Flywheel, graph queries cost ~50-100 tokens instead of reading full files.
+That's **21-42x savings** per query—enabling hundreds of queries in agentic workflows.

@@ -6,76 +6,6 @@
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/velvetmonkey/flywheel)
 
-## Quick Start
-
-Create `.mcp.json` in your vault root:
-
-```json
-{
-  "mcpServers": {
-    "flywheel": {
-      "command": "npx",
-      "args": ["-y", "@velvetmonkey/flywheel-mcp"]
-    }
-  }
-}
-```
-
-> **Windows:** Use `"command": "cmd", "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"]`
-
-Restart Claude Code. Run `claude mcp list` — you should see `flywheel ✓`
-
-See [Installation](#installation) for prerequisites and troubleshooting.
-
-### Configuration Options
-
-#### Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PROJECT_PATH` | Auto-detect | Path to your vault. Only needed if running Claude from outside your vault folder. |
-| `FLYWHEEL_WATCH` | `false` | When `true`, automatically rebuilds the index when you edit notes. Useful if you're editing in Obsidian while Claude is working. |
-| `FLYWHEEL_DEBOUNCE_MS` | `60000` | How long to wait after a file change before rebuilding (in milliseconds). Default 1 minute batches rapid edits together. |
-| `FLYWHEEL_TOOLS` | `standard` | Which tool categories to load. Use `minimal` for less context usage, `full` for everything. |
-
-#### Tool Presets
-
-Control which tools are available to reduce token usage:
-
-| Preset | What's included | Best for |
-|--------|-----------------|----------|
-| `minimal` | Core vault info only | Quick queries, low token usage |
-| `standard` | Core + graph + search + tasks | Most users (default) |
-| `full` | All 44 tools | Power users who need everything |
-
-Mix and match: `FLYWHEEL_TOOLS=core,graph,tasks`
-
-#### Vault Config File (`.claude/.flywheel.json`)
-
-Flywheel auto-creates this file on first run by analyzing your vault. Edit it to override auto-detected settings.
-
-| Field | What it does |
-|-------|--------------|
-| `vault_name` | Display name shown in tool responses |
-| `paths.daily_notes` | Where your daily notes live (e.g., `"journal/daily"`) |
-| `paths.weekly_notes` | Where your weekly notes live |
-| `paths.templates` | Your templates folder (excluded from some queries) |
-| `exclude_task_tags` | Tags to ignore in task queries (e.g., `["#habit", "#someday"]`) |
-
-**Example** - customize for a non-standard vault layout:
-```json
-{
-  "vault_name": "Work Notes",
-  "paths": {
-    "daily_notes": "Logs/Daily",
-    "templates": "Meta/Templates"
-  },
-  "exclude_task_tags": ["#recurring", "#habit"]
-}
-```
-
-> **Tip:** Most users don't need to edit this file. Flywheel auto-detects folders named `daily`, `journal`, `weekly`, `templates`, etc.
-
 ---
 
 Claude reading your entire vault on every query? **~5,000 tokens burned.**
@@ -138,37 +68,7 @@ Legend:  ─────▶ Wikilink (edge)     │ type: meeting │ Frontmatte
 
 Real conversations with Claude using Flywheel:
 
-### Finding Connections
-
-```
-You: What connects my meeting notes to the Q4 strategy?
-
-Claude: Let me trace the path through your vault.
-[uses get_shortest_path]
-
-Found a 3-hop connection:
-  Meeting Notes → [[Client Feedback]] → [[Product Roadmap]] → Q4 Strategy
-
-The link runs through client feedback captured in your October meetings.
-```
-
-### Vault Health Check
-
-```
-You: Is my vault healthy?
-
-Claude: Let me check the key metrics.
-[uses get_orphan_notes, get_hub_notes, get_dead_ends]
-
-Your vault has 847 notes:
-- 12 orphan notes (no backlinks) - consider linking these
-- 8 hub notes (10+ connections) - your knowledge centers
-- 3 stale hubs not updated in 30+ days - may need attention
-
-Would you like me to list the orphans?
-```
-
-### Semantic Search
+### Finding What You Need
 
 ```
 You: Find everything about authentication
@@ -187,7 +87,7 @@ Found 7 notes mentioning authentication:
 Auth Architecture is your hub - want me to show what links to it?
 ```
 
-### Frontmatter as Queryable Attributes
+### Tracking Work
 
 ```
 You: Show me all pending meetings for Project Alpha
@@ -203,10 +103,10 @@ Each has attendees, agenda, and action items in frontmatter.
 Want me to show the attendees across all three?
 ```
 
-### Combining Graph + Attributes
+### Following Connections
 
 ```
-You: What meetings mention Sam Chen, and are any of them overdue?
+You: What meetings mention Sam Chen?
 
 Claude: [uses get_backlinks for "Sam Chen", filters by type: "meeting"]
 
@@ -221,76 +121,42 @@ Sam Chen is mentioned in 5 meetings.
 Want me to update their status or flag them for follow-up?
 ```
 
----
-
-## 44 Tools. Three Query Types.
-
-### Graph Queries — "What connects to what?"
+### Discovering Relationships
 
 ```
-"What depends on [[Turbopump]]?"        → 6 backlinks, 4 critical dependencies
-"Find orphan notes"                     → 12 disconnected notes need linking
-"Show hub notes"                        → 8 knowledge centers with 10+ connections
-"Path from [[Invoice]] to [[Project]]"  → 2-hop path via [[Client]]
-"Find bidirectional links"              → 23 strongly connected note pairs
-"What's connected to [[Q1 Goals]]?"     → Forward links, backlinks, shared neighbors
-```
+You: What connects my meeting notes to the Q4 strategy?
 
-### Schema Queries — "Find notes where..."
+Claude: Let me trace the path through your vault.
+[uses get_shortest_path]
 
-```
-"All invoices where status is 'pending'"  → 3 notes, $47K outstanding
-"What fields exist in meetings/?"  → attendees, date, decisions, follow-ups
-"Notes missing required fields"  → 12 incomplete records
-```
+Found a 3-hop connection:
+  Meeting Notes → [[Client Feedback]] → [[Product Roadmap]] → Q4 Strategy
 
-### Temporal Queries — "What changed when?"
-
-```
-"Activity in the last 7 days"  → 23 notes modified, 4 new
-"Stale but important notes"  → 5 hub notes untouched in 30+ days
-"What was I working on with [[Client X]]?"  → Timeline of related edits
+The link runs through client feedback captured in your October meetings.
 ```
 
 ---
 
-## Why Graph Intelligence Matters
+## Try a Demo
 
-Most file-based tools treat your vault as a filesystem. Flywheel treats it as a **knowledge graph**.
+5 production-ready vaults representing real knowledge work personas. Each vault is fully validated with 100% valid YAML and authentic linking patterns.
 
-### Vault Health Metrics
+| Demo | Persona | Notes | Try Asking |
+|------|---------|-------|------------|
+| **[carter-strategy](demos/carter-strategy/)** | Solo Consultant | 32 | "How much have I billed Acme Corp?" |
+| **[artemis-rocket](demos/artemis-rocket/)** | Aerospace Engineer | 65 | "What's blocking the propulsion milestone?" |
+| **[startup-ops](demos/startup-ops/)** | SaaS Co-Founder | 31 | "Walk me through onboarding DataDriven" |
+| **[nexus-lab](demos/nexus-lab/)** | PhD Researcher | 32 | "How does AlphaFold connect to my experiment?" |
+| **[solo-operator](demos/solo-operator/)** | Content Creator | 19 | "What's my financial runway?" |
 
-| Metric | What It Reveals | Why It Matters |
-|--------|-----------------|----------------|
-| **Orphan notes** | Notes with zero backlinks | Disconnected knowledge that needs integration |
-| **Hub notes** | Notes with 10+ connections | Your vault's knowledge centers — keep them current |
-| **Dead ends** | Notes linked TO but linking to nothing | Information sinks that should connect outward |
-| **Stale hubs** | Important notes not updated recently | Critical knowledge drifting out of date |
+```bash
+# Clone and explore
+git clone https://github.com/velvetmonkey/flywheel.git
+cd flywheel/demos/artemis-rocket
 
-### What Other MCPs Don't Have
-
-Generic file MCPs can read and write files. **Only Flywheel understands:**
-
-- The **link structure** between your notes
-- Which notes are **orphaned** vs **well-connected**
-- How ideas **flow** through your vault via wikilinks
-- When your **knowledge graph is degrading** (stale hubs, broken links)
-
-This is the difference between a filesystem and a **second brain**.
-
-### Connection Discovery
-
-Your vault contains relationships you haven't noticed:
-
+# Start Claude Code
+claude
 ```
-"Path from [[Meeting Notes]] to [[Q4 Strategy]]"
-→ Meeting Notes → [[Client Feedback]] → [[Product Roadmap]] → Q4 Strategy
-
-"Common neighbors of [[React]] and [[Performance]]"
-→ Both link to [[Virtual DOM]], [[Memoization]], [[Bundle Size]]
-```
-
-**Graph intelligence reveals the hidden structure of your thinking.**
 
 ---
 
@@ -304,7 +170,7 @@ Your vault contains relationships you haven't noticed:
 
 ---
 
-## Installation
+## Quick Start
 
 ### Prerequisites
 
@@ -312,7 +178,7 @@ Your vault contains relationships you haven't noticed:
 - **Claude Code** or compatible MCP client ([install guide](https://github.com/anthropics/claude-code))
 - An **Obsidian vault** (or any markdown folder)
 
-### Quick Start (30 seconds)
+### Install (30 seconds)
 
 **1. Create MCP config** in your vault root as `.mcp.json`:
 
@@ -327,17 +193,88 @@ Your vault contains relationships you haven't noticed:
 }
 ```
 
-> **📁 Config File Scopes:**
-> - **`.mcp.json`** (in vault root) — **PROJECT-SCOPED** config. Recommended for vault-specific servers like Flywheel. Can be version controlled.
-> - **`~/.claude.json`** (in home directory) — **USER-SCOPED** config. For personal servers used across all projects (e.g., filesystem, git).
->
-> **Use `.mcp.json` in your vault root** for Flywheel — this makes the server available only when working in that vault, keeping your setup clean and portable.
+> **Windows:** Use `"command": "cmd", "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"]`
 
 **2. Restart Claude Code** (if already running)
 
 **3. Verify**: Run `claude mcp list` — you should see `flywheel ✓`
 
 That's it. Flywheel uses the current directory as your vault—no config needed.
+
+---
+
+### First Run: Tool Permissions
+
+When you first use Flywheel, Claude Code asks permission to use its tools:
+
+> "Allow Flywheel to read vault structure?"
+
+**Type `y` to approve.** Flywheel tools are read-only—they query your vault's index but never modify files.
+
+**Pro tip:** For the best experience, add recommended permissions to `.claude/settings.json`:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "mcp__flywheel__*"
+    ]
+  }
+}
+```
+
+This pre-approves all Flywheel read tools so Claude can work fluidly.
+
+---
+
+### Configuration Options
+
+#### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PROJECT_PATH` | Auto-detect | Path to your vault. Only needed if running Claude from outside your vault folder. |
+| `FLYWHEEL_WATCH` | `false` | When `true`, automatically rebuilds the index when you edit notes. Useful if you're editing in Obsidian while Claude is working. |
+| `FLYWHEEL_DEBOUNCE_MS` | `60000` | How long to wait after a file change before rebuilding (in milliseconds). Default 1 minute batches rapid edits together. |
+| `FLYWHEEL_TOOLS` | `standard` | Which tool categories to load. Use `minimal` for less context usage, `full` for everything. |
+
+#### Tool Presets
+
+Control which tools are available to reduce token usage:
+
+| Preset | What's included | Best for |
+|--------|-----------------|----------|
+| `minimal` | Core vault info only | Quick queries, low token usage |
+| `standard` | Core + graph + search + tasks | Most users (default) |
+| `full` | All 44 tools | Power users who need everything |
+
+Mix and match: `FLYWHEEL_TOOLS=core,graph,tasks`
+
+#### Vault Config File (`.claude/.flywheel.json`)
+
+Flywheel auto-creates this file on first run by analyzing your vault. Edit it to override auto-detected settings.
+
+| Field | What it does |
+|-------|--------------|
+| `vault_name` | Display name shown in tool responses |
+| `paths.daily_notes` | Where your daily notes live (e.g., `"journal/daily"`) |
+| `paths.weekly_notes` | Where your weekly notes live |
+| `paths.templates` | Your templates folder (excluded from some queries) |
+| `exclude_task_tags` | Tags to ignore in task queries (e.g., `["#habit", "#someday"]`) |
+
+**Example** - customize for a non-standard vault layout:
+```json
+{
+  "vault_name": "Work Notes",
+  "paths": {
+    "daily_notes": "Logs/Daily",
+    "templates": "Meta/Templates"
+  },
+  "exclude_task_tags": ["#recurring", "#habit"]
+}
+```
+
+> **Tip:** Most users don't need to edit this file. Flywheel auto-detects folders named `daily`, `journal`, `weekly`, `templates`, etc.
 
 <details>
 <summary><strong>Platform notes (Windows, WSL, custom vault path)</strong></summary>
@@ -481,20 +418,6 @@ FLYWHEEL_TOOLS=core,tasks,search
 
 </details>
 
-### Test It
-
-Try your first query to confirm Flywheel is working:
-
-```bash
-cd /path/to/your/vault
-claude
-```
-
-Then ask:
-- **"Find my hub notes"** → See your most-connected notes
-- **"What notes did I modify this week?"** → Recent activity
-- **"Show me orphan notes"** → Disconnected notes that need linking
-
 ### Troubleshooting
 
 | Issue | Solution |
@@ -507,69 +430,34 @@ Then ask:
 
 ---
 
-## How It Works
+## 44 Tools. Three Query Types.
 
-Flywheel indexes structure, not content:
+### Graph Queries — "What connects to what?"
 
-| Indexed (instant queries) | Not Indexed (stays on disk) |
-|---------------------------|----------------------------|
-| Titles, aliases, wikilinks | File content, prose |
-| Frontmatter, tags | Code blocks |
-| Headings, modification dates | |
-
-Graph queries never read files. Content only loads when you explicitly need it.
-
----
-
-## The Difference
-
-| Query | Without Flywheel | With Flywheel |
-|-------|------------------|---------------|
-| **Graph Intelligence** | | |
-| "What depends on X?" | Impossible without reading every file | Instant backlink query → **~50 tokens** |
-| "Find orphan notes" | Not possible — no link awareness | Index scan → **~80 tokens** |
-| "Hub notes needing updates" | Manual review of entire vault | Graph + temporal query → **~100 tokens** |
-| **Schema Queries** | | |
-| "Invoices where status = paid" | Read files, parse YAML → ~3,000 tokens | Frontmatter query → **~80 tokens** |
-| "Notes missing required fields" | Read and validate every file | Schema scan → **~100 tokens** |
-
-**Other MCPs:** File read/write only. No link awareness. No graph queries. No vault health.
-
-**Flywheel:** Your vault is a queryable knowledge graph. Connections, orphans, hubs, paths — all instant.
-
-**Now multiply by 50 queries in an agentic workflow.** That's the difference between possible and impossible.
-
----
-
-## Try a Demo
-
-5 production-ready vaults representing real knowledge work personas. Each vault is fully validated with 100% valid YAML and authentic linking patterns.
-
-| Demo | Persona | Notes | Try Asking |
-|------|---------|-------|------------|
-| **[carter-strategy](demos/carter-strategy/)** | Solo Consultant | 32 | "How much have I billed Acme Corp?" |
-| **[artemis-rocket](demos/artemis-rocket/)** | Aerospace Engineer | 65 | "What's blocking the propulsion milestone?" |
-| **[startup-ops](demos/startup-ops/)** | SaaS Co-Founder | 31 | "Walk me through onboarding DataDriven" |
-| **[nexus-lab](demos/nexus-lab/)** | PhD Researcher | 32 | "How does AlphaFold connect to my experiment?" |
-| **[solo-operator](demos/solo-operator/)** | Content Creator | 19 | "What's my financial runway?" |
-
-```bash
-# Clone and explore
-git clone https://github.com/velvetmonkey/flywheel.git
-cd flywheel/demos/artemis-rocket
-
-# Start Claude Code
-claude
+```
+"What depends on [[Turbopump]]?"        → 6 backlinks, 4 critical dependencies
+"Find orphan notes"                     → 12 disconnected notes need linking
+"Show hub notes"                        → 8 knowledge centers with 10+ connections
+"Path from [[Invoice]] to [[Project]]"  → 2-hop path via [[Client]]
+"Find bidirectional links"              → 23 strongly connected note pairs
+"What's connected to [[Q1 Goals]]?"     → Forward links, backlinks, shared neighbors
 ```
 
-### Validation Status
+### Schema Queries — "Find notes where..."
 
-All demos are production-ready:
+```
+"All invoices where status is 'pending'"  → 3 notes, $47K outstanding
+"What fields exist in meetings/?"  → attendees, date, decisions, follow-ups
+"Notes missing required fields"  → 12 incomplete records
+```
 
-- ✅ **179 total markdown files** with 100% valid YAML
-- ✅ **Persona-specific workflows** (invoices, ADRs, experiments, etc.)
-- ✅ **Realistic knowledge graphs** with hub notes and bidirectional linking
-- ✅ **Authentic linking patterns** from sparse (22%) to dense (94%) resolution
+### Temporal Queries — "What changed when?"
+
+```
+"Activity in the last 7 days"  → 23 notes modified, 4 new
+"Stale but important notes"  → 5 hub notes untouched in 30+ days
+"What was I working on with [[Client X]]?"  → Timeline of related edits
+```
 
 ---
 
@@ -589,6 +477,7 @@ All demos are production-ready:
 - **[MCP Tools Reference](docs/MCP_REFERENCE.md)** — All 44 tools
 - **[Query Guide](docs/QUERY_GUIDE.md)** — Patterns and examples
 - **[How It Works](docs/HOW_IT_WORKS.md)** — Architecture and token savings
+- **[Vault Health](docs/VAULT_HEALTH.md)** — Monitor and improve vault structure
 
 **Developer:**
 - **[Architecture](docs/ARCHITECTURE.md)** — MCP server design and tool development

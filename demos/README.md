@@ -40,3 +40,9 @@ mcp__flywheel__health_check()
 ```
 
 Then start asking questions about the business.
+
+---
+
+**Token savings:** Each note in these vaults averages ~155 lines (~2,300 tokens).
+With Flywheel, graph queries cost ~50-100 tokens instead of reading full files.
+That's **23-46x savings** per query—enabling hundreds of queries in agentic workflows.

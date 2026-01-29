@@ -120,3 +120,9 @@ Ready to start? Tell me the customer name.
 ---
 
 *30 notes. Just start asking questions.*
+
+---
+
+**Token savings:** Each note in this vault averages ~155 lines (~2,300 tokens).
+With Flywheel, graph queries cost ~50-100 tokens instead of reading full files.
+That's **23-46x savings** per query—enabling hundreds of queries in agentic workflows.
