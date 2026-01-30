@@ -51,57 +51,45 @@ See [Configuration](docs/CONFIGURATION.md) for environment variables, tool filte
 
 ## See It In Action
 
-### Task Hunting (artemis-rocket vault)
+### Finding Your Tasks
 
-**Without Flywheel:** Claude reads all 65 notes, burning ~150,000 tokens.  
-**With Flywheel:** Queries just task lines, uses ~50 tokens. **3,000x savings.**
-
-```
-You: What tasks are due this week?
-
-Claude: [uses get_tasks_with_due_dates]
-
-Found 8 tasks due by 2026-01-03:
-- Plan throttle sweep test series @marcus 📅 2026-01-03
-- Schedule Avionics Integration Test for January @elena 📅 2025-12-30
-- Analyze Sensor Data in detail @marcus 📅 2025-12-30
-- Order Carbon Fiber sheets for Landing Legs @James 📅 2025-12-27
-
-Most urgent: Carbon Fiber order overdue by 6 days.
-```
-
-**Try it yourself:**
-```bash
-cd demos/artemis-rocket && claude
-# "What tasks are overdue?" or "Show all @marcus tasks"
-```
-
-### Meeting Prep (startup-ops vault)
-
-**Without Flywheel:** Claude reads entire vault to find customer context, 5+ minutes.  
-**With Flywheel:** Gets backlinks and related notes in 2 seconds. **150x faster.**
+**Without Flywheel:** Claude reads every note to find tasks, burning ~150,000+ tokens.
+**With Flywheel:** Queries frontmatter + content index, uses ~50 tokens. **3,000x savings.**
 
 ```
-You: I have a call with DataDriven Co in 10 minutes. Context?
+You: Find all my tasks tagged #urgent across all notes
 
-Claude: [uses get_backlinks + search_notes]
+Claude: [uses get_all_tasks with filter]
 
-DataDriven Co is mentioned in 66 notes:
-- First paying customer ($499 MRR, signed 2026-01-01)
-- Health score: 9/10 (green - highly engaged)
-- Last meeting: 2026-01-06 DataDriven Kickoff
-  - Connected first data source (Postgres)
-  - Sarah loved demo: "15 minutes vs 2 days in Excel!"
-  - Open items: Slack integration, invite 3 users
-- Expansion opportunity: $1,999/mo (4 facilities) in Q2
+Found 7 urgent tasks:
+- [ ] Deploy API to prod #urgent (project-alpha.md, due tomorrow)
+- [ ] Review security audit #urgent (security-notes.md, overdue)
+- [ ] Call client about invoice #urgent (client-acme.md)
+- [ ] Fix production bug #urgent (bug-tracker.md, due today)
+...
 
-Want me to pull action items from that kickoff meeting?
+3 are overdue - want me to prioritize them?
 ```
 
-**Try it yourself:**
-```bash
-cd demos/startup-ops && claude
-# "Tell me about DataDriven Co" or "Show all customer meetings"
+### Last-Minute Meeting Prep
+
+**Without Flywheel:** Panic-read through vault, ~30,000 tokens, 5 minutes of searching.
+**With Flywheel:** Ready in 2 seconds, ~100 tokens. **300x savings.**
+
+```
+You: I have a client meeting in 10 minutes - show me everything about Acme Corp
+
+Claude: [uses search_notes + get_backlinks]
+
+Found 12 notes in 2 seconds:
+- Client: Acme Corp.md (main hub, 8 backlinks)
+- 2025-12-15 Acme Kickoff.md
+- Acme Invoice #4521.md (pending payment)
+- Acme Feature Requests.md (3 open items)
+- 2026-01-20 Acme Standup.md (last meeting notes)
+...
+
+Want a quick summary before you join?
 ```
 
 ### Discovering Relationships
