@@ -33,6 +33,15 @@ credentials.json
 .claude/
 !demos/**/.claude/
 
+# Auto-generated CLAUDE.md files (except root and explicitly committed ones)
+**/CLAUDE.md
+!CLAUDE.md
+!packages/mcp-server/CLAUDE.md
+!demos/artemis-rocket/CLAUDE.md
+!demos/carter-strategy/CLAUDE.md
+!demos/carter-strategy/clients/CLAUDE.md
+!demos/carter-strategy/invoices/CLAUDE.md
+
 # Windows path artifacts
 C:*
 c:*
