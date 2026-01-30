@@ -167,6 +167,9 @@ cd flywheel/demos/artemis-rocket && claude
 - **[Query Guide](docs/QUERY_GUIDE.md)** — Patterns and examples
 - **[How It Works](docs/HOW_IT_WORKS.md)** — Architecture and token savings
 - **[Vault Health](docs/VAULT_HEALTH.md)** — Monitor and improve vault structure
+- **[Performance](docs/PERFORMANCE.md)** — Benchmarks and optimization
+- **[Privacy](docs/PRIVACY.md)** — Data handling and security
+- **[Troubleshooting](docs/TROUBLESHOOTING.md)** — Common issues and fixes
 
 ---
 

@@ -45,15 +45,19 @@ Answer in ~50 tokens (vs 5,000+ reading files)
 ## Documentation Index
 
 ### Getting Started
+- **[Configuration](CONFIGURATION.md)** — MCP setup, environment variables, platform support
 - **[Query Guide](QUERY_GUIDE.md)** — Graph, temporal, schema queries
 
 ### Deep Dives
 - **[How It Works](HOW_IT_WORKS.md)** — Graph architecture and token savings
 - **[Vault Health](VAULT_HEALTH.md)** — Monitor and improve your knowledge graph
+- **[Performance](PERFORMANCE.md)** — Benchmarks and optimization
+- **[Privacy](PRIVACY.md)** — Data handling and security
 
 ### Reference
-- **[MCP Tools](MCP_REFERENCE.md)** — All 40+ query tools
+- **[MCP Tools](MCP_REFERENCE.md)** — All 44 query tools
 - **[Architecture](ARCHITECTURE.md)** — MCP server design for developers
+- **[Troubleshooting](TROUBLESHOOTING.md)** — Common issues and fixes
 
 ---
 
