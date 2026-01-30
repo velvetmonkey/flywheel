@@ -1,11 +1,11 @@
 ---
-title: Ben Carter
+title: Alex Johnson
 type: person
 role: Project Manager
 aliases:
-  - Ben
+  - Alex
 ---
 
-# Ben Carter
+# Alex Johnson
 
 A fictional person used for testing entity matching.

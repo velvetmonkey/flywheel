@@ -47,9 +47,9 @@ describe('Bidirectional Bridge Tools', () => {
       expect(clientPattern).toBeDefined();
       expect(clientPattern?.isWikilink).toBe(true);
 
-      // Should find "Owner: [[Ben Carter]]"
+      // Should find "Owner: [[Alex Johnson]]"
       const ownerPattern = result.patterns.find(
-        (p) => p.key.toLowerCase() === 'owner' && p.value === 'Ben Carter'
+        (p) => p.key.toLowerCase() === 'owner' && p.value === 'Alex Johnson'
       );
       expect(ownerPattern).toBeDefined();
       expect(ownerPattern?.isWikilink).toBe(true);
@@ -231,10 +231,10 @@ Tag: urgent
         vaultPath
       );
 
-      // The frontmatter has attendees: [Ben Carter, Sarah Johnson]
-      // We have "Ben Carter.md" so it should suggest [[Ben Carter]]
+      // The frontmatter has attendees: [Alex Johnson, Sarah Johnson]
+      // We have "Alex Johnson.md" so it should suggest [[Alex Johnson]]
       const benSuggestion = result.suggestions.find(
-        (s) => s.current_value === 'Ben Carter' || s.target_note?.includes('Ben')
+        (s) => s.current_value === 'Alex Johnson' || s.target_note?.includes('Alex')
       );
       expect(benSuggestion).toBeDefined();
     });
@@ -246,7 +246,7 @@ Tag: urgent
         vaultPath
       );
 
-      // "Ben Carter.md" has alias "Ben", so a frontmatter value "Ben" should match
+      // "Alex Johnson.md" has alias "Alex", so a frontmatter value "Alex" should match
       // (This tests case-insensitive alias matching)
     });
 
@@ -300,7 +300,7 @@ client: "[[Acme Corp]]"
         vaultPath
       );
 
-      // Frontmatter has "attendees: [Ben Carter, Sarah Johnson]"
+      // Frontmatter has "attendees: [Alex Johnson, Sarah Johnson]"
       // but "Sarah Johnson" is not mentioned as a wikilink in prose
       expect(result.frontmatter_only.length).toBeGreaterThanOrEqual(0);
     });
