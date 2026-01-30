@@ -51,35 +51,57 @@ See [Configuration](docs/CONFIGURATION.md) for environment variables, tool filte
 
 ## See It In Action
 
-### Finding What You Need
+### Task Hunting (artemis-rocket vault)
+
+**Without Flywheel:** Claude reads all 65 notes, burning ~150,000 tokens.  
+**With Flywheel:** Queries just task lines, uses ~50 tokens. **3,000x savings.**
 
 ```
-You: Find everything about authentication
+You: What tasks are due this week?
 
-Claude: [uses search_notes]
+Claude: [uses get_tasks_with_due_dates]
 
-Found 7 notes mentioning authentication:
-- Auth Architecture.md (hub note, 12 backlinks)
-- JWT Implementation.md
-- OAuth Provider Setup.md
-...
+Found 8 tasks due by 2026-01-03:
+- Plan throttle sweep test series @marcus 📅 2026-01-03
+- Schedule Avionics Integration Test for January @elena 📅 2025-12-30
+- Analyze Sensor Data in detail @marcus 📅 2025-12-30
+- Order Carbon Fiber sheets for Landing Legs @James 📅 2025-12-27
 
-Auth Architecture is your hub - want me to show what links to it?
+Most urgent: Carbon Fiber order overdue by 6 days.
 ```
 
-### Tracking Work
+**Try it yourself:**
+```bash
+cd demos/artemis-rocket && claude
+# "What tasks are overdue?" or "Show all @marcus tasks"
+```
+
+### Meeting Prep (startup-ops vault)
+
+**Without Flywheel:** Claude reads entire vault to find customer context, 5+ minutes.  
+**With Flywheel:** Gets backlinks and related notes in 2 seconds. **150x faster.**
 
 ```
-You: Show me all pending meetings for Project Alpha
+You: I have a call with DataDriven Co in 10 minutes. Context?
 
-Claude: [uses query_notes with frontmatter filter]
+Claude: [uses get_backlinks + search_notes]
 
-Found 3 pending meetings:
-- meetings/2026-01-30-alpha-kickoff.md (scheduled for tomorrow)
-- meetings/2026-02-05-alpha-review.md
-- meetings/2026-02-12-alpha-demo.md
+DataDriven Co is mentioned in 66 notes:
+- First paying customer ($499 MRR, signed 2026-01-01)
+- Health score: 9/10 (green - highly engaged)
+- Last meeting: 2026-01-06 DataDriven Kickoff
+  - Connected first data source (Postgres)
+  - Sarah loved demo: "15 minutes vs 2 days in Excel!"
+  - Open items: Slack integration, invite 3 users
+- Expansion opportunity: $1,999/mo (4 facilities) in Q2
 
-Each has attendees, agenda, and action items in frontmatter.
+Want me to pull action items from that kickoff meeting?
+```
+
+**Try it yourself:**
+```bash
+cd demos/startup-ops && claude
+# "Tell me about DataDriven Co" or "Show all customer meetings"
 ```
 
 ### Discovering Relationships
