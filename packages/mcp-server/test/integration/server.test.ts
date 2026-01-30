@@ -127,7 +127,7 @@ describe('MCP Server Integration', () => {
     test('suggest_wikilinks processes text', async () => {
       const client = await connect(context.server);
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'This mentions Ben Carter and Acme Corp.',
+        text: 'This mentions Alex Johnson and Acme Corp.',
       });
 
       expect(result.content).toBeDefined();

@@ -3,7 +3,7 @@ title: Project Alpha
 type: project
 status: active
 priority: high
-owner: "[[Ben Carter]]"
+owner: "[[Alex Johnson]]"
 start_date: 2024-01-15
 ---
 

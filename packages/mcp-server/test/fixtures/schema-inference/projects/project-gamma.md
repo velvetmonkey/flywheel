@@ -3,7 +3,7 @@ title: Project Gamma
 type: project
 status: active
 priority: low
-owner: "[[Ben Carter]]"
+owner: "[[Alex Johnson]]"
 start_date: 2024-03-10
 ---
 

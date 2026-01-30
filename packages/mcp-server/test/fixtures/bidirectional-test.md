@@ -4,7 +4,7 @@ type: project
 client: Acme Corp
 status: active
 attendees:
-  - Ben Carter
+  - Alex Johnson
   - Sarah Johnson
 tags:
   - test
@@ -19,7 +19,7 @@ This note tests the bidirectional bridge between frontmatter and prose patterns.
 
 Client: [[Acme Corp]]
 Status: Active
-Owner: [[Ben Carter]]
+Owner: [[Alex Johnson]]
 Related: [[Another Note]]
 
 Some text here.
@@ -30,7 +30,7 @@ Due Date: 2024-01-15
 ## Frontmatter Values That Match Entities
 
 The frontmatter has `client: Acme Corp` but "Acme Corp" doesn't exist as a note.
-The frontmatter has `attendees: [Ben Carter, Sarah Johnson]` - these could be wikilinks if notes exist.
+The frontmatter has `attendees: [Alex Johnson, Sarah Johnson]` - these could be wikilinks if notes exist.
 
 ## Existing Wikilinks
 

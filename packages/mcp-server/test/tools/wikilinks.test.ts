@@ -27,14 +27,14 @@ describe('Wikilink Suggestion Tool', () => {
     test('finds exact matches for note titles', async () => {
       const client = await connect(context.server);
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'We met with Ben Carter today.',
+        text: 'We met with Alex Johnson today.',
       });
 
       const data = JSON.parse(result.content[0].text);
       expect(data.suggestions.length).toBeGreaterThan(0);
 
       const benMatch = data.suggestions.find(
-        (s: { entity: string }) => s.entity === 'Ben Carter'
+        (s: { entity: string }) => s.entity === 'Alex Johnson'
       );
       expect(benMatch).toBeDefined();
     });
@@ -42,7 +42,7 @@ describe('Wikilink Suggestion Tool', () => {
     test('matches are case-insensitive', async () => {
       const client = await connect(context.server);
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'We met with BEN CARTER today.',
+        text: 'We met with ALEX JOHNSON today.',
       });
 
       const data = JSON.parse(result.content[0].text);
@@ -64,29 +64,29 @@ describe('Wikilink Suggestion Tool', () => {
   describe('Word Boundary Detection', () => {
     test('does not match partial words - prefix', async () => {
       const client = await connect(context.server);
-      // "Ben" should not match in "Benny"
+      // "Alex" should not match in "Alexy"
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'Benny went to the store.',
+        text: 'Alexy went to the store.',
       });
 
       const data = JSON.parse(result.content[0].text);
-      // Should not find "Ben" in "Benny"
+      // Should not find "Alex" in "Alexy"
       const benMatch = data.suggestions.find(
-        (s: { entity: string }) => s.entity.toLowerCase() === 'ben'
+        (s: { entity: string }) => s.entity.toLowerCase() === 'alex'
       );
       expect(benMatch).toBeUndefined();
     });
 
     test('does not match partial words - suffix', async () => {
       const client = await connect(context.server);
-      // "Ben" should not match in "Robin"
+      // "Alex" should not match in "Lexan"
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'Robin is here.',
+        text: 'Lexan is here.',
       });
 
       const data = JSON.parse(result.content[0].text);
       const benMatch = data.suggestions.find(
-        (s: { entity: string }) => s.entity.toLowerCase() === 'ben'
+        (s: { entity: string }) => s.entity.toLowerCase() === 'alex'
       );
       expect(benMatch).toBeUndefined();
     });
@@ -94,12 +94,12 @@ describe('Wikilink Suggestion Tool', () => {
     test('matches at word boundaries with punctuation', async () => {
       const client = await connect(context.server);
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'Contact Ben Carter, immediately.',
+        text: 'Contact Alex Johnson, immediately.',
       });
 
       const data = JSON.parse(result.content[0].text);
       const benMatch = data.suggestions.find(
-        (s: { entity: string }) => s.entity === 'Ben Carter'
+        (s: { entity: string }) => s.entity === 'Alex Johnson'
       );
       expect(benMatch).toBeDefined();
     });
@@ -108,18 +108,18 @@ describe('Wikilink Suggestion Tool', () => {
       const client = await connect(context.server);
       // Hyphen should be a word boundary
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'Contact Ben-related topics.',
+        text: 'Contact Alex-related topics.',
       });
 
       const data = JSON.parse(result.content[0].text);
-      // "Ben" might match if it's a valid entity
+      // "Alex" might match if it's a valid entity
       // This tests the hyphen boundary behavior
     });
 
     test('matches at start of text', async () => {
       const client = await connect(context.server);
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'Ben Carter is here.',
+        text: 'Alex Johnson is here.',
       });
 
       const data = JSON.parse(result.content[0].text);
@@ -129,7 +129,7 @@ describe('Wikilink Suggestion Tool', () => {
     test('matches at end of text', async () => {
       const client = await connect(context.server);
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'Contact Ben Carter',
+        text: 'Contact Alex Johnson',
       });
 
       const data = JSON.parse(result.content[0].text);
@@ -141,13 +141,13 @@ describe('Wikilink Suggestion Tool', () => {
     test('skips existing wikilinks', async () => {
       const client = await connect(context.server);
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'We met with [[Ben Carter]] today.',
+        text: 'We met with [[Alex Johnson]] today.',
       });
 
       const data = JSON.parse(result.content[0].text);
-      // Should not suggest linking Ben Carter since it's already linked
+      // Should not suggest linking Alex Johnson since it's already linked
       const benMatch = data.suggestions.find(
-        (s: { entity: string }) => s.entity === 'Ben Carter'
+        (s: { entity: string }) => s.entity === 'Alex Johnson'
       );
       expect(benMatch).toBeUndefined();
     });
@@ -155,13 +155,13 @@ describe('Wikilink Suggestion Tool', () => {
     test('skips inline code', async () => {
       const client = await connect(context.server);
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'The variable `Ben Carter` is a string.',
+        text: 'The variable `Alex Johnson` is a string.',
       });
 
       const data = JSON.parse(result.content[0].text);
       // Should not suggest linking text in code
       const benMatch = data.suggestions.find(
-        (s: { entity: string }) => s.entity === 'Ben Carter'
+        (s: { entity: string }) => s.entity === 'Alex Johnson'
       );
       expect(benMatch).toBeUndefined();
     });
@@ -169,12 +169,12 @@ describe('Wikilink Suggestion Tool', () => {
     test('skips code blocks', async () => {
       const client = await connect(context.server);
       const result = await client.callTool('suggest_wikilinks', {
-        text: '```\nBen Carter is in code\n```',
+        text: '```\nAlex Johnson is in code\n```',
       });
 
       const data = JSON.parse(result.content[0].text);
       const benMatch = data.suggestions.find(
-        (s: { entity: string }) => s.entity === 'Ben Carter'
+        (s: { entity: string }) => s.entity === 'Alex Johnson'
       );
       expect(benMatch).toBeUndefined();
     });
@@ -183,7 +183,7 @@ describe('Wikilink Suggestion Tool', () => {
       const client = await connect(context.server);
       // If an entity appears in a URL, it should be skipped
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'Visit https://example.com/BenCarter for more.',
+        text: 'Visit https://example.com/AlexJohnson for more.',
       });
 
       // This tests URL skip behavior
@@ -194,21 +194,21 @@ describe('Wikilink Suggestion Tool', () => {
 
   describe('Overlapping Entity Handling', () => {
     test('longer matches take precedence', async () => {
-      // If we have entities "Ben" and "Ben Carter", "Ben Carter" should match first
+      // If we have entities "Alex" and "Alex Johnson", "Alex Johnson" should match first
       const client = await connect(context.server);
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'We met with Ben Carter today.',
+        text: 'We met with Alex Johnson today.',
       });
 
       const data = JSON.parse(result.content[0].text);
 
-      // Should have "Ben Carter", not just "Ben"
+      // Should have "Alex Johnson", not just "Ben"
       const benCarterMatch = data.suggestions.find(
-        (s: { entity: string }) => s.entity === 'Ben Carter'
+        (s: { entity: string }) => s.entity === 'Alex Johnson'
       );
       expect(benCarterMatch).toBeDefined();
 
-      // Should not have a separate "Ben" match that overlaps
+      // Should not have a separate "Alex" match that overlaps
       const justBenMatch = data.suggestions.find(
         (s: { entity: string; start: number }) =>
           s.entity.toLowerCase() === 'ben' && s.start === benCarterMatch?.start
@@ -220,13 +220,13 @@ describe('Wikilink Suggestion Tool', () => {
       const client = await connect(context.server);
       // If two separate entities appear, both should match
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'Ben Carter visited Acme Corp yesterday.',
+        text: 'Alex Johnson visited Acme Corp yesterday.',
       });
 
       const data = JSON.parse(result.content[0].text);
 
       const benMatch = data.suggestions.find(
-        (s: { entity: string }) => s.entity === 'Ben Carter'
+        (s: { entity: string }) => s.entity === 'Alex Johnson'
       );
       const acmeMatch = data.suggestions.find(
         (s: { entity: string }) => s.entity === 'Acme Corp'
@@ -262,7 +262,7 @@ describe('Wikilink Suggestion Tool', () => {
     test('respects limit parameter', async () => {
       const client = await connect(context.server);
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'Ben Carter met Ben Carter and Ben Carter again.',
+        text: 'Alex Johnson met Alex Johnson and Alex Johnson again.',
         limit: 1,
       });
 
@@ -274,12 +274,12 @@ describe('Wikilink Suggestion Tool', () => {
     test('respects offset parameter', async () => {
       const client = await connect(context.server);
       const resultAll = await client.callTool('suggest_wikilinks', {
-        text: 'Ben Carter works at Acme Corp with Ben Carter',
+        text: 'Alex Johnson works at Acme Corp with Alex Johnson',
       });
       const dataAll = JSON.parse(resultAll.content[0].text);
 
       const resultOffset = await client.callTool('suggest_wikilinks', {
-        text: 'Ben Carter works at Acme Corp with Ben Carter',
+        text: 'Alex Johnson works at Acme Corp with Alex Johnson',
         offset: 1,
       });
       const dataOffset = JSON.parse(resultOffset.content[0].text);
@@ -296,18 +296,18 @@ describe('Wikilink Suggestion Tool', () => {
     test('handles special characters in text', async () => {
       const client = await connect(context.server);
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'Email: Ben Carter <ben@example.com>',
+        text: 'Email: Alex Johnson <alex@example.com>',
       });
 
       const data = JSON.parse(result.content[0].text);
-      // Should still find Ben Carter despite angle brackets
+      // Should still find Alex Johnson despite angle brackets
       expect(data.suggestions.length).toBeGreaterThan(0);
     });
 
     test('handles newlines correctly', async () => {
       const client = await connect(context.server);
       const result = await client.callTool('suggest_wikilinks', {
-        text: 'Line 1:\nBen Carter\nLine 3',
+        text: 'Line 1:\nAlex Johnson\nLine 3',
       });
 
       const data = JSON.parse(result.content[0].text);
@@ -421,8 +421,8 @@ describe('Entity Map Edge Cases', () => {
 
   test('case-insensitive entity lookup', () => {
     // Entities should be stored in lowercase
-    expect(index.entities.has('ben carter')).toBe(true);
-    expect(index.entities.has('BEN CARTER')).toBe(false); // stored lowercase
+    expect(index.entities.has('alex johnson')).toBe(true);
+    expect(index.entities.has('ALEX JOHNSON')).toBe(false); // stored lowercase
   });
 
   test('aliases are in entity map', () => {
@@ -432,7 +432,7 @@ describe('Entity Map Edge Cases', () => {
   });
 
   test('entity map points to file paths', () => {
-    const filePath = index.entities.get('ben carter');
+    const filePath = index.entities.get('alex johnson');
     expect(filePath).toBeDefined();
     expect(filePath).toMatch(/\.md$/);
   });
