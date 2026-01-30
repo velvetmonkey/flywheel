@@ -98,7 +98,10 @@ Most users don't need to edit this file. Flywheel auto-detects folders named `da
   "mcpServers": {
     "flywheel": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"]
+      "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"],
+      "env": {
+        "FLYWHEEL_WATCH_POLL": "true"
+      }
     }
   }
 }
