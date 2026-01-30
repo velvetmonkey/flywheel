@@ -39,9 +39,9 @@ Flywheel queries an in-memory index instead of reading files. Graph queries (bac
 }
 ```
 
-> **Windows:** Use `"command": "cmd", "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"]`
+> **Windows:** Use `"command": "cmd", "args": ["/c", "npx", "-y", "@velvetmonkey/flywheel-mcp"]` with `"env": { "FLYWHEEL_WATCH_POLL": "true" }` for reliable file watching.
 >
-> **WSL:** Add `"env": { "FLYWHEEL_WATCH_POLL": "true" }` if your vault is on a Windows drive (`/mnt/c/...`). See [Configuration](docs/CONFIGURATION.md#wsl) for details.
+> **WSL:** Add `"env": { "FLYWHEEL_WATCH_POLL": "true" }` if your vault is on a Windows drive (`/mnt/c/...`). See [Configuration](docs/CONFIGURATION.md) for details.
 
 **2. Restart Claude Code** and verify with `claude mcp list` — you should see `flywheel ✓`
 
