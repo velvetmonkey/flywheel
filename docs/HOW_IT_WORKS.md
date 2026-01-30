@@ -188,11 +188,11 @@ Checks consistency between frontmatter and prose:
 
 ## Token Savings Summary
 
-| Operation | Without Flywheel | With Flywheel | Savings |
-|-----------|------------------|---------------|---------|
-| Graph query ("what's blocking X?") | ~5,000 tokens | ~50 tokens | **up to 100x** |
-| Check overdue tasks | ~3,000 tokens | ~100 tokens | **~30x** |
-| Find orphan notes | ~10,000 tokens | ~80 tokens | **~125x** |
+| Operation | Single Query Savings | Repeated Query Savings |
+|-----------|---------------------|------------------------|
+| Graph query (backlinks, paths) | ~5-10x | Compounds with each lookup |
+| Frontmatter query (tasks, status) | ~5-10x | Index stays hot |
+| Vault-wide search (orphans, hubs) | ~10-20x | Avoids repeated scans |
 
 **Why the savings?**
 1. **Index queries** return structured data, not file content

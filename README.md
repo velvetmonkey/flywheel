@@ -14,9 +14,9 @@
 
 ---
 
-Claude reading your entire vault on every query? **~5,000 tokens burned.**
+Claude reading files on every query? Those tokens add up fast.
 
-Flywheel queries an index instead. **~50 tokens.** That's up to 100x savings.
+Flywheel queries an index instead—**5-10x savings per query**, compounding to **50x+ during agentic workflows** with repeated lookups.
 
 **The real win:** Your agents can now query your knowledge *hundreds of times* during long-running tasks without blowing up the context window.
 
@@ -53,8 +53,8 @@ See [Configuration](docs/CONFIGURATION.md) for environment variables, tool filte
 
 ### Finding Your Tasks
 
-**Without Flywheel:** Claude reads every note to find tasks, burning ~150,000+ tokens.
-**With Flywheel:** Queries frontmatter + content index, uses ~50 tokens. **3,000x savings.**
+**Without Flywheel:** Claude reads through notes to find tasks—and re-reads them for follow-up queries.
+**With Flywheel:** Queries the frontmatter index. Repeated lookups cost almost nothing.
 
 ```
 You: Find all my tasks tagged #urgent across all notes
@@ -73,8 +73,8 @@ Found 7 urgent tasks:
 
 ### Last-Minute Meeting Prep
 
-**Without Flywheel:** Panic-read through vault, ~30,000 tokens, 5 minutes of searching.
-**With Flywheel:** Ready in 2 seconds, ~100 tokens. **300x savings.**
+**Without Flywheel:** Claude reads through files to gather context.
+**With Flywheel:** Targeted queries return just what's needed—fast and token-efficient.
 
 ```
 You: I have a client meeting in 10 minutes - show me everything about Acme Corp
@@ -131,32 +131,6 @@ cd flywheel/demos/artemis-rocket && claude
 - **Connection discovery** — "how does X relate to Y?" answered in milliseconds
 - **Schema queries** on frontmatter without reading files
 - **Agentic workflows** that query your knowledge hundreds of times without token bloat
-
----
-
-## 44 Tools. Three Query Types.
-
-### Graph Queries — "What connects to what?"
-
-```
-"What depends on [[Turbopump]]?"        → 6 backlinks, 4 critical dependencies
-"Find orphan notes"                     → 12 disconnected notes need linking
-"Path from [[Invoice]] to [[Project]]"  → 2-hop path via [[Client]]
-```
-
-### Schema Queries — "Find notes where..."
-
-```
-"All invoices where status is 'pending'"  → 3 notes, $47K outstanding
-"Notes missing required fields"           → 12 incomplete records
-```
-
-### Temporal Queries — "What changed when?"
-
-```
-"Activity in the last 7 days"     → 23 notes modified, 4 new
-"Stale but important notes"       → 5 hub notes untouched in 30+ days
-```
 
 ---
 
