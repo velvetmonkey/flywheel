@@ -49,8 +49,8 @@ mcp__flywheel__search_notes(where: {status: "blocked"})
 
 These queries hit the **in-memory index**. No files are read from disk.
 
-**Token cost:** ~50 tokens (tool call + structured response)
-**Without Flywheel:** ~3,000+ tokens (reading 3-4 full files)
+**Token cost:** ~150 tokens (tool call + structured response)
+**Without Flywheel:** ~5,000 tokens (reading 10-20 files to find mentions)
 
 ### Section Queries (Targeted File Reads)
 
@@ -188,11 +188,14 @@ Checks consistency between frontmatter and prose:
 
 ## Token Savings Summary
 
-| Operation | Single Query Savings | Repeated Query Savings |
-|-----------|---------------------|------------------------|
-| Graph query (backlinks, paths) | ~5-10x | Compounds with each lookup |
-| Frontmatter query (tasks, status) | ~5-10x | Index stays hot |
-| Vault-wide search (orphans, hubs) | ~10-20x | Avoids repeated scans |
+*Savings assume Claude would read 10-30 relevant files, not the entire vault.*
+
+| Operation | Single Query Savings | Notes |
+|-----------|---------------------|-------|
+| Graph query (backlinks, paths) | ~20-30x | Index-only, no file reads |
+| Frontmatter query (tasks, status) | ~20-30x | Metadata in index |
+| Vault-wide search (orphans, hubs) | ~30-50x | Full vault scan in memory |
+| Content search | ~1-2x | Files still need to be read |
 
 **Why the savings?**
 1. **Index queries** return structured data, not file content
@@ -224,8 +227,8 @@ Example chain for "what's blocking the milestone?":
 4. [Claude explains the blocker path]
 ```
 
-**Total tokens:** ~50 (index queries only)
-**Without Flywheel:** ~5,000 (reading all related files)
+**Total tokens:** ~150 (index queries only)
+**Without Flywheel:** ~5,000 (reading relevant files to trace connections)
 
 ---
 

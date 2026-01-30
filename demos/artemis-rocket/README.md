@@ -195,5 +195,5 @@ Created: decisions/DR-015-titanium-valves.md
 ---
 
 **Token savings:** Each note in this vault averages ~170 lines (~2,500 tokens).
-With Flywheel, graph queries cost ~50-100 tokens instead of reading full files.
-That's **25-50x savings** per query—enabling hundreds of queries in agentic workflows.
+With Flywheel, graph queries cost ~50-100 tokens instead of reading files.
+For structure queries (backlinks, metadata, tasks), you avoid file reads entirely—enabling hundreds of queries in agentic workflows without token bloat.

@@ -157,8 +157,8 @@ describe('File Watcher', () => {
 
 describe('Watch Feature Integration Concepts', () => {
   it('watch enabled check matches implementation', () => {
-    // The check used in index.ts: process.env.FLYWHEEL_WATCH === 'true'
-    const isWatchEnabled = () => process.env.FLYWHEEL_WATCH === 'true';
+    // The check used in index.ts: process.env.FLYWHEEL_WATCH !== 'false'
+    const isWatchEnabled = () => process.env.FLYWHEEL_WATCH !== 'false';
 
     process.env.FLYWHEEL_WATCH = 'true';
     expect(isWatchEnabled()).toBe(true);
@@ -166,16 +166,16 @@ describe('Watch Feature Integration Concepts', () => {
     process.env.FLYWHEEL_WATCH = 'false';
     expect(isWatchEnabled()).toBe(false);
 
-    process.env.FLYWHEEL_WATCH = 'TRUE'; // Case sensitivity
-    expect(isWatchEnabled()).toBe(false); // Exact match required
+    process.env.FLYWHEEL_WATCH = 'FALSE'; // Case sensitivity
+    expect(isWatchEnabled()).toBe(true); // Only exact 'false' disables
 
     delete process.env.FLYWHEEL_WATCH;
-    expect(isWatchEnabled()).toBe(false);
+    expect(isWatchEnabled()).toBe(true);
   });
 
-  it('watch disabled by default', () => {
+  it('watch enabled by default', () => {
     delete process.env.FLYWHEEL_WATCH;
-    const isWatchEnabled = () => process.env.FLYWHEEL_WATCH === 'true';
-    expect(isWatchEnabled()).toBe(false);
+    const isWatchEnabled = () => process.env.FLYWHEEL_WATCH !== 'false';
+    expect(isWatchEnabled()).toBe(true);
   });
 });
