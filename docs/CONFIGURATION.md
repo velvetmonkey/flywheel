@@ -9,7 +9,7 @@ Complete configuration reference for Flywheel MCP server.
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `PROJECT_PATH` | Auto-detect | Path to your vault. Only needed if running Claude from outside your vault folder. |
-| `FLYWHEEL_WATCH` | `false` | When `true`, automatically rebuilds the index when you edit notes. Useful if you're editing in Obsidian while Claude is working. |
+| `FLYWHEEL_WATCH` | `true` | File watching enabled by default. Set to `false` to disable automatic index rebuilds when you edit notes. |
 | `FLYWHEEL_DEBOUNCE_MS` | `200` | Per-path debounce in milliseconds. Events on the same file are coalesced during this window. |
 | `FLYWHEEL_FLUSH_MS` | `1000` | Maximum interval (ms) before flushing batched events, even if per-path debounce hasn't expired. |
 | `FLYWHEEL_BATCH_SIZE` | `50` | Maximum paths to accumulate before forcing a flush. |

@@ -237,8 +237,8 @@ async function main() {
         console.error(`[Flywheel] Excluding task tags: ${flywheelConfig.exclude_task_tags.join(', ')}`);
       }
 
-      // Setup file watcher if enabled
-      if (process.env.FLYWHEEL_WATCH === 'true') {
+      // Setup file watcher (enabled by default, disable with FLYWHEEL_WATCH=false)
+      if (process.env.FLYWHEEL_WATCH !== 'false') {
         // Use new battle-hardened watcher if v2 flag is set
         if (process.env.FLYWHEEL_WATCH_V2 === 'true') {
           const config = parseWatcherConfig();

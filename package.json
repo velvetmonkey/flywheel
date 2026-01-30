@@ -1,8 +1,8 @@
 {
   "name": "@velvetmonkey/flywheel",
-  "version": "1.27.1",
+  "version": "1.27.3",
   "private": true,
-  "description": "Query your markdown like a database. 100x token savings for AI agents.",
+  "description": "Graph intelligence for markdown vaults. MCP server for Obsidian.",
   "keywords": [
     "markdown",
     "knowledge-management",

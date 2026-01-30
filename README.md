@@ -16,7 +16,7 @@
 
 Claude reading files on every query? Those tokens add up fast.
 
-Flywheel queries an index instead—**5-10x savings per query**, compounding to **50x+ during agentic workflows** with repeated lookups.
+Flywheel queries an in-memory index instead of reading files. Graph queries (backlinks, tags, tasks) return structured results without touching file content.
 
 **The real win:** Your agents can now query your knowledge *hundreds of times* during long-running tasks without blowing up the context window.
 
