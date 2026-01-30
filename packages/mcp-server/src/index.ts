@@ -239,8 +239,10 @@ async function main() {
 
       // Setup file watcher (enabled by default, disable with FLYWHEEL_WATCH=false)
       if (process.env.FLYWHEEL_WATCH !== 'false') {
-        // Use new battle-hardened watcher if v2 flag is set
-        if (process.env.FLYWHEEL_WATCH_V2 === 'true') {
+        // Use v2 watcher if: explicitly enabled OR polling is requested (polling requires v2)
+        const useV2Watcher = process.env.FLYWHEEL_WATCH_V2 === 'true' ||
+                             process.env.FLYWHEEL_WATCH_POLL === 'true';
+        if (useV2Watcher) {
           const config = parseWatcherConfig();
           console.error(`[flywheel] File watcher v2 enabled (debounce: ${config.debounceMs}ms, flush: ${config.flushMs}ms)`);
 
