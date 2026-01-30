@@ -30,7 +30,7 @@ export const DEFAULT_WATCHER_CONFIG: WatcherConfig = {
   flushMs: 1000,
   batchSize: 50,
   usePolling: false,
-  pollInterval: 500,
+  pollInterval: 60000,
 };
 
 /**

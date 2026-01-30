@@ -14,7 +14,7 @@ Complete configuration reference for Flywheel MCP server.
 | `FLYWHEEL_FLUSH_MS` | `1000` | Maximum interval (ms) before flushing batched events, even if per-path debounce hasn't expired. |
 | `FLYWHEEL_BATCH_SIZE` | `50` | Maximum paths to accumulate before forcing a flush. |
 | `FLYWHEEL_WATCH_POLL` | `false` | When `true`, use polling instead of native file watchers. Useful for network drives or WSL. |
-| `FLYWHEEL_POLL_INTERVAL` | `500` | Polling interval in milliseconds when `FLYWHEEL_WATCH_POLL=true`. |
+| `FLYWHEEL_POLL_INTERVAL` | `60000` | Polling interval in milliseconds when `FLYWHEEL_WATCH_POLL=true`. Default is 60 seconds to balance detection speed with CPU efficiency. |
 | `FLYWHEEL_TOOLS` | `standard` | Which tool categories to load. Use `minimal` for less context usage, `full` for everything. |
 
 ---
@@ -107,6 +107,27 @@ Most users don't need to edit this file. Flywheel auto-detects folders named `da
 ### WSL
 
 Use `npx` directly (not `cmd /c`), with `/mnt/c/...` paths.
+
+**Important**: If your vault is on a Windows drive (`/mnt/c/...`), file watching via inotify won't work because Linux inotify doesn't detect changes across the WSL-Windows boundary. Enable polling mode instead:
+
+```json
+{
+  "mcpServers": {
+    "flywheel": {
+      "command": "npx",
+      "args": ["-y", "@velvetmonkey/flywheel-mcp"],
+      "env": {
+        "PROJECT_PATH": "/mnt/c/Users/you/vault",
+        "FLYWHEEL_WATCH": "true",
+        "FLYWHEEL_WATCH_POLL": "true",
+        "FLYWHEEL_POLL_INTERVAL": "60000"
+      }
+    }
+  }
+}
+```
+
+The 60-second polling interval (60000ms) balances reliable change detection with minimal CPU overhead. Lower intervals detect changes faster but increase filesystem stat calls.
 
 ### Custom Vault Location
 
