@@ -17,7 +17,7 @@ export default defineConfig({
         lines: 60,
       },
     },
-    testTimeout: 30000,
-    hookTimeout: 30000,
+    testTimeout: 60000,  // Stress tests need longer timeouts
+    hookTimeout: 60000,
   },
 });

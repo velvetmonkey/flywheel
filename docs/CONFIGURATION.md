@@ -10,7 +10,11 @@ Complete configuration reference for Flywheel MCP server.
 |----------|---------|-------------|
 | `PROJECT_PATH` | Auto-detect | Path to your vault. Only needed if running Claude from outside your vault folder. |
 | `FLYWHEEL_WATCH` | `false` | When `true`, automatically rebuilds the index when you edit notes. Useful if you're editing in Obsidian while Claude is working. |
-| `FLYWHEEL_DEBOUNCE_MS` | `60000` | How long to wait after a file change before rebuilding (in milliseconds). Default 1 minute batches rapid edits together. |
+| `FLYWHEEL_DEBOUNCE_MS` | `200` | Per-path debounce in milliseconds. Events on the same file are coalesced during this window. |
+| `FLYWHEEL_FLUSH_MS` | `1000` | Maximum interval (ms) before flushing batched events, even if per-path debounce hasn't expired. |
+| `FLYWHEEL_BATCH_SIZE` | `50` | Maximum paths to accumulate before forcing a flush. |
+| `FLYWHEEL_WATCH_POLL` | `false` | When `true`, use polling instead of native file watchers. Useful for network drives or WSL. |
+| `FLYWHEEL_POLL_INTERVAL` | `500` | Polling interval in milliseconds when `FLYWHEEL_WATCH_POLL=true`. |
 | `FLYWHEEL_TOOLS` | `standard` | Which tool categories to load. Use `minimal` for less context usage, `full` for everything. |
 
 ---
@@ -140,9 +144,9 @@ Enable file watching to automatically rebuild the index when vault files change:
 }
 ```
 
-### Custom Debounce Delay
+### Tuning for Large Vaults
 
-Default is 60000ms (1 minute):
+For vaults with 10,000+ notes, increase debounce to prevent thrashing during active editing:
 
 ```json
 {
@@ -152,20 +156,49 @@ Default is 60000ms (1 minute):
       "args": ["-y", "@velvetmonkey/flywheel-mcp"],
       "env": {
         "FLYWHEEL_WATCH": "true",
-        "FLYWHEEL_DEBOUNCE_MS": "1000"
+        "FLYWHEEL_DEBOUNCE_MS": "5000",
+        "FLYWHEEL_FLUSH_MS": "10000"
       }
     }
   }
 }
 ```
 
+| Vault Size | Recommended Settings |
+|------------|---------------------|
+| Small (<1000 notes) | Default (200ms/1000ms) |
+| Medium (1000-5000 notes) | 1000ms/5000ms |
+| Large (5000-10000 notes) | 3000ms/10000ms |
+| Very Large (10000+ notes) | 5000ms/10000ms |
+
+Higher debounce values let you edit freely without triggering rebuilds until you pause.
+
 ### How It Works
 
 - Watches vault directory for `.md` file changes
 - Automatically ignores dotfiles (`.obsidian`, `.trash`, etc.)
-- Debounces rapid changes to avoid excessive rebuilds
+- Per-path debouncing: each file has its own debounce timer
+- Event coalescing: rapid add/change/unlink sequences resolve to single actions
 - Uses `awaitWriteFinish` to prevent indexing partial writes
 - Logs rebuild events to stderr
+
+### Self-Healing Recovery
+
+The watcher automatically recovers from common errors:
+
+| Error | Recovery Action |
+|-------|-----------------|
+| `EMFILE` (too many open files) | Exponential backoff retry (1s, 2s, 4s...) |
+| `ENOSPC` (inotify limit on Linux) | Retry with backoff, then fallback to polling |
+| `ENOTSUP`, `EPERM`, `EACCES` | Immediate fallback to polling mode |
+
+During recovery, the index is marked "dirty" and continues serving stale data with warnings.
+
+### Known Limitations
+
+- **WSL2 /mnt/c/ paths**: File changes on Windows drives accessed via `/mnt/c/` may not be detected. Consider using native Windows paths or polling mode.
+- **Network drives**: Use `FLYWHEEL_WATCH_POLL=true` for reliable detection.
+- **Very large vaults**: With default 200ms debounce, editing can trigger excessive rebuilds. Increase debounce for 10k+ note vaults.
 
 ### When to Use
 
