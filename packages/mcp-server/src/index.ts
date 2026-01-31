@@ -23,6 +23,7 @@ import {
   processBatch as processBatchIncremental,
   type VaultWatcher,
 } from './core/watch/index.js';
+import { exportHubScores } from './core/hubExport.js';
 
 // Auto-detect vault root, with PROJECT_PATH as override
 const vaultPath: string = process.env.PROJECT_PATH || findVaultRoot();
@@ -210,11 +211,14 @@ async function main() {
   const startTime = Date.now();
 
   buildVaultIndex(vaultPath)
-    .then((index) => {
+    .then(async (index) => {
       vaultIndex = index;
       setIndexState('ready');
       const duration = Date.now() - startTime;
       console.error(`Vault index ready in ${duration}ms`);
+
+      // Export hub scores to entity cache (for Flywheel-Crank wikilink prioritization)
+      await exportHubScores(vaultPath, index);
 
       // Now that index is ready, load/infer config
       const existing = loadConfig(vaultPath);
@@ -258,6 +262,8 @@ async function main() {
                 vaultIndex = await buildVaultIndex(vaultPath);
                 setIndexState('ready');
                 console.error(`[flywheel] Index rebuilt in ${Date.now() - startTime}ms`);
+                // Re-export hub scores after rebuild
+                await exportHubScores(vaultPath, vaultIndex);
               } catch (err) {
                 setIndexState('error');
                 setIndexError(err instanceof Error ? err : new Error(String(err)));
@@ -297,10 +303,12 @@ async function main() {
             rebuildTimer = setTimeout(() => {
               console.error('[flywheel] Rebuilding index (file changed)');
               buildVaultIndex(vaultPath)
-                .then((index) => {
+                .then(async (index) => {
                   vaultIndex = index;
                   setIndexState('ready');
                   console.error('[flywheel] Index rebuilt successfully');
+                  // Re-export hub scores after rebuild
+                  await exportHubScores(vaultPath, index);
                 })
                 .catch((err) => {
                   setIndexState('error');
