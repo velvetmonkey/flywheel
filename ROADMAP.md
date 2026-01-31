@@ -4,6 +4,345 @@ This document outlines planned features and research initiatives for Flywheel de
 
 ---
 
+## 🌊 Market Opportunities (January 2026)
+
+**Context:** Based on January 2026 AI/Tech market analysis, several converging trends create significant opportunities for Flywheel's positioning and feature development.
+
+### Market Trends Shaping Strategy
+
+**MCP Mainstream Adoption**
+- Model Context Protocol becoming standard for AI tool integration
+- Claude Code dominance driving MCP ecosystem growth
+- Developers migrating from proprietary APIs to MCP-first architecture
+
+**Autonomous Agent Explosion**
+- 147k autonomous agents in Open Claw ecosystem (as of Jan 2026)
+- Multi-agent coordination becoming critical requirement
+- Agent swarms need shared knowledge infrastructure
+
+**Claude Code Migration Wave**
+- Developers abandoning IDE-specific AI plugins for Claude Code
+- Opus + MCP enabling sophisticated agent workflows
+- 20+ minute agent tasks becoming common (complex refactoring, research)
+
+**Markdown-as-Infrastructure Paradigm**
+- Markdown files emerging as primary agent memory format
+- "Infrastructure > Models" - tooling quality matters more than model selection
+- Git-backed markdown becoming standard for agent state management
+
+**Token Economics Crisis**
+- $100-200/dev/month AI costs driving efficiency focus
+- Long-running workflows (20+ mins) need 100+ vault queries
+- File-reading approach unsustainable at scale
+
+### Strategic Implications
+
+These trends validate Flywheel's architecture and create clear feature priorities:
+1. **Multi-agent use cases** - Show coordination patterns (147k agents need this)
+2. **Token efficiency benchmarks** - Quantify savings with hard numbers (MCP crowd demands proof)
+3. **Agent memory patterns** - Document how autonomous agents should structure knowledge
+4. **Federated queries** - Agent swarms operating across multiple vaults
+5. **Real-time coordination** - Event streaming for agent collaboration
+
+---
+
+## Immediate (Pre-Launch Priority)
+
+### 1. Multi-Agent Use Case Documentation
+
+**Priority:** CRITICAL for positioning in autonomous agent ecosystem
+
+**What:**
+- Document patterns for multiple agents querying same vault
+- Demo: Coordinator agent + specialist agents using shared knowledge graph
+- Show how Flywheel enables agent swarm coordination
+
+**Why it matters:**
+- 147k autonomous agents (Open Claw ecosystem) need coordination infrastructure
+- Current bottleneck: agents can't share knowledge efficiently
+- Flywheel provides natural coordination layer via shared graph
+
+**Deliverables:**
+- [ ] `docs/MULTI_AGENT_PATTERNS.md` - Coordination patterns guide
+- [ ] Demo: 3-agent workflow (coordinator + 2 specialists) on single vault
+- [ ] Example: Research agent queries → Writing agent uses results → Review agent validates
+- [ ] Security patterns: Which agents query what sections
+- [ ] Performance: Multiple agents querying simultaneously
+
+**Target:** Complete before major announcement (validates positioning)
+
+---
+
+### 2. Token Efficiency Benchmarks
+
+**Priority:** CRITICAL for credibility with MCP/Claude Code crowd
+
+**What:**
+- Quantify actual token savings vs file-reading approach
+- Real measurements from production usage (BenVM vault)
+- "Agent runs 20min task, queries vault 100x - here's the cost comparison"
+
+**Why it matters:**
+- Current claims ("100x savings") lack hard evidence
+- MCP developers demand quantified performance data
+- Token costs are PRIMARY decision factor for agent builders
+
+**Deliverables:**
+- [ ] `docs/TOKEN_BENCHMARKS.md` - Measured savings with methodology
+- [ ] Before/After comparison tables:
+  - Graph-only queries (backlinks, orphans): True 100x savings
+  - Graph + content queries (find then read): 10-20x savings
+  - Long-session cumulative savings: 50-80x
+- [ ] Real examples: "Finding all #urgent tasks: 50 tokens (Flywheel) vs 5000 tokens (read files)"
+- [ ] Cost calculator: Input vault size + query frequency → annual savings
+- [ ] Production data: Week-long measurement from active vault
+
+**Acceptance criteria:** Every claim backed by real measurement, methodology documented
+
+**Target:** Complete before any major announcement (credibility requirement)
+
+---
+
+### 3. Agent Memory Patterns Guide
+
+**Priority:** HIGH - Positions Flywheel as "DNA for future agents"
+
+**What:**
+- How autonomous agents should structure vault knowledge
+- Skills → Flywheel queries → Actions workflow patterns
+- "Building Blocks for Agent Memory" design guide
+
+**Why it matters:**
+- Agent builders need proven patterns, not blank canvas
+- "Infrastructure > Models" - show that tooling architecture matters
+- Flywheel becomes reference implementation for agent memory
+
+**Deliverables:**
+- [ ] `docs/AGENT_MEMORY_PATTERNS.md` - Comprehensive guide
+- [ ] Recommended vault structure for agents:
+  - Skills/ - Agent capabilities documentation
+  - Memory/ - Episodic memory (dated entries)
+  - Knowledge/ - Semantic memory (timeless facts)
+  - Context/ - Working memory (current tasks)
+- [ ] Query workflows: How agents should use Flywheel tools
+- [ ] Example: "Morning briefing" agent workflow using 8 Flywheel queries
+- [ ] Integration with Skills system: Skill definitions → Flywheel lookups → Execution
+- [ ] Template vault for new agent projects
+
+**Target:** v0.9.0 - Positions Flywheel as agent infrastructure (not just PKM tool)
+
+---
+
+## Near-Term (Post-Launch)
+
+### 4. Multi-Vault / Federated Queries
+
+**Priority:** HIGH - Enables agent swarm coordination
+
+**What:**
+- Agents operating across multiple knowledge bases simultaneously
+- Shared team vault + personal vault scenarios
+- Cross-vault link resolution and entity matching
+
+**Why it matters:**
+- Real-world agents need: Personal context + Team knowledge + Project-specific data
+- Agent swarms coordinating via federated knowledge access
+- Enterprise use case: Department vaults + personal vaults
+
+**Deliverables:**
+- [ ] Multi-vault configuration in MCP settings
+- [ ] Cross-vault query tools: `search_across_vaults`, `get_federated_backlinks`
+- [ ] Entity deduplication across vaults (same concept, different vaults)
+- [ ] Access control: Which agents can query which vaults
+- [ ] Performance: Index multiple vaults without memory bloat
+
+**Use cases:**
+- Developer: Personal notes + team wiki + project docs
+- Consultant: Client vaults + templates + personal knowledge
+- Researcher: Literature vault + lab notes + personal insights
+
+**Target:** v0.10.0 - After single-vault experience is solid
+
+---
+
+### 5. Event Streaming / Watch Mode
+
+**Priority:** MEDIUM-HIGH - Real-time coordination for autonomous agents
+
+**What:**
+- Agents subscribe to graph changes
+- "Notify me when new task tagged #urgent appears"
+- Real-time coordination for multi-agent workflows
+
+**Why it matters:**
+- Autonomous agents need reactive triggers, not just polling
+- Enable workflows: "Research agent finds insight → Writing agent notified → Drafts update"
+- Reduces latency and query overhead
+
+**Deliverables:**
+- [ ] `watch_graph_changes` tool - Subscribe to vault mutations
+- [ ] Event types: New notes, updated frontmatter, new links, task status changes
+- [ ] Filter subscriptions: "Only #urgent tasks", "Notes in Projects/ folder"
+- [ ] Webhook integration: Push events to external agents
+- [ ] Performance: Efficient change detection without constant reindexing
+
+**Use cases:**
+- Task triage: Agent monitors for #urgent, prioritizes automatically
+- Content pipeline: Draft → Review → Publish workflow coordination
+- Team coordination: Agent A completes → Agent B notified → Next step triggered
+
+**Target:** v0.11.0 - After multi-vault support proves demand for coordination
+
+---
+
+### 6. Agent Identity & Permissions
+
+**Priority:** MEDIUM - Security layer for agent economies
+
+**What:**
+- Which agents can query what sections
+- Audit trail: which agent queried what, when
+- Role-based access control for multi-agent systems
+
+**Why it matters:**
+- Enterprise adoption requires access control
+- Multi-agent systems need security boundaries
+- Audit compliance (who accessed sensitive data?)
+
+**Deliverables:**
+- [ ] Agent identity in MCP requests (authenticate via token/key)
+- [ ] Permission model: Agent roles → Allowed query patterns
+- [ ] Audit logging: Track all queries with agent identity timestamp
+- [ ] Query restrictions: "Agent A can only query Projects/", "Agent B read-only"
+- [ ] Admin tools: Review agent access patterns, revoke permissions
+
+**Use cases:**
+- Enterprise: Sensitive HR data accessible only to specific agents
+- Team workflows: Junior agents can read, senior agents can mutate
+- Client work: Per-client agents can't access other clients' data
+
+**Target:** v0.12.0 - After multi-agent patterns are established
+
+---
+
+### 7. MCP Protocol Extensions
+
+**Priority:** MEDIUM - Agent-optimized response formats
+
+**What:**
+- Batch queries (reduce round-trips)
+- Streaming responses for large result sets
+- Agent-optimized JSON formats (compact, structured)
+
+**Why it matters:**
+- Current: 100 queries = 100 round-trips (latency bottleneck)
+- Batch queries: 100 queries in 1 request (10x faster)
+- Large result sets: Stream instead of waiting for full response
+
+**Deliverables:**
+- [ ] `batch_query` tool - Submit multiple queries, get combined results
+- [ ] Streaming support for: `search_notes`, `get_all_tasks`, large backlink sets
+- [ ] Compact response mode: Minimal JSON (reduce token overhead for agent-to-agent)
+- [ ] Query composition: Chain queries (backlinks → filter by tag → sort by date)
+- [ ] Error handling: Partial success (some queries succeed, some fail)
+
+**Use cases:**
+- Morning briefing: 10 queries in 1 batch (faster startup)
+- Research workflow: Stream search results as they match (immediate feedback)
+- Agent-to-agent: Compact format saves tokens in multi-hop workflows
+
+**Target:** v0.13.0 - Performance optimization after core features stable
+
+---
+
+## Future Vision (6-12 Months)
+
+### 8. Agent Collaboration Patterns
+
+**Priority:** MEDIUM - Multi-agent task coordination via graph
+
+**What:**
+- Cross-agent graph annotations
+- Shared working memory spaces
+- Multi-agent task coordination via vault
+
+**Why it matters:**
+- Enable sophisticated agent workflows: Planning → Research → Execution → Review
+- Shared working memory: Agents collaborate on same knowledge substrate
+- Graph becomes coordination layer (not just storage)
+
+**Deliverables:**
+- [ ] Agent annotations: "Agent A marked this as reviewed", "Agent B assigned this"
+- [ ] Working memory sections: Temporary collaboration space in vault
+- [ ] Task handoff patterns: Agent A completes → Leaves notes for Agent B
+- [ ] Coordination primitives: Locks, claims, status updates via frontmatter
+- [ ] Visualization: Show agent activity on graph (which agent touched what)
+
+**Use cases:**
+- Research pipeline: Finder → Analyzer → Summarizer → Publisher (4 agents)
+- Code review: Scanner → Analyzer → Suggester → Implementer workflow
+- Content creation: Researcher → Drafter → Editor → Publisher chain
+
+**Target:** v1.0.0 - Flagship multi-agent capability
+
+---
+
+### 9. Integration with Agent Identity Systems
+
+**Priority:** LOW-MEDIUM - Future-proofing for AI accountability trends
+
+**What:**
+- If "AI accountability through AI identity" becomes real (regulatory trend)
+- Flywheel as authenticated knowledge layer
+- Wallet/on-chain integration (if agent economies mature)
+
+**Why it matters:**
+- Regulatory pressure for AI traceability increasing
+- If agent identities become standard, knowledge access needs integration
+- Positions Flywheel for enterprise compliance requirements
+
+**Deliverables:**
+- [ ] Identity provider integration (OAuth, DID, wallet-based)
+- [ ] Cryptographic proof of agent queries (immutable audit trail)
+- [ ] Compliance reporting: "Which agents accessed PII in last 30 days?"
+- [ ] On-chain attestation (optional): Proof of knowledge access for audits
+
+**Speculative:** Monitor regulatory developments, implement if demand emerges
+
+**Target:** v1.x (if ecosystem matures in this direction)
+
+---
+
+### 10. Encrypted / Private Graph Sections
+
+**Priority:** LOW-MEDIUM - Response to "agent-only language" concerns
+
+**What:**
+- Secure sub-graphs for sensitive knowledge
+- Agent-level encryption keys
+- Private sections invisible to unauthorized agents
+
+**Why it matters:**
+- Concerns about agents developing "hidden communication" patterns
+- Enterprise: Sensitive data (HR, finance) needs encryption at rest
+- Multi-tenant: Client data isolation in shared infrastructure
+
+**Deliverables:**
+- [ ] Encrypted vault sections (libsodium or similar)
+- [ ] Per-agent decryption keys
+- [ ] Secure queries: Decrypt on read, re-encrypt on write
+- [ ] Key management: Rotation, revocation, access control
+- [ ] Performance: Minimize decryption overhead
+
+**Use cases:**
+- Enterprise: PII data encrypted, accessible only to authorized agents
+- Multi-tenant: Customer A's data encrypted separately from Customer B
+- Personal: Sensitive journal entries readable only by trusted agents
+
+**Target:** v1.x+ - After core multi-agent patterns proven
+
+---
+
 ## Research & Discovery Phase
 
 **Goal:** Study real-world vault patterns, schemas, and workflows to inform Flywheel development.
