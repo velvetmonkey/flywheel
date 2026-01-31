@@ -60,3 +60,7 @@ packages/*/package-lock.json
 
 # Coverage
 coverage/
+
+# Strategic planning documents - keep private
+ROADMAP.md
+ROADMAP*.md
