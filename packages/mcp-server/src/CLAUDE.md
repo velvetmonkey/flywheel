@@ -16,5 +16,6 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
+| #3518 | 4:50 PM | ✅ | Flywheel CLAUDE.md context files committed | ~259 |
 | #2639 | 1:40 AM | 🔵 | Flywheel Entity Index Architecture: In-Memory MCP-Based System | ~721 |
 </claude-mem-context>
