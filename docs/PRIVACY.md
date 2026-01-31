@@ -263,7 +263,7 @@ Comma-separated folder names:
 **❌ Don't store in vault:**
 ```yaml
 ---
-api_key: sk-1234567890abcdef  ← BAD
+api_key: <REDACTED>            ← BAD
 password: hunter2             ← BAD
 ---
 ```
