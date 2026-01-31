@@ -165,6 +165,7 @@ See [Flywheel](https://github.com/velvetmonkey/flywheel) - Main project reposito
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
+| #3527 | 4:52 PM | ✅ | Flywheel MCP version bumped to 1.27.10 | ~268 |
 | #3443 | 4:12 PM | 🔴 | Verified flywheel package current version v1.27.8 | ~182 |
 | #3444 | " | 🔴 | Deployed flywheel v1.27.9 with ROADMAP market opportunities documentation | ~301 |
 | #3423 | 4:04 PM | ✅ | Bumped Flywheel Package Version to 1.27.9 | ~223 |

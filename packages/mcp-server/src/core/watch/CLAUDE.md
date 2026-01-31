@@ -7,6 +7,14 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
+| #2333 | 8:21 PM | 🔵 | Flywheel Watch System V2 Gating and Legacy Watcher Limitations | ~892 |
+| #2332 | " | 🔵 | Flywheel Watcher Uses Chokidar with Conditional Polling Configuration | ~419 |
+| #2329 | " | 🔵 | Flywheel Watch Configuration Reads FLYWHEEL_WATCH_POLL and FLYWHEEL_POLL_INTERVAL | ~438 |
+| #2328 | " | 🔵 | Flywheel PathFilter Provides Aggressive Watch Exclusions | ~478 |
+| #2327 | " | 🔵 | Flywheel Batch Processor with Time-Slicing and Concurrency Control | ~602 |
+| #2326 | " | 🔵 | Flywheel EventQueue Implements Sophisticated Event Coalescing | ~474 |
+| #2325 | 8:20 PM | 🔵 | Flywheel Watcher Configuration and Event Types | ~623 |
+| #2324 | " | 🔵 | Flywheel MCP Server Has Complete File Watching Implementation | ~552 |
 | #2122 | 6:56 PM | 🟣 | Committed WSL Polling Mode Fix to Repository | ~367 |
 | #2108 | 6:54 PM | ✅ | Increased Default Polling Interval from 500ms to 60 Seconds | ~352 |
 | #2105 | 6:53 PM | 🔵 | Flywheel Default Poll Interval Set to 500ms | ~288 |
@@ -18,4 +26,10 @@
 | #2017 | 4:29 PM | 🔵 | Watcher configuration system provides tunable debouncing and batching parameters | ~450 |
 | #2016 | " | 🔵 | Vault watcher architecture implements battle-hardened file monitoring system | ~515 |
 | #2015 | " | 🔵 | Flywheel batch processor uses time-sliced incremental updates with configurable concurrency | ~355 |
+
+### Jan 31, 2026
+
+| ID | Time | T | Title | Read |
+|----|------|---|-------|------|
+| #3518 | 4:50 PM | ✅ | Flywheel CLAUDE.md context files committed | ~259 |
 </claude-mem-context>
