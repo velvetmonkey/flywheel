@@ -243,6 +243,40 @@ What people *wish* they could do but can't:
 
 ---
 
+## Documentation & Integration
+
+### Clawdbot Integration & Architecture Documentation
+
+**Goal:** Document the Clawdbot → Claude Code workflow and clarify Flywheel's positioning in the AI tooling ecosystem.
+
+**Deliverables:**
+
+- **Visual Demo:** Telegram → Clawdbot → Claude Code agents/sub-agents workflow diagram
+- **Plugin Architecture Overview:** Skills system, MCP server integrations, tool orchestration
+- **Navigation Layer vs Raw Memory:** How Flywheel provides structured navigation compared to raw memory systems
+
+**Token Usage Comparison:**
+
+| System | Approach | Token Range | Use Case |
+|--------|----------|-------------|----------|
+| Flywheel | Graph-aware, structured queries | 200-800 tokens | Navigate my thinking (PKM with graph intelligence) |
+| ClawdMem | Semantic search, raw memory | 500-2k tokens | Remember everything I did (dev work logs) |
+
+**Positioning:**
+
+- **ClawdMem:** "Remember everything I did" — development work logs, raw memory storage, semantic retrieval
+- **Flywheel:** "Navigate my thinking" — PKM with graph intelligence, structured knowledge, relationship awareness
+- **Complementary Systems:** Not competing tools. Flywheel adds structure, relationships, and contextual meaning on top of raw memory
+
+**Flywheel Advantages:**
+
+- **Relationship awareness** — understands how notes connect, not just what they contain
+- **Schema-driven intelligence** — typed frontmatter enables precise queries
+- **Token efficiency** — graph-aware queries return targeted context, not bulk retrieval
+- **Cross-cutting discovery** — surfaces connections that folder organization can't express
+
+---
+
 ## Known Issues
 
 ### Bug Report: vault_add_to_section Breaking Bullet List Indentation
