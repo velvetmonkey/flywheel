@@ -167,10 +167,40 @@ export function shouldWatch(filePath: string, vaultPath?: string): boolean {
 
 /**
  * Create a chokidar-compatible ignore function
+ *
+ * IMPORTANT: Chokidar calls this for BOTH files and directories.
+ * If we ignore a directory, chokidar won't descend into it.
+ * So we must NOT ignore directories unless they're in IGNORED_DIRECTORIES.
  */
 export function createIgnoreFunction(vaultPath: string): (filePath: string) => boolean {
   return (filePath: string): boolean => {
-    // Return true to IGNORE the file
+    const relativePath = getRelativePath(vaultPath, filePath);
+    const segments = relativePath.split('/').filter(s => s.length > 0);
+
+    if (segments.length === 0) {
+      return false; // Don't ignore vault root
+    }
+
+    // Check if any segment is an ignored directory
+    for (const segment of segments) {
+      if (isIgnoredDirectory(segment)) {
+        return true; // Ignore this path
+      }
+    }
+
+    const lastSegment = segments[segments.length - 1];
+
+    // If it looks like a directory (no .md extension), allow it through
+    // so chokidar descends into it to find .md files
+    if (!lastSegment.toLowerCase().endsWith('.md')) {
+      // But still ignore hidden dirs
+      if (lastSegment.startsWith('.')) {
+        return true;
+      }
+      return false; // Allow directory - don't ignore
+    }
+
+    // For .md files, apply full shouldWatch logic
     return !shouldWatch(filePath, vaultPath);
   };
 }
