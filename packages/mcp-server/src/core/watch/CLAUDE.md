@@ -31,5 +31,10 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
+| #3550 | 5:03 PM | ✅ | Reduced Default Polling Interval from 60 to 30 Seconds | ~318 |
+| #3549 | " | ✅ | Updated Polling Interval Documentation Comment | ~263 |
+| #3548 | " | 🔵 | Flywheel File Watcher Default Configuration | ~357 |
+| #3546 | 5:02 PM | 🔵 | Flywheel incremental index implementation examined | ~356 |
+| #3545 | 5:01 PM | 🔵 | Flywheel vault watcher architecture uses event queue with configurable intervals | ~404 |
 | #3518 | 4:50 PM | ✅ | Flywheel CLAUDE.md context files committed | ~259 |
 </claude-mem-context>

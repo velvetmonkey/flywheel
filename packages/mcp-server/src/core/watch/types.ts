@@ -18,7 +18,7 @@ export interface WatcherConfig {
   /** Force polling mode instead of native watchers (default: false) */
   usePolling: boolean;
 
-  /** Polling interval when in polling mode (default: 500) */
+  /** Polling interval when in polling mode (default: 30000 = 30 seconds) */
   pollInterval: number;
 }
 
@@ -30,7 +30,7 @@ export const DEFAULT_WATCHER_CONFIG: WatcherConfig = {
   flushMs: 1000,
   batchSize: 50,
   usePolling: false,
-  pollInterval: 60000,
+  pollInterval: 30000,
 };
 
 /**
