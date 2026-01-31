@@ -105,6 +105,7 @@ export class EventQueue {
     // Add event to path's queue
     pending.events.push(event);
     pending.lastEvent = now;
+    console.error(`[flywheel] QUEUE: pushed ${type} for ${path}, pending=${this.pending.size}`);
 
     // Clear existing per-path timer
     if (pending.timer) {
@@ -144,6 +145,7 @@ export class EventQueue {
   private flushPath(path: string): void {
     const pending = this.pending.get(path);
     if (!pending || pending.events.length === 0) return;
+    console.error(`[flywheel] QUEUE: flushing ${path}, events=${pending.events.length}`);
 
     // Clear the path timer
     if (pending.timer) {

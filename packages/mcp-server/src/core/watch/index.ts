@@ -158,6 +158,7 @@ export function createVaultWatcher(options: CreateWatcherOptions): VaultWatcher 
       }
 
       console.error(`[flywheel] Starting file watcher (debounce: ${config.debounceMs}ms, flush: ${config.flushMs}ms)`);
+      console.error(`[flywheel] Chokidar options: usePolling=${config.usePolling}, interval=${config.pollInterval}, vaultPath=${vaultPath}`);
 
       // Create chokidar watcher
       watcher = chokidar.watch(vaultPath, {
@@ -174,20 +175,32 @@ export function createVaultWatcher(options: CreateWatcherOptions): VaultWatcher 
 
       // Handle events
       watcher.on('add', (path) => {
+        console.error(`[flywheel] RAW EVENT: add ${path}`);
         if (shouldWatch(path, vaultPath)) {
+          console.error(`[flywheel] ACCEPTED: add ${path}`);
           eventQueue.push('add', path);
+        } else {
+          console.error(`[flywheel] FILTERED: add ${path}`);
         }
       });
 
       watcher.on('change', (path) => {
+        console.error(`[flywheel] RAW EVENT: change ${path}`);
         if (shouldWatch(path, vaultPath)) {
+          console.error(`[flywheel] ACCEPTED: change ${path}`);
           eventQueue.push('change', path);
+        } else {
+          console.error(`[flywheel] FILTERED: change ${path}`);
         }
       });
 
       watcher.on('unlink', (path) => {
+        console.error(`[flywheel] RAW EVENT: unlink ${path}`);
         if (shouldWatch(path, vaultPath)) {
+          console.error(`[flywheel] ACCEPTED: unlink ${path}`);
           eventQueue.push('unlink', path);
+        } else {
+          console.error(`[flywheel] FILTERED: unlink ${path}`);
         }
       });
 
