@@ -146,6 +146,39 @@ cd flywheel/demos/artemis-rocket && claude
 
 ---
 
+## Who Uses Flywheel?
+
+**You might be:**
+
+| Persona | Your Problem | Flywheel Gives You |
+|---------|--------------|-------------------|
+| 🧠 **PKM Practitioner** | Manual linking is tedious | Auto-wikilinks build connections as you write |
+| 🤖 **Agent Builder** | AI burns tokens reading files | 44 graph queries, zero file reads |
+| 🐵 **Chaos Monkey** | Markdown chaos, can't find anything | Structure emerges from motion |
+| 💻 **Developer** | Code notes scattered across projects | Queryable second brain |
+| 📊 **Knowledge Worker** | "Where's that decision from last month?" | Frontmatter + graph = instant retrieval |
+| ✍️ **Writer/Researcher** | Missing connections between sources | Backlinks reveal unexpected paths |
+| 👥 **Teams** | Shared vault coordination is messy | Multi-agent access to shared knowledge graph |
+| 🎙️ **Voice-to-Vault** | Mobile capture lands in chaos | Whisper → Crank → auto-linked notes |
+
+### Inspiration from Builders in Public
+
+People doing interesting work with markdown knowledge bases:
+
+- **Andy Matuschak** — [Evergreen notes](https://notes.andymatuschak.org/) on augmented cognition
+- **Simon Willison** — [TIL](https://til.simonwillison.net/) public learning, Datasette creator
+- **Maggie Appleton** — [Digital Gardeners](https://github.com/MaggieAppleton/digital-gardeners) community
+- **Kepano** — [Obsidian Skills](https://github.com/kepano/obsidian-skills) for agent automation
+- **Sonny Huynh** — [AI-Powered Second Brain](https://sonnyhuynhb.medium.com/i-built-an-ai-powered-second-brain-with-obsidian-claude-code-heres-how-b70e28100099) with Claude Code
+- **MarkdownDB** — [Markdown as database](https://github.com/datopian/markdowndb) philosophy
+
+### Get Involved
+
+- [Star on GitHub](https://github.com/velvetmonkey/flywheel) — helps others discover the project
+- [Report issues or share ideas](https://github.com/velvetmonkey/flywheel/issues) — bugs, features, workflow tips
+
+---
+
 ## Docs
 
 - **[Configuration](docs/CONFIGURATION.md)** — Environment variables, tool presets, platform setup
