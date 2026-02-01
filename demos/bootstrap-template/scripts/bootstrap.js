@@ -78,6 +78,7 @@ function bootstrap(outputDir) {
   ensureDir(join(outputDir, 'contacts'));
   ensureDir(join(outputDir, 'projects'));
   ensureDir(join(outputDir, 'invoices'));
+  ensureDir(join(outputDir, 'meetings'));
   ensureDir(join(outputDir, 'daily-notes'));
 
   // Process clients
@@ -145,6 +146,34 @@ function bootstrap(outputDir) {
     }, `## Line Items
 
 ## Notes
+`);
+  }
+
+  // Process meetings
+  const meetings = parseCSV('meetings.csv');
+  for (const meeting of meetings) {
+    // Parse attendees (semicolon-separated) into wikilinks
+    const attendees = meeting.attendees.split(';')
+      .map(a => `[[${a.trim()}]]`)
+      .join(', ');
+
+    createNote(outputDir, 'meetings', meeting.title, {
+      type: 'meeting',
+      date: meeting.date,
+      time: meeting.time,
+      client: `[[${meeting.client}]]`,
+      project: `[[${meeting.project}]]`,
+      meeting_type: meeting.type,
+    }, `## Attendees
+${attendees}
+
+## Agenda
+
+## Notes
+${meeting.notes}
+
+## Action Items
+- [ ]
 `);
   }
 

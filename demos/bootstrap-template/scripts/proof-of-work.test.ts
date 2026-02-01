@@ -23,10 +23,10 @@ const DEMO_DIR = join(__dirname, '..');
 const VAULT_DIR = join(DEMO_DIR, 'test-vault');
 const SEED_DIR = join(DEMO_DIR, 'seed-data');
 
-// Test thresholds
+// Test thresholds (expecting 100+ notes, 150+ wikilinks)
 const MAX_BUILD_TIME_MS_PER_FILE = 100;
-const MIN_EXPECTED_NOTES = 15;
-const MIN_EXPECTED_WIKILINKS = 10;
+const MIN_EXPECTED_NOTES = 100;
+const MIN_EXPECTED_WIKILINKS = 150;
 
 interface VaultMetrics {
   notes: number;

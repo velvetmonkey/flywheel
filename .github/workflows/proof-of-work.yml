@@ -64,14 +64,14 @@ jobs:
           echo "Wikilinks: $WIKILINKS"
           echo "ms/file: $MS_PER_FILE"
 
-          # Validate thresholds
-          if [ "$NOTES" -lt 15 ]; then
-            echo "FAIL: Expected at least 15 notes, got $NOTES"
+          # Validate thresholds (expecting 100+ notes, 150+ wikilinks)
+          if [ "$NOTES" -lt 100 ]; then
+            echo "FAIL: Expected at least 100 notes, got $NOTES"
             exit 1
           fi
 
-          if [ "$WIKILINKS" -lt 10 ]; then
-            echo "FAIL: Expected at least 10 wikilinks, got $WIKILINKS"
+          if [ "$WIKILINKS" -lt 150 ]; then
+            echo "FAIL: Expected at least 150 wikilinks, got $WIKILINKS"
             exit 1
           fi
 
