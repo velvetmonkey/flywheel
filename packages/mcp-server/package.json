@@ -14,6 +14,11 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:watcher": "vitest run test/core/watch/",
+    "test:watcher:stress": "vitest run test/stress/watcher*.test.ts",
+    "test:watcher:chaos": "vitest run test/chaos/watcher*.test.ts",
+    "test:platform": "vitest run test/platform/",
+    "test:ci": "vitest run --reporter=github-actions",
     "inspect": "npx @modelcontextprotocol/inspector npx tsx src/index.ts",
     "prepublishOnly": "npm run build"
   },
