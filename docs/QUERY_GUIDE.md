@@ -103,6 +103,7 @@ Find specific notes.
 | Notes in folder? | "List notes in meetings/" |
 | Notes by title? | "Find notes with 'review' in the title" |
 | Combined filters? | "Find #urgent notes in projects/ modified this week" |
+| Full-text search? | "Search note content for 'authentication'" |
 
 **Example queries:**
 ```
@@ -115,6 +116,45 @@ Find specific notes.
 "List all notes mentioning 'migration'"
 → Searches across vault with keyword
 ```
+
+### Full-Text Search (FTS5)
+
+Search note **content** with advanced query syntax.
+
+| Question | How to Ask |
+|----------|------------|
+| Content search? | "Search for notes containing 'authentication'" |
+| Phrase search? | "Find notes with exact phrase 'user login flow'" |
+| Boolean search? | "Find notes about API AND documentation" |
+| Prefix search? | "Find notes starting with 'auth'" |
+
+**FTS5 Query Syntax:**
+```
+Simple:     authentication
+Phrase:     "exact phrase match"
+Boolean:    term1 AND term2
+            term1 OR term2
+            NOT excluded_term
+Prefix:     auth*
+Combined:   (api OR rest) AND authentication
+```
+
+**Example queries:**
+```
+"Find all notes about JWT authentication"
+→ full_text_search("JWT authentication")
+→ Returns matching notes with highlighted snippets
+
+"Find notes discussing error handling"
+→ full_text_search("error AND handling")
+→ Returns notes containing both terms
+
+"Search for login-related code"
+→ full_text_search("login*")
+→ Matches login, logging, logged, etc.
+```
+
+**Note:** FTS5 uses SQLite's porter stemmer, so "running" matches "run", "runs", "ran" automatically.
 
 ### Structure Queries
 
@@ -172,6 +212,8 @@ Understand note internals without reading.
 
 ### Search Tools
 - `mcp__flywheel__search_notes` - Multi-filter search (tags, folder, frontmatter, title)
+- `mcp__flywheel__full_text_search` - FTS5 content search (stemming, phrases, boolean)
+- `mcp__flywheel__rebuild_search_index` - Manually rebuild search index
 
 ### Structure Tools
 - `mcp__flywheel__get_note_structure` - Heading tree

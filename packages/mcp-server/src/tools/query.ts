@@ -1,5 +1,5 @@
 /**
- * Query tools - search notes by frontmatter, tags, and folders
+ * Query tools - search notes by frontmatter, tags, folders, and full-text content
  */
 
 import { z } from 'zod';
@@ -7,6 +7,13 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex, VaultNote } from '../core/types.js';
 import { MAX_LIMIT } from '../core/constants.js';
 import { requireIndex } from '../core/indexGuard.js';
+import {
+  searchFTS5,
+  buildFTS5Index,
+  isIndexStale,
+  getFTS5State,
+  type FTS5Result,
+} from '../core/fts5.js';
 
 /**
  * Check if a note matches frontmatter filters
@@ -314,6 +321,147 @@ export function registerQueryTools(
         ],
         structuredContent: output,
       };
+    }
+  );
+
+  // full_text_search - Search note content using FTS5 full-text search
+  const FTS5ResultSchema = z.object({
+    path: z.string().describe('Path to the note'),
+    title: z.string().describe('Note title'),
+    snippet: z.string().describe('Matching snippet with highlighted terms'),
+  });
+
+  const FullTextSearchOutputSchema = {
+    query: z.string().describe('The search query that was executed'),
+    total_results: z.number().describe('Number of matching results'),
+    results: z.array(FTS5ResultSchema).describe('Matching notes with snippets'),
+  };
+
+  type FullTextSearchOutput = {
+    query: string;
+    total_results: number;
+    results: FTS5Result[];
+  };
+
+  server.registerTool(
+    'full_text_search',
+    {
+      title: 'Full-Text Search',
+      description:
+        'Search note content using SQLite FTS5 full-text search. Supports stemming (running matches run/runs/ran), phrases ("exact phrase"), boolean operators (AND, OR, NOT), and prefix matching (auth*).',
+      inputSchema: {
+        query: z
+          .string()
+          .describe(
+            'Search query. Examples: "authentication", "exact phrase", "term1 AND term2", "prefix*"'
+          ),
+        limit: z
+          .number()
+          .default(10)
+          .describe('Maximum number of results to return'),
+      },
+      outputSchema: FullTextSearchOutputSchema,
+    },
+    async ({
+      query,
+      limit: requestedLimit = 10,
+    }): Promise<{
+      content: Array<{ type: 'text'; text: string }>;
+      structuredContent: FullTextSearchOutput;
+    }> => {
+      const vaultPath = getVaultPath();
+      const limit = Math.min(requestedLimit, MAX_LIMIT);
+
+      // Check if index exists and is not too stale, build if needed
+      const ftsState = getFTS5State();
+      if (!ftsState.ready || isIndexStale(vaultPath)) {
+        console.error('[FTS5] Index stale or missing, rebuilding...');
+        await buildFTS5Index(vaultPath);
+      }
+
+      const results = searchFTS5(vaultPath, query, limit);
+
+      const output: FullTextSearchOutput = {
+        query,
+        total_results: results.length,
+        results,
+      };
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(output, null, 2),
+          },
+        ],
+        structuredContent: output,
+      };
+    }
+  );
+
+  // rebuild_search_index - Manually rebuild the FTS5 search index
+  const RebuildIndexOutputSchema = {
+    status: z.enum(['success', 'error']).describe('Whether the rebuild succeeded'),
+    notes_indexed: z.number().describe('Number of notes indexed'),
+    message: z.string().describe('Status message'),
+  };
+
+  type RebuildIndexOutput = {
+    status: 'success' | 'error';
+    notes_indexed: number;
+    message: string;
+  };
+
+  server.registerTool(
+    'rebuild_search_index',
+    {
+      title: 'Rebuild Search Index',
+      description:
+        'Manually rebuild the FTS5 full-text search index. Use this after bulk changes to the vault or if search results seem stale.',
+      inputSchema: {},
+      outputSchema: RebuildIndexOutputSchema,
+    },
+    async (): Promise<{
+      content: Array<{ type: 'text'; text: string }>;
+      structuredContent: RebuildIndexOutput;
+    }> => {
+      const vaultPath = getVaultPath();
+
+      try {
+        const state = await buildFTS5Index(vaultPath);
+
+        const output: RebuildIndexOutput = {
+          status: 'success',
+          notes_indexed: state.noteCount,
+          message: `Successfully indexed ${state.noteCount} notes`,
+        };
+
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(output, null, 2),
+            },
+          ],
+          structuredContent: output,
+        };
+      } catch (err) {
+        const output: RebuildIndexOutput = {
+          status: 'error',
+          notes_indexed: 0,
+          message: err instanceof Error ? err.message : String(err),
+        };
+
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(output, null, 2),
+            },
+          ],
+          structuredContent: output,
+        };
+      }
     }
   );
 }

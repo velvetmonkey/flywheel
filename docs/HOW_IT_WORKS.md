@@ -25,11 +25,14 @@ At startup, Flywheel scans your vault and builds an in-memory index containing:
 | Headings | `## Heading` structure | ✓ |
 | File metadata | Modified date, path | ✓ |
 
-**What's NOT indexed:** Full file content, prose text, code blocks.
+**What's NOT indexed in memory:** Full file content, prose text, code blocks.
+
+**FTS5 Full-Text Index:** A separate SQLite FTS5 index stores full note content for fast text search. This is built on-demand and stored in `.claude/vault-search.db`.
 
 This means:
-- Graph queries use **index only** (zero file reads)
-- Content queries read **only relevant sections** (not full files)
+- Graph queries use **in-memory index only** (zero file reads)
+- Full-text search uses **FTS5 index** (sub-100ms queries)
+- Section queries read **only relevant sections** (not full files)
 
 ---
 
@@ -195,6 +198,7 @@ Checks consistency between frontmatter and prose:
 | Graph query (backlinks, paths) | ~20-30x | Index-only, no file reads |
 | Frontmatter query (tasks, status) | ~20-30x | Metadata in index |
 | Vault-wide search (orphans, hubs) | ~30-50x | Full vault scan in memory |
+| Full-text search (FTS5) | ~10-20x | FTS5 index, returns snippets only |
 | Content search | ~1-2x | Files still need to be read |
 
 **Why the savings?**
@@ -245,5 +249,5 @@ The privacy benefit isn't just policy — it's architecture. Claude physically c
 
 ## Related Documentation
 
-- [MCP Tools Reference](MCP_REFERENCE.md) — All 40+ tools documented
+- [MCP Tools Reference](MCP_REFERENCE.md) — All 46 tools documented
 - [Query Guide](QUERY_GUIDE.md) — Graph, temporal, and schema queries

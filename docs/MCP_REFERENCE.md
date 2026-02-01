@@ -1,6 +1,6 @@
 # MCP Tools Reference
 
-Flywheel provides 44 MCP tools for querying your vault. All tools return structured JSON without reading file content (unless explicitly needed).
+Flywheel provides 46 MCP tools for querying your vault. All tools return structured JSON without reading file content (unless explicitly needed).
 
 ---
 
@@ -10,7 +10,7 @@ Flywheel provides 44 MCP tools for querying your vault. All tools return structu
 
 | Category | Tools | Purpose |
 |----------|-------|---------|
-| [Search](#search-tools) | 1 | Filter by frontmatter, tags, folders |
+| [Search](#search-tools) | 3 | Filter by frontmatter, tags, folders + full-text |
 | [Graph Intelligence](#graph-intelligence-tools) | 10 | Backlinks, paths, hubs, connections |
 | [Temporal](#temporal-tools) | 5 | Date-based queries |
 | [Schema](#schema-tools) | 5 | Frontmatter analysis |
@@ -53,6 +53,42 @@ Search by frontmatter fields, tags, folder, and title.
 - Find active projects: `{ "where": { "status": "active" }, "folder": "projects" }`
 - Find urgent items: `{ "has_tag": "urgent" }`
 - Find client notes: `{ "where": { "client": "Acme Corp" } }`
+
+### mcp__flywheel__full_text_search
+
+Search note content using SQLite FTS5 full-text search. Supports advanced query syntax.
+
+```json
+{
+  "query": "authentication JWT",
+  "limit": 10
+}
+```
+
+**Query syntax:**
+- **Simple terms:** `authentication` - matches notes containing the word
+- **Stemming:** `running` matches "run", "runs", "ran" automatically
+- **Phrases:** `"exact phrase"` - matches exact sequence
+- **Boolean:** `auth AND login`, `auth OR login`, `NOT deprecated`
+- **Prefix:** `auth*` - matches "auth", "authentication", "authorize"
+- **Column filter:** `title:api` - search only titles
+
+**Returns:** `{ query, total_results, results: [{ path, title, snippet }] }`
+
+**Example queries:**
+- Find authentication code: `{ "query": "authentication middleware" }`
+- Find exact phrase: `{ "query": "\"user login flow\"" }`
+- Find API docs: `{ "query": "API AND documentation" }`
+
+### mcp__flywheel__rebuild_search_index
+
+Manually rebuild the FTS5 full-text search index. The index auto-rebuilds if stale (>1 hour), but use this after bulk changes.
+
+```json
+{}
+```
+
+**Returns:** `{ status, notes_indexed, message }`
 
 ---
 

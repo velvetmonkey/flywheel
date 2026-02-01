@@ -132,16 +132,23 @@ Medium queries (index + minimal parsing):
 
 ### Content Search
 
-Slower queries (must read file contents):
+Content search queries with FTS5 full-text search:
 
 | Query Type | Est. Time | Scales With |
 |------------|-----------|-------------|
-| `search_notes` (content) | 100-500ms | Vault size |
+| `full_text_search` (FTS5) | 10-50ms | Index size |
+| `search_notes` (frontmatter) | 10-100ms | # matching notes |
 | `get_section_content` | 50-200ms | File size |
 
-**Why slower:** Must read and parse file from disk.
+**FTS5 Performance:**
+- Index builds on first search or manual trigger
+- Subsequent searches are sub-100ms (SQLite FTS5)
+- Supports stemming, phrases, boolean operators
+- Index stored in `.claude/vault-search.db`
 
-**Optimization:** Use graph queries instead of content search when possible.
+**Why FTS5 is fast:** SQLite FTS5 uses inverted indexes. Query time is O(log n) not O(n).
+
+**Optimization:** Use FTS5 for content search, graph queries for relationships.
 
 ---
 
@@ -327,9 +334,10 @@ Estimated breaking points:
    - OS limits on inotify watchers (Linux)
    - Performance degrades with 50k+ files
 
-3. **Content search is linear**
-   - Must scan all notes for text matches
-   - No full-text search index (by design - privacy)
+3. **FTS5 index requires rebuild**
+   - Index auto-rebuilds when stale (>1 hour)
+   - Manual rebuild available via `rebuild_search_index`
+   - Index stored locally in `.claude/vault-search.db`
 
 4. **Memory growth**
    - All index data kept in RAM
