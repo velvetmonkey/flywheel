@@ -1,6 +1,6 @@
 {
   "name": "@velvetmonkey/flywheel-mcp",
-  "version": "1.27.24",
+  "version": "1.27.25",
   "description": "Graph intelligence for markdown vaults. MCP server for Obsidian.",
   "type": "module",
   "main": "dist/index.js",
