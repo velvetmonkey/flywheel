@@ -142,7 +142,7 @@ cd flywheel/demos/artemis-rocket && claude
 - **Plain text** — future-proof, zero lock-in
 - **Privacy** — files stay local, only what you need gets sent
 - **Editor-agnostic** — Obsidian, VSCode, Cursor, vim, whatever
-- **AI-native** — 44 tools purpose-built for agent workflows
+- **AI-native** — 51 tools purpose-built for agent workflows
 
 ---
 
@@ -153,7 +153,7 @@ cd flywheel/demos/artemis-rocket && claude
 | Persona | Your Problem | Flywheel Gives You |
 |---------|--------------|-------------------|
 | 🧠 **PKM Practitioner** | Manual linking is tedious | Auto-wikilinks build connections as you write |
-| 🤖 **Agent Builder** | AI burns tokens reading files | 44 graph queries, zero file reads |
+| 🤖 **Agent Builder** | AI burns tokens reading files | 51 graph queries, zero file reads |
 | 🐵 **Chaos Monkey** | Markdown chaos, can't find anything | Structure emerges from motion |
 | 💻 **Developer** | Code notes scattered across projects | Queryable second brain |
 | 📊 **Knowledge Worker** | "Where's that decision from last month?" | Frontmatter + graph = instant retrieval |
@@ -182,7 +182,7 @@ People doing interesting work with markdown knowledge bases:
 ## Docs
 
 - **[Configuration](docs/CONFIGURATION.md)** — Environment variables, tool presets, platform setup
-- **[MCP Tools Reference](docs/MCP_REFERENCE.md)** — All 44 tools
+- **[MCP Tools Reference](docs/MCP_REFERENCE.md)** — All 51 tools
 - **[Query Guide](docs/QUERY_GUIDE.md)** — Patterns and examples
 - **[How It Works](docs/HOW_IT_WORKS.md)** — Architecture and token savings
 - **[Vault Health](docs/VAULT_HEALTH.md)** — Monitor and improve vault structure

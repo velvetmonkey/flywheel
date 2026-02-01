@@ -4,7 +4,7 @@
 
 Flywheel is an **MCP server providing graph intelligence for markdown vaults**:
 
-1. **MCP Server** (`packages/mcp-server/`) - 44 tools for graph + schema intelligence
+1. **MCP Server** (`packages/mcp-server/`) - 51 tools for graph + schema intelligence
 2. **Demo Vaults** (`demos/`) - Ready-to-use templates for common workflows
 
 ## Core Concept

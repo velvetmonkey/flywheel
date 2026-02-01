@@ -15,7 +15,7 @@ A guide to Flywheel's MCP server design for developers.
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                    FLYWHEEL MCP SERVER                           │
-│            44 tools for vault intelligence                       │
+│            51 tools for vault intelligence                       │
 │                                                                  │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
 │  │   Graph     │  │   Schema    │  │   Search    │             │
@@ -37,7 +37,7 @@ A guide to Flywheel's MCP server design for developers.
 
 ---
 
-## MCP Server (44 tools)
+## MCP Server (51 tools)
 
 The MCP server provides vault intelligence to any MCP-compatible client.
 

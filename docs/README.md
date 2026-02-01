@@ -55,7 +55,7 @@ Answer in ~50 tokens (vs 5,000+ reading files)
 - **[Privacy](PRIVACY.md)** — Data handling and security
 
 ### Reference
-- **[MCP Tools](MCP_REFERENCE.md)** — All 44 query tools
+- **[MCP Tools](MCP_REFERENCE.md)** — All 51 query tools
 - **[Architecture](ARCHITECTURE.md)** — MCP server design for developers
 - **[Troubleshooting](TROUBLESHOOTING.md)** — Common issues and fixes
 

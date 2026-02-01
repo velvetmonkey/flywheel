@@ -27,7 +27,7 @@ Control which tools are available to reduce token usage:
 |--------|-----------------|----------|
 | `minimal` | Core vault info only | Quick queries, low token usage |
 | `standard` | Core + graph + search + tasks | Most users (default) |
-| `full` | All 44 tools | Power users who need everything |
+| `full` | All 51 tools | Power users who need everything |
 
 Mix and match: `FLYWHEEL_TOOLS=core,graph,tasks`
 
