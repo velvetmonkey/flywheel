@@ -17,4 +17,12 @@
 |----|------|---|-------|------|
 | #3518 | 4:50 PM | ✅ | Flywheel CLAUDE.md context files committed | ~259 |
 | #2639 | 1:40 AM | 🔵 | Flywheel Entity Index Architecture: In-Memory MCP-Based System | ~721 |
+
+### Feb 1, 2026
+
+| ID | Time | T | Title | Read |
+|----|------|---|-------|------|
+| #4867 | 3:15 PM | 🔵 | Flywheel Hub Score Export Architecture - Cross-Package Communication via Entity Cache | ~559 |
+| #4841 | 2:40 PM | 🔵 | Flywheel Query Result Limits | ~272 |
+| #4837 | " | 🔵 | Flywheel Core Type System - Vault Index Architecture | ~364 |
 </claude-mem-context>

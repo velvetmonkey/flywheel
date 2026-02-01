@@ -16,4 +16,11 @@
 |----|------|---|-------|------|
 | #3518 | 4:50 PM | ✅ | Flywheel CLAUDE.md context files committed | ~259 |
 | #2639 | 1:40 AM | 🔵 | Flywheel Entity Index Architecture: In-Memory MCP-Based System | ~721 |
+
+### Feb 1, 2026
+
+| ID | Time | T | Title | Read |
+|----|------|---|-------|------|
+| #4846 | 2:41 PM | 🔵 | Flywheel Auto-Wikilink Matching Algorithm - Intelligent Text Scanning | ~432 |
+| #4839 | 2:40 PM | 🔵 | Flywheel Advanced Graph Algorithms - Path Finding and Relationship Analysis | ~532 |
 </claude-mem-context>
