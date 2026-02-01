@@ -44,4 +44,13 @@
 |----|------|---|-------|------|
 | #3518 | 4:50 PM | ✅ | Flywheel CLAUDE.md context files committed | ~259 |
 | #3045 | 6:12 AM | 🔵 | Flywheel In-Memory Graph Index Architecture Enables 20-50x Token Savings | ~1209 |
+
+### Feb 1, 2026
+
+| ID | Time | T | Title | Read |
+|----|------|---|-------|------|
+| #4447 | 4:31 AM | 🔵 | FTS5 Documentation Requirements: 20+ Files Across Three Repositories | ~768 |
+| #4446 | " | 🔵 | Flywheel MCP Reference Documents 44 Tools Across 11 Categories Without FTS5 | ~819 |
+| #4445 | 4:30 AM | 🔵 | Flywheel's Query-Based Architecture: Metadata Indexing Instead of File Reading | ~615 |
+| #4443 | " | 🔵 | Flywheel Provides search_notes Tool for Filtering Content | ~293 |
 </claude-mem-context>
