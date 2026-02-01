@@ -177,7 +177,7 @@ describe('Proof of Work: Graph Intelligence', () => {
     });
 
     it('should link invoices to projects', () => {
-      const invoiceNote = readFileSync(join(VAULT_DIR, 'invoices', 'INV-2025-047.md'), 'utf-8');
+      const invoiceNote = readFileSync(join(VAULT_DIR, 'invoices', 'INV-2026-001.md'), 'utf-8');
       expect(invoiceNote).toContain('[[Acme Data Migration]]');
     });
   });
@@ -199,7 +199,8 @@ describe('Proof of Work: Graph Intelligence', () => {
     it('should resolve entity names case-insensitively', () => {
       // Entity index should have lowercase keys
       expect(metrics.backlinks.has('acme corp')).toBe(true);
-      expect(metrics.backlinks.has('sarah thompson')).toBe(false); // Sarah links OUT, not IN
+      // Sarah Thompson now has backlinks from meetings (as attendee)
+      expect(metrics.backlinks.has('sarah thompson')).toBe(true);
     });
 
     it('should track unique entities', () => {
