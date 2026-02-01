@@ -1,0 +1,5 @@
+invoice_id,client,project,amount,status,due_date
+INV-2025-047,Acme Corp,Acme Data Migration,7500,sent,2026-02-15
+INV-2025-048,TechStart Inc,TechStart API Redesign,3500,draft,2026-02-28
+INV-2025-046,Meridian Health,Meridian Portal Audit,5000,paid,2026-01-31
+INV-2025-045,Quantum Dynamics,Quantum Legacy Assessment,12000,paid,2025-09-15

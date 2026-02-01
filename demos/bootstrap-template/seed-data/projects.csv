@@ -1,0 +1,6 @@
+name,client,status,start_date,hourly_rate,type
+Acme Data Migration,Acme Corp,active,2026-01-15,150,consulting
+TechStart API Redesign,TechStart Inc,active,2026-01-20,175,development
+GlobalBank Discovery,GlobalBank,proposal,2026-02-01,0,sales
+Meridian Portal Audit,Meridian Health,active,2025-12-01,125,audit
+Quantum Legacy Assessment,Quantum Dynamics,completed,2025-08-01,150,consulting

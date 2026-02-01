@@ -1,0 +1,6 @@
+name,industry,status,contract_type,monthly_retainer
+Acme Corp,Finance,active,retainer,5000
+TechStart Inc,SaaS,active,project,0
+GlobalBank,Banking,potential,,0
+Meridian Health,Healthcare,active,retainer,7500
+Quantum Dynamics,Manufacturing,past,,0
