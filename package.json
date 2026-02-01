@@ -1,6 +1,6 @@
 {
   "name": "@velvetmonkey/flywheel",
-  "version": "1.27.18",
+  "version": "1.27.19",
   "private": true,
   "description": "Graph intelligence for markdown vaults. MCP server for Obsidian.",
   "keywords": [
