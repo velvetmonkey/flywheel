@@ -1,4 +1,4 @@
-> **Part of the Flywheel Suite:** This is the read-only graph intelligence server. See [Flywheel Crank](https://github.com/velvetmonkey/flywheel-crank) for safe vault mutations with auto-commit and undo.
+> **Part of the Flywheel Suite:** This is the read-only graph intelligence server (the "Eyes"). See [Flywheel Crank](https://github.com/velvetmonkey/flywheel-crank) (the "Hands") for safe vault mutations with policies and auto-commit. Read [The Flywheel Platform](https://github.com/velvetmonkey/flywheel-crank/blob/main/docs/PLATFORM.md) for the full architecture.
 
 <div align="center">
   <img src="header.png" alt="Flywheel" width="256"/>

@@ -24,9 +24,20 @@ import {
   type VaultWatcher,
 } from './core/watch/index.js';
 import { exportHubScores } from './core/hubExport.js';
+import { initializeLogger, getLogger } from './core/logging.js';
 
 // Auto-detect vault root, with PROJECT_PATH as override
 const vaultPath: string = process.env.PROJECT_PATH || findVaultRoot();
+
+// Initialize unified logging (disabled by default, configured via .flywheel.json)
+initializeLogger(vaultPath).then(() => {
+  const logger = getLogger();
+  if (logger?.enabled) {
+    console.error(`[Flywheel] Unified logging enabled`);
+  }
+}).catch(() => {
+  // Logging initialization failed, continue without it
+});
 
 // Flywheel config (loaded on startup from .flywheel.json)
 let flywheelConfig: FlywheelConfig = {};
