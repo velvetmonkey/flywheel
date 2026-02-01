@@ -200,7 +200,7 @@ export async function upsertNote(
 
     const vaultFile: VaultFile = {
       path: notePath,
-      fullPath,
+      absolutePath: fullPath,
       modified: stats.mtime,
     };
 
