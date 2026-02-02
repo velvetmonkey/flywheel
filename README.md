@@ -6,13 +6,16 @@
 
 # Flywheel
 
-### Stop burning tokens. Start building agents.
+### MCP server for markdown vault intelligence
 
+[![MCP](https://img.shields.io/badge/MCP-Model%20Context%20Protocol-blueviolet.svg)](https://modelcontextprotocol.io/)
 [![CI](https://github.com/velvetmonkey/flywheel/actions/workflows/ci.yml/badge.svg)](https://github.com/velvetmonkey/flywheel/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/@velvetmonkey/flywheel-mcp.svg)](https://www.npmjs.com/package/@velvetmonkey/flywheel-mcp)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/velvetmonkey/flywheel)
 [![Scale](https://img.shields.io/badge/scale-100k%20notes-brightgreen.svg)](./docs/SCALE_BENCHMARKS.md)
+
+**Stop burning tokens. Start building agents.** Give Claude graph intelligence over your Obsidian vault without reading files.
 
 ## Verified Capabilities
 
