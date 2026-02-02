@@ -180,7 +180,8 @@ if (shouldRegister('system', ['core'])) {
     () => vaultIndex,
     (newIndex) => { vaultIndex = newIndex; },
     () => vaultPath,
-    (newConfig) => { flywheelConfig = newConfig; }
+    (newConfig) => { flywheelConfig = newConfig; },
+    () => stateDb
   );
 }
 
@@ -324,13 +325,15 @@ async function runPostIndexWork(index: VaultIndex) {
 
   // Export hub scores to entity cache (for Flywheel-Crank wikilink prioritization)
   // Also updates StateDb if available
-  await exportHubScores(vaultPath, index, stateDb);
+  await exportHubScores(index, stateDb);
 
   // Now that index is ready, load/infer config
-  const existing = loadConfig(vaultPath);
+  const existing = loadConfig(vaultPath, stateDb);
   const inferred = inferConfig(index, vaultPath);
-  saveConfig(vaultPath, inferred, existing);
-  flywheelConfig = loadConfig(vaultPath);
+  if (stateDb) {
+    saveConfig(stateDb, inferred, existing);
+  }
+  flywheelConfig = loadConfig(vaultPath, stateDb);
 
   if (flywheelConfig.vault_name) {
     console.error(`[Flywheel] Vault: ${flywheelConfig.vault_name}`);
@@ -369,7 +372,7 @@ async function runPostIndexWork(index: VaultIndex) {
             setIndexState('ready');
             console.error(`[flywheel] Index rebuilt in ${Date.now() - startTime}ms`);
             // Re-export hub scores after rebuild (includes StateDb update)
-            await exportHubScores(vaultPath, vaultIndex, stateDb);
+            await exportHubScores(vaultIndex, stateDb);
             // Update cache
             if (stateDb) {
               try {
@@ -422,7 +425,7 @@ async function runPostIndexWork(index: VaultIndex) {
               setIndexState('ready');
               console.error('[flywheel] Index rebuilt successfully');
               // Re-export hub scores after rebuild (includes StateDb update)
-              await exportHubScores(vaultPath, newIndex, stateDb);
+              await exportHubScores(newIndex, stateDb);
               // Update cache
               if (stateDb) {
                 try {

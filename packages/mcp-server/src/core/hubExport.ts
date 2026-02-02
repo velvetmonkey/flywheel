@@ -1,51 +1,20 @@
 /**
- * Hub score export - enriches entity cache with backlink counts
+ * Hub score export - enriches entity data with backlink counts
  *
  * After graph build, this module computes hub scores from backlinks
- * and writes them to the entity cache so Flywheel-Crank can use them
+ * and writes them to SQLite so Flywheel-Crank can use them
  * for wikilink prioritization.
  *
  * Architecture:
  * - Flywheel builds VaultIndex with backlinks (in-memory)
- * - This module exports hub scores to .claude/wikilink-entities.json
- * - Flywheel-Crank reads enriched cache for wikilink suggestions
+ * - This module exports hub scores to SQLite StateDb
+ * - Flywheel-Crank reads hub scores from SQLite for wikilink suggestions
  */
 
-import fs from 'fs/promises';
-import path from 'path';
 import type { VaultIndex } from './types.js';
 import { getBacklinksForNote, normalizeTarget } from './graph.js';
 import type { StateDb } from '@velvetmonkey/vault-core';
 
-/**
- * Entity cache structure (matches vault-core's EntityIndex)
- */
-interface EntityWithAliases {
-  name: string;
-  path: string;
-  aliases: string[];
-  hubScore?: number;
-}
-
-type Entity = string | EntityWithAliases;
-
-interface EntityIndex {
-  technologies: Entity[];
-  acronyms: Entity[];
-  people: Entity[];
-  projects: Entity[];
-  organizations: Entity[];
-  locations: Entity[];
-  concepts: Entity[];
-  other: Entity[];
-  _metadata: {
-    total_entities: number;
-    generated_at: string;
-    vault_path: string;
-    source: string;
-    version?: number;
-  };
-}
 
 /**
  * Compute hub scores from the vault index
@@ -73,63 +42,6 @@ export function computeHubScores(index: VaultIndex): Map<string, number> {
   return hubScores;
 }
 
-/**
- * Enrich an entity with hub score
- */
-function enrichEntity(entity: Entity, hubScores: Map<string, number>): EntityWithAliases {
-  // Convert string entity to object
-  const entityObj: EntityWithAliases = typeof entity === 'string'
-    ? { name: entity, path: '', aliases: [] }
-    : { ...entity };
-
-  // Try to find hub score by path first, then by name
-  let hubScore = 0;
-
-  if (entityObj.path) {
-    const normalizedPath = normalizeTarget(entityObj.path);
-    hubScore = hubScores.get(normalizedPath) ?? 0;
-  }
-
-  if (hubScore === 0) {
-    const normalizedName = entityObj.name.toLowerCase();
-    hubScore = hubScores.get(normalizedName) ?? 0;
-  }
-
-  entityObj.hubScore = hubScore;
-  return entityObj;
-}
-
-/**
- * Enrich all entities in an index with hub scores
- */
-function enrichEntityIndex(index: EntityIndex, hubScores: Map<string, number>): EntityIndex {
-  const categories: (keyof Omit<EntityIndex, '_metadata'>)[] = [
-    'technologies',
-    'acronyms',
-    'people',
-    'projects',
-    'organizations',
-    'locations',
-    'concepts',
-    'other',
-  ];
-
-  const enriched: EntityIndex = {
-    ...index,
-    _metadata: {
-      ...index._metadata,
-      generated_at: new Date().toISOString(),
-    },
-  };
-
-  for (const category of categories) {
-    if (enriched[category]) {
-      enriched[category] = enriched[category].map(e => enrichEntity(e, hubScores));
-    }
-  }
-
-  return enriched;
-}
 
 /**
  * Update hub scores directly in SQLite database
@@ -159,82 +71,35 @@ function updateHubScoresInDb(stateDb: StateDb, hubScores: Map<string, number>): 
 }
 
 /**
- * Export hub scores to the entity cache
+ * Export hub scores to SQLite StateDb
  *
- * This reads the existing entity cache, enriches it with hub scores
- * computed from the vault index, and writes it back.
+ * Computes hub scores from the vault index and writes them to SQLite.
+ * Flywheel-Crank reads these scores for wikilink prioritization.
  *
- * When stateDb is provided, hub scores are also written to SQLite.
- *
- * @param vaultPath - Path to the vault
  * @param vaultIndex - Built vault index with backlinks
- * @param stateDb - Optional StateDb for SQLite storage
- * @returns Number of entities enriched, or -1 if cache doesn't exist
+ * @param stateDb - StateDb for SQLite storage (required)
+ * @returns Number of entities updated with hub scores
  */
 export async function exportHubScores(
-  vaultPath: string,
   vaultIndex: VaultIndex,
-  stateDb?: StateDb | null
+  stateDb: StateDb | null | undefined
 ): Promise<number> {
-  const cachePath = path.join(vaultPath, '.claude', 'wikilink-entities.json');
-
-  // Check if cache exists
-  try {
-    await fs.access(cachePath);
-  } catch {
-    console.error('[Flywheel] Entity cache not found, skipping hub score export');
-    return -1;
-  }
-
-  // Load existing cache
-  let entityIndex: EntityIndex;
-  try {
-    const content = await fs.readFile(cachePath, 'utf-8');
-    entityIndex = JSON.parse(content) as EntityIndex;
-  } catch (e) {
-    console.error('[Flywheel] Failed to load entity cache:', e);
-    return -1;
+  if (!stateDb) {
+    console.error('[Flywheel] No StateDb available, skipping hub score export');
+    return 0;
   }
 
   // Compute hub scores from vault index
   const hubScores = computeHubScores(vaultIndex);
   console.error(`[Flywheel] Computed hub scores for ${hubScores.size} notes`);
 
-  // Update hub scores in SQLite if available
-  if (stateDb) {
-    try {
-      const dbUpdated = updateHubScoresInDb(stateDb, hubScores);
-      console.error(`[Flywheel] Updated ${dbUpdated} hub scores in StateDb`);
-    } catch (e) {
-      console.error('[Flywheel] Failed to update hub scores in StateDb:', e);
-      // Non-fatal - continue with JSON export
-    }
-  }
-
-  // Enrich entities with hub scores
-  const enriched = enrichEntityIndex(entityIndex, hubScores);
-
-  // Count entities with hub scores > 0
-  let hubCount = 0;
-  const categories: (keyof Omit<EntityIndex, '_metadata'>)[] = [
-    'technologies', 'acronyms', 'people', 'projects',
-    'organizations', 'locations', 'concepts', 'other',
-  ];
-  for (const category of categories) {
-    for (const entity of enriched[category] ?? []) {
-      if (typeof entity !== 'string' && entity.hubScore && entity.hubScore > 0) {
-        hubCount++;
-      }
-    }
-  }
-
-  // Save enriched cache
+  // Update hub scores in SQLite
   try {
-    await fs.writeFile(cachePath, JSON.stringify(enriched, null, 2), 'utf-8');
-    console.error(`[Flywheel] Exported hub scores: ${hubCount} entities with backlinks`);
-    return hubCount;
+    const updated = updateHubScoresInDb(stateDb, hubScores);
+    console.error(`[Flywheel] Updated ${updated} hub scores in StateDb`);
+    return updated;
   } catch (e) {
-    console.error('[Flywheel] Failed to save enriched entity cache:', e);
-    return -1;
+    console.error('[Flywheel] Failed to update hub scores in StateDb:', e);
+    return 0;
   }
 }

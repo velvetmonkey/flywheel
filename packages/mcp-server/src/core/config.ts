@@ -1,6 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import type { VaultIndex } from './types.js';
+import {
+  loadFlywheelConfigFromDb,
+  saveFlywheelConfigToDb,
+  type StateDb,
+} from '@velvetmonkey/vault-core';
 
 /** Path configuration for periodic notes and templates */
 export interface FlywheelPaths {
@@ -24,10 +29,27 @@ const DEFAULT_CONFIG: FlywheelConfig = {
 };
 
 /**
- * Load .flywheel.json from the .claude/ folder.
- * Returns defaults if file doesn't exist (no auto-create).
+ * Load config from SQLite StateDb or fallback to .flywheel.json.
+ * Returns defaults if neither source has config.
+ *
+ * @param vaultPath - Path to vault root
+ * @param stateDb - Optional StateDb for SQLite storage
  */
-export function loadConfig(vaultPath: string): FlywheelConfig {
+export function loadConfig(vaultPath: string, stateDb?: StateDb | null): FlywheelConfig {
+  // Try SQLite first if available
+  if (stateDb) {
+    try {
+      const dbConfig = loadFlywheelConfigFromDb(stateDb);
+      if (dbConfig && Object.keys(dbConfig).length > 0) {
+        console.error('[Flywheel] Loaded config from StateDb');
+        return { ...DEFAULT_CONFIG, ...dbConfig as FlywheelConfig };
+      }
+    } catch (err) {
+      console.error('[Flywheel] Failed to load config from StateDb:', err);
+    }
+  }
+
+  // Fallback to JSON file
   const claudeDir = path.join(vaultPath, '.claude');
   const configPath = path.join(claudeDir, '.flywheel.json');
   try {
@@ -154,21 +176,19 @@ export function inferConfig(index: VaultIndex, vaultPath?: string): FlywheelConf
 }
 
 /**
- * Save config to .claude/.flywheel.json.
+ * Save config to SQLite StateDb.
  * Merges inferred values with existing config (existing wins).
+ *
+ * @param stateDb - StateDb for SQLite storage
+ * @param inferred - Inferred config from vault analysis
+ * @param existing - Existing config (takes precedence over inferred)
  */
 export function saveConfig(
-  vaultPath: string,
+  stateDb: StateDb,
   inferred: FlywheelConfig,
   existing?: FlywheelConfig
 ): void {
-  const claudeDir = path.join(vaultPath, '.claude');
-  const configPath = path.join(claudeDir, '.flywheel.json');
   try {
-    // Ensure .claude directory exists
-    if (!fs.existsSync(claudeDir)) {
-      fs.mkdirSync(claudeDir, { recursive: true });
-    }
     // Existing config values take precedence over inferred
     // Deep merge paths object so existing path values override inferred
     const mergedPaths: FlywheelPaths = {
@@ -182,10 +202,9 @@ export function saveConfig(
       // Only include paths if there are any detected values
       ...(Object.keys(mergedPaths).length > 0 ? { paths: mergedPaths } : {}),
     };
-    const content = JSON.stringify(merged, null, 2);
-    fs.writeFileSync(configPath, content, 'utf-8');
-    console.error(`[Flywheel] Saved .claude/.flywheel.json`);
+    saveFlywheelConfigToDb(stateDb, merged as Record<string, unknown>);
+    console.error('[Flywheel] Saved config to StateDb');
   } catch (err) {
-    console.error('[Flywheel] Failed to save .claude/.flywheel.json:', err);
+    console.error('[Flywheel] Failed to save config to StateDb:', err);
   }
 }

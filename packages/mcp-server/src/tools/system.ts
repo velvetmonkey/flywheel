@@ -9,6 +9,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { VaultIndex } from '../core/types.js';
 import { buildVaultIndex, setIndexState, setIndexError } from '../core/graph.js';
 import { loadConfig, inferConfig, saveConfig, type FlywheelConfig } from '../core/config.js';
+import type { StateDb } from '@velvetmonkey/vault-core';
 import { MAX_LIMIT } from '../core/constants.js';
 import { requireIndex } from '../core/indexGuard.js';
 
@@ -20,7 +21,8 @@ export function registerSystemTools(
   getIndex: () => VaultIndex,
   setIndex: (index: VaultIndex) => void,
   getVaultPath: () => string,
-  setConfig?: (config: FlywheelConfig) => void
+  setConfig?: (config: FlywheelConfig) => void,
+  getStateDb?: () => StateDb | null
 ) {
   // refresh_index - Rebuild the vault index without server restart
   const RefreshIndexOutputSchema = {
@@ -64,10 +66,13 @@ export function registerSystemTools(
 
         // Infer config from vault, merge with existing, save
         if (setConfig) {
-          const existing = loadConfig(vaultPath);
+          const stateDb = getStateDb?.();
+          const existing = loadConfig(vaultPath, stateDb);
           const inferred = inferConfig(newIndex, vaultPath);
-          saveConfig(vaultPath, inferred, existing);
-          setConfig(loadConfig(vaultPath));
+          if (stateDb) {
+            saveConfig(stateDb, inferred, existing);
+          }
+          setConfig(loadConfig(vaultPath, stateDb));
         }
 
         const output: RefreshIndexOutput = {
