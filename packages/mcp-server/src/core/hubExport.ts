@@ -15,6 +15,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import type { VaultIndex } from './types.js';
 import { getBacklinksForNote, normalizeTarget } from './graph.js';
+import type { StateDb } from '@velvetmonkey/vault-core';
 
 /**
  * Entity cache structure (matches vault-core's EntityIndex)
@@ -131,18 +132,49 @@ function enrichEntityIndex(index: EntityIndex, hubScores: Map<string, number>): 
 }
 
 /**
+ * Update hub scores directly in SQLite database
+ *
+ * @param stateDb - State database instance
+ * @param hubScores - Map of entity name -> backlink count
+ * @returns Number of entities updated
+ */
+function updateHubScoresInDb(stateDb: StateDb, hubScores: Map<string, number>): number {
+  // Prepare an update statement for hub scores
+  const updateStmt = stateDb.db.prepare(`
+    UPDATE entities SET hub_score = ? WHERE name_lower = ?
+  `);
+
+  let updated = 0;
+  const transaction = stateDb.db.transaction(() => {
+    for (const [nameLower, score] of hubScores) {
+      const result = updateStmt.run(score, nameLower);
+      if (result.changes > 0) {
+        updated++;
+      }
+    }
+  });
+
+  transaction();
+  return updated;
+}
+
+/**
  * Export hub scores to the entity cache
  *
  * This reads the existing entity cache, enriches it with hub scores
  * computed from the vault index, and writes it back.
  *
+ * When stateDb is provided, hub scores are also written to SQLite.
+ *
  * @param vaultPath - Path to the vault
  * @param vaultIndex - Built vault index with backlinks
+ * @param stateDb - Optional StateDb for SQLite storage
  * @returns Number of entities enriched, or -1 if cache doesn't exist
  */
 export async function exportHubScores(
   vaultPath: string,
-  vaultIndex: VaultIndex
+  vaultIndex: VaultIndex,
+  stateDb?: StateDb | null
 ): Promise<number> {
   const cachePath = path.join(vaultPath, '.claude', 'wikilink-entities.json');
 
@@ -167,6 +199,17 @@ export async function exportHubScores(
   // Compute hub scores from vault index
   const hubScores = computeHubScores(vaultIndex);
   console.error(`[Flywheel] Computed hub scores for ${hubScores.size} notes`);
+
+  // Update hub scores in SQLite if available
+  if (stateDb) {
+    try {
+      const dbUpdated = updateHubScoresInDb(stateDb, hubScores);
+      console.error(`[Flywheel] Updated ${dbUpdated} hub scores in StateDb`);
+    } catch (e) {
+      console.error('[Flywheel] Failed to update hub scores in StateDb:', e);
+      // Non-fatal - continue with JSON export
+    }
+  }
 
   // Enrich entities with hub scores
   const enriched = enrichEntityIndex(entityIndex, hubScores);

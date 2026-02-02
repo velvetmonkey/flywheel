@@ -14,6 +14,12 @@ import {
   getFTS5State,
   type FTS5Result,
 } from '../core/fts5.js';
+import {
+  searchEntities,
+  searchEntitiesPrefix,
+  type StateDb,
+  type EntitySearchResult,
+} from '@velvetmonkey/vault-core';
 
 /**
  * Check if a note matches frontmatter filters
@@ -127,7 +133,8 @@ function sortNotes(
 export function registerQueryTools(
   server: McpServer,
   getIndex: () => VaultIndex,
-  getVaultPath: () => string
+  getVaultPath: () => string,
+  getStateDb: () => StateDb | null
 ): void {
   // search_notes - Search notes by frontmatter, tags, and folders
   const NoteResultSchema = z.object({
@@ -457,6 +464,118 @@ export function registerQueryTools(
             {
               type: 'text',
               text: JSON.stringify(output, null, 2),
+            },
+          ],
+          structuredContent: output,
+        };
+      }
+    }
+  );
+
+  // search_entities - Search vault entities using FTS5 full-text search
+  const EntityResultSchema = z.object({
+    id: z.number().describe('Entity ID'),
+    name: z.string().describe('Entity name'),
+    path: z.string().describe('Path to entity note'),
+    category: z.string().describe('Entity category (technologies, people, projects, etc.)'),
+    aliases: z.array(z.string()).describe('Entity aliases'),
+    hubScore: z.number().describe('Hub score (backlink count)'),
+    rank: z.number().describe('Search relevance rank'),
+  });
+
+  const SearchEntitiesOutputSchema = {
+    entities: z.array(EntityResultSchema).describe('Matching entities'),
+    count: z.number().describe('Number of results returned'),
+    query: z.string().describe('The search query that was executed'),
+  };
+
+  type SearchEntitiesOutput = {
+    entities: EntitySearchResult[];
+    count: number;
+    query: string;
+  };
+
+  server.registerTool(
+    'search_entities',
+    {
+      title: 'Search Entities',
+      description:
+        'Search vault entities (people, projects, technologies, etc.) using FTS5 full-text search with Porter stemming. Supports word variations (running matches run/runs/ran), prefix matching (auth*), and phrase search.',
+      inputSchema: {
+        query: z
+          .string()
+          .describe('Search query. Supports stemming, prefix matching (term*), phrases.'),
+        limit: z
+          .number()
+          .default(20)
+          .describe('Maximum number of results to return'),
+        prefix: z
+          .boolean()
+          .default(false)
+          .describe('Enable prefix matching (for autocomplete)'),
+      },
+      outputSchema: SearchEntitiesOutputSchema,
+    },
+    async ({
+      query,
+      limit: requestedLimit = 20,
+      prefix = false,
+    }): Promise<{
+      content: Array<{ type: 'text'; text: string }>;
+      structuredContent: SearchEntitiesOutput;
+    }> => {
+      const stateDb = getStateDb();
+
+      if (!stateDb) {
+        const output: SearchEntitiesOutput = {
+          entities: [],
+          count: 0,
+          query,
+        };
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({ error: 'StateDb not initialized', ...output }, null, 2),
+            },
+          ],
+          structuredContent: output,
+        };
+      }
+
+      const limit = Math.min(requestedLimit, MAX_LIMIT);
+
+      try {
+        const results = prefix
+          ? searchEntitiesPrefix(stateDb, query, limit)
+          : searchEntities(stateDb, query, limit);
+
+        const output: SearchEntitiesOutput = {
+          entities: results,
+          count: results.length,
+          query,
+        };
+
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(output, null, 2),
+            },
+          ],
+          structuredContent: output,
+        };
+      } catch (err) {
+        const output: SearchEntitiesOutput = {
+          entities: [],
+          count: 0,
+          query,
+        };
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({ error: err instanceof Error ? err.message : String(err), ...output }, null, 2),
             },
           ],
           structuredContent: output,

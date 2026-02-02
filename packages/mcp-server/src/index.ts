@@ -25,6 +25,12 @@ import {
 } from './core/watch/index.js';
 import { exportHubScores } from './core/hubExport.js';
 import { initializeLogger, getLogger } from './core/logging.js';
+import {
+  openStateDb,
+  type StateDb,
+  migrateFromJsonToSqlite,
+  getLegacyPaths,
+} from '@velvetmonkey/vault-core';
 
 // Auto-detect vault root, with PROJECT_PATH as override
 const vaultPath: string = process.env.PROJECT_PATH || findVaultRoot();
@@ -44,6 +50,9 @@ let flywheelConfig: FlywheelConfig = {};
 
 // Vault index (built on startup)
 let vaultIndex: VaultIndex;
+
+// State database (SQLite with FTS5)
+let stateDb: StateDb | null = null;
 
 // ============================================================================
 // Tool Category System
@@ -179,7 +188,7 @@ if (shouldRegister('wikilinks', ['graph'])) {
 
 // SEARCH: Note search tools
 if (shouldRegister('query', ['search'])) {
-  registerQueryTools(server, () => vaultIndex, () => vaultPath);
+  registerQueryTools(server, () => vaultIndex, () => vaultPath, () => stateDb);
 }
 
 // PRIMITIVES: Contains tools for tasks, structure, temporal, schema, and graph-advanced
@@ -228,8 +237,31 @@ async function main() {
       const duration = Date.now() - startTime;
       console.error(`Vault index ready in ${duration}ms`);
 
+      // Initialize StateDb (auto-creates if missing)
+      try {
+        stateDb = openStateDb(vaultPath);
+        console.error('[Flywheel] StateDb initialized');
+
+        // Auto-migrate from JSON on first run
+        const legacyPaths = getLegacyPaths(vaultPath);
+        const migration = await migrateFromJsonToSqlite(stateDb, legacyPaths);
+        if (migration.entitiesMigrated > 0) {
+          console.error(`[Flywheel] Migrated ${migration.entitiesMigrated} entities from JSON`);
+        }
+        if (migration.recencyMigrated > 0) {
+          console.error(`[Flywheel] Migrated ${migration.recencyMigrated} recency records`);
+        }
+        if (migration.crankStateMigrated > 0) {
+          console.error(`[Flywheel] Migrated ${migration.crankStateMigrated} crank state entries`);
+        }
+      } catch (err) {
+        console.error('[Flywheel] StateDb init failed:', err);
+        // Non-fatal - search_entities tool will return error but other tools work
+      }
+
       // Export hub scores to entity cache (for Flywheel-Crank wikilink prioritization)
-      await exportHubScores(vaultPath, index);
+      // Also updates StateDb if available
+      await exportHubScores(vaultPath, index, stateDb);
 
       // Now that index is ready, load/infer config
       const existing = loadConfig(vaultPath);
@@ -273,8 +305,8 @@ async function main() {
                 vaultIndex = await buildVaultIndex(vaultPath);
                 setIndexState('ready');
                 console.error(`[flywheel] Index rebuilt in ${Date.now() - startTime}ms`);
-                // Re-export hub scores after rebuild
-                await exportHubScores(vaultPath, vaultIndex);
+                // Re-export hub scores after rebuild (includes StateDb update)
+                await exportHubScores(vaultPath, vaultIndex, stateDb);
               } catch (err) {
                 setIndexState('error');
                 setIndexError(err instanceof Error ? err : new Error(String(err)));
@@ -318,8 +350,8 @@ async function main() {
                   vaultIndex = index;
                   setIndexState('ready');
                   console.error('[flywheel] Index rebuilt successfully');
-                  // Re-export hub scores after rebuild
-                  await exportHubScores(vaultPath, index);
+                  // Re-export hub scores after rebuild (includes StateDb update)
+                  await exportHubScores(vaultPath, index, stateDb);
                 })
                 .catch((err) => {
                   setIndexState('error');

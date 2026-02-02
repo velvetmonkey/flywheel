@@ -16,8 +16,10 @@ import { registerBidirectionalTools } from '../../src/tools/bidirectional.js';
 import { registerSchemaTools } from '../../src/tools/schema.js';
 import { registerComputedTools } from '../../src/tools/computed.js';
 import { registerMigrationTools } from '../../src/tools/migrations.js';
+import { openStateDb, type StateDb } from '@velvetmonkey/vault-core';
 
 export interface TestServerContext {
+  stateDb: StateDb | null;
   server: McpServer;
   vaultIndex: VaultIndex;
   vaultPath: string;
@@ -33,6 +35,14 @@ export async function createTestServer(vaultPath: string): Promise<TestServerCon
 
   // Mark index as ready (required by indexGuard)
   setIndexState('ready');
+
+  // Open or create StateDb for the vault
+  let stateDb: StateDb | null = null;
+  try {
+    stateDb = openStateDb(vaultPath);
+  } catch (err) {
+    console.error('Failed to open StateDb:', err);
+  }
 
   // Create a new server instance
   const server = new McpServer({
@@ -65,7 +75,8 @@ export async function createTestServer(vaultPath: string): Promise<TestServerCon
   registerQueryTools(
     server,
     () => currentIndex,
-    () => vaultPath
+    () => vaultPath,
+    () => stateDb
   );
 
   registerSystemTools(
@@ -113,5 +124,6 @@ export async function createTestServer(vaultPath: string): Promise<TestServerCon
     server,
     vaultIndex,
     vaultPath,
+    stateDb,
   };
 }
