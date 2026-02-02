@@ -14,6 +14,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:demos": "vitest run test/docs/",
     "test:watcher": "vitest run test/core/watch/",
     "test:watcher:stress": "vitest run test/stress/watcher*.test.ts",
     "test:watcher:chaos": "vitest run test/chaos/watcher*.test.ts",

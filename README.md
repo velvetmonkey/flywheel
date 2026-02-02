@@ -236,6 +236,9 @@ git clone https://github.com/velvetmonkey/flywheel-crank
 # Run flywheel tests (395 tests - read tools, demos)
 cd flywheel && npm install && npm test
 
+# Run demo documentation tests
+cd flywheel && npm run test:demos
+
 # Run flywheel-crank tests (1,326 tests - mutations, scale, security)
 cd ../flywheel-crank && npm install && npm test
 ```
@@ -246,6 +249,13 @@ cd ../flywheel-crank && npm install && npm test
 |------|-------|--------|
 | **flywheel** | 395 | Graph queries, entity indexing, file watching |
 | **flywheel-crank** | 1,326 | Mutations at scale, format preservation, security |
+
+### Test Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `npm test` | Run all tests |
+| `npm run test:demos` | Verify README examples against demo vaults |
 
 ---
 
