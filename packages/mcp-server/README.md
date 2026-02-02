@@ -6,6 +6,12 @@ The intelligence layer of [Flywheel](https://github.com/velvetmonkey/flywheel) â
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL_3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-blue)](https://modelcontextprotocol.io/)
 
+## Requirements
+
+- **Node.js 18-22** (LTS recommended)
+  - Node 22 LTS has prebuilt binaries and works out of the box
+  - Node 23+ may require native compilation of `better-sqlite3` (slower install)
+
 ## Installation
 
 ### Via `.mcp.json`
