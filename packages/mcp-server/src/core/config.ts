@@ -1,4 +1,3 @@
-import * as fs from 'fs';
 import * as path from 'path';
 import type { VaultIndex } from './types.js';
 import {
@@ -29,14 +28,12 @@ const DEFAULT_CONFIG: FlywheelConfig = {
 };
 
 /**
- * Load config from SQLite StateDb or fallback to .flywheel.json.
- * Returns defaults if neither source has config.
+ * Load config from SQLite StateDb.
+ * Returns defaults if StateDb unavailable or empty.
  *
- * @param vaultPath - Path to vault root
- * @param stateDb - Optional StateDb for SQLite storage
+ * @param stateDb - StateDb for SQLite storage
  */
-export function loadConfig(vaultPath: string, stateDb?: StateDb | null): FlywheelConfig {
-  // Try SQLite first if available
+export function loadConfig(stateDb?: StateDb | null): FlywheelConfig {
   if (stateDb) {
     try {
       const dbConfig = loadFlywheelConfigFromDb(stateDb);
@@ -49,19 +46,6 @@ export function loadConfig(vaultPath: string, stateDb?: StateDb | null): Flywhee
     }
   }
 
-  // Fallback to JSON file
-  const claudeDir = path.join(vaultPath, '.claude');
-  const configPath = path.join(claudeDir, '.flywheel.json');
-  try {
-    if (fs.existsSync(configPath)) {
-      const content = fs.readFileSync(configPath, 'utf-8');
-      const config = JSON.parse(content);
-      // Merge with defaults so new config options get their defaults
-      return { ...DEFAULT_CONFIG, ...config };
-    }
-  } catch (err) {
-    console.error('[Flywheel] Failed to load .flywheel.json:', err);
-  }
   return DEFAULT_CONFIG;
 }
 

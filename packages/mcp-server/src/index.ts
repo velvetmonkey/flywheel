@@ -328,12 +328,12 @@ async function runPostIndexWork(index: VaultIndex) {
   await exportHubScores(index, stateDb);
 
   // Now that index is ready, load/infer config
-  const existing = loadConfig(vaultPath, stateDb);
+  const existing = loadConfig(stateDb);
   const inferred = inferConfig(index, vaultPath);
   if (stateDb) {
     saveConfig(stateDb, inferred, existing);
   }
-  flywheelConfig = loadConfig(vaultPath, stateDb);
+  flywheelConfig = loadConfig(stateDb);
 
   if (flywheelConfig.vault_name) {
     console.error(`[Flywheel] Vault: ${flywheelConfig.vault_name}`);

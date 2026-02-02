@@ -67,12 +67,12 @@ export function registerSystemTools(
         // Infer config from vault, merge with existing, save
         if (setConfig) {
           const stateDb = getStateDb?.();
-          const existing = loadConfig(vaultPath, stateDb);
+          const existing = loadConfig(stateDb);
           const inferred = inferConfig(newIndex, vaultPath);
           if (stateDb) {
             saveConfig(stateDb, inferred, existing);
           }
-          setConfig(loadConfig(vaultPath, stateDb));
+          setConfig(loadConfig(stateDb));
         }
 
         const output: RefreshIndexOutput = {
