@@ -19,6 +19,7 @@
     "test:watcher:chaos": "vitest run test/chaos/watcher*.test.ts",
     "test:platform": "vitest run test/platform/",
     "test:ci": "vitest run --reporter=github-actions",
+    "lint": "npx tsc --noEmit",
     "inspect": "npx @modelcontextprotocol/inspector npx tsx src/index.ts",
     "prepublishOnly": "npm run build"
   },
@@ -70,6 +71,6 @@
   },
   "homepage": "https://github.com/velvetmonkey/flywheel#readme",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }
