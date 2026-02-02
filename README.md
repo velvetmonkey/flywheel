@@ -24,6 +24,22 @@
 
 ---
 
+## See It Work
+
+**Watch CI build a knowledge graph from scratch:**
+
+[![Proof of Work](https://github.com/velvetmonkey/flywheel-mcp/actions/workflows/proof-of-work.yml/badge.svg)](https://github.com/velvetmonkey/flywheel-mcp/actions/workflows/proof-of-work.yml)
+
+Every push:
+1. Creates a vault from CSV seed data
+2. Builds the entity index
+3. Validates 100+ notes, 150+ wikilinks
+4. Publishes metrics as artifacts
+
+[View latest run →](https://github.com/velvetmonkey/flywheel-mcp/actions/workflows/proof-of-work.yml)
+
+---
+
 Claude reading files on every query? Those tokens add up fast.
 
 Flywheel queries an in-memory index instead of reading files. Graph queries (backlinks, tags, tasks) return structured results without touching file content.
@@ -186,6 +202,31 @@ People doing interesting work with markdown knowledge bases:
 
 - [Star on GitHub](https://github.com/velvetmonkey/flywheel) — helps others discover the project
 - [Report issues or share ideas](https://github.com/velvetmonkey/flywheel/issues) — bugs, features, workflow tips
+
+---
+
+## Prove It Yourself
+
+Don't trust marketing. Run the tests:
+
+```bash
+# Clone the ecosystem
+git clone https://github.com/velvetmonkey/flywheel-mcp
+git clone https://github.com/velvetmonkey/flywheel-crank
+
+# Run flywheel tests (395 tests - read tools, demos)
+cd flywheel-mcp && npm install && npm test
+
+# Run flywheel-crank tests (1,326 tests - mutations, scale, security)
+cd ../flywheel-crank && npm install && npm test
+```
+
+**Total: 1,721 tests** proving the ecosystem works.
+
+| Repo | Tests | Proves |
+|------|-------|--------|
+| **flywheel** | 395 | Graph queries, entity indexing, file watching |
+| **flywheel-crank** | 1,326 | Mutations at scale, format preservation, security |
 
 ---
 
