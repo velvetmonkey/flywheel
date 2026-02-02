@@ -12,6 +12,11 @@ import type { VaultNote, VaultIndex, Backlink, OutLink } from './types.js';
 import type { VaultFile } from './vault.js';
 import { scanVault } from './vault.js';
 import type { StateDb, VaultIndexCacheData } from '@velvetmonkey/vault-core';
+import {
+  loadVaultIndexCache,
+  getVaultIndexCacheInfo,
+  saveVaultIndexCache,
+} from '@velvetmonkey/vault-core';
 import { parseNote } from './parser.js';
 
 /** Default timeout for vault indexing (5 minutes) */
@@ -532,24 +537,30 @@ export function deserializeVaultIndex(data: VaultIndexCacheData): VaultIndex {
 
 /**
  * Load VaultIndex from cache if valid, otherwise return null
+ *
+ * @param stateDb - State database
+ * @param scannedFileCount - Number of files found by scanVault (may be higher than parsed notes)
+ * @param maxAgeMs - Maximum cache age in milliseconds (default: 24 hours)
+ * @param tolerancePercent - Allowed mismatch between cached notes and scanned files (default: 5%)
  */
 export function loadVaultIndexFromCache(
   stateDb: StateDb,
-  actualNoteCount: number,
-  maxAgeMs: number = 24 * 60 * 60 * 1000
+  scannedFileCount: number,
+  maxAgeMs: number = 24 * 60 * 60 * 1000,
+  tolerancePercent: number = 5
 ): VaultIndex | null {
-  // Import dynamically to avoid circular dependencies
-  const { loadVaultIndexCache, getVaultIndexCacheInfo } = require('@velvetmonkey/vault-core');
-
   const info = getVaultIndexCacheInfo(stateDb);
   if (!info) {
     console.error('[Flywheel] No cached index found');
     return null;
   }
 
-  // Validate cache
-  if (info.noteCount !== actualNoteCount) {
-    console.error(`[Flywheel] Cache invalid: note count mismatch (${info.noteCount} vs ${actualNoteCount})`);
+  // Validate cache - allow tolerance for parse failures
+  // (cached noteCount is parsed notes, scannedFileCount includes unparseable files)
+  const minExpected = Math.floor(scannedFileCount * (1 - tolerancePercent / 100));
+  const maxExpected = Math.ceil(scannedFileCount * (1 + tolerancePercent / 100));
+  if (info.noteCount < minExpected || info.noteCount > maxExpected) {
+    console.error(`[Flywheel] Cache invalid: note count mismatch (${info.noteCount} cached vs ${scannedFileCount} scanned, tolerance ${tolerancePercent}%)`);
     return null;
   }
 
@@ -574,7 +585,6 @@ export function loadVaultIndexFromCache(
  * Save VaultIndex to cache
  */
 export function saveVaultIndexToCache(stateDb: StateDb, index: VaultIndex): void {
-  const { saveVaultIndexCache } = require('@velvetmonkey/vault-core');
   const data = serializeVaultIndex(index);
   saveVaultIndexCache(stateDb, data);
   console.error(`[Flywheel] Saved index to cache (${index.notes.size} notes)`);
