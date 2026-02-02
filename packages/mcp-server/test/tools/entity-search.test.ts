@@ -54,11 +54,15 @@ describe('Entity Search Tool (search_entities)', () => {
   });
 
   afterAll(() => {
-    // Clean up test database
-    if (context.stateDb) {
-      context.stateDb.close();
+    // Clean up test database - wrapped in try-catch for Windows file locking
+    try {
+      if (context.stateDb) {
+        context.stateDb.close();
+      }
+      deleteStateDb(FIXTURES_PATH);
+    } catch {
+      // File may still be locked on Windows - ignore cleanup failure
     }
-    deleteStateDb(FIXTURES_PATH);
   });
 
   describe('Basic Search Functionality', () => {
