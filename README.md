@@ -28,7 +28,7 @@
 
 **Watch CI build a knowledge graph from scratch:**
 
-[![Proof of Work](https://github.com/velvetmonkey/flywheel-mcp/actions/workflows/proof-of-work.yml/badge.svg)](https://github.com/velvetmonkey/flywheel-mcp/actions/workflows/proof-of-work.yml)
+[![Proof of Work](https://github.com/velvetmonkey/flywheel/actions/workflows/proof-of-work.yml/badge.svg)](https://github.com/velvetmonkey/flywheel/actions/workflows/proof-of-work.yml)
 
 Every push:
 1. Creates a vault from CSV seed data
@@ -36,7 +36,7 @@ Every push:
 3. Validates 100+ notes, 150+ wikilinks
 4. Publishes metrics as artifacts
 
-[View latest run →](https://github.com/velvetmonkey/flywheel-mcp/actions/workflows/proof-of-work.yml)
+[View latest run →](https://github.com/velvetmonkey/flywheel/actions/workflows/proof-of-work.yml)
 
 ---
 
@@ -79,57 +79,73 @@ See [Configuration](docs/CONFIGURATION.md) for environment variables, tool filte
 
 ## See It In Action
 
-### Finding Your Tasks
+### Carter Consultancy: Meeting Prep in 30 Seconds
 
-**Without Flywheel:** Claude reads through notes to find tasks—and re-reads them for follow-up queries.
-**With Flywheel:** Queries the frontmatter index. Repeated lookups cost almost nothing.
+You're Carter, a solo consultant. Three active clients, $200K in annual revenue, and a meeting with Acme Corp in 10 minutes. You haven't looked at their file in weeks.
 
+**The Prompt:**
 ```
-You: Find all my tasks tagged #urgent across all notes
-
-Claude: [uses get_all_tasks with filter]
-
-Found 7 urgent tasks:
-- [ ] Deploy API to prod #urgent (project-alpha.md, due tomorrow)
-- [ ] Review security audit #urgent (security-notes.md, overdue)
-- [ ] Call client about invoice #urgent (client-acme.md)
-- [ ] Fix production bug #urgent (bug-tracker.md, due today)
-...
-
-3 are overdue - want me to prioritize them?
+You: What do I need to know about Acme Corp before this call?
 ```
 
-### Last-Minute Meeting Prep
-
-**Without Flywheel:** Claude reads through files to gather context.
-**With Flywheel:** Targeted queries return just what's needed—fast and token-efficient.
-
+**Claude Uses Flywheel:**
 ```
-You: I have a client meeting in 10 minutes - show me everything about Acme Corp
-
-Claude: [uses search_notes + get_backlinks]
-
-Found 12 notes in 2 seconds:
-- Client: Acme Corp.md (main hub, 8 backlinks)
-- 2025-12-15 Acme Kickoff.md
-- Acme Invoice #4521.md (pending payment)
-- Acme Feature Requests.md (3 open items)
-- 2026-01-20 Acme Standup.md (last meeting notes)
-...
-
-Want a quick summary before you join?
+[search_notes: "Acme Corp"]
+[get_backlinks: "clients/Acme Corp.md"]
+[get_note_metadata: "clients/Acme Corp.md"]
 ```
 
-### Discovering Relationships
+**The Answer (2 seconds, ~200 tokens):**
+```
+Acme Corp - Quick Brief:
+━━━━━━━━━━━━━━━━━━━━━━━━
+Contact: Sarah Mitchell, VP Technology
+Status: Active - Phase 2 of data migration
+
+Current Project: [[Acme Data Migration]]
+  Budget: $75,000 | Billed: $42,000
+  Timeline: Oct 2025 - Mar 2026
+
+Pending: [[INV-2025-048]] - $12,000 (December)
+Opportunity: [[Acme Analytics Add-on]] - $35,000 proposal
+
+Last touch: 2025-12-30
+```
+
+**Without Flywheel:** Claude reads 12 files (~6,000 tokens) to find this.
+**With Flywheel:** Graph query returns structured data. 30× more efficient.
+
+### Follow-Up: "What If They Go Amber?"
 
 ```
-You: What connects my meeting notes to the Q4 strategy?
+You: If Acme delays to Q3, what happens to my Q1 revenue?
 
-Claude: [uses get_shortest_path]
+Claude: [get_backlinks + frontmatter queries across projects/]
 
-Found a 3-hop connection:
-  Meeting Notes → [[Client Feedback]] → [[Product Roadmap]] → Q4 Strategy
+Impact Analysis:
+━━━━━━━━━━━━━━━
+If Acme Data Migration slips:
+  - Q1 gap: $33,000 (remaining Acme budget)
+  - Current Q1 pipeline: $42,000
+
+Mitigation options:
+  - [[Beta Corp Dashboard]] needs React help (understaffed)
+  - [[Stacy Thompson]] at 40% utilization - available for reallocation
+
+Your Q1 stays green if Beta Corp accelerates.
 ```
+
+This is graph intelligence: backlinks, frontmatter queries, and relationship traversal—all without reading file contents.
+
+### The Complete Picture
+
+Flywheel gives you **eyes**: 51 read-only tools for querying your knowledge graph.
+
+But reading isn't enough. When Carter finishes that call and needs to onboard a new project, update client files, and log the meeting—that's **writing**.
+
+For mutations, see **[Flywheel-Crank](https://github.com/velvetmonkey/flywheel-crank)**: deterministic vault automation with auto-wikilinks, atomic commits, and policy-as-code.
+
+**Eyes + Hands = Complete vault intelligence.**
 
 ---
 
@@ -211,11 +227,11 @@ Don't trust marketing. Run the tests:
 
 ```bash
 # Clone the ecosystem
-git clone https://github.com/velvetmonkey/flywheel-mcp
+git clone https://github.com/velvetmonkey/flywheel
 git clone https://github.com/velvetmonkey/flywheel-crank
 
 # Run flywheel tests (395 tests - read tools, demos)
-cd flywheel-mcp && npm install && npm test
+cd flywheel && npm install && npm test
 
 # Run flywheel-crank tests (1,326 tests - mutations, scale, security)
 cd ../flywheel-crank && npm install && npm test
