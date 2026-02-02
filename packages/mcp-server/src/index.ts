@@ -32,12 +32,7 @@ import {
 } from './core/watch/index.js';
 import { exportHubScores } from './core/hubExport.js';
 import { initializeLogger, getLogger } from './core/logging.js';
-import {
-  openStateDb,
-  type StateDb,
-  migrateFromJsonToSqlite,
-  getLegacyPaths,
-} from '@velvetmonkey/vault-core';
+import { openStateDb, type StateDb } from '@velvetmonkey/vault-core';
 
 // Auto-detect vault root, with PROJECT_PATH as override
 const vaultPath: string = process.env.PROJECT_PATH || findVaultRoot();
@@ -301,28 +296,9 @@ async function main() {
 }
 
 /**
- * Post-index work: migrations, config inference, hub export, file watcher
+ * Post-index work: config inference, hub export, file watcher
  */
 async function runPostIndexWork(index: VaultIndex) {
-  // Auto-migrate from JSON on first run (if StateDb available)
-  if (stateDb) {
-    try {
-      const legacyPaths = getLegacyPaths(vaultPath);
-      const migration = await migrateFromJsonToSqlite(stateDb, legacyPaths);
-      if (migration.entitiesMigrated > 0) {
-        console.error(`[Flywheel] Migrated ${migration.entitiesMigrated} entities from JSON`);
-      }
-      if (migration.recencyMigrated > 0) {
-        console.error(`[Flywheel] Migrated ${migration.recencyMigrated} recency records`);
-      }
-      if (migration.crankStateMigrated > 0) {
-        console.error(`[Flywheel] Migrated ${migration.crankStateMigrated} crank state entries`);
-      }
-    } catch (err) {
-      console.error('[Flywheel] Migration failed:', err);
-    }
-  }
-
   // Export hub scores to entity cache (for Flywheel-Crank wikilink prioritization)
   // Also updates StateDb if available
   await exportHubScores(index, stateDb);
