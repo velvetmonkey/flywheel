@@ -1,6 +1,6 @@
 {
   "name": "@velvetmonkey/flywheel-mcp",
-  "version": "1.27.28",
+  "version": "1.27.29",
   "description": "Graph intelligence for markdown vaults. MCP server for Obsidian.",
   "type": "module",
   "main": "dist/index.js",
@@ -29,7 +29,7 @@
   ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.25.1",
-    "@velvetmonkey/vault-core": "^1.27.28",
+    "@velvetmonkey/vault-core": "^1.27.29",
     "better-sqlite3": "^11.0.0",
     "chokidar": "^4.0.0",
     "gray-matter": "^4.0.3",
