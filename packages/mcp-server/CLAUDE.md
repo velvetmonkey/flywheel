@@ -141,6 +141,5 @@ See [Flywheel](https://github.com/velvetmonkey/flywheel) - Main project reposito
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
-| #5379 | 8:48 PM | 🔵 | Flywheel uses monorepo structure with mcp-server package | ~463 |
-| #4723 | 1:28 PM | 🔵 | Flywheel MCP-Server Package Configuration | ~285 |
+| #5309 | 7:46 PM | 🔵 | Flywheel MCP Server Package Configuration | ~272 |
 </claude-mem-context>
