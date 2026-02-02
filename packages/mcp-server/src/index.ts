@@ -3,7 +3,14 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import chokidar from 'chokidar';
 import type { VaultIndex } from './core/types.js';
-import { buildVaultIndex, setIndexState, setIndexError } from './core/graph.js';
+import {
+  buildVaultIndex,
+  setIndexState,
+  setIndexError,
+  loadVaultIndexFromCache,
+  saveVaultIndexToCache,
+} from './core/graph.js';
+import { scanVault } from './core/vault.js';
 import { registerGraphTools } from './tools/graph.js';
 import { registerWikilinkTools } from './tools/wikilinks.js';
 import { registerHealthTools } from './tools/health.js';
@@ -226,149 +233,214 @@ async function main() {
   await server.connect(transport);
   console.error('Flywheel MCP server running on stdio');
 
-  // Build the vault index in background (non-blocking)
-  console.error('Building vault index in background...');
   const startTime = Date.now();
 
-  buildVaultIndex(vaultPath)
-    .then(async (index) => {
-      vaultIndex = index;
-      setIndexState('ready');
-      const duration = Date.now() - startTime;
-      console.error(`Vault index ready in ${duration}ms`);
+  // Try to open StateDb early for cache loading (non-blocking if fails)
+  try {
+    stateDb = openStateDb(vaultPath);
+    console.error('[Flywheel] StateDb initialized');
+  } catch (err) {
+    console.error('[Flywheel] StateDb init failed:', err);
+    // Continue without StateDb - will build index fresh
+  }
 
-      // Initialize StateDb (auto-creates if missing)
-      try {
-        stateDb = openStateDb(vaultPath);
-        console.error('[Flywheel] StateDb initialized');
+  // Try loading index from cache (if StateDb available)
+  let cachedIndex: VaultIndex | null = null;
+  if (stateDb) {
+    try {
+      // Quick file count for cache validation
+      const files = await scanVault(vaultPath);
+      const noteCount = files.length;
+      console.error(`[Flywheel] Found ${noteCount} markdown files`);
 
-        // Auto-migrate from JSON on first run
-        const legacyPaths = getLegacyPaths(vaultPath);
-        const migration = await migrateFromJsonToSqlite(stateDb, legacyPaths);
-        if (migration.entitiesMigrated > 0) {
-          console.error(`[Flywheel] Migrated ${migration.entitiesMigrated} entities from JSON`);
+      cachedIndex = loadVaultIndexFromCache(stateDb, noteCount);
+    } catch (err) {
+      console.error('[Flywheel] Cache check failed:', err);
+    }
+  }
+
+  if (cachedIndex) {
+    // Cache hit - use cached index immediately
+    vaultIndex = cachedIndex;
+    setIndexState('ready');
+    const duration = Date.now() - startTime;
+    console.error(`[Flywheel] Index loaded from cache in ${duration}ms`);
+
+    // Run post-index work in background
+    runPostIndexWork(vaultIndex);
+  } else {
+    // Cache miss - build index in background
+    console.error('[Flywheel] Building vault index in background...');
+
+    buildVaultIndex(vaultPath)
+      .then(async (index) => {
+        vaultIndex = index;
+        setIndexState('ready');
+        const duration = Date.now() - startTime;
+        console.error(`[Flywheel] Vault index ready in ${duration}ms`);
+
+        // Save to cache for next startup
+        if (stateDb) {
+          try {
+            saveVaultIndexToCache(stateDb, index);
+          } catch (err) {
+            console.error('[Flywheel] Failed to save index cache:', err);
+          }
         }
-        if (migration.recencyMigrated > 0) {
-          console.error(`[Flywheel] Migrated ${migration.recencyMigrated} recency records`);
-        }
-        if (migration.crankStateMigrated > 0) {
-          console.error(`[Flywheel] Migrated ${migration.crankStateMigrated} crank state entries`);
-        }
-      } catch (err) {
-        console.error('[Flywheel] StateDb init failed:', err);
-        // Non-fatal - search_entities tool will return error but other tools work
+
+        // Run post-index work
+        await runPostIndexWork(index);
+      })
+      .catch((err) => {
+        setIndexState('error');
+        setIndexError(err instanceof Error ? err : new Error(String(err)));
+        console.error('[Flywheel] Failed to build vault index:', err);
+      });
+  }
+}
+
+/**
+ * Post-index work: migrations, config inference, hub export, file watcher
+ */
+async function runPostIndexWork(index: VaultIndex) {
+  // Auto-migrate from JSON on first run (if StateDb available)
+  if (stateDb) {
+    try {
+      const legacyPaths = getLegacyPaths(vaultPath);
+      const migration = await migrateFromJsonToSqlite(stateDb, legacyPaths);
+      if (migration.entitiesMigrated > 0) {
+        console.error(`[Flywheel] Migrated ${migration.entitiesMigrated} entities from JSON`);
       }
-
-      // Export hub scores to entity cache (for Flywheel-Crank wikilink prioritization)
-      // Also updates StateDb if available
-      await exportHubScores(vaultPath, index, stateDb);
-
-      // Now that index is ready, load/infer config
-      const existing = loadConfig(vaultPath);
-      const inferred = inferConfig(vaultIndex, vaultPath);
-      saveConfig(vaultPath, inferred, existing);
-      flywheelConfig = loadConfig(vaultPath);
-
-      if (flywheelConfig.vault_name) {
-        console.error(`[Flywheel] Vault: ${flywheelConfig.vault_name}`);
+      if (migration.recencyMigrated > 0) {
+        console.error(`[Flywheel] Migrated ${migration.recencyMigrated} recency records`);
       }
-      if (flywheelConfig.paths) {
-        const detectedPaths = Object.entries(flywheelConfig.paths)
-          .filter(([, v]) => v)
-          .map(([k, v]) => `${k}: ${v}`);
-        if (detectedPaths.length) {
-          console.error(`[Flywheel] Detected paths: ${detectedPaths.join(', ')}`);
-        }
+      if (migration.crankStateMigrated > 0) {
+        console.error(`[Flywheel] Migrated ${migration.crankStateMigrated} crank state entries`);
       }
-      if (flywheelConfig.exclude_task_tags?.length) {
-        console.error(`[Flywheel] Excluding task tags: ${flywheelConfig.exclude_task_tags.join(', ')}`);
-      }
+    } catch (err) {
+      console.error('[Flywheel] Migration failed:', err);
+    }
+  }
 
-      // Setup file watcher (enabled by default, disable with FLYWHEEL_WATCH=false)
-      if (process.env.FLYWHEEL_WATCH !== 'false') {
-        // Use v2 watcher if: explicitly enabled OR polling is requested (polling requires v2)
-        const useV2Watcher = process.env.FLYWHEEL_WATCH_V2 === 'true' ||
-                             process.env.FLYWHEEL_WATCH_POLL === 'true';
-        if (useV2Watcher) {
-          const config = parseWatcherConfig();
-          console.error(`[flywheel] File watcher v2 enabled (debounce: ${config.debounceMs}ms, flush: ${config.flushMs}ms)`);
+  // Export hub scores to entity cache (for Flywheel-Crank wikilink prioritization)
+  // Also updates StateDb if available
+  await exportHubScores(vaultPath, index, stateDb);
 
-          const watcher = createVaultWatcher({
-            vaultPath,
-            config,
-            onBatch: async (batch) => {
-              console.error(`[flywheel] Processing ${batch.events.length} file changes`);
-              // For now, do full rebuild on batches (incremental is additive)
-              // In future: use processBatchIncremental for true incremental updates
-              const startTime = Date.now();
+  // Now that index is ready, load/infer config
+  const existing = loadConfig(vaultPath);
+  const inferred = inferConfig(index, vaultPath);
+  saveConfig(vaultPath, inferred, existing);
+  flywheelConfig = loadConfig(vaultPath);
+
+  if (flywheelConfig.vault_name) {
+    console.error(`[Flywheel] Vault: ${flywheelConfig.vault_name}`);
+  }
+  if (flywheelConfig.paths) {
+    const detectedPaths = Object.entries(flywheelConfig.paths)
+      .filter(([, v]) => v)
+      .map(([k, v]) => `${k}: ${v}`);
+    if (detectedPaths.length) {
+      console.error(`[Flywheel] Detected paths: ${detectedPaths.join(', ')}`);
+    }
+  }
+  if (flywheelConfig.exclude_task_tags?.length) {
+    console.error(`[Flywheel] Excluding task tags: ${flywheelConfig.exclude_task_tags.join(', ')}`);
+  }
+
+  // Setup file watcher (enabled by default, disable with FLYWHEEL_WATCH=false)
+  if (process.env.FLYWHEEL_WATCH !== 'false') {
+    // Use v2 watcher if: explicitly enabled OR polling is requested (polling requires v2)
+    const useV2Watcher = process.env.FLYWHEEL_WATCH_V2 === 'true' ||
+                         process.env.FLYWHEEL_WATCH_POLL === 'true';
+    if (useV2Watcher) {
+      const config = parseWatcherConfig();
+      console.error(`[flywheel] File watcher v2 enabled (debounce: ${config.debounceMs}ms, flush: ${config.flushMs}ms)`);
+
+      const watcher = createVaultWatcher({
+        vaultPath,
+        config,
+        onBatch: async (batch) => {
+          console.error(`[flywheel] Processing ${batch.events.length} file changes`);
+          // For now, do full rebuild on batches (incremental is additive)
+          // In future: use processBatchIncremental for true incremental updates
+          const startTime = Date.now();
+          try {
+            vaultIndex = await buildVaultIndex(vaultPath);
+            setIndexState('ready');
+            console.error(`[flywheel] Index rebuilt in ${Date.now() - startTime}ms`);
+            // Re-export hub scores after rebuild (includes StateDb update)
+            await exportHubScores(vaultPath, vaultIndex, stateDb);
+            // Update cache
+            if (stateDb) {
               try {
-                vaultIndex = await buildVaultIndex(vaultPath);
-                setIndexState('ready');
-                console.error(`[flywheel] Index rebuilt in ${Date.now() - startTime}ms`);
-                // Re-export hub scores after rebuild (includes StateDb update)
-                await exportHubScores(vaultPath, vaultIndex, stateDb);
+                saveVaultIndexToCache(stateDb, vaultIndex);
               } catch (err) {
-                setIndexState('error');
-                setIndexError(err instanceof Error ? err : new Error(String(err)));
-                console.error('[flywheel] Failed to rebuild index:', err);
+                console.error('[flywheel] Failed to update index cache:', err);
               }
-            },
-            onStateChange: (status) => {
-              if (status.state === 'dirty') {
-                console.error('[flywheel] Warning: Index may be stale');
-              }
-            },
-            onError: (err) => {
-              console.error('[flywheel] Watcher error:', err.message);
-            },
-          });
-
-          watcher.start();
-        } else {
-          // Legacy watcher (global debounce)
-          const debounceMs = parseInt(process.env.FLYWHEEL_DEBOUNCE_MS || '60000');
-          console.error(`[flywheel] File watcher v1 enabled (debounce: ${debounceMs}ms)`);
-
-          const legacyWatcher = chokidar.watch(vaultPath, {
-            ignored: /(^|[\/\\])\../, // ignore dotfiles
-            persistent: true,
-            ignoreInitial: true,
-            awaitWriteFinish: {
-              stabilityThreshold: 300,
-              pollInterval: 100
             }
-          });
+          } catch (err) {
+            setIndexState('error');
+            setIndexError(err instanceof Error ? err : new Error(String(err)));
+            console.error('[flywheel] Failed to rebuild index:', err);
+          }
+        },
+        onStateChange: (status) => {
+          if (status.state === 'dirty') {
+            console.error('[flywheel] Warning: Index may be stale');
+          }
+        },
+        onError: (err) => {
+          console.error('[flywheel] Watcher error:', err.message);
+        },
+      });
 
-          let rebuildTimer: NodeJS.Timeout;
-          legacyWatcher.on('all', (event, path) => {
-            if (!path.endsWith('.md')) return;
-            clearTimeout(rebuildTimer);
-            rebuildTimer = setTimeout(() => {
-              console.error('[flywheel] Rebuilding index (file changed)');
-              buildVaultIndex(vaultPath)
-                .then(async (index) => {
-                  vaultIndex = index;
-                  setIndexState('ready');
-                  console.error('[flywheel] Index rebuilt successfully');
-                  // Re-export hub scores after rebuild (includes StateDb update)
-                  await exportHubScores(vaultPath, index, stateDb);
-                })
-                .catch((err) => {
-                  setIndexState('error');
-                  setIndexError(err instanceof Error ? err : new Error(String(err)));
-                  console.error('[flywheel] Failed to rebuild index:', err);
-                });
-            }, debounceMs);
-          });
+      watcher.start();
+    } else {
+      // Legacy watcher (global debounce)
+      const debounceMs = parseInt(process.env.FLYWHEEL_DEBOUNCE_MS || '60000');
+      console.error(`[flywheel] File watcher v1 enabled (debounce: ${debounceMs}ms)`);
+
+      const legacyWatcher = chokidar.watch(vaultPath, {
+        ignored: /(^|[\/\\])\../, // ignore dotfiles
+        persistent: true,
+        ignoreInitial: true,
+        awaitWriteFinish: {
+          stabilityThreshold: 300,
+          pollInterval: 100
         }
-      }
-    })
-    .catch((err) => {
-      setIndexState('error');
-      setIndexError(err instanceof Error ? err : new Error(String(err)));
-      console.error('Failed to build vault index:', err);
-      // Don't exit - server is still running, tools will report the error
-    });
+      });
+
+      let rebuildTimer: NodeJS.Timeout;
+      legacyWatcher.on('all', (event, path) => {
+        if (!path.endsWith('.md')) return;
+        clearTimeout(rebuildTimer);
+        rebuildTimer = setTimeout(() => {
+          console.error('[flywheel] Rebuilding index (file changed)');
+          buildVaultIndex(vaultPath)
+            .then(async (newIndex) => {
+              vaultIndex = newIndex;
+              setIndexState('ready');
+              console.error('[flywheel] Index rebuilt successfully');
+              // Re-export hub scores after rebuild (includes StateDb update)
+              await exportHubScores(vaultPath, newIndex, stateDb);
+              // Update cache
+              if (stateDb) {
+                try {
+                  saveVaultIndexToCache(stateDb, newIndex);
+                } catch (err) {
+                  console.error('[flywheel] Failed to update index cache:', err);
+                }
+              }
+            })
+            .catch((err) => {
+              setIndexState('error');
+              setIndexError(err instanceof Error ? err : new Error(String(err)));
+              console.error('[flywheel] Failed to rebuild index:', err);
+            });
+        }, debounceMs);
+      });
+    }
+  }
 }
 
 main().catch((error) => {

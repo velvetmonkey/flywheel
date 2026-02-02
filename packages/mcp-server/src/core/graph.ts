@@ -5,11 +5,13 @@
  * - Parallel parsing with concurrency limit
  * - Progress reporting for large vaults
  * - Timeout protection
+ * - SQLite index caching for fast startup
  */
 
-import type { VaultNote, VaultIndex, Backlink } from './types.js';
+import type { VaultNote, VaultIndex, Backlink, OutLink } from './types.js';
 import type { VaultFile } from './vault.js';
 import { scanVault } from './vault.js';
+import type { StateDb, VaultIndexCacheData } from '@velvetmonkey/vault-core';
 import { parseNote } from './parser.js';
 
 /** Default timeout for vault indexing (5 minutes) */
@@ -458,4 +460,122 @@ export function findSimilarEntity(
   }
 
   return bestMatch;
+}
+
+// =============================================================================
+// Index Caching (for fast startup)
+// =============================================================================
+
+/**
+ * Serialize VaultIndex to cacheable format
+ */
+export function serializeVaultIndex(index: VaultIndex): VaultIndexCacheData {
+  return {
+    notes: Array.from(index.notes.values()).map(note => ({
+      path: note.path,
+      title: note.title,
+      aliases: note.aliases,
+      frontmatter: note.frontmatter,
+      outlinks: note.outlinks,
+      tags: note.tags,
+      modified: note.modified.getTime(),
+      created: note.created?.getTime(),
+    })),
+    backlinks: Array.from(index.backlinks.entries()).map(([key, value]) => [key, value]),
+    entities: Array.from(index.entities.entries()),
+    tags: Array.from(index.tags.entries()).map(([tag, paths]) => [tag, Array.from(paths)]),
+    builtAt: index.builtAt.getTime(),
+  };
+}
+
+/**
+ * Deserialize VaultIndex from cached format
+ */
+export function deserializeVaultIndex(data: VaultIndexCacheData): VaultIndex {
+  const notes = new Map<string, VaultNote>();
+  for (const note of data.notes) {
+    notes.set(note.path, {
+      path: note.path,
+      title: note.title,
+      aliases: note.aliases,
+      frontmatter: note.frontmatter,
+      outlinks: note.outlinks as OutLink[],
+      tags: note.tags,
+      modified: new Date(note.modified),
+      created: note.created ? new Date(note.created) : undefined,
+    });
+  }
+
+  const backlinks = new Map<string, Backlink[]>();
+  for (const [key, value] of data.backlinks) {
+    backlinks.set(key, value);
+  }
+
+  const entities = new Map<string, string>();
+  for (const [key, value] of data.entities) {
+    entities.set(key, value);
+  }
+
+  const tags = new Map<string, Set<string>>();
+  for (const [tag, paths] of data.tags) {
+    tags.set(tag, new Set(paths));
+  }
+
+  return {
+    notes,
+    backlinks,
+    entities,
+    tags,
+    builtAt: new Date(data.builtAt),
+  };
+}
+
+/**
+ * Load VaultIndex from cache if valid, otherwise return null
+ */
+export function loadVaultIndexFromCache(
+  stateDb: StateDb,
+  actualNoteCount: number,
+  maxAgeMs: number = 24 * 60 * 60 * 1000
+): VaultIndex | null {
+  // Import dynamically to avoid circular dependencies
+  const { loadVaultIndexCache, getVaultIndexCacheInfo } = require('@velvetmonkey/vault-core');
+
+  const info = getVaultIndexCacheInfo(stateDb);
+  if (!info) {
+    console.error('[Flywheel] No cached index found');
+    return null;
+  }
+
+  // Validate cache
+  if (info.noteCount !== actualNoteCount) {
+    console.error(`[Flywheel] Cache invalid: note count mismatch (${info.noteCount} vs ${actualNoteCount})`);
+    return null;
+  }
+
+  const age = Date.now() - info.builtAt.getTime();
+  if (age > maxAgeMs) {
+    console.error(`[Flywheel] Cache invalid: too old (${Math.round(age / 1000 / 60)} minutes)`);
+    return null;
+  }
+
+  // Load the cache
+  const data = loadVaultIndexCache(stateDb);
+  if (!data) {
+    console.error('[Flywheel] Failed to load cached index data');
+    return null;
+  }
+
+  console.error(`[Flywheel] Loaded index from cache (${info.noteCount} notes, built ${Math.round(age / 1000)}s ago)`);
+  return deserializeVaultIndex(data);
+}
+
+/**
+ * Save VaultIndex to cache
+ */
+export function saveVaultIndexToCache(stateDb: StateDb, index: VaultIndex): void {
+  const { saveVaultIndexCache } = require('@velvetmonkey/vault-core');
+  const data = serializeVaultIndex(index);
+  saveVaultIndexCache(stateDb, data);
+  console.error(`[Flywheel] Saved index to cache (${index.notes.size} notes)`);
 }
