@@ -1,4 +1,4 @@
-> **Part of the Flywheel Suite:** This is the read-only graph intelligence server (the "Eyes"). See [Flywheel Crank](https://github.com/velvetmonkey/flywheel-crank) (the "Hands") for safe vault mutations with policies and auto-commit. Read [The Flywheel Platform](https://github.com/velvetmonkey/flywheel-crank/blob/main/docs/PLATFORM.md) for the full architecture.
+> **Both Packages Required:** Flywheel (51 read-only tools) + [Flywheel-Crank](https://github.com/velvetmonkey/flywheel-crank) (11 mutation tools) work together. See the [Platform Installation Guide](docs/INSTALL.md) for your OS.
 
 <div align="center">
   <img src="header.png" alt="Flywheel" width="256"/>
@@ -8,9 +8,19 @@
 
 ### Stop burning tokens. Start building agents.
 
+[![CI](https://github.com/velvetmonkey/flywheel/actions/workflows/ci.yml/badge.svg)](https://github.com/velvetmonkey/flywheel/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/@velvetmonkey/flywheel-mcp.svg)](https://www.npmjs.com/package/@velvetmonkey/flywheel-mcp)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg)](https://github.com/velvetmonkey/flywheel)
+[![Scale](https://img.shields.io/badge/scale-100k%20notes-brightgreen.svg)](./docs/SCALE_BENCHMARKS.md)
+
+## Verified Capabilities
+
+✅ **100k Note Scale** - Index building and queries tested at 100,000 notes
+✅ **51 Read-Only Tools** - Comprehensive graph intelligence without mutation risk
+✅ **Cross-Platform** - Tested on Ubuntu, Windows, macOS (Intel + ARM)
+✅ **Sub-Second Queries** - Graph traversal, backlinks, hub detection <100ms
+✅ **Entity Detection** - Automatic extraction of people, projects, tech, acronyms
 
 ---
 
@@ -181,6 +191,7 @@ People doing interesting work with markdown knowledge bases:
 
 ## Docs
 
+- **[Installation Guide](docs/INSTALL.md)** — Platform-specific setup (Windows, macOS, Linux, WSL)
 - **[Configuration](docs/CONFIGURATION.md)** — Environment variables, tool presets, platform setup
 - **[MCP Tools Reference](docs/MCP_REFERENCE.md)** — All 51 tools
 - **[Query Guide](docs/QUERY_GUIDE.md)** — Patterns and examples
