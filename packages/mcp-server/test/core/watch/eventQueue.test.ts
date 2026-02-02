@@ -217,7 +217,11 @@ describe('EventQueue', () => {
       vi.advanceTimersByTime(150);
 
       expect(batches).toHaveLength(1);
-      expect(batches[0].events[0].path).toBe('C:/Users/vault/note.md');
+      // On Windows, paths are lowercased for case-insensitive comparison
+      const expected = process.platform === 'win32'
+        ? 'c:/users/vault/note.md'
+        : 'C:/Users/vault/note.md';
+      expect(batches[0].events[0].path).toBe(expected);
 
       queue.dispose();
     });

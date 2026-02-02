@@ -11,8 +11,16 @@ import {
 
 describe('normalizePath', () => {
   it('should convert backslashes to forward slashes', () => {
-    expect(normalizePath('path\\to\\file.md')).toBe('path/to/file.md');
-    expect(normalizePath('C:\\Users\\vault\\note.md')).toBe('C:/Users/vault/note.md');
+    // On Windows, paths are also lowercased for case-insensitive comparison
+    const expected = process.platform === 'win32'
+      ? 'path/to/file.md'  // Already lowercase
+      : 'path/to/file.md';
+    expect(normalizePath('path\\to\\file.md')).toBe(expected);
+
+    const expectedWin = process.platform === 'win32'
+      ? 'c:/users/vault/note.md'  // Lowercased on Windows
+      : 'C:/Users/vault/note.md';
+    expect(normalizePath('C:\\Users\\vault\\note.md')).toBe(expectedWin);
   });
 
   it('should handle already-normalized paths', () => {
