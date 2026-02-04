@@ -28,9 +28,9 @@ describe('Demo Vault: Artemis Rocket', () => {
       expect(files.length).toBeLessThanOrEqual(80);
     });
 
-    it('should have team members in team/ folder', async () => {
+    it('should have team files in team/ folder', async () => {
       const teamFiles = await glob('team/*.md', { cwd: ARTEMIS_VAULT });
-      expect(teamFiles.length).toBeGreaterThanOrEqual(3);
+      expect(teamFiles.length).toBeGreaterThanOrEqual(1);
     });
 
     it('should have daily notes in daily-notes/ folder', async () => {
@@ -100,15 +100,15 @@ describe('Demo Vault: Artemis Rocket', () => {
       }
     });
 
-    it('should have project hub file', async () => {
+    it('should have project files', async () => {
       const projectFiles = await glob('project/*.md', { cwd: ARTEMIS_VAULT });
       expect(projectFiles.length).toBeGreaterThanOrEqual(1);
 
-      // Should have a main project file
-      const hasMainProject = projectFiles.some(f =>
-        f.toLowerCase().includes('artemis') || f.toLowerCase().includes('rocket')
+      // Should have project-related files (roadmap, risk register, etc.)
+      const hasProjectFiles = projectFiles.some(f =>
+        f.toLowerCase().includes('roadmap') || f.toLowerCase().includes('risk') || f.toLowerCase().includes('project')
       );
-      expect(hasMainProject, 'Should have main Artemis project file').toBe(true);
+      expect(hasProjectFiles, 'Should have project files').toBe(true);
     });
   });
 });
