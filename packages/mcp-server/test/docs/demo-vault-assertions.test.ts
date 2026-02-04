@@ -64,10 +64,8 @@ describe('Demo Vault: Artemis Rocket', () => {
       }
     });
 
-    it('should have .flywheel configuration directory', () => {
-      const flywheelDir = path.join(ARTEMIS_VAULT, '.flywheel');
-      expect(fs.existsSync(flywheelDir)).toBe(true);
-    });
+    // Note: .flywheel directory contains SQLite databases generated at runtime
+    // and won't exist in CI since it's not committed to git
 
     it('should have CLAUDE.md configuration file', () => {
       const claudeMd = path.join(ARTEMIS_VAULT, 'CLAUDE.md');
@@ -128,10 +126,8 @@ describe('Demo Vault: Carter Strategy', () => {
   });
 
   describe('Folder Structure', () => {
-    it('should have .flywheel configuration directory', () => {
-      const flywheelDir = path.join(CARTER_VAULT, '.flywheel');
-      expect(fs.existsSync(flywheelDir)).toBe(true);
-    });
+    // Note: .flywheel directory contains SQLite databases generated at runtime
+    // and won't exist in CI since it's not committed to git
 
     it('should have meaningful folder organization', () => {
       const entries = fs.readdirSync(CARTER_VAULT, { withFileTypes: true });
@@ -152,8 +148,9 @@ describe('Demo Vault Consistency', () => {
     const vaults = [ARTEMIS_VAULT, CARTER_VAULT];
 
     for (const vault of vaults) {
-      // Each vault should have .flywheel directory
-      expect(fs.existsSync(path.join(vault, '.flywheel'))).toBe(true);
+      // Each vault should have CLAUDE.md for configuration
+      // Note: .flywheel directories are generated at runtime and won't exist in CI
+      expect(fs.existsSync(path.join(vault, 'CLAUDE.md'))).toBe(true);
     }
   });
 
