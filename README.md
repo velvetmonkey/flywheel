@@ -1,4 +1,4 @@
-> **Both Packages Required:** Flywheel (51 read-only tools) + [Flywheel-Crank](https://github.com/velvetmonkey/flywheel-crank) (11 mutation tools) work together. See the [Platform Installation Guide](docs/INSTALL.md) for your OS.
+> Flywheel (51 read-only tools) + [Flywheel-Crank](https://github.com/velvetmonkey/flywheel-crank) (11 mutation tools) work together. See the [Platform Installation Guide](docs/INSTALL.md) for your OS.
 
 <div align="center">
   <img src="header.png" alt="Flywheel" width="256"/>
