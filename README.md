@@ -27,22 +27,6 @@
 
 ---
 
-## See It Work
-
-**Watch CI build a knowledge graph from scratch:**
-
-[![Proof of Work](https://github.com/velvetmonkey/flywheel/actions/workflows/proof-of-work.yml/badge.svg)](https://github.com/velvetmonkey/flywheel/actions/workflows/proof-of-work.yml)
-
-Every push:
-1. Creates a vault from CSV seed data
-2. Builds the entity index
-3. Validates 100+ notes, 150+ wikilinks
-4. Publishes metrics as artifacts
-
-[View latest run →](https://github.com/velvetmonkey/flywheel/actions/workflows/proof-of-work.yml)
-
----
-
 Claude reading files on every query? Those tokens add up fast.
 
 Flywheel queries an in-memory index instead of reading files. Graph queries (backlinks, tags, tasks) return structured results without touching file content.
