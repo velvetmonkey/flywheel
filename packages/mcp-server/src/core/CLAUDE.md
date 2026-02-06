@@ -16,6 +16,9 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
+| #6618 | 3:37 PM | 🔵 | Flywheel Hub Score Export Uses Dual-Write with JSON Primary | ~335 |
+| #6544 | 2:57 PM | 🔵 | Flywheel index guard: Tool-level checks for index readiness with progress feedback | ~377 |
+| #6541 | 2:56 PM | 🔵 | Vault index build performance: Parallel parsing with controlled concurrency and progress tracking | ~426 |
 | #5838 | 1:28 AM | 🔵 | Flywheel MCP Server Architecture Analysis for StateDb Integration | ~725 |
 | #5836 | 1:27 AM | 🔵 | VaultIndex Type Definitions for In-Memory Graph | ~423 |
 | #5835 | " | 🔵 | Existing FTS5 Full-Text Search Implementation for Vault Content | ~500 |
