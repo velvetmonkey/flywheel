@@ -217,22 +217,22 @@ Don't trust marketing. Run the tests:
 git clone https://github.com/velvetmonkey/flywheel
 git clone https://github.com/velvetmonkey/flywheel-crank
 
-# Run flywheel tests (395 tests - read tools, demos)
+# Run flywheel tests (432 tests - read tools, demos)
 cd flywheel && npm install && npm test
 
 # Run demo documentation tests
 cd flywheel && npm run test:demos
 
-# Run flywheel-crank tests (1,326 tests - mutations, scale, security)
+# Run flywheel-crank tests (1,472 tests - mutations, scale, security)
 cd ../flywheel-crank && npm install && npm test
 ```
 
-**Total: 1,721 tests** proving the ecosystem works.
+**Total: 1,904 tests** proving the ecosystem works.
 
 | Repo | Tests | Proves |
 |------|-------|--------|
-| **flywheel** | 395 | Graph queries, entity indexing, file watching |
-| **flywheel-crank** | 1,326 | Mutations at scale, format preservation, security |
+| **flywheel** | 432 | Graph queries, entity indexing, file watching |
+| **flywheel-crank** | 1,472 | Mutations at scale, format preservation, security |
 
 ### Test Scripts
 

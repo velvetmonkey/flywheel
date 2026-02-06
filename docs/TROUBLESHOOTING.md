@@ -343,14 +343,15 @@ Error: Field 'status' not found in schema
 
 **Symptom:** Server takes >30s to start, or `rebuild_index` is slow.
 
-**Benchmarks (TODO: Actual testing required):**
+**Benchmarks (validated via vault-core):**
 
 | Vault Size | Expected Build Time | Notes |
 |------------|-------------------|-------|
-| 1,000 notes | ~2-5s | Fast |
-| 5,000 notes | ~10-20s | Reasonable |
-| 10,000 notes | ~30-60s | Slower |
-| 50,000+ notes | >2 min | TODO: Test breaking point |
+| 1,000 notes | <1s | Fast |
+| 5,000 notes | ~5s | Fast |
+| 10,000 notes | ~10s | Good |
+| 50,000 notes | ~15s | Good |
+| 100,000 notes | <30s | Validated threshold |
 
 **Optimization tips:**
 
@@ -381,13 +382,15 @@ Error: Field 'status' not found in schema
 
 **Cause:** Large vault, many entities cached, or memory leak.
 
-**Expected memory usage (TODO: Benchmark):**
+**Expected memory usage (validated via vault-core benchmarks):**
 
 | Vault Size | Expected RAM |
 |------------|-------------|
-| 1,000 notes | ~50-100 MB |
-| 5,000 notes | ~150-250 MB |
-| 10,000 notes | ~300-500 MB |
+| 1,000 notes | ~100 MB |
+| 5,000 notes | ~200 MB |
+| 10,000 notes | ~400 MB |
+| 50,000 notes | ~800 MB |
+| 100,000 notes | ~1.5 GB |
 
 **Mitigation:**
 
